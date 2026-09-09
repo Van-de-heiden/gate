@@ -7,29 +7,44 @@ import xml.etree.ElementTree as ET
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 catalog = json.loads((ROOT / "Gate/curriculum.json").read_text())
-assert len(catalog["paths"]) == 8
-assert len(catalog["lessons"]) == 24
+assert len(catalog["paths"]) == 16
+assert len(catalog["lessons"]) == 96
 questions = [q for lesson in catalog["lessons"] for q in lesson["questions"]]
-assert len(questions) == 96 and len({q["id"] for q in questions}) == 96
+assert len(questions) == 504 and len({q["id"] for q in questions}) == 504
+formats = {q.get("format", "singleChoice") for q in questions}
+assert formats == {"singleChoice", "multipleChoice", "ordering", "matching", "numeric", "recall", "cloze"}
 for path in catalog["paths"]:
     lessons = [l for l in catalog["lessons"] if l["pathID"] == path["id"]]
-    assert sorted(l["order"] for l in lessons) == [1, 2, 3]
+    assert sorted(l["order"] for l in lessons) == list(range(1, 7))
+    asset = ROOT / "Gate/Assets.xcassets" / ("Path-" + path["artwork"] + ".imageset")
+    assert (asset / "cover.jpg").is_file()
 for lesson in catalog["lessons"]:
-    assert len(lesson["cards"]) >= 2
+    assert len(lesson["cards"]) >= 3
     assert lesson["source"]["url"].startswith("https://")
-    assert lesson["reflection"] and lesson["takeaway"]
+    assert lesson["reflection"] and lesson["takeaway"] and lesson["mission"]
+    assert len(lesson["questions"]) >= 5
     visual = lesson["visual"]
     if visual["kind"] == "bars":
         assert len(visual["labels"]) == len(visual["values"])
         assert all(v >= 0 for v in visual["values"])
     for q in lesson["questions"]:
-        assert len(q["options"]) >= 3
-        assert len(set(q["options"])) == len(q["options"])
-        assert 0 <= q["correctIndex"] < len(q["options"])
-        assert q["explanation"]
+        options=q["options"]
+        assert len(set(options)) == len(options)
+        assert q["explanation"] and q["prompt"]
+        kind=q.get("format", "singleChoice")
+        if kind == "singleChoice": assert len(options)>=2 and 0<=q["correctIndex"]<len(options)
+        elif kind == "multipleChoice":
+            assert 0<len(q["correctIndices"])<len(options)
+            assert set(q["correctIndices"])<=set(range(len(options)))
+        elif kind == "ordering": assert sorted(q["correctOrder"])==list(range(len(options)))
+        elif kind == "matching":
+            assert len(q["pairs"])==len(options)>=2
+            for side in ["left","right"]: assert len({p[side] for p in q["pairs"]})==len(options)
+        elif kind == "numeric": assert isinstance(q["numberAnswer"],(float,int)) and q.get("tolerance",0)>=0
+        else: assert q["acceptedAnswers"] and all(a.strip() for a in q["acceptedAnswers"])
     if lesson.get("photo"):
-        assert lesson["photo"]["url"].startswith("https://svs.gsfc.nasa.gov/")
         assert lesson["photo"]["credit"] and lesson["photo"]["sourceURL"]
+assert (ROOT / "Gate/Assets.xcassets/AppIcon.appiconset/GateIcon.png").is_file()
 
 for file in list(ROOT.rglob("*.plist")) + list(ROOT.rglob("*.entitlements")):
     with file.open("rb") as stream:
@@ -53,4 +68,4 @@ assert "IPHONEOS_DEPLOYMENT_TARGET = 16.0" not in project
 assert "GateConstants" not in "\n".join(p.read_text() for p in ROOT.rglob("*.swift"))
 assert "GateStorage" not in "\n".join(p.read_text() for p in ROOT.rglob("*.swift"))
 ET.parse(ROOT / "Gate.xcodeproj/xcshareddata/xcschemes/Gate.xcscheme")
-print("PASS: 8 paths, 24 lessons, 96 unique questions; plist, target ID and scheme checks.")
+print("PASS: 16 paths, 96 chapters, 504 unique questions, 7 formats and offline assets; plist, target ID and scheme checks.")

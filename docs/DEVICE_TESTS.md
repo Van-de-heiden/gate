@@ -57,3 +57,34 @@ The primary regression test is **A remains usable while B is requested and learn
 Long-duration real-device reliability, browser coverage, accessibility visual review, independent
 curriculum review, complete content filtering and App Store entitlement approval are not implied
 by green unit tests. Record failures with iOS/Xcode versions and exact reproduction steps.
+
+## 0.3 acceptance checks
+
+### Keyboard regression
+- Open a chapter, type a reflection note, tap **Eingabe fertig**. Keyboard closes, note stays.
+- Reopen it, type and tap **Zur Prüfung**. Keyboard closes and the first task is visible.
+- Solve a numeric and a recall task. Test decimal comma and period. **Fertig**, return, interactive scrolling, next/back and closing the sheet must dismiss the keyboard without losing input.
+- Repeat in library search and the new launcher-item editor, including on a small screen and large Dynamic Type.
+
+### Additive selections
+- Upgrade with an existing v0.2 selection, usage, notes and learning results. IDs/progress and today's usage stay.
+- Save A + B; reopen picker, deselect A and add C; save. A, B and C must stay protected. Repeat with an empty proposed selection and after a day rollover/relaunch.
+- Onboarding opened again must not shrink the selection. There is no in-app pause or deletion action after activation.
+- Reorder launcher entries and add a link. Previously saved entries/destinations cannot be deleted, disabled or replaced.
+- Phone/WhatsApp remain outside the consumption selection as configured. Gate cannot resolve opaque tokens into an automatic exception for a mistakenly selected communication app.
+
+### Permanent websites / helpful interruption
+- In **Mehr → Dauerhaft geschützte Websites**, select a benign test domain, never Phone or apps, and save it.
+- Test during the free hour, with a consumption grant, at midnight and after restart. It must remain shielded. A learning result must not grant it access.
+- On Gate's website shield, tap **Abstand gewinnen**; notification opens the pause page on iOS 26. If notifications are disabled, open Gate manually: the pending pause is persisted.
+- Try while a different learning session was suspended. Its progress must remain.
+- Automatic adult filtering may render Apple's own block page first. It cannot be redirected by this Screen Time implementation. **Heute → Einen Impuls unterbrechen** remains the manual route.
+- Closing/finishing the optional 60-second pause does not unlock the domain. No trigger answers are retained.
+- Individual authorization can still be revoked in iOS and the app can be uninstalled. The additive lock is an in-app commitment, not device supervision.
+
+### Curriculum and images
+- Search a term, filter by category, open a specific chapter, finish it, and reopen it. Explicit chapter practice must not jump to a different chapter.
+- Try all seven formats, including wrong/missing numeric values, unmatched pairs, multiple selections and reordered steps.
+- Suspend/reopen each input format. Answers and permutation persist. A short partial round must not prematurely mark a new chapter complete.
+- Open **Wissen auffrischen** when due questions exist: only due questions appear in this voluntary review mode.
+- Disable networking. All eight image motifs and all chapters remain usable; the older external NASA source photo still loads only on explicit request.

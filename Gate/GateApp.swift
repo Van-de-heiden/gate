@@ -4,6 +4,7 @@ import UserNotifications
 
 extension Notification.Name {
     static let gateRequestOpened = Notification.Name("gate.request.opened")
+    static let gatePauseOpened = Notification.Name("gate.pause.opened")
 }
 
 final class GateAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -17,6 +18,9 @@ final class GateAppDelegate: NSObject, UIApplicationDelegate, UNUserNotification
     }
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.notification.request.content.userInfo["gatePause"] as? Bool == true {
+            DispatchQueue.main.async { NotificationCenter.default.post(name: .gatePauseOpened, object: nil) }
+        }
         if let string = response.notification.request.content.userInfo["gateRequestID"] as? String,
            let id = UUID(uuidString: string) {
             DispatchQueue.main.async {

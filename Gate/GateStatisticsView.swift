@@ -37,7 +37,7 @@ struct GateStatisticsView: View {
                         metric("\(learning.progress.completedLessonIDs.count)", "Kapitel erarbeitet")
                         metric("\(learning.progress.memories.values.filter { $0.streak >= 3 }.count)", "Fragen wiederholt gefestigt")
                     }
-                    Text("„Erarbeitet“ bedeutet: Kapitel gelesen und die gestellten Fragen dazu richtig gelöst. „Gefestigt“ verlangt mindestens drei aufeinanderfolgende richtige Antworten pro Frage.")
+                    Text("„Erarbeitet“ bedeutet: Kapitel gelesen und alle Fragen dazu über eine oder mehrere bestandene Runden richtig gelöst. Frühere Kapitelabschlüsse bleiben erhalten. „Gefestigt“ verlangt mindestens drei über Zeit verteilte richtige Antworten pro Frage.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 if recent.isEmpty {

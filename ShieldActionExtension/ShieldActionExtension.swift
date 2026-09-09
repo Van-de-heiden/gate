@@ -19,6 +19,20 @@ final class ShieldActionExtension: ShieldActionDelegate {
         guard action == .primaryButtonPressed else { completion(.close); return }
         do {
             let target = GateTarget(kind: kind, tokenData: try PropertyListEncoder().encode(token))
+            let protected = try GateSharedStore.transaction { state -> Bool in
+                guard GateShieldPolicy.isProtected(target, in: state) else { return false }
+                state.pauseRequestedAt = Date()
+                return true
+            }
+            if protected {
+                let content = UNMutableNotificationContent()
+                content.title = "Du musst diesem Impuls nicht folgen."
+                content.body = "Öffne Gate für eine ruhige Minute und einen konkreten nächsten Schritt."
+                content.userInfo = ["gatePause": true]
+                UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "gate.pause", content: content, trigger: nil))
+                completion(.close)
+                return
+            }
             let request = try GateSharedStore.transaction { state -> GateRequest? in
                 state.rollDay(at: Date())
                 state.expireGrants(at: Date())

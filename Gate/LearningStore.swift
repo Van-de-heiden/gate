@@ -30,9 +30,10 @@ final class LearningStore: ObservableObject {
 
     var dueCount: Int { LearningScheduler.dueCount(progress, at: Date()) }
 
-    func begin(request: GateRequest?, minutes: Int, consumed: Int, failures: Int, path: String? = nil) {
+    func begin(request: GateRequest?, minutes: Int, consumed: Int, failures: Int, path: String? = nil,
+               lesson: String? = nil, reviewOnly: Bool = false) {
         guard let catalog, error == nil else { return }
-        let key = request?.target.id ?? "practice"
+        let key = request?.target.id ?? (lesson.map { "chapter." + $0 } ?? (reviewOnly ? "review" : path.map { "path." + $0 } ?? "practice"))
         if let saved = progress.sessions[key], saved.result == nil || saved.result?.passed == true {
             session = saved
             return
@@ -41,12 +42,20 @@ final class LearningStore: ObservableObject {
         let remediation = progress.sessions[key]?.result?.passed == false ? progress.sessions[key]?.lessonIDs ?? [] : []
         session = LearningScheduler.makeSession(catalog: catalog, progress: progress, request: request,
             minutes: minutes, consumed: consumed, failures: failures, preferredPath: path,
+            preferredLesson: lesson, reviewOnly: reviewOnly,
             remediation: remediation, now: Date(), random: &random)
         checkpoint()
     }
 
     func markRead(_ id: String) { edit { $0.readLessonIDs.insert(id) } }
     func answer(_ index: Int, for id: String) { edit { $0.responses[id] = index } }
+    func answer(_ response: QuestionResponse, for id: String) {
+        edit {
+            if $0.typedResponses == nil { $0.typedResponses = [:] }
+            $0.typedResponses?[id] = response
+            $0.responses.removeValue(forKey: id)
+        }
+    }
     func setPhase(_ phase: String) { edit { $0.phase = phase } }
     func note(_ text: String, for id: String) { edit { $0.reflectionNotes[id] = text } }
     func tick() {

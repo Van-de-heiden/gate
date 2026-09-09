@@ -33,7 +33,7 @@ struct ContentView: View {
                     Divider()
                     HStack(spacing: 0) {
                         ForEach(tabs.indices, id: \.self) { index in
-                            Button { tab = index } label: {
+                            Button { GateKeyboard.dismiss(); tab = index } label: {
                                 VStack(spacing: 8) {
                                     Rectangle().fill(tab == index ? Color.primary : .clear).frame(width: 18, height: 2)
                                     Text(tabs[index]).font(.caption.weight(tab == index ? .semibold : .regular))
@@ -46,7 +46,10 @@ struct ContentView: View {
         }
         .tint(.primary)
         .sheet(isPresented: $onboarding) { GateOnboardingView(controller: controller) }
-        .sheet(item: $learning.session, onDismiss: { learning.checkpoint() }) { _ in
+        .sheet(isPresented: $controller.showPause, onDismiss: { controller.closePause() }) {
+            IntentionalPauseView(controller: controller)
+        }
+        .sheet(item: $learning.session, onDismiss: { controller.lessonDidClose() }) { _ in
             LessonView(controller: controller, learning: learning)
         }
         .alert("Gate", isPresented: Binding(get: { controller.errorMessage != nil }, set: { if !$0 { controller.errorMessage = nil } })) {
@@ -66,6 +69,9 @@ struct ContentView: View {
                let request = controller.state.requests.first(where: { $0.id == id }) {
                 controller.selectRequest(request); tab = 0
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .gatePauseOpened)) { _ in
+            controller.requestPause()
         }
         .onOpenURL { url in
             controller.handleURL(url)
@@ -153,6 +159,8 @@ struct ContentView: View {
                 Button { controller.beginPractice() } label: {
                     HStack { Text("Einfach etwas lernen"); Spacer(); Text("\(learning.dueCount) fällig").foregroundStyle(.secondary) }
                 }.buttonStyle(GateButtonStyle(prominent: false))
+                Button("Einen Impuls unterbrechen") { controller.showPause = true }
+                    .font(.footnote).underline().frame(maxWidth: .infinity)
                 Text("Kein Feed. Kein Wettlauf. Ein guter Gedanke reicht.")
                     .font(.system(.footnote, design: .serif)).foregroundStyle(.secondary)
             }.padding(24).padding(.bottom, 24)
@@ -232,7 +240,7 @@ struct ProtectedTargetsView: View {
     }
     var body: some View {
         GateSection(title: "Apps einzeln freigeben") {
-            ForEach(targets) { target in
+            ForEach(targets.filter { !GateShieldPolicy.isProtected($0, in: controller.state) }) { target in
                 Button { controller.requestLesson(for: target) } label: {
                     HStack {
                         GateTargetLabel(target: target)

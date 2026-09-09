@@ -6,19 +6,19 @@ Gate is an open-source iPhone app that adds a learning step before additional co
 Code and original lesson content are available under the [MIT licence](LICENSE).
 Third-party reference photos are not relicensed under MIT.
 
-## Status: 0.2 product alpha
+## Status: 0.3 learning-library alpha
 
-The first on-device spike worked. This iteration replaces its single-grant architecture and adds a
-monochrome product interface. It is **not a finished, independently validated App Store release**.
+The first on-device spike worked. Gate now has independent app grants, a monochrome interface,
+a substantially expanded curriculum and permanent in-app selections. It is **not a finished, independently validated App Store release**.
 
 - A shared daily allowance of **60 minutes** for explicitly selected apps and websites.
 - Independent **5 / 10 / 15 active-minute grants**; up to eight at once.
 - Separate request, failure and cooldown state per app/domain.
 - One activity ID per grant: expiration of A does not close B.
 - An always-reachable request panel; a successful quiz closes its sheet.
-- A medium/large **text-only launcher widget**, editable in the app.
+- A medium/large **text-only launcher widget**, extendable and reorderable in the app.
 - Onboarding, local learning history, confirmed usage checkpoints and settings.
-- **8 learning paths, 24 chapters, 96 questions** with explanations.
+- **16 learning paths, 96 chapters, 504 questions in seven formats** with explanations.
 - Original German lesson text, diagrams, optional narration and reflection notes.
 - Random path rotation, curriculum progression and due-question priority.
 - Repetition starts at 1 / 3 / 7 / 14 / 30 days; errors return earlier.
@@ -28,9 +28,10 @@ monochrome product interface. It is **not a finished, independently validated Ap
 ### Learning paths
 
 Learning & memory · Clear thinking · Statistics · Digital safety · Decisions & economics ·
-Everyday physics · Earth systems · History & source criticism.
+Everyday physics · Earth systems · History & source criticism · Philosophy · Business ·
+Personal money · Industries · Health · Self-development · Communication · Society & institutions.
 
-The curriculum is an **introductory, extensible edition**, not eight complete specialist courses.
+The curriculum is an **introductory, extensible edition**, not sixteen complete specialist courses.
 Content is AI-assisted, authored for Gate, with linked reading references. It has not received
 independent subject-matter review. Source organisations do not endorse or validate Gate.
 Every tested question is accompanied by its source lesson in the session.
@@ -73,7 +74,8 @@ existed in the spike.
 
 ### Widget limits
 
-The widget is a list of explicit, editable links. It routes through Gate before asking iOS to
+The widget is a list of explicit links. Saved destinations can be reordered and new ones added;
+they cannot be deleted, disabled or replaced from within Gate. It routes through Gate before asking iOS to
 open the destination. It cannot replace SpringBoard or programmatically remove icons.
 Medium shows four enabled entries; large shows up to eight. URL schemes require the relevant
 app to be installed, and some apps do not offer a supported opening URL.
@@ -83,7 +85,8 @@ A `tel:` link can be configured for a specific contact.
 ### Safety and privacy limits
 
 The iOS adult-web filter and explicit Apple-media restrictions remain set during free and
-earned time, as well as when consumption monitoring is paused.
+earned time. After activation, the saved consumption selection can only be extended; the in-app
+pause control is unavailable.
 This is **not an absolute explicit-content guarantee**: Gate cannot inspect every frame,
 post or message in third-party apps. Individual Family Controls authorisation can be revoked.
 Do not represent self-authorised Screen Time controls as impossible to bypass.
@@ -92,7 +95,8 @@ Shared state uses an App Group file, a cross-process lock and atomic writes. Onl
 monitor can produce an active grant. On storage failures, existing shields are not deliberately
 cleared. There is no analytics SDK, backend, account or advertising.
 
-Text, diagrams and quiz content are bundled. Reference photos are **opt-in online loads**
+Text, diagrams, eight conceptual image motifs and quiz content are bundled. The original NASA
+reference photos remain **opt-in online loads**
 from their stated source; the host receives normal network information such as IP address.
 Offline fallback never prevents a quiz. See [content & photo credits](docs/CONTENT.md).
 
@@ -117,7 +121,23 @@ TestFlight/App Store approval is already granted.
 
 ## Contributing
 
-Add chapters to `Gate/curriculum.json`; keep stable lesson/question IDs so historical learning
-data survives. Each chapter needs an objective, two explanation cards, a meaningful visual,
-a reflection prompt, a takeaway, a source and four fully explained questions. Run validation and
-the Swift tests. Do not add remote feeds or unreviewed autogenerated lessons at runtime.
+Use the authored modules in `scripts/content/` and rebuild with `scripts/build_curriculum.py`.
+Keep stable lesson/question IDs so historical learning data survives. Each chapter needs a
+learning objective, explanations, a worked case, a transfer task, a source and explained questions
+in several formats. See [content design](docs/CONTENT.md); run validation and the Swift tests.
+Do not add remote feeds or unreviewed autogenerated lessons at runtime.
+
+## 0.3: a larger learning library and deliberate commitments
+
+- **16 paths / 96 chapters / 504 explained tasks** with seven native input formats and a task-at-a-time quiz. Existing learning history, notes, original IDs and the independent app-grant architecture remain.
+- Search, topic filters and direct chapter practice. Due-only voluntary reviews, format variation and fuller chapter coverage before completion.
+- Eight bundled editorial image motifs and a simple original portal app icon. Content/images work offline; the previous NASA source image remains separately credited.
+- Visible keyboard dismissal on notes, quiz answers, search and launcher editing. Next/back/close dismiss the keyboard while keeping input.
+- Saved consumption selections are additive: deselection is retained at the persistence boundary, including v0.2 migration and onboarding re-entry. Saved launcher destinations can be reordered and extended, not deleted/disabled/replaced. The in-app pause is unavailable after activation.
+- A separate permanent website selection cannot be unlocked through learning or the free allowance. Its Gate shield leads via a notification/manual app opening to a helpful pause page, without recording personal trigger answers.
+
+### Platform boundary for website protection
+
+The built-in automatic adult filter stays active. Apple can show its own block page before a Gate shield. `WebContentSettings` does not provide arbitrary browser redirects; this version does not claim a custom page for every automatically detected adult URL. Gate's custom shield applies to expressly selected permanent website tokens. The pause page is also always available from Today. Family Controls individual authorization remains revocable and Gate itself remains uninstallable; in-app commitment is not MDM/device supervision. See [Apple's Screen Time explanation](https://developer.apple.com/videos/play/wwdc2022/110336/).
+
+Upgrade on the existing branch, build all five targets, and run the [0.3 physical-device checks](docs/DEVICE_TESTS.md). In particular check keyboard dismissal and permanent shielding on the actual iOS version. See [content design](docs/CONTENT.md) and [asset provenance](docs/ASSETS.md).

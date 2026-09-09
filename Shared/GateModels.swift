@@ -74,6 +74,10 @@ struct GateState: Codable {
     var version = 2
     var day = Calendar.current.startOfDay(for: Date())
     var selectionData: Data?
+    var selectionLocked: Bool?
+    var protectedSelectionData: Data?
+    var pauseRequestedAt: Date?
+    var isSelectionLocked: Bool { selectionLocked ?? (selectionData != nil) }
     var monitoringEnabled = false
     var dailyActivityName = "gate.daily.\(UUID().uuidString)"
     var freeMinutes = 60
@@ -141,6 +145,20 @@ struct GateState: Codable {
         if let index = history.firstIndex(where: { $0.id == day }) { return index }
         history.append(GateUsageDay(id: day))
         return history.count - 1
+    }
+}
+
+enum AdditiveSelection {
+    static func retaining<T: Hashable>(_ saved: Set<T>, adding proposed: Set<T>) -> Set<T> {
+        saved.union(proposed)
+    }
+    static func launcher(_ saved: [LauncherItem], adding proposed: [LauncherItem]) -> [LauncherItem] {
+        // Reordering is permitted; old destinations and enabled state cannot be changed to evade the lock.
+        let old = Dictionary(uniqueKeysWithValues: saved.map { ($0.id, $0) })
+        var seen = Set<UUID>()
+        var result = proposed.filter { seen.insert($0.id).inserted }.map { old[$0.id] ?? $0 }
+        result.append(contentsOf: saved.filter { seen.insert($0.id).inserted })
+        return result.map { var item = $0; item.enabled = true; return item }
     }
 }
 

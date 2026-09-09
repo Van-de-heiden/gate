@@ -18,14 +18,32 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     }
 
     override func configuration(shielding webDomain: WebDomain) -> ShieldConfiguration {
-        configuration(for: "Diese Website")
+        if isProtected(webDomain) { return protectionConfiguration() }
+        return configuration(for: "Diese Website")
     }
 
     override func configuration(
         shielding webDomain: WebDomain,
         in category: ActivityCategory
     ) -> ShieldConfiguration {
-        configuration(for: "Diese Website")
+        if isProtected(webDomain) { return protectionConfiguration() }
+        return configuration(for: "Diese Website")
+    }
+
+    private func isProtected(_ domain: WebDomain) -> Bool {
+        guard let token = domain.token, let data = try? PropertyListEncoder().encode(token),
+              let state = try? GateSharedStore.read() else { return false }
+        return GateShieldPolicy.isProtected(GateTarget(kind: .webDomain, tokenData: data), in: state)
+    }
+
+    private func protectionConfiguration() -> ShieldConfiguration {
+        ShieldConfiguration(backgroundBlurStyle: .systemUltraThinMaterialDark, backgroundColor: background,
+            icon: UIImage(systemName: "hand.raised"),
+            title: .init(text: "Du hast diese Grenze bewusst gesetzt.", color: .white),
+            subtitle: .init(text: "Aus einem kurzen Impuls kann mehr Zeit werden als geplant. Diese Website bleibt geschützt. Schliess den Tab oder öffne die Gate-Mitteilung: 60 Sekunden Abstand, dann ein guter nächster Schritt.", color: primary),
+            primaryButtonLabel: .init(text: "Abstand gewinnen", color: background),
+            primaryButtonBackgroundColor: primary,
+            secondaryButtonLabel: .init(text: "Tab schliessen", color: .white))
     }
 
     private func configuration(for subject: String) -> ShieldConfiguration {

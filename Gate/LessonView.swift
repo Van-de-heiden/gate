@@ -38,13 +38,13 @@ struct LessonView: View {
                             else { reading(session) }
                         }.padding(24).padding(.bottom, 30)
                     }
-                }.background(GateDesign.paper)
-                    .onChange(of: page) { _, _ in reader.scrollTo("top"); narrator.stop() }
-                    .onChange(of: learning.session?.phase) { _, _ in page = 0; reader.scrollTo("top"); narrator.stop() }
+                }.background(GateDesign.paper).gateKeyboardDismissal()
+                    .onChange(of: page) { _, _ in GateKeyboard.dismiss(); reader.scrollTo("top"); narrator.stop() }
+                    .onChange(of: learning.session?.phase) { _, _ in page = 0; GateKeyboard.dismiss(); reader.scrollTo("top"); narrator.stop() }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Schliessen") { confirmLeave = true }.foregroundStyle(.primary)
+                    Button("Schliessen") { GateKeyboard.dismiss(); confirmLeave = true }.foregroundStyle(.primary)
                 }
                 ToolbarItem(placement: .topBarTrailing) { Text("gate / lernen").font(.system(.subheadline, design: .serif)) }
             }
@@ -71,7 +71,7 @@ struct LessonView: View {
             let title = learning.catalog?.paths.first { $0.id == session.pathID }?.title ?? "Wissen"
             Text(title).font(.system(.largeTitle, design: .serif))
             let progress = session.phase == "result" ? 1.0 : session.phase == "quiz"
-                ? 0.5 + 0.5 * Double(session.responses.count) / Double(max(1, session.questions.count))
+                ? 0.5 + 0.5 * Double(session.answeredCount) / Double(max(1, session.questions.count))
                 : 0.5 * Double(session.readLessonIDs.count) / Double(max(1, session.lessonIDs.count))
             GateProgressLine(value: progress)
             Text(session.phase == "learn"
@@ -95,11 +95,19 @@ struct LessonView: View {
                 }
                 Text(lesson.title).font(.system(.title, design: .serif))
                 Text(lesson.objective).font(.subheadline.weight(.medium))
+                LessonArtwork(name: lesson.artwork ?? learning.catalog?.paths.first { $0.id == lesson.pathID }?.artwork ?? "learning",
+                              caption: "Bildidee · " + lesson.title)
                 ForEach(Array(lesson.cards.enumerated()), id: \.offset) { _, card in
                     VStack(alignment: .leading, spacing: 8) {
                         Text(card.title).font(.headline)
                         Text(card.text).font(.body).lineSpacing(5)
                     }
+                }
+                if let mission = lesson.mission {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Eyebrow(text: "Heute ausprobieren")
+                        Text(mission).font(.subheadline).lineSpacing(4)
+                    }.padding(18).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 12))
                 }
                 if let photo = lesson.photo { LessonPhotoView(photo: photo) }
                 LessonDiagram(visual: lesson.visual)
@@ -110,6 +118,7 @@ struct LessonView: View {
                         get: { learning.session?.reflectionNotes[id] ?? "" },
                         set: { learning.note($0, for: id) }), axis: .vertical)
                         .lineLimit(2...5).padding(12).background(GateDesign.paper)
+                    Button("Eingabe fertig") { GateKeyboard.dismiss() }.font(.caption).underline()
                     Text("Die Notiz wird nicht automatisch bewertet. Die Prüfung folgt danach.")
                         .font(.caption2).foregroundStyle(.secondary)
                 }.padding(18).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 12))
@@ -125,7 +134,7 @@ struct LessonView: View {
                         Button("Zurück") { page -= 1 }.buttonStyle(GateButtonStyle(prominent: false))
                     }
                     Button(safePage + 1 < session.lessonIDs.count ? "Verstanden · weiter" : "Zur Prüfung") {
-                        learning.markRead(id)
+                        GateKeyboard.dismiss(); learning.markRead(id)
                         if safePage + 1 < session.lessonIDs.count { page += 1 }
                         else { learning.setPhase("quiz") }
                     }.buttonStyle(GateButtonStyle())
@@ -136,27 +145,26 @@ struct LessonView: View {
 
     private func quiz(_ session: LearningSession) -> some View {
         VStack(alignment: .leading, spacing: 28) {
-            ForEach(Array(session.questions.enumerated()), id: \.element.id) { index, item in
+            ForEach(Array(session.questions.enumerated()).filter { $0.offset == min(page, session.questions.count - 1) }, id: \.element.id) { index, item in
                 VStack(alignment: .leading, spacing: 12) {
-                    Eyebrow(text: "Frage \(index + 1)" + (item.isReview ? " · Wiederholung" : " · Anwenden"))
-                    Text(item.question.prompt).font(.headline)
-                    ForEach(item.optionOrder, id: \.self) { option in
-                        Button { learning.answer(option, for: item.id) } label: {
-                            HStack(alignment: .top, spacing: 12) {
-                                Circle().fill(session.responses[item.id] == option ? Color.primary : .clear)
-                                    .overlay(Circle().stroke(GateDesign.line)).frame(width: 14, height: 14).padding(.top, 3)
-                                Text(item.question.options[option]).font(.subheadline).multilineTextAlignment(.leading)
-                                Spacer(minLength: 0)
-                            }.padding(16).frame(maxWidth: .infinity, alignment: .leading)
-                                .background(session.responses[item.id] == option ? Color.primary.opacity(0.09) : GateDesign.surface)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                        }.buttonStyle(.plain)
-                            .accessibilityAddTraits(session.responses[item.id] == option ? .isSelected : [])
+                    Eyebrow(text: "Frage \(index + 1) / \(session.questions.count)" + (item.isReview ? " · Wiederholung" : " · " + item.question.kind.title))
+                    QuestionView(item: item, response: session.response(for: item)) {
+                        learning.answer($0, for: item.id)
                     }
                 }
             }
-            Button("Antworten prüfen") { controller.submitLesson() }.buttonStyle(GateButtonStyle())
-                .disabled(!session.readyForQuiz || session.responses.count != session.questions.count)
+            HStack(spacing: 12) {
+                if page > 0 {
+                    Button("Zurück") { GateKeyboard.dismiss(); page -= 1 }.buttonStyle(GateButtonStyle(prominent: false))
+                }
+                if page + 1 < session.questions.count {
+                    Button("Nächste Aufgabe") { GateKeyboard.dismiss(); page += 1 }.buttonStyle(GateButtonStyle())
+                        .disabled(!session.questions[min(page, session.questions.count - 1)].question.isComplete(session.response(for: session.questions[min(page, session.questions.count - 1)])))
+                } else {
+                    Button("Antworten prüfen") { GateKeyboard.dismiss(); controller.submitLesson() }.buttonStyle(GateButtonStyle())
+                        .disabled(!session.readyForQuiz || !session.allAnswered)
+                }
+            }
             Button("Noch einmal nachlesen") { learning.setPhase("learn") }
                 .font(.footnote).frame(maxWidth: .infinity).foregroundStyle(.secondary)
         }
@@ -175,11 +183,11 @@ struct LessonView: View {
                      : "Noch keine Freigabe. Lies die Erklärungen; der nächste Versuch enthält etwas mehr Stoff.")
                     .font(.subheadline).foregroundStyle(.secondary)
                 ForEach(session.questions) { item in
-                    let correct = session.responses[item.id] == item.question.correctIndex
+                    let correct = session.isCorrect(item)
                     VStack(alignment: .leading, spacing: 8) {
                         Eyebrow(text: correct ? "Richtig" : "Noch einmal ansehen")
                         Text(item.question.prompt).font(.subheadline.weight(.semibold))
-                        Text(item.question.options[item.question.correctIndex]).font(.subheadline)
+                        Text(item.question.correctAnswer).font(.subheadline)
                         Text(item.question.explanation).font(.footnote).foregroundStyle(.secondary).lineSpacing(3)
                     }.padding(16).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 12))
                 }

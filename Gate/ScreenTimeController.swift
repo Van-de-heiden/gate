@@ -10,6 +10,8 @@ import WidgetKit
 final class ScreenTimeController: ObservableObject {
     @Published private(set) var state = GateState()
     @Published var selection = FamilyActivitySelection()
+    @Published var protectedSelection = FamilyActivitySelection()
+    @Published var showPause = false
     @Published private(set) var authorizationStatus = AuthorizationCenter.shared.authorizationStatus
     @Published var isRequestingAuthorization = false
     @Published var message: String?
@@ -19,6 +21,7 @@ final class ScreenTimeController: ObservableObject {
     let learning = LearningStore()
     private let activityCenter = DeviceActivityCenter()
     private var hasStorage = false
+    private var pauseWaitingForLessonDismissal = false
 
     var isAuthorized: Bool { authorizationStatus == .approved }
     var activeGrants: [GateGrant] { state.activeGrants(at: Date()) }
@@ -30,6 +33,7 @@ final class ScreenTimeController: ObservableObject {
         activityCenter.stopMonitoring([DeviceActivityName("gate.daily"), DeviceActivityName("gate.grant")])
         refreshSharedState()
         selection = GateShieldPolicy.selection(from: state)
+        protectedSelection = GateShieldPolicy.protectedSelection(from: state)
     }
 
     func refreshSharedState() {
@@ -43,6 +47,7 @@ final class ScreenTimeController: ObservableObject {
                 return state
             }
             hasStorage = true
+            presentPendingPause()
             monitorReady = isAuthorized && activityCenter.activities.contains(DeviceActivityName(state.dailyActivityName))
             let valid = Set(state.grants.map(\.activityName))
             let stale = activityCenter.activities.filter {
@@ -77,6 +82,9 @@ final class ScreenTimeController: ObservableObject {
             return
         }
         do {
+            // Do not trust the picker UI: deselection is merged back at the persistence boundary.
+            let saved = GateShieldPolicy.selection(from: state)
+            if state.isSelectionLocked { selection = GateShieldPolicy.retaining(saved, adding: selection) }
             let data = try PropertyListEncoder().encode(selection)
             let oldActivity = state.dailyActivityName
             let freeMinutes = testMode ? 2 : 60
@@ -84,6 +92,7 @@ final class ScreenTimeController: ObservableObject {
             // Preserve today's usage when resuming or editing selection.
             try mutate { state in
                 state.selectionData = data
+                state.selectionLocked = true
                 state.freeMinutes = freeMinutes
                 state.monitoringEnabled = true
                 state.limitReached = state.confirmedMinutes >= freeMinutes
@@ -117,6 +126,10 @@ final class ScreenTimeController: ObservableObject {
     }
 
     func pauseGate() {
+        guard !state.isSelectionLocked else {
+            errorMessage = "Deine Auswahl ist verbindlich. Du kannst sie erweitern; eine Pause hebt sie nicht auf."
+            return
+        }
         do {
             let names = state.grants.map { DeviceActivityName($0.activityName) } + [DeviceActivityName(state.dailyActivityName)]
             try mutate { state in
@@ -143,6 +156,7 @@ final class ScreenTimeController: ObservableObject {
     }
 
     func requestLesson(for target: GateTarget) {
+        guard !GateShieldPolicy.isProtected(target, in: state) else { showPause = true; return }
         do {
             let request = try GateSharedStore.transaction { state -> GateRequest? in
                 state.rollDay(at: Date())
@@ -162,8 +176,8 @@ final class ScreenTimeController: ObservableObject {
         learning.begin(request: request, minutes: minutes, consumed: state.confirmedMinutes, failures: attempt.failures)
     }
 
-    func beginPractice(path: String? = nil) {
-        learning.begin(request: nil, minutes: 5, consumed: 0, failures: 0, path: path)
+    func beginPractice(path: String? = nil, lesson: String? = nil, reviewOnly: Bool = false) {
+        learning.begin(request: nil, minutes: 5, consumed: 0, failures: 0, path: path, lesson: lesson, reviewOnly: reviewOnly)
     }
 
     func submitLesson() {
@@ -184,7 +198,8 @@ final class ScreenTimeController: ObservableObject {
         guard let current = learning.session, current.result?.passed == false else { return }
         if current.isPractice {
             learning.suspend()
-            beginPractice(path: current.pathID)
+            beginPractice(path: current.pathID, lesson: current.storageKey.hasPrefix("chapter.") ? current.lessonIDs.first : nil,
+                          reviewOnly: current.storageKey == "review")
         } else {
             learning.suspend()
             beginLesson(minutes: current.grantMinutes)
@@ -263,11 +278,12 @@ final class ScreenTimeController: ObservableObject {
 
     func saveLauncher(_ items: [LauncherItem]) {
         errorMessage = nil
-        guard items.count <= 12, items.allSatisfy({ !$0.title.trimmingCharacters(in: .whitespaces).isEmpty && $0.validatedURL != nil }) else {
+        let retained = AdditiveSelection.launcher(state.launcher, adding: items)
+        guard retained.count <= 12, retained.allSatisfy({ !$0.title.trimmingCharacters(in: .whitespaces).isEmpty && $0.validatedURL != nil }) else {
             errorMessage = "Höchstens zwölf Einträge, jeweils mit Name und gültigem App-Link oder https-Link."; return
         }
         do {
-            try mutate { $0.launcher = items }
+            try mutate { $0.launcher = AdditiveSelection.launcher($0.launcher, adding: items) }
             WidgetCenter.shared.reloadAllTimelines()
         } catch { errorMessage = error.localizedDescription }
     }
@@ -276,8 +292,57 @@ final class ScreenTimeController: ObservableObject {
         guard url.scheme == "gate" else { return }
         refreshSharedState()
         if url.host == "learn" { beginPractice() }
+        if url.host == "pause" { requestPause() }
         if url.host == "request", let id = UUID(uuidString: url.lastPathComponent),
            let request = state.requests.first(where: { $0.id == id }) { selectRequest(request) }
+    }
+
+    func saveProtectedWebsites() {
+        errorMessage = nil
+        guard protectedSelection.applicationTokens.isEmpty, protectedSelection.categoryTokens.isEmpty else {
+            errorMessage = "Hier nur einzelne Websites wählen, keine Apps oder Kategorien."
+            return
+        }
+        do {
+            try mutate { state in
+                let merged = GateShieldPolicy.retaining(GateShieldPolicy.protectedSelection(from: state), adding: self.protectedSelection)
+                state.protectedSelectionData = try PropertyListEncoder().encode(merged)
+                let snapshot = state
+                state.grants.removeAll { GateShieldPolicy.isProtected($0.target, in: snapshot) }
+                state.requests.removeAll { GateShieldPolicy.isProtected($0.target, in: snapshot) }
+            }
+            protectedSelection = GateShieldPolicy.protectedSelection(from: state)
+            message = "Schutz-Websites ergänzt. Sie bleiben auch während der freien Stunde und nach Prüfungen gesperrt."
+        } catch { errorMessage = error.localizedDescription }
+    }
+
+    func requestPause() {
+        do { try mutate { $0.pauseRequestedAt = Date() } }
+        catch { errorMessage = error.localizedDescription }
+        if learning.session != nil {
+            // Present the next sheet only after the current one has actually dismissed.
+            pauseWaitingForLessonDismissal = true
+            learning.suspend()
+        } else { showPause = true }
+    }
+
+    func lessonDidClose() {
+        learning.checkpoint()
+        pauseWaitingForLessonDismissal = false
+        presentPendingPause()
+    }
+
+    private func presentPendingPause() {
+        guard !pauseWaitingForLessonDismissal, learning.session == nil, state.onboardingComplete,
+              let requested = state.pauseRequestedAt,
+              Date().timeIntervalSince(requested) < 300 else { return }
+        showPause = true
+    }
+
+    func closePause() {
+        do { try mutate { $0.pauseRequestedAt = nil } }
+        catch { errorMessage = error.localizedDescription }
+        showPause = false
     }
 
     private func mutate(_ body: (inout GateState) throws -> Void) throws {

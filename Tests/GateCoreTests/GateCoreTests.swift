@@ -23,12 +23,12 @@ final class GateCoreTests: XCTestCase {
             now: now, random: &random)
     }
 
-    func testCurriculumHasEightCompletePathsAndUniqueQuestions() throws {
+    func testCurriculumHasSixteenCompletePathsAndUniqueQuestions() throws {
         let catalog = try catalog()
         try catalog.validate()
-        XCTAssertEqual(catalog.paths.count, 8)
-        XCTAssertEqual(catalog.lessons.count, 24)
-        XCTAssertEqual(catalog.questions.count, 96)
+        XCTAssertEqual(catalog.paths.count, 16)
+        XCTAssertEqual(catalog.lessons.count, 96)
+        XCTAssertEqual(catalog.questions.count, 504)
         XCTAssertTrue(catalog.lessons.allSatisfy { $0.source.url.hasPrefix("https://") })
     }
 
@@ -176,17 +176,17 @@ final class GateCoreTests: XCTestCase {
     func testCannotGradeUnreadOrIncompleteSession() throws {
         var value = try session()
         var progress = LearningProgress()
-        for item in value.questions { value.responses[item.id] = item.question.correctIndex }
+        value.typedResponses = Dictionary(uniqueKeysWithValues: value.questions.map { ($0.id, correctResponse($0.question)) })
         XCTAssertNil(LearningScheduler.grade(&value, progress: &progress, now: now))
         value.readLessonIDs = Set(value.lessonIDs)
-        value.responses = [:]
+        value.responses = [:]; value.typedResponses = nil
         XCTAssertNil(LearningScheduler.grade(&value, progress: &progress, now: now))
     }
 
     func testGradeIsIdempotentAndRoundTripPreservesTargetAndResponses() throws {
         var value = try session()
         value.readLessonIDs = Set(value.lessonIDs)
-        for item in value.questions { value.responses[item.id] = item.question.correctIndex }
+        value.typedResponses = Dictionary(uniqueKeysWithValues: value.questions.map { ($0.id, correctResponse($0.question)) })
         var progress = LearningProgress()
         XCTAssertTrue(LearningScheduler.grade(&value, progress: &progress, now: now)?.passed == true)
         _ = LearningScheduler.grade(&value, progress: &progress, now: now)

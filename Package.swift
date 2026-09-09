@@ -13,7 +13,8 @@ let package = Package(
                 "Gate/Assets.xcassets", "Gate/ContentView.swift", "Gate/DesignSystem.swift",
                 "Gate/Gate.entitlements", "Gate/GateApp.swift", "Gate/Info.plist",
                 "Gate/GateSettingsView.swift", "Gate/GateStatisticsView.swift", "Gate/LearningLibraryView.swift",
-                "Gate/LearningStore.swift", "Gate/LessonView.swift", "Gate/ScreenTimeController.swift"],
+                "Gate/LearningStore.swift", "Gate/LessonView.swift", "Gate/ScreenTimeController.swift",
+                "Gate/QuestionView.swift", "Gate/KeyboardSupport.swift", "Gate/LessonArtwork.swift", "Gate/IntentionalPauseView.swift"],
             sources: ["Shared/GateModels.swift", "LearningCore/LearningModels.swift"],
             resources: [.copy("Gate/curriculum.json")]),
         .testTarget(name: "GateCoreTests", dependencies: ["GateCore"], path: "Tests/GateCoreTests")
