@@ -390,7 +390,7 @@
       "reflection": "Nenne einen Zusammenhang aus dem Alltag und einen möglichen Drittfaktor.",
       "source": {
         "title": "OpenStax · Correlation and causation",
-        "url": "https://openstax.org/books/introductory-statistics-2e/pages/12-2-the-regression-equation"
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/12-3-the-regression-equation"
       },
       "takeaway": "Korrelation ist ein Ausgangspunkt für Erklärung, nicht ihr Abschluss.",
       "title": "Gemeinsam heisst nicht verursacht",
@@ -968,8 +968,8 @@
       ],
       "reflection": "Welche Datei wäre für dich besonders ärgerlich zu verlieren? Wie sähe ihr unabhängiger Rückweg aus?",
       "source": {
-        "title": "CISA · Back Up Business Data",
-        "url": "https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business/back-business-data"
+        "title": "Apple · Backups und frühere Dateiversionen",
+        "url": "https://support.apple.com/guide/mac-help/back-up-files-mh35860/mac"
       },
       "takeaway": "Denke vom Wiederherstellen her, nicht vom Häkchen neben ‚Backup aktiv‘.",
       "title": "Eine Kopie ist noch kein Plan",
@@ -1429,7 +1429,7 @@
       "takeaway": "Erst Einheit und Grössenordnung, dann Nachkommastellen.",
       "source": {
         "title": "OpenStax · Unit Conversion",
-        "url": "https://openstax.org/books/college-physics-2e/pages/1-3-accuracy-precision-and-significant-figures"
+        "url": "https://openstax.org/books/college-physics-2e/pages/1-2-physical-quantities-and-units"
       },
       "photo": null,
       "questions": [
