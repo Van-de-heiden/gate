@@ -3,8 +3,8 @@ import ManagedSettingsUI
 import UIKit
 
 final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
-    private let background = UIColor(white: 0.055, alpha: 1)
-    private let primary = UIColor(white: 0.96, alpha: 1)
+    private let background = UIColor(red: 25 / 255, green: 26 / 255, blue: 24 / 255, alpha: 1)
+    private let primary = UIColor(red: 242 / 255, green: 239 / 255, blue: 231 / 255, alpha: 1)
 
     override func configuration(shielding application: Application) -> ShieldConfiguration {
         configuration(for: "Diese App")
@@ -37,27 +37,37 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     }
 
     private func protectionConfiguration() -> ShieldConfiguration {
-        ShieldConfiguration(backgroundBlurStyle: .systemUltraThinMaterialDark, backgroundColor: background,
-            icon: UIImage(systemName: "hand.raised"),
-            title: .init(text: "Du hast diese Grenze bewusst gesetzt.", color: .white),
-            subtitle: .init(text: "Aus einem kurzen Impuls kann mehr Zeit werden als geplant. Diese Website bleibt geschützt. Schliess den Tab oder öffne die Gate-Mitteilung: 60 Sekunden Abstand, dann ein guter nächster Schritt.", color: primary),
-            primaryButtonLabel: .init(text: "Abstand gewinnen", color: background),
+        let messages = [
+            ("Ein Impuls ist kein Auftrag.", "Du hast diese Grenze für dich gewählt. Du kannst den Drang bemerken, ohne ihm zu folgen."),
+            ("Dein nächster Schritt gehört dir.", "Leg das Handy kurz weg. Ein Glas Wasser, ein paar Schritte oder eine Nachricht an jemanden können ein Anfang sein."),
+            ("Du darfst hier aufhören.", "Du musst den Impuls nicht wegdrücken. Lass ihn da sein und entscheide dich für deinen nächsten kleinen Schritt."),
+            ("Erinnere dich an dein Warum.", "Was wolltest du mit dieser Zeit eigentlich machen? Eine kleine Handlung für dieses Vorhaben reicht jetzt."),
+            ("Zurück zu deiner Absicht.", "Dieser Moment entscheidet nicht über deinen Wert. Du kannst jetzt eine Entscheidung treffen, die zu deinem Plan passt.")
+        ]
+        let message = messages[messageIndex(count: messages.count)]
+        return ShieldConfiguration(backgroundBlurStyle: nil, backgroundColor: background,
+            icon: portalIcon,
+            title: .init(text: "gate\n\n\(message.0)", color: primary),
+            subtitle: .init(text: "\(message.1)\n\nHilfe über die Gate-Mitteilung oder direkt in Gate. Diese Website bleibt gesperrt.", color: primary.withAlphaComponent(0.78)),
+            primaryButtonLabel: .init(text: "Pause in Gate anfordern", color: background),
             primaryButtonBackgroundColor: primary,
-            secondaryButtonLabel: .init(text: "Tab schliessen", color: .white))
+            secondaryButtonLabel: .init(text: "Heute nicht", color: primary))
     }
 
     private func configuration(for subject: String) -> ShieldConfiguration {
-        ShieldConfiguration(
-            backgroundBlurStyle: .systemUltraThinMaterialDark,
+        let messages = ["Erst verstehen. Dann weiter.", "Ein guter Gedanke vor dem nächsten Feed.",
+                        "Deine Zeit verdient eine bewusste Wahl.", "Ein Moment für dein Wissen."]
+        return ShieldConfiguration(
+            backgroundBlurStyle: nil,
             backgroundColor: background,
-            icon: nil,
+            icon: portalIcon,
             title: ShieldConfiguration.Label(
-                text: "Erst verstehen. Dann weiter.",
-                color: .white
+                text: "gate\n\n\(messages[messageIndex(count: messages.count)])",
+                color: primary
             ),
             subtitle: ShieldConfiguration.Label(
-                text: "\(subject) ist gesperrt. Fordere eine Lektion an und öffne die Gate-Mitteilung. Du kannst Gate auch selbst öffnen. Andere Freigaben bleiben unabhängig.",
-                color: UIColor.white.withAlphaComponent(0.72)
+                text: "\(subject) wartet. Eine kurze Lektion öffnet dir wieder etwas Zeit.\n\nFordere sie an und öffne danach die Gate-Mitteilung oder Gate selbst.",
+                color: primary.withAlphaComponent(0.78)
             ),
             primaryButtonLabel: ShieldConfiguration.Label(
                 text: "Lektion anfordern",
@@ -66,8 +76,40 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
             primaryButtonBackgroundColor: primary,
             secondaryButtonLabel: ShieldConfiguration.Label(
                 text: "Zurück zum Wesentlichen",
-                color: .white
+                color: primary
             )
         )
+    }
+
+    // Changes only when iOS asks for a new configuration. No browsing history or attempt counter.
+    private func messageIndex(count: Int) -> Int {
+        Int(max(0, Date().timeIntervalSince1970) / 1800) % count
+    }
+
+    // Native rendering of docs/brand/gate-icon.svg, independent of the main app's asset bundle.
+    private var portalIcon: UIImage {
+        let size = CGSize(width: 80, height: 80)
+        return UIGraphicsImageRenderer(size: size).image { renderer in
+            let context = renderer.cgContext
+            context.scaleBy(x: size.width / 1024, y: size.height / 1024)
+            primary.setStroke()
+            primary.setFill()
+            let arch = UIBezierPath()
+            arch.move(to: CGPoint(x: 304, y: 756))
+            arch.addLine(to: CGPoint(x: 304, y: 436))
+            arch.addCurve(to: CGPoint(x: 512, y: 228), controlPoint1: CGPoint(x: 304, y: 321.1), controlPoint2: CGPoint(x: 397.1, y: 228))
+            arch.addCurve(to: CGPoint(x: 720, y: 436), controlPoint1: CGPoint(x: 626.9, y: 228), controlPoint2: CGPoint(x: 720, y: 321.1))
+            arch.addLine(to: CGPoint(x: 720, y: 756))
+            arch.lineWidth = 64
+            arch.lineCapStyle = .square
+            arch.stroke()
+            let door = UIBezierPath()
+            door.move(to: CGPoint(x: 496, y: 427))
+            door.addLine(to: CGPoint(x: 620, y: 380))
+            door.addLine(to: CGPoint(x: 620, y: 711))
+            door.addLine(to: CGPoint(x: 496, y: 758))
+            door.close()
+            door.fill()
+        }.withRenderingMode(.alwaysOriginal)
     }
 }

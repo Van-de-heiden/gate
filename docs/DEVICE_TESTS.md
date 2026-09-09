@@ -88,3 +88,10 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 - Suspend/reopen each input format. Answers and permutation persist. A short partial round must not prematurely mark a new chapter complete.
 - Open **Wissen auffrischen** when due questions exist: only due questions appear in this voluntary review mode.
 - Disable networking. All eight image motifs and all chapters remain usable; the older external NASA source photo still loads only on explicit request.
+
+## Gate-branded shields
+
+- On a consumption shield, check the ivory portal icon, Gate name, message and both buttons in light/dark device appearance and with larger text. The primary action still requests a lesson; the secondary action closes the shielded activity.
+- On a permanently selected website that reaches Gate's shield, check the supportive message and “Pause in Gate anfordern”. Tap the Gate notification to reach the existing pause page; with notifications disabled, opening Gate manually should still present the pending pause. Completing the pause must never grant website access.
+- Messages are chosen in 30-minute time buckets when iOS requests a configuration. iOS may cache the screen, so a new message on every visit is not promised. No attempt counter or browsing history is added.
+- The automatic adult filter remains unchanged and can still display Apple's system page instead. Do not disable it to obtain a branded screenshot.

@@ -15,7 +15,11 @@ struct IntentionalPauseView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 26) {
-                    Eyebrow(text: "Zurück zu deiner Absicht")
+                    HStack {
+                        Text("gate").font(.system(.title2, design: .serif)).tracking(-1)
+                        Spacer()
+                        Eyebrow(text: "Ein Moment für dich")
+                    }
                     Text("Ein Impuls ist\nkein Auftrag.").font(.system(.largeTitle, design: .serif))
                     Text("Du hast entschieden, explizite Inhalte aus deinem Alltag herauszuhalten. Diese Grenze gilt auch jetzt.")
                         .font(.title3).lineSpacing(4)

@@ -26,8 +26,8 @@ final class ShieldActionExtension: ShieldActionDelegate {
             }
             if protected {
                 let content = UNMutableNotificationContent()
-                content.title = "Du musst diesem Impuls nicht folgen."
-                content.body = "Öffne Gate für eine ruhige Minute und einen konkreten nächsten Schritt."
+                content.title = "Gate · Ein Impuls ist kein Auftrag."
+                content.body = "Tippe hier für eine ruhige Minute und deinen nächsten Schritt. Die Website bleibt geschützt."
                 content.userInfo = ["gatePause": true]
                 UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "gate.pause", content: content, trigger: nil))
                 completion(.close)
