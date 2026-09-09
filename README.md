@@ -1,73 +1,123 @@
 # Gate
 
-Gate is a free and open-source iPhone app for turning impulsive screen time into deliberate use.
+**Less distraction. More understanding. Free to use, modify and share.**
 
-The principle is simple: selected distraction apps and websites share a daily free allowance. After that allowance is spent, Gate shields them. A short learning lesson and a test earn a limited period of access; a failed test grants nothing and makes the next attempt slightly more demanding.
+Gate is an open-source iPhone app that adds a learning step before additional consumption time.
+Code and original lesson content are available under the [MIT licence](LICENSE).
+Third-party reference photos are not relicensed under MIT.
 
-> The phone should remain a tool, not become the room in which the day disappears.
+## Status: 0.2 product alpha
 
-## Current technical spike
+The first on-device spike worked. This iteration replaces its single-grant architecture and adds a
+monochrome product interface. It is **not a finished, independently validated App Store release**.
 
-This repository currently proves the essential Screen Time loop:
+- A shared daily allowance of **60 minutes** for explicitly selected apps and websites.
+- Independent **5 / 10 / 15 active-minute grants**; up to eight at once.
+- Separate request, failure and cooldown state per app/domain.
+- One activity ID per grant: expiration of A does not close B.
+- An always-reachable request panel; a successful quiz closes its sheet.
+- A medium/large **text-only launcher widget**, editable in the app.
+- Onboarding, local learning history, confirmed usage checkpoints and settings.
+- **8 learning paths, 24 chapters, 96 questions** with explanations.
+- Original German lesson text, diagrams, optional narration and reflection notes.
+- Random path rotation, curriculum progression and due-question priority.
+- Repetition starts at 1 / 3 / 7 / 14 / 30 days; errors return earlier.
+- Repeating immediately cannot inflate the long-term mastery indicator.
+- Interrupted sessions retain their target, question order and answers.
 
-- self-authorization through Apple's Family Controls framework;
-- private selection of individual apps and websites;
-- one combined daily usage threshold;
-- automatic shielding through a Device Activity Monitor extension;
-- a custom, text-first shield;
-- a lesson and knowledge check before access is granted;
-- a five-minute active-use grant, followed by automatic re-shielding;
-- an always-on adult website filter and Apple's explicit-media restriction;
-- an iOS 26 notification fallback and direct app opening on iOS 27 or newer.
+### Learning paths
 
-Debug builds use a **2-minute** free allowance so the loop can be tested without ageing visibly. Release builds use **60 minutes**.
+Learning & memory · Clear thinking · Statistics · Digital safety · Decisions & economics ·
+Everyday physics · Earth systems · History & source criticism.
 
-## Intended product rules
+The curriculum is an **introductory, extensible edition**, not eight complete specialist courses.
+Content is AI-assisted, authored for Gate, with linked reading references. It has not received
+independent subject-matter review. Source organisations do not endorse or validate Gate.
+Every tested question is accompanied by its source lesson in the session.
 
-- Phone, WhatsApp and productive tools remain outside the selected distraction pool.
-- YouTube in the app and on the web should both be selected if both routes are distracting.
-- Only the requested app, website, or category is temporarily released.
-- Unused grant time expires after 30 minutes and cannot be banked.
-- Failed tests grant no access. Attempts become approximately 20% more extensive; after three consecutive failures, Gate applies a 15-minute cooldown.
-- Later versions will scale lesson length with the requested access duration and the day's cumulative consumption.
+### How the time rule works
 
-## Important limitations
+The first hour is one pool, **not a separate free hour for every app**.
+After that, grants and failures are independent. A 5-minute grant starts with 3 questions;
+10 minutes with 5; 15 minutes with 7. More confirmed daily consumption and failed attempts add
+questions, capped at 14. Passing requires at least 80%. Every third failed attempt creates a
+15-minute cooldown for that target.
 
-Gate uses Apple's privacy-preserving Screen Time APIs. It cannot inspect every image, video, message or frame displayed inside third-party apps. The adult-content controls therefore provide strong system-level web and media restrictions, but no ordinary iOS app can truthfully promise absolute content inspection while apps such as WhatsApp or YouTube remain usable.
+A grant expires when its active usage is exhausted **or 30 wall-clock minutes after issue**,
+whichever comes first. Its displayed remaining active time is an upper bound based on the latest
+iOS callback. It is not a fabricated second-by-second timer.
 
-Individual Family Controls authorization can also be revoked by the device owner. A supervised device is required for substantially stronger anti-bypass control.
+Daily usage charts show **confirmed minimums for the selected consumption pool**, not total
+device Screen Time. Checkpoints continue up to 240 minutes. Beyond that the chart remains a
+lower bound; the learning-load progression is already capped. Missing callbacks are not zero usage.
 
-## Development setup
+## Build and try
 
-Requirements:
+Requires **iOS 17.4+**, a compatible Xcode and an Apple development team with Family Controls.
+The notification path does not require a beta SDK.
 
-- Xcode 27 project format;
-- iPhone running iOS 16 or later;
-- a paid Apple Developer Program team for Family Controls development signing.
+1. Switch to `codex/technical-spike` and pull.
+2. Open `Gate.xcodeproj`; choose the shared **Gate** scheme.
+3. Check automatic signing on the app and four extensions, including the new Widget target.
+4. App Group on shared-state targets: `group.ch.mauruspichler.gate`.
+5. Run on a **physical iPhone** for Screen Time behaviour.
+6. Complete onboarding; expand categories and select individual distraction apps/domains.
+7. Do **not** select Phone or WhatsApp. Gate cannot inspect opaque tokens to identify these
+   apps automatically, and broad category selection is rejected in this mode.
+8. Debug settings include a deliberate **2-minute test mode**. The default is still 60 minutes.
+9. Add Gate's medium/large widget. Remove home-screen icons manually if desired.
 
-The prototype uses these identifiers:
+Migration from 0.1 preserves the selected tokens, but stops the two legacy monitors and asks you
+to set up monitoring again. Old temporary passes are not imported. No quiz learning history
+existed in the spike.
 
-- App: `ch.mauruspichler.gate`
-- App Group: `group.ch.mauruspichler.gate`
-- Extensions: `ch.mauruspichler.gate.monitor`, `ch.mauruspichler.gate.shieldconfiguration`, and `ch.mauruspichler.gate.shieldaction`
+### Widget limits
 
-Forks should replace the bundle IDs and App Group consistently in the Xcode project, all entitlement files, and the Swift constants.
+The widget is a list of explicit, editable links. It routes through Gate before asking iOS to
+open the destination. It cannot replace SpringBoard or programmatically remove icons.
+Medium shows four enabled entries; large shows up to eight. URL schemes require the relevant
+app to be installed, and some apps do not offer a supported opening URL.
+Phone calls are unaffected when Phone is excluded from the restriction selection.
+A `tel:` link can be configured for a specific contact.
 
-On the first physical-device run:
+### Safety and privacy limits
 
-1. Approve the Family Controls request.
-2. Approve notifications; iOS 26 uses one to lead back to Gate from a shield.
-3. Select individual distraction apps and websites. Do not select Phone or WhatsApp.
-4. Start the daily gate.
-5. In Debug, use a selected app for two active minutes and verify that the shield appears.
-6. Press the shield's primary button, open Gate through the notification, pass the lesson, and verify the five-minute grant.
+The iOS adult-web filter and explicit Apple-media restrictions remain set during free and
+earned time, as well as when consumption monitoring is paused.
+This is **not an absolute explicit-content guarantee**: Gate cannot inspect every frame,
+post or message in third-party apps. Individual Family Controls authorisation can be revoked.
+Do not represent self-authorised Screen Time controls as impossible to bypass.
 
-Family Controls distribution requires Apple's separate approval for the app and its extensions. Local development on a registered device is the first milestone.
+Shared state uses an App Group file, a cross-process lock and atomic writes. Only an armed
+monitor can produce an active grant. On storage failures, existing shields are not deliberately
+cleared. There is no analytics SDK, backend, account or advertising.
 
-## Privacy
+Text, diagrams and quiz content are bundled. Reference photos are **opt-in online loads**
+from their stated source; the host receives normal network information such as IP address.
+Offline fallback never prevents a quiz. See [content & photo credits](docs/CONTENT.md).
 
-The spike has no account, analytics, advertising, server, or network backend. Selection tokens and gate state stay in the shared App Group container on the device.
+## Verification
 
-## License
+```sh
+python3 scripts/validate.py
+swift test
+xcodebuild -project Gate.xcodeproj -scheme Gate -configuration Debug \
+  -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+```
 
-Gate is released under the [MIT License](LICENSE). You may use, modify, distribute, and build upon the code, including commercially, provided the copyright and license notice remain included.
+The CI workflow runs these checks on macOS. A successful unsigned build cannot verify signing,
+Screen Time callbacks, real web blocking, notifications or widget launching on a physical phone.
+Use the [device acceptance checklist](docs/DEVICE_TESTS.md) before merging.
+
+## Distribution
+
+Apple's [Family Controls distribution entitlement](https://developer.apple.com/documentation/familycontrols/requesting-the-family-controls-entitlement)
+is a separate requirement for distribution. A development provisioning warning does not mean
+TestFlight/App Store approval is already granted.
+
+## Contributing
+
+Add chapters to `Gate/curriculum.json`; keep stable lesson/question IDs so historical learning
+data survives. Each chapter needs an objective, two explanation cards, a meaningful visual,
+a reflection prompt, a takeaway, a source and four fully explained questions. Run validation and
+the Swift tests. Do not add remote feeds or unreviewed autogenerated lessons at runtime.

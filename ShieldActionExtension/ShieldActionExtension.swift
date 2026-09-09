@@ -1,86 +1,42 @@
 import Foundation
 import ManagedSettings
 import UserNotifications
+import OSLog
 
 final class ShieldActionExtension: ShieldActionDelegate {
-    private enum TargetKind: String, Codable {
-        case application
-        case webDomain
-        case category
+    override func handle(action: ShieldAction, for application: ApplicationToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
+        handle(action, token: application, kind: .application, completion: completionHandler)
+    }
+    override func handle(action: ShieldAction, for webDomain: WebDomainToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
+        handle(action, token: webDomain, kind: .webDomain, completion: completionHandler)
+    }
+    override func handle(action: ShieldAction, for category: ActivityCategoryToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
+        // Never grant a complete category.
+        completionHandler(.close)
     }
 
-    private struct PendingTarget: Codable {
-        let kind: TargetKind
-        let tokenData: Data
-        let requestedAt: Date
-    }
-
-    private let appGroup = "group.ch.mauruspichler.gate"
-    private let pendingTargetKey = "gate.pendingTarget"
-
-    override func handle(
-        action: ShieldAction,
-        for application: ApplicationToken,
-        completionHandler: @escaping (ShieldActionResponse) -> Void
-    ) {
-        handle(action: action, token: application, kind: .application, completionHandler: completionHandler)
-    }
-
-    override func handle(
-        action: ShieldAction,
-        for webDomain: WebDomainToken,
-        completionHandler: @escaping (ShieldActionResponse) -> Void
-    ) {
-        handle(action: action, token: webDomain, kind: .webDomain, completionHandler: completionHandler)
-    }
-
-    override func handle(
-        action: ShieldAction,
-        for category: ActivityCategoryToken,
-        completionHandler: @escaping (ShieldActionResponse) -> Void
-    ) {
-        handle(action: action, token: category, kind: .category, completionHandler: completionHandler)
-    }
-
-    private func handle<Token: Encodable>(
-        action: ShieldAction,
-        token: Token,
-        kind: TargetKind,
-        completionHandler: @escaping (ShieldActionResponse) -> Void
-    ) {
-        guard action == .primaryButtonPressed else {
-            completionHandler(.close)
-            return
-        }
-
+    private func handle<T: Encodable>(_ action: ShieldAction, token: T, kind: GateTargetKind, completion: @escaping (ShieldActionResponse) -> Void) {
+        guard action == .primaryButtonPressed else { completion(.close); return }
         do {
-            let tokenData = try PropertyListEncoder().encode(token)
-            let pending = PendingTarget(kind: kind, tokenData: tokenData, requestedAt: Date())
-            let data = try PropertyListEncoder().encode(pending)
-            let defaults = UserDefaults(suiteName: appGroup) ?? .standard
-            defaults.set(data, forKey: pendingTargetKey)
-
-            if #available(iOS 27.0, *) {
-                completionHandler(.openParentalControlsApp)
-            } else {
-                scheduleOpenGateNotification()
-                completionHandler(.close)
+            let target = GateTarget(kind: kind, tokenData: try PropertyListEncoder().encode(token))
+            let request = try GateSharedStore.transaction { state -> GateRequest? in
+                state.rollDay(at: Date())
+                state.expireGrants(at: Date())
+                return state.enqueue(target)
             }
+            guard let request else { completion(.close); return }
+            // The notification path works without a beta SDK or private URL-opening API.
+                let content = UNMutableNotificationContent()
+                content.title = "Ein Moment für dein Wissen."
+                content.body = "Gate öffnen und diese \(kind.displayName) freigeben. Andere Freigaben bleiben bestehen."
+                content.userInfo = ["gateRequestID": request.id.uuidString]
+                UNUserNotificationCenter.current().add(UNNotificationRequest(
+                    identifier: "gate.request.\(request.id.uuidString)", content: content, trigger: nil
+                ))
+                completion(.close)
         } catch {
-            completionHandler(.close)
+            Logger(subsystem: "ch.mauruspichler.gate", category: "Shield").error("Request failed: \(error.localizedDescription, privacy: .public)")
+            completion(.close)
         }
-    }
-
-    private func scheduleOpenGateNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "Gate"
-        content.body = "Tippe hier, absolviere die Lektion und verdiene fünf Minuten Zugang."
-
-        let request = UNNotificationRequest(
-            identifier: "gate.open.lesson",
-            content: content,
-            trigger: nil
-        )
-        UNUserNotificationCenter.current().add(request)
     }
 }

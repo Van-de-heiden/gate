@@ -3,13 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 90;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		A40000000000000000000001 /* DeviceActivityMonitorExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A30000000000000000000001 /* DeviceActivityMonitorExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A40000000000000000000002 /* ShieldConfigurationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A30000000000000000000002 /* ShieldConfigurationExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A40000000000000000000003 /* ShieldActionExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A30000000000000000000003 /* ShieldActionExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B40000000000000000000001 /* GateWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B30000000000000000000001; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 			remoteGlobalIDString = A50000000000000000000003;
 			remoteInfo = ShieldActionExtension;
 		};
+		B90000000000000000000001 = {isa = PBXContainerItemProxy; containerPortal = 000000000000000000000000; proxyType = 1; remoteGlobalIDString = B50000000000000000000001; remoteInfo = GateWidgetExtension; };
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +48,7 @@
 				A40000000000000000000001 /* DeviceActivityMonitorExtension.appex in Embed App Extensions */,
 				A40000000000000000000002 /* ShieldConfigurationExtension.appex in Embed App Extensions */,
 				A40000000000000000000003 /* ShieldActionExtension.appex in Embed App Extensions */,
+				B40000000000000000000001 /* GateWidgetExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,6 +60,7 @@
 		A30000000000000000000001 /* DeviceActivityMonitorExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeviceActivityMonitorExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A30000000000000000000002 /* ShieldConfigurationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShieldConfigurationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A30000000000000000000003 /* ShieldActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShieldActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B30000000000000000000001 /* GateWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GateWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -64,6 +68,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Gate.entitlements,
+				Info.plist,
 			);
 			target = 000000000000000100000000 /* Gate */;
 		};
@@ -91,6 +96,7 @@
 			);
 			target = A50000000000000000000003 /* ShieldActionExtension */;
 		};
+		B10000000000000000000001 = {isa = PBXFileSystemSynchronizedBuildFileExceptionSet; membershipExceptions = (Info.plist, GateWidgetExtension.entitlements, ); target = B50000000000000000000001; };
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -126,6 +132,10 @@
 			path = ShieldActionExtension;
 			sourceTree = "<group>";
 		};
+		B20000000000000000000001 /* GateWidgetExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B10000000000000000000001, ); path = GateWidgetExtension; sourceTree = "<group>"; };
+		B20000000000000000000002 /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Shared; sourceTree = "<group>"; };
+		B20000000000000000000003 /* ScreenTimeShared */ = {isa = PBXFileSystemSynchronizedRootGroup; path = ScreenTimeShared; sourceTree = "<group>"; };
+		B20000000000000000000004 /* LearningCore */ = {isa = PBXFileSystemSynchronizedRootGroup; path = LearningCore; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +167,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B62000000000000000000001 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -178,6 +189,7 @@
 				A30000000000000000000001 /* DeviceActivityMonitorExtension.appex */,
 				A30000000000000000000002 /* ShieldConfigurationExtension.appex */,
 				A30000000000000000000003 /* ShieldActionExtension.appex */,
+				B30000000000000000000001 /* GateWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -200,9 +212,13 @@
 				AA0000000000000000000001 /* PBXTargetDependency */,
 				AA0000000000000000000002 /* PBXTargetDependency */,
 				AA0000000000000000000003 /* PBXTargetDependency */,
+				BA0000000000000000000001 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				000000000000000000000010 /* Gate */,
+				B20000000000000000000002,
+				B20000000000000000000003,
+				B20000000000000000000004,
 			);
 			name = Gate;
 			productName = Gate;
@@ -223,6 +239,8 @@
 			);
 			fileSystemSynchronizedGroups = (
 				A20000000000000000000001 /* DeviceActivityMonitorExtension */,
+				B20000000000000000000002,
+				B20000000000000000000003,
 			);
 			name = DeviceActivityMonitorExtension;
 			productName = DeviceActivityMonitorExtension;
@@ -263,12 +281,23 @@
 			);
 			fileSystemSynchronizedGroups = (
 				A20000000000000000000003 /* ShieldActionExtension */,
+				B20000000000000000000002,
+				B20000000000000000000003,
 			);
 			name = ShieldActionExtension;
 			productName = ShieldActionExtension;
 			productReference = A30000000000000000000003 /* ShieldActionExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		B50000000000000000000001 /* GateWidgetExtension */ = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = B81000000000000000000001;
+            buildPhases = (B61000000000000000000001, B62000000000000000000001, B63000000000000000000001, );
+            buildRules = (); dependencies = ();
+            fileSystemSynchronizedGroups = (B20000000000000000000001, B20000000000000000000002, );
+            name = GateWidgetExtension; productName = GateWidgetExtension;
+            productReference = B30000000000000000000001; productType = "com.apple.product-type.app-extension";
+        };
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -302,11 +331,12 @@
 			);
 			mainGroup = 000000000000000000000001;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 90;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = 000000000000000000000020 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				B50000000000000000000001 /* GateWidgetExtension */,
 				000000000000000100000000 /* Gate */,
 				A50000000000000000000001 /* DeviceActivityMonitorExtension */,
 				A50000000000000000000002 /* ShieldConfigurationExtension */,
@@ -344,6 +374,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B63000000000000000000001 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -375,12 +406,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B61000000000000000000001 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		AA0000000000000000000001 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = A50000000000000000000001 /* DeviceActivityMonitorExtension */; targetProxy = A90000000000000000000001 /* PBXContainerItemProxy */; };
 		AA0000000000000000000002 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = A50000000000000000000002 /* ShieldConfigurationExtension */; targetProxy = A90000000000000000000002 /* PBXContainerItemProxy */; };
 		AA0000000000000000000003 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = A50000000000000000000003 /* ShieldActionExtension */; targetProxy = A90000000000000000000003 /* PBXContainerItemProxy */; };
+		BA0000000000000000000001 = {isa = PBXTargetDependency; target = B50000000000000000000001; targetProxy = B90000000000000000000001; };
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -435,7 +468,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -490,7 +523,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -503,25 +536,25 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Gate/Gate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Gate/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Gate;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -533,25 +566,25 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Gate/Gate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Gate/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Gate;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -564,13 +597,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -589,13 +622,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -614,13 +647,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.shieldconfiguration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -639,13 +672,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.shieldconfiguration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -664,13 +697,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = ShieldActionExtension/ShieldActionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldActionExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.shieldaction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -689,13 +722,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = ShieldActionExtension/ShieldActionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldActionExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.shieldaction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -708,6 +741,36 @@
 			};
 			name = Release;
 		};
+		B71000000000000000000001 /* Debug for GateWidgetExtension */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                APPLICATION_EXTENSION_API_ONLY = YES;
+                CODE_SIGN_ENTITLEMENTS = GateWidgetExtension/GateWidgetExtension.entitlements;
+                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 2;
+                DEVELOPMENT_TEAM = F2ZGB2Y8UY; GENERATE_INFOPLIST_FILE = NO;
+                INFOPLIST_FILE = GateWidgetExtension/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+                LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+                MARKETING_VERSION = 0.2; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.widget;
+                PRODUCT_NAME = "$(TARGET_NAME)"; REGISTER_APP_GROUPS = YES; SDKROOT = iphoneos;
+                SKIP_INSTALL = YES; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+                SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;
+            }; name = Debug;
+        };
+		B71000000000000000000002 /* Release for GateWidgetExtension */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                APPLICATION_EXTENSION_API_ONLY = YES;
+                CODE_SIGN_ENTITLEMENTS = GateWidgetExtension/GateWidgetExtension.entitlements;
+                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 2;
+                DEVELOPMENT_TEAM = F2ZGB2Y8UY; GENERATE_INFOPLIST_FILE = NO;
+                INFOPLIST_FILE = GateWidgetExtension/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+                LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+                MARKETING_VERSION = 0.2; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.widget;
+                PRODUCT_NAME = "$(TARGET_NAME)"; REGISTER_APP_GROUPS = YES; SDKROOT = iphoneos;
+                SKIP_INSTALL = YES; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+                SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;
+            }; name = Release;
+        };
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -756,6 +819,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		B81000000000000000000001 = {isa = XCConfigurationList; buildConfigurations = (B71000000000000000000001, B71000000000000000000002, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 /* End XCConfigurationList section */
 	};
 	rootObject = 000000000000000000000000 /* Project object */;

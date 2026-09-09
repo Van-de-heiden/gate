@@ -1,105 +1,56 @@
 import DeviceActivity
-import FamilyControls
 import Foundation
-import ManagedSettings
+import WidgetKit
+import OSLog
 
 final class DeviceActivityMonitorExtension: DeviceActivityMonitor {
-    private enum Shared {
-        static let appGroup = "group.ch.mauruspichler.gate"
-        static let selectionKey = "gate.selection"
-        static let limitReachedKey = "gate.limitReached"
-        static let pendingTargetKey = "gate.pendingTarget"
-        static let activeGrantKey = "gate.activeGrant"
-        static let failuresKey = "gate.consecutiveFailures"
-        static let cooldownKey = "gate.cooldownUntil"
-
-        static let dailyActivity = DeviceActivityName("gate.daily")
-        static let dailyLimitEvent = DeviceActivityEvent.Name("gate.daily.free-limit")
-        static let grantActivity = DeviceActivityName("gate.grant")
-        static let grantLimitEvent = DeviceActivityEvent.Name("gate.grant.limit")
-    }
-
-    private let store = ManagedSettingsStore()
+    private let logger = Logger(subsystem: "ch.mauruspichler.gate", category: "Monitor")
 
     override func intervalDidStart(for activity: DeviceActivityName) {
         super.intervalDidStart(for: activity)
-
-        guard activity == Shared.dailyActivity else { return }
-        let defaults = sharedDefaults
-        defaults.set(false, forKey: Shared.limitReachedKey)
-        defaults.removeObject(forKey: Shared.pendingTargetKey)
-        defaults.removeObject(forKey: Shared.activeGrantKey)
-        defaults.set(0, forKey: Shared.failuresKey)
-        defaults.removeObject(forKey: Shared.cooldownKey)
-        clearUsageShields()
-        applyAlwaysOnProtections()
+        update { state in
+            guard activity.rawValue == state.dailyActivityName else { return }
+            state.rollDay(at: Date())
+        }
     }
 
-    override func eventDidReachThreshold(
-        _ event: DeviceActivityEvent.Name,
-        activity: DeviceActivityName
-    ) {
+    override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
         super.eventDidReachThreshold(event, activity: activity)
-
-        if activity == Shared.dailyActivity, event == Shared.dailyLimitEvent {
-            sharedDefaults.set(true, forKey: Shared.limitReachedKey)
-            applyFullUsageShield()
-            return
+        update { state in
+            guard state.monitoringEnabled else { return }
+            state.rollDay(at: Date())
+            if activity.rawValue == state.dailyActivityName,
+               let minutes = Int(event.rawValue.replacingOccurrences(of: "gate.usage.", with: "")) {
+                state.recordUsage(minutes, at: Date())
+            } else if let index = state.grants.firstIndex(where: { $0.activityName == activity.rawValue }),
+                      let minutes = Int(event.rawValue.replacingOccurrences(of: "gate.used.", with: "")) {
+                state.grants[index].usedMinutes = max(state.grants[index].usedMinutes, minutes)
+            }
+            state.expireGrants(at: Date())
         }
-
-        if activity == Shared.grantActivity, event == Shared.grantLimitEvent {
-            sharedDefaults.removeObject(forKey: Shared.activeGrantKey)
-            applyFullUsageShield()
+        if activity.rawValue.hasPrefix("gate.grant."),
+           let state = try? GateSharedStore.read(),
+           !state.grants.contains(where: { $0.activityName == activity.rawValue }) {
+            DeviceActivityCenter().stopMonitoring([activity])
         }
     }
 
     override func intervalDidEnd(for activity: DeviceActivityName) {
         super.intervalDidEnd(for: activity)
-
-        guard activity == Shared.grantActivity else { return }
-        sharedDefaults.removeObject(forKey: Shared.activeGrantKey)
-        applyFullUsageShield()
+        guard activity.rawValue.hasPrefix("gate.grant.") else { return }
+        update { state in state.grants.removeAll { $0.activityName == activity.rawValue } }
+        DeviceActivityCenter().stopMonitoring([activity])
     }
 
-    private var sharedDefaults: UserDefaults {
-        UserDefaults(suiteName: Shared.appGroup) ?? .standard
-    }
-
-    private func loadSelection() -> FamilyActivitySelection {
-        guard
-            let data = sharedDefaults.data(forKey: Shared.selectionKey),
-            let selection = try? PropertyListDecoder().decode(FamilyActivitySelection.self, from: data)
-        else {
-            return FamilyActivitySelection()
+    private func update(_ body: (inout GateState) -> Void) {
+        do {
+            try GateSharedStore.transaction(afterCommit: { GateShieldPolicy.apply($0) }) { state in
+                body(&state)
+            }
+            WidgetCenter.shared.reloadTimelines(ofKind: "GateLauncher")
+        } catch {
+            // Do not clear an existing shield if persistence is unavailable.
+            logger.error("Monitor state update failed: \(error.localizedDescription, privacy: .public)")
         }
-        return selection
-    }
-
-    private func applyFullUsageShield() {
-        let selection = loadSelection()
-        store.shield.applications = selection.applicationTokens.isEmpty ? nil : selection.applicationTokens
-        store.shield.webDomains = selection.webDomainTokens.isEmpty ? nil : selection.webDomainTokens
-
-        if selection.categoryTokens.isEmpty {
-            store.shield.applicationCategories = nil
-            store.shield.webDomainCategories = nil
-        } else {
-            store.shield.applicationCategories = .specific(selection.categoryTokens, except: Set())
-            store.shield.webDomainCategories = .specific(selection.categoryTokens, except: Set())
-        }
-        applyAlwaysOnProtections()
-    }
-
-    private func clearUsageShields() {
-        store.shield.applications = nil
-        store.shield.applicationCategories = nil
-        store.shield.webDomains = nil
-        store.shield.webDomainCategories = nil
-    }
-
-    private func applyAlwaysOnProtections() {
-        store.webContent.blockedByFilter = .auto()
-        store.media.denyExplicitContent = true
-        store.media.denyBookstoreErotica = true
     }
 }

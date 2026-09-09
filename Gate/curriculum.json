@@ -1,0 +1,2030 @@
+{
+  "lessons": [
+    {
+      "cards": [
+        {
+          "text": "Eine markierte Buchseite kann dir vertraut vorkommen, obwohl du den Gedanken nicht ohne Vorlage erklären kannst. Vertrautheit ist ein Hinweis auf Kontakt mit dem Stoff, kein Beweis für verfügbares Wissen.",
+          "title": "Der Unterschied"
+        },
+        {
+          "text": "Lies einen Absatz. Schliesse das Buch und schreibe drei Kernaussagen auf. Vergleiche erst danach. Die Lücken zeigen dir, was der nächste Lernschritt ist. Du übst zugleich den Abruf, den du später brauchst.",
+          "title": "Ein kleiner Versuch"
+        }
+      ],
+      "id": "learn.recall",
+      "objective": "Du kannst Wiedererkennen von selbständigem Abrufen unterscheiden.",
+      "order": 1,
+      "pathID": "learn",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "Wiedererkennen liefert die Vorlage bereits mit; Abrufen verlangt eine eigene Rekonstruktion.",
+          "id": "learn.recall.q1",
+          "options": [
+            "Selbständiger Abruf",
+            "Eine weitere Markierfarbe",
+            "Eine grössere Schrift"
+          ],
+          "prompt": "Du erkennst jede Seite wieder, kannst aber nichts zusammenfassen. Was fehlt?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Eine Erklärung ohne Vorlage macht abrufbare Gedanken und Lücken sichtbar.",
+          "id": "learn.recall.q2",
+          "options": [
+            "Das Kapitel geschlossen erklären",
+            "Die Überschrift wieder ansehen",
+            "Die gelesenen Seiten zählen"
+          ],
+          "prompt": "Welcher nächste Schritt prüft dein Wissen am besten?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Ein Fehler ist Information über den nächsten Übungsschritt.",
+          "id": "learn.recall.q3",
+          "options": [
+            "Antwort vergleichen und die Lücke bearbeiten",
+            "Die Frage dauerhaft überspringen",
+            "Den Fehler als Beweis fehlender Begabung sehen"
+          ],
+          "prompt": "Was tust du nach einem misslungenen Abruf?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Mit sichtbarer Lösung ist schwer zu trennen, was du erinnerst und was du gerade liest.",
+          "id": "learn.recall.q4",
+          "options": [
+            "Damit du erkennst, was du selbst wusstest",
+            "Weil Lösungen grundsätzlich unwichtig sind",
+            "Weil jede erste Antwort richtig ist"
+          ],
+          "prompt": "Warum kommt das Nachsehen erst nach dem Versuch?"
+        }
+      ],
+      "reflection": "Erkläre ohne Blick auf den Text, warum Wiedererkennen noch kein Beweis für Wissen ist.",
+      "source": {
+        "title": "Roediger & Karpicke · Test-enhanced learning (2006)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16507066/"
+      },
+      "takeaway": "Prüfe, was du hervorholen kannst – nicht nur, was dir bekannt vorkommt.",
+      "title": "Vertraut ist nicht gelernt",
+      "visual": {
+        "caption": "Erst selbst antworten, dann die Vorlage nutzen.",
+        "kind": "flow",
+        "labels": [
+          "Verstehen: einen Gedanken lesen",
+          "Abrufen: Vorlage schliessen",
+          "Abgleichen: Lücke gezielt korrigieren"
+        ],
+        "title": "Ein Abrufzyklus",
+        "values": null
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "Dreimal zehn Minuten an verschiedenen Tagen sind ein anderer Lernablauf als dreissig Minuten am Stück. Bei einer späteren Wiederholung musst du den Gedanken neu erreichen. Wie gross der Abstand sinnvoll ist, hängt unter anderem davon ab, wie lange du das Wissen behalten möchtest.",
+          "title": "Zeit verteilen"
+        },
+        {
+          "text": "Nach richtigen Antworten wächst der Abstand: 1, 3, 7, 14, 30 Tage. Bei einem Fehler wird die Frage früher eingeplant. Diese Zahlen sind eine einstellbare Produktregel, keine universell optimale Gedächtnisformel.",
+          "title": "Gate setzt eine Startregel"
+        }
+      ],
+      "id": "learn.spacing",
+      "objective": "Du planst Wiederholungen über mehrere Tage.",
+      "order": 2,
+      "pathID": "learn",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "Verschiedene Tage schaffen echte zeitliche Abstände.",
+          "id": "learn.spacing.q1",
+          "options": [
+            "Heute, übermorgen und nächste Woche abrufen",
+            "Alles in den letzten zehn Minuten lesen",
+            "Drei Wiederholungen direkt hintereinander"
+          ],
+          "prompt": "Welche Planung nutzt verteilte Wiederholung?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Das passende Intervall hängt vom Lernziel und vom bisherigen Erinnern ab.",
+          "id": "learn.spacing.q2",
+          "options": [
+            "Nein, eine praktische Startregel",
+            "Ja, für jeden Stoff und jeden Menschen",
+            "Nur bei bildlichen Inhalten"
+          ],
+          "prompt": "Sind Gates 1–3–7-Tage-Abstände ein Naturgesetz?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Eine einzelne Lücke verdient gezielte Wiederholung.",
+          "id": "learn.spacing.q3",
+          "options": [
+            "Früher erneut abrufen und die Lücke klären",
+            "Den Abstand automatisch verlängern",
+            "Das ganze Wissen als verloren markieren"
+          ],
+          "prompt": "Eine zuvor sichere Frage ist falsch. Was ist sinnvoll?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Zeitabstand allein ersetzt den Abruf nicht.",
+          "id": "learn.spacing.q4",
+          "options": [
+            "Der eigene Antwortversuch",
+            "Dass der Text vertraut aussieht",
+            "Dass die Sitzung möglichst lange dauert"
+          ],
+          "prompt": "Was bleibt bei einer Wiederholung entscheidend?"
+        }
+      ],
+      "reflection": "Du willst einen Begriff in einem Monat noch kennen. Wie würdest du drei kurze Wiederholungen verteilen?",
+      "source": {
+        "title": "Cepeda et al. · Distributed practice (2006)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16719566/"
+      },
+      "takeaway": "Verteile Abrufversuche; passe den Abstand an deine tatsächlichen Antworten an.",
+      "title": "Dem Vergessen zuvorkommen",
+      "visual": {
+        "caption": "Ein Fehler setzt die Leiter für diese Frage zurück; er löscht nicht den ganzen Lernweg.",
+        "kind": "flow",
+        "labels": [
+          "Richtig: morgen wieder",
+          "Erneut richtig: nach 3, dann 7 Tagen",
+          "Stabil: nach 14, dann 30 Tagen"
+        ],
+        "title": "Unsere Wiederholungsleiter",
+        "values": null
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "Bevor du eine Aufgabe löst, schätze: sicher, unsicher oder geraten? Vergleiche deine Einschätzung danach mit dem Ergebnis. Besonders lehrreich sind Antworten, bei denen du sehr sicher und trotzdem falsch lagst.",
+          "title": "Eine kleine Prognose"
+        },
+        {
+          "text": "Wenn du bloss denselben Satz wiederholst, kann die Formulierung zur Krücke werden. Erkläre den Gedanken an einem neuen Beispiel. Das ist ein eigener Verständnischeck – Gate bewertet deine freie Notiz nicht automatisch.",
+          "title": "Die Übung verändern"
+        }
+      ],
+      "id": "learn.calibration",
+      "objective": "Du vergleichst gefühlte Sicherheit mit tatsächlichen Antworten.",
+      "order": 3,
+      "pathID": "learn",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "Die Diskrepanz zeigt eine Stelle, an der dein Selbstbild genauer werden kann.",
+          "id": "learn.calibration.q1",
+          "options": [
+            "Den zugrunde liegenden Irrtum untersuchen",
+            "Die Sicherheit höher gewichten als den Test",
+            "Nur die Reihenfolge der Antworten merken"
+          ],
+          "prompt": "Du warst sicher, lagst aber falsch. Welche Reaktion ist hilfreich?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Ein neuer Fall prüft, ob mehr als der Wortlaut verfügbar ist.",
+          "id": "learn.calibration.q2",
+          "options": [
+            "Den Gedanken auf einen neuen Fall anwenden",
+            "Denselben Satz abschreiben",
+            "Eine Frage nach ihrer Länge bewerten"
+          ],
+          "prompt": "Was ist ein Transfercheck?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Ein Treffer allein trennt Wissen und Raten nicht zuverlässig.",
+          "id": "learn.calibration.q3",
+          "options": [
+            "Der Lernstand bleibt unsicher",
+            "Der Begriff ist langfristig beherrscht",
+            "Wiederholen wäre schädlich"
+          ],
+          "prompt": "Eine zufällig richtige Antwort bedeutet was?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Eine Notiz hilft beim Formulieren, wird aber nicht als objektiver Wissensbeleg ausgegeben.",
+          "id": "learn.calibration.q4",
+          "options": [
+            "Für eine selbst geprüfte Denkpause",
+            "Für eine automatisch bewertete Prüfung",
+            "Für einen Ersatz aller Quizfragen"
+          ],
+          "prompt": "Wofür steht Gates freie Erklärnotiz?"
+        }
+      ],
+      "reflection": "Nenne einen Gedanken, den du sicher zu kennen glaubst. Mit welcher neuen Aufgabe könntest du dich prüfen?",
+      "source": {
+        "title": "Roediger & Karpicke · Sicherheit und spätere Erinnerung",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16507066/"
+      },
+      "takeaway": "Sicherheit ist eine Vorhersage. Deine Antwort liefert die Rückmeldung.",
+      "title": "Wie sicher bist du wirklich?",
+      "visual": {
+        "caption": "Eine Selbsteinschätzung ergänzt den Test, ersetzt ihn aber nicht.",
+        "kind": "compare",
+        "labels": [
+          "Sicher + richtig: Wissen weiter prüfen",
+          "Unsicher + richtig: Vertrauen vorsichtig aufbauen",
+          "Sicher + falsch: Annahme gezielt hinterfragen",
+          "Unsicher + falsch: Grundlage noch einmal lernen"
+        ],
+        "title": "Vier Kombinationen",
+        "values": null
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "Unsere Regel lautet: Wer die vollständige Prüfung besteht, erhält ein Zertifikat. Daraus folgt: bestanden → Zertifikat. Dass jemand ein Zertifikat besitzt, beweist die bestandene Prüfung nur dann, wenn andere Erwerbswege ausgeschlossen sind.",
+          "title": "Die Richtung zählt"
+        },
+        {
+          "text": "Ein Kurs könnte auch Ehrenzertifikate vergeben. Dann kann die Regel stimmen und der Rückschluss trotzdem falsch sein. Ein einziges passendes Gegenbeispiel reicht, um einen angeblich zwingenden Schluss zu widerlegen.",
+          "title": "Gegenbeispiel statt Bauchgefühl"
+        }
+      ],
+      "id": "think.implication",
+      "objective": "Du erkennst einen häufigen Fehler in Wenn-dann-Aussagen.",
+      "order": 1,
+      "pathID": "think",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "Die Lampe könnte auch durch einen Testschalter eingeschaltet sein.",
+          "id": "think.implication.q1",
+          "options": [
+            "Ohne weitere Angaben nicht, dass der Sensor auslöste",
+            "Der Sensor hat sicher ausgelöst",
+            "Der Sensor kann nicht ausgelöst haben"
+          ],
+          "prompt": "Wenn ein Sensor Alarm auslöst, leuchtet eine Lampe. Die Lampe leuchtet. Was folgt sicher?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Das ist genau die zugesicherte Richtung.",
+          "id": "think.implication.q2",
+          "options": [
+            "B ist wahr",
+            "B ist falsch",
+            "Über B ist nichts bekannt"
+          ],
+          "prompt": "A führt immer zu B. A ist wahr. Was folgt?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Wenn A wahr wäre, müsste B wahr sein.",
+          "id": "think.implication.q3",
+          "options": [
+            "A ist falsch",
+            "A ist wahr",
+            "A und B bedeuten dasselbe"
+          ],
+          "prompt": "A führt immer zu B. B ist falsch. Was folgt?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Ein logischer Schluss muss in jedem erlaubten Fall halten.",
+          "id": "think.implication.q4",
+          "options": [
+            "Ein Fall mit wahren Voraussetzungen und falscher Schlussfolgerung",
+            "Ein besonders selbstsicherer Widerspruch",
+            "Eine andere Wortwahl"
+          ],
+          "prompt": "Was widerlegt einen zwingenden Rückschluss?"
+        }
+      ],
+      "reflection": "Formuliere eine eigene Wenn-dann-Regel, bei der die Umkehrung falsch sein kann.",
+      "source": {
+        "title": "OpenStax · Types of Inferences",
+        "url": "https://openstax.org/books/introduction-philosophy/pages/5-4-types-of-inferences"
+      },
+      "takeaway": "Eine zugesicherte Folge ist nicht automatisch ein eindeutiger Beweis für ihre Ursache.",
+      "title": "Wenn A, dann B – und zurück?",
+      "visual": {
+        "caption": "Aus A → B folgt nicht automatisch B → A.",
+        "kind": "flow",
+        "labels": [
+          "Prüfung bestanden",
+          "Zertifikat erhalten",
+          "Rückweg? Andere Gründe prüfen."
+        ],
+        "title": "Nur diese Richtung ist zugesichert",
+        "values": null
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "In unserem fiktiven Freibad steigen Eisverkäufe und Sonnenbrandfälle gemeinsam. Eis verursacht dadurch noch keinen Sonnenbrand. Heisses, sonniges Wetter kann beide Werte beeinflussen.",
+          "title": "Zwei Kurven, mehrere Erklärungen"
+        },
+        {
+          "text": "Ein Zusammenhang kann auf Ursache, umgekehrte Richtung, einen Drittfaktor oder Zufall hindeuten. Frage deshalb: Welche andere Erklärung passt zu den Beobachtungen? Welche zusätzliche Untersuchung könnte sie unterscheiden?",
+          "title": "Die nächste gute Frage"
+        }
+      ],
+      "id": "think.causality",
+      "objective": "Du suchst nach Drittfaktoren hinter einem Zusammenhang.",
+      "order": 2,
+      "pathID": "think",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "Vorwissen, Lernzeit oder Auswahl könnten mit dem Stiftbesitz zusammenhängen.",
+          "id": "think.causality.q1",
+          "options": [
+            "Ob andere Unterschiede den Zusammenhang erklären",
+            "Dass der Stift die Note sicher verursacht",
+            "Dass die Daten zwangsläufig gefälscht sind"
+          ],
+          "prompt": "Lernende mit teuren Stiften schreiben bessere Prüfungen. Was ist noch offen?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Wetter kann sowohl Verhalten als auch Sonnenbrandrisiko beeinflussen.",
+          "id": "think.causality.q2",
+          "options": [
+            "Sonniges Wetter",
+            "Die alphabetische Reihenfolge der Eissorten",
+            "Die Anzahl Buchstaben im Wort Eis"
+          ],
+          "prompt": "Was ist im Freibadbeispiel ein möglicher Drittfaktor?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Zusätzliche Daten sollten zwischen konkurrierenden Erklärungen unterscheiden.",
+          "id": "think.causality.q3",
+          "options": [
+            "Eine Untersuchung suchen, die die Erklärungen unterscheidet",
+            "Die angenehmere Erklärung wählen",
+            "Die grössere Schlagzeile bevorzugen"
+          ],
+          "prompt": "Eine Beobachtung passt zu zwei Ursachen. Was ist der nächste Schritt?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Der Fehler liegt im vorschnellen Beweis, nicht im Untersuchen von Zusammenhängen.",
+          "id": "think.causality.q4",
+          "options": [
+            "Ja, sie beweist diese für sich allein nur nicht",
+            "Nein, niemals",
+            "Nur wenn beide Werte exakt gleich sind"
+          ],
+          "prompt": "Kann eine Korrelation trotzdem auf eine echte Ursache hinweisen?"
+        }
+      ],
+      "reflection": "Nenne einen Zusammenhang aus dem Alltag und einen möglichen Drittfaktor.",
+      "source": {
+        "title": "OpenStax · Correlation and causation",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/12-2-the-regression-equation"
+      },
+      "takeaway": "Korrelation ist ein Ausgangspunkt für Erklärung, nicht ihr Abschluss.",
+      "title": "Gemeinsam heisst nicht verursacht",
+      "visual": {
+        "caption": "Fiktives Beispiel. Die Pfeile veranschaulichen eine mögliche Erklärung, keine gemessene Studie.",
+        "kind": "flow",
+        "labels": [
+          "Sonniges Wetter",
+          "Mehr Eisverkauf UND mehr Zeit in der Sonne",
+          "Mehr Sonnenbrand ist damit vereinbar"
+        ],
+        "title": "Ein Drittfaktor",
+        "values": null
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "Du möchtest wissen, ob ein neuer Lernplan hilft. Wenn du gleichzeitig Schlaf, Unterricht, Prüfungsstoff und Lernzeit änderst, lässt sich ein besseres Ergebnis schwer dem Plan zuordnen. Ein guter Vergleich hält wichtige Bedingungen möglichst vergleichbar.",
+          "title": "Was hat sich geändert?"
+        },
+        {
+          "text": "Eine zufällige Zuteilung zu Gruppen kann systematische Unterschiede im Durchschnitt verringern. Sie macht einzelne Gruppen nicht garantiert identisch. Kleine Stichproben, Ausfälle und Messfehler bleiben wichtig. Vorher festzulegen, was du misst, verhindert nachträgliches Rosinenpicken.",
+          "title": "Zufall gezielt einsetzen"
+        }
+      ],
+      "id": "think.experiments",
+      "objective": "Du erkennst, welche Änderung ein Experiment eigentlich testet.",
+      "order": 3,
+      "pathID": "think",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "Der Effekt der Methode ist mit dem der Lernzeit vermischt.",
+          "id": "think.experiments.q1",
+          "options": [
+            "Lernzeit und Methode ändern sich gemeinsam",
+            "Die Gruppen haben Namen",
+            "Es gibt zwei Methoden"
+          ],
+          "prompt": "Gruppe A übt doppelt so lange mit Methode A. B übt kürzer mit Methode B. Was stört?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Randomisierung ist hilfreich, aber keine Garantie für identische Gruppen.",
+          "id": "think.experiments.q2",
+          "options": [
+            "Sie verringert systematische Gruppenunterschiede im Durchschnitt",
+            "Sie garantiert gleiche Menschen",
+            "Sie beseitigt jeden Messfehler"
+          ],
+          "prompt": "Was leistet zufällige Zuteilung?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Vorab definierte Kriterien erschweren selektive Erfolgsmeldungen.",
+          "id": "think.experiments.q3",
+          "options": [
+            "Damit man nicht erst nachher das günstigste Ergebnis auswählt",
+            "Damit Ergebnisse nie überraschend werden",
+            "Damit weniger Daten entstehen müssen"
+          ],
+          "prompt": "Warum die Hauptmessgrösse vorher festlegen?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Wenige Beobachtungen erlauben nur begrenzte Sicherheit.",
+          "id": "think.experiments.q4",
+          "options": [
+            "Nein, Unsicherheit und andere Erklärungen bleiben",
+            "Ja, wenn alle erfolgreich waren",
+            "Ja, wenn die Methode neu ist"
+          ],
+          "prompt": "Beweisen fünf erfolgreiche Einzelversuche eine allgemeine Wirkung?"
+        }
+      ],
+      "reflection": "Wie würdest du zwei Lernmethoden vergleichen, ohne der neuen Methode zusätzlich mehr Lernzeit zu geben?",
+      "source": {
+        "title": "OpenStax · Experimental Design and Ethics",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/1-4-experimental-design-and-ethics"
+      },
+      "takeaway": "Ein fairer Vergleich prüft die Änderung, nicht ein ganzes Bündel unbekannter Unterschiede.",
+      "title": "Ein fairer Vergleich",
+      "visual": {
+        "caption": "Ein Grundschema; nicht jede Fragestellung lässt sich experimentell untersuchen.",
+        "kind": "flow",
+        "labels": [
+          "Vorher: Frage und Messgrösse festlegen",
+          "Vergleichen: zufällig zugeteilte Gruppen",
+          "Danach: Ergebnis und Unsicherheit prüfen"
+        ],
+        "title": "Versuchsplan",
+        "values": null
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "Der Mittelwert ist die Summe aller Werte geteilt durch ihre Anzahl. Der Median ist der mittlere Wert der sortierten Reihe. Bei gerader Anzahl mittelt man die beiden mittleren Werte.",
+          "title": "Zwei verschiedene Fragen"
+        },
+        {
+          "text": "Fünf Wartezeiten sind 2, 3, 4, 5 und 26 Minuten. Der Mittelwert ist 40 / 5 = 8 Minuten, der Median 4. Beide stimmen. Der Median beschreibt hier die Mitte der Beobachtungen, der Mittelwert berücksichtigt die sehr lange Wartezeit stärker.",
+          "title": "Ein Ausreisser zieht mit"
+        }
+      ],
+      "id": "data.average",
+      "objective": "Du berechnest Mittelwert und Median und erkennst Ausreisser.",
+      "order": 1,
+      "pathID": "data",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "Der dritte Wert steht in der sortierten Fünferreihe in der Mitte.",
+          "id": "data.average.q1",
+          "options": [
+            "3",
+            "10",
+            "40"
+          ],
+          "prompt": "Wie lautet der Median von 1, 2, 3, 4, 40?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "(2 + 4 + 12) / 3 = 6.",
+          "id": "data.average.q2",
+          "options": [
+            "6",
+            "4",
+            "12"
+          ],
+          "prompt": "Wie lautet der Mittelwert von 2, 4 und 12?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Der mittlere Wert bleibt 4; die Summe und damit der Mittelwert steigen.",
+          "id": "data.average.q3",
+          "options": [
+            "Der Median",
+            "Der Mittelwert",
+            "Die Summe"
+          ],
+          "prompt": "26 wird in unserer Reihe durch 46 ersetzt. Was bleibt gleich?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Die beiden mittleren Werte sind 4 und 8; ihr Mittelwert ist 6.",
+          "id": "data.average.q4",
+          "options": [
+            "6",
+            "4",
+            "8"
+          ],
+          "prompt": "Wie lautet der Median von 2, 4, 8, 10?"
+        }
+      ],
+      "reflection": "Welche Zahl würdest du für eine typische Wartezeit nennen, und welche Information würdest du zusätzlich zeigen?",
+      "source": {
+        "title": "OpenStax · Measures of the Center",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/2-5-measures-of-the-center-of-the-data"
+      },
+      "takeaway": "Frage bei jedem Durchschnitt: Welche Kennzahl – und wie verteilt sind die Werte?",
+      "title": "Der Durchschnitt hat einen Nachbarn",
+      "visual": {
+        "caption": "Fiktive Messreihe. Mittelwert 8 min; Median 4 min. Balken starten bei null.",
+        "kind": "bars",
+        "labels": [
+          "Person A",
+          "Person B",
+          "Person C",
+          "Person D",
+          "Person E"
+        ],
+        "title": "Wartezeiten · Minuten",
+        "values": [
+          2,
+          3,
+          4,
+          5,
+          26
+        ]
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "Ein Fehleranteil sinkt von 10 % auf 5 %. Das sind 5 Prozentpunkte weniger. Relativ zum Ausgangswert sind es 50 % weniger: (10 − 5) / 10. Beide Aussagen beschreiben dieselbe Veränderung aus anderer Perspektive.",
+          "title": "Den Nenner nicht verlieren"
+        },
+        {
+          "text": "Eine Zahl steigt von 100 auf 120: plus 20 %. Zurück auf 100 fehlen 20 von nun 120, also rund 16,7 %. Prozente beziehen sich immer auf eine Basis. Eine Prozentangabe ohne Basis kann leicht einen falschen Eindruck erzeugen.",
+          "title": "Zurück ist nicht spiegelbildlich"
+        }
+      ],
+      "id": "data.percent",
+      "objective": "Du unterscheidest relative Änderung und Prozentpunkte.",
+      "order": 2,
+      "pathID": "data",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "30 minus 20 sind 10 Prozentpunkte.",
+          "id": "data.percent.q1",
+          "options": [
+            "10",
+            "50",
+            "30"
+          ],
+          "prompt": "Ein Anteil steigt von 20 % auf 30 %. Wie viele Prozentpunkte?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Die Änderung 10 geteilt durch den Ausgangswert 20 ergibt 0,5.",
+          "id": "data.percent.q2",
+          "options": [
+            "50 %",
+            "10 %",
+            "30 %"
+          ],
+          "prompt": "20 wird zu 30. Wie gross ist die relative Zunahme?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "110 mal 0,9 ist 99; die zweite Änderung hat eine andere Basis.",
+          "id": "data.percent.q3",
+          "options": [
+            "99",
+            "100",
+            "90"
+          ],
+          "prompt": "100 steigt um 10 % und fällt danach um 10 %. Endwert?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Eine grosse relative Veränderung kann eine kleine absolute Differenz betreffen.",
+          "id": "data.percent.q4",
+          "options": [
+            "Ausgangshäufigkeit und betrachtete Menge",
+            "Die Schriftgrösse der Meldung",
+            "Ob 80 gerade ist"
+          ],
+          "prompt": "Eine Meldung nennt 80 % weniger Fehler. Was fehlt zur Einordnung?"
+        }
+      ],
+      "reflection": "Erkläre jemandem den Unterschied zwischen 5 Prozent weniger und 5 Prozentpunkten weniger.",
+      "source": {
+        "title": "OpenStax · Prozentrechnung",
+        "url": "https://openstax.org/books/prealgebra-2e/pages/6-2-solve-general-applications-of-percent"
+      },
+      "takeaway": "Prozent braucht eine Bezugsgrösse. Prozentpunkte vergleichen Prozentwerte direkt.",
+      "title": "Prozent wovon?",
+      "visual": {
+        "caption": "Absolute Differenz: 5 je 100. Relative Verringerung: 50 %. Fiktives Beispiel.",
+        "kind": "bars",
+        "labels": [
+          "Vorher",
+          "Nachher"
+        ],
+        "title": "Fehler je 100 Vorgänge",
+        "values": [
+          10,
+          5
+        ]
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "In einer fiktiven Lieferung sind 10 von 1’000 Teilen defekt. Ein Prüfgerät markiert alle 10 defekten, aber auch 10 einwandfreie Teile. Unter den 20 markierten Teilen sind daher nur 10 wirklich defekt: 50 %.",
+          "title": "Zähle konkrete Fälle"
+        },
+        {
+          "text": "‚Wie viele Defekte entdeckt das Gerät?‘ und ‚Wie viele markierte Teile sind defekt?‘ haben verschiedene Nenner. Beim ersten Mal sind es die defekten Teile, beim zweiten alle markierten. Das Vertauschen führt gerade bei seltenen Ereignissen in die Irre.",
+          "title": "Zwei bedingte Fragen"
+        }
+      ],
+      "id": "data.base-rate",
+      "objective": "Du beziehst Grundhäufigkeiten in ein Prüfergebnis ein.",
+      "order": 3,
+      "pathID": "data",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "10 echte von insgesamt 20 Alarmen sind die Hälfte.",
+          "id": "data.base-rate.q1",
+          "options": [
+            "50 %",
+            "100 %",
+            "1 %"
+          ],
+          "prompt": "10 echte und 10 falsche Alarme: Wie viele Alarme sind echt?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Die Bedingung legt die betrachtete Gruppe fest.",
+          "id": "data.base-rate.q2",
+          "options": [
+            "Alle markierten Teile",
+            "Alle gelieferten Teile",
+            "Nur die unmarkierten Teile"
+          ],
+          "prompt": "Welcher Nenner gehört zu ‚defekt unter den markierten‘?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Übersehene Defekte und falsch markierte gute Teile sind unterschiedliche Fehler.",
+          "id": "data.base-rate.q3",
+          "options": [
+            "Nein, einwandfreie Teile könnten ebenfalls markiert werden",
+            "Ja, das ist dieselbe Aussage",
+            "Nur bei einer geraden Stückzahl"
+          ],
+          "prompt": "Alle Defekte werden entdeckt. Bedeutet das keine Fehlalarme?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Eine Tabelle mit Fallzahlen verhindert das unbemerkte Wechseln der Bezugsgruppe.",
+          "id": "data.base-rate.q4",
+          "options": [
+            "Sie machen echte und falsche Treffer sowie den Nenner sichtbar",
+            "Sie ersetzen jede Qualitätskontrolle",
+            "Sie machen seltene Ereignisse unmöglich"
+          ],
+          "prompt": "Warum helfen konkrete Häufigkeiten?"
+        }
+      ],
+      "reflection": "Erkläre mit eigenen Zahlen, warum viele richtige Erkennungen nicht automatisch jeden Alarm zuverlässig machen.",
+      "source": {
+        "title": "OpenStax · Independent and Mutually Exclusive Events",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"
+      },
+      "takeaway": "Zuerst die Gruppe festlegen, auf die sich die Wahrscheinlichkeit bezieht.",
+      "title": "Der seltene Treffer",
+      "visual": {
+        "caption": "Fiktives Rechenbeispiel, keine Aussage über ein bestimmtes Prüfgerät.",
+        "kind": "bars",
+        "labels": [
+          "Tatsächlich defekt",
+          "Einwandfrei, falsch markiert"
+        ],
+        "title": "Die 20 markierten Teile",
+        "values": [
+          10,
+          10
+        ]
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "Eine Nachricht behauptet, dein Konto werde heute gesperrt. Sie enthält einen Link und fordert sofortiges Handeln. Absendername, Logo und saubere Sprache können nachgeahmt werden. Auch fehlerfreier Text ist kein Echtheitsbeweis.",
+          "title": "Dringlichkeit ist kein Beleg"
+        },
+        {
+          "text": "Öffne die bekannte App oder tippe die bekannte Adresse selbst ein. Prüfe dort, ob die Meldung existiert. Bei einer überraschenden Zahlungsanweisung rufst du die Person über eine bereits bekannte Nummer an – nicht über Kontaktdaten aus derselben Nachricht.",
+          "title": "Den Kanal wechseln"
+        }
+      ],
+      "id": "digital.phishing",
+      "objective": "Du prüfst eine dringende Nachricht über einen unabhängigen Weg.",
+      "order": 1,
+      "pathID": "digital",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "Optik und Sprachqualität belegen die Identität des Absenders nicht.",
+          "id": "digital.phishing.q1",
+          "options": [
+            "Nein, beides lässt sich nachahmen",
+            "Ja, wenn keine Tippfehler vorkommen",
+            "Ja, bei dringenden Fristen"
+          ],
+          "prompt": "Eine perfekte Nachricht mit Logo ist automatisch echt?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Ein bereits bekannter Zugang vermeidet die vorgegebenen Kontaktdaten.",
+          "id": "digital.phishing.q2",
+          "options": [
+            "Die bereits installierte bekannte App öffnen",
+            "Die Nummer aus der verdächtigen SMS wählen",
+            "Dem Absender dein Passwort schicken"
+          ],
+          "prompt": "Welcher Prüfweg ist unabhängig?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Die zweite Verbindung sollte nicht aus der fraglichen Nachricht stammen.",
+          "id": "digital.phishing.q3",
+          "options": [
+            "Über eine bekannte Nummer rückfragen",
+            "Aufgrund des Zeitdrucks sofort zahlen",
+            "Nur das Profilbild vergleichen"
+          ],
+          "prompt": "Was ist bei einer überraschenden Zahlungsanweisung sinnvoll?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Es ist ein Anlass zur Prüfung, kein alleiniger Betrugsbeweis.",
+          "id": "digital.phishing.q4",
+          "options": [
+            "Sie kann gründliche Prüfung verhindern sollen",
+            "Jede Frist beweist Betrug",
+            "Seriöse Stellen schreiben nie Nachrichten"
+          ],
+          "prompt": "Warum ist Dringlichkeit ein Warnzeichen?"
+        }
+      ],
+      "reflection": "Eine angebliche Bank-SMS fordert dich zur Anmeldung auf. Beschreibe deinen sicheren Prüfweg.",
+      "source": {
+        "title": "CISA · Recognize and Report Phishing",
+        "url": "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing"
+      },
+      "takeaway": "Verifiziere die Aussage ausserhalb des Kanals, der dich unter Druck setzt.",
+      "title": "Die Nachricht will dein Tempo",
+      "visual": {
+        "caption": "Beispielablauf. Keine echte Nachricht und keine Aufforderung, verdächtige Links zu testen.",
+        "kind": "flow",
+        "labels": [
+          "Nicht unter Zeitdruck klicken",
+          "Bekannte App oder bekannte Adresse öffnen",
+          "Meldung unabhängig bestätigen"
+        ],
+        "title": "Unterbrechen · prüfen · handeln",
+        "values": null
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "Wenn du dasselbe Passwort für Mail und einen Shop verwendest, kann ein Shop-Leck auch dein Mailkonto gefährden. Unterschiedliche lange Passwörter begrenzen diese Weiterverwendung. Ein Passwortmanager kann sie verwalten; sein Zugang verdient besonderen Schutz.",
+          "title": "Ein Leck, mehrere Türen"
+        },
+        {
+          "text": "Mehrfaktor-Anmeldung verlangt zusätzliche Nachweise, etwa etwas, das du besitzt. Zwei Passwörter sind nicht automatisch zwei unterschiedliche Faktoren. Unerwartete Freigabeanfragen solltest du nicht bestätigen. Auch Wiederherstellungscodes gehören an einen geschützten Ort.",
+          "title": "Zweiter Faktor"
+        }
+      ],
+      "id": "digital.accounts",
+      "objective": "Du unterscheidest unabhängige Faktoren und Passwort-Wiederverwendung.",
+      "order": 2,
+      "pathID": "digital",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "Gestohlene Zugangsdaten können sonst bei anderen Diensten ausprobiert werden.",
+          "id": "digital.accounts.q1",
+          "options": [
+            "Ein einzelnes Leck soll nicht mehrere Konten öffnen",
+            "Passwörter werden dadurch automatisch kürzer",
+            "Damit du sie öffentlich notieren kannst"
+          ],
+          "prompt": "Warum keine Passwort-Wiederverwendung?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Mehrere Eingaben und mehrere unabhängige Faktoren sind nicht dasselbe.",
+          "id": "digital.accounts.q2",
+          "options": [
+            "Nein, beide können derselben Wissenskategorie angehören",
+            "Ja, zwei Eingabefelder genügen",
+            "Nur wenn beide gleich lang sind"
+          ],
+          "prompt": "Sind zwei verschiedene Passwörter zwingend zwei Faktoren?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Eine unerwartete Anfrage könnte zu einem fremden Anmeldeversuch gehören.",
+          "id": "digital.accounts.q3",
+          "options": [
+            "Ablehnen und den Kontozugang prüfen",
+            "Bestätigen, damit die Meldung verschwindet",
+            "Den Code öffentlich teilen"
+          ],
+          "prompt": "Eine Login-Bestätigung erscheint, obwohl du dich nicht anmeldest. Was tust du?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Wiederherstellung ist wichtig, muss aber selbst geschützt sein.",
+          "id": "digital.accounts.q4",
+          "options": [
+            "Zugang wiedererlangen, wenn ein Faktor verloren geht",
+            "Alle Passwörter ersetzen, auch öffentlich",
+            "Den zweiten Faktor für andere weitergeben"
+          ],
+          "prompt": "Welchen Zweck haben sicher verwahrte Wiederherstellungscodes?"
+        }
+      ],
+      "reflection": "Welche zwei deiner Konten wären besonders kritisch, wenn jemand sie übernimmt?",
+      "source": {
+        "title": "CISA · Turn On MFA",
+        "url": "https://www.cisa.gov/secure-our-world/turn-mfa"
+      },
+      "takeaway": "Einzigartige Zugänge und zusätzliche Nachweise begrenzen die Folgen eines einzelnen Lecks.",
+      "title": "Mehr als ein Passwort",
+      "visual": {
+        "caption": "Keine Methode verspricht vollständige Sicherheit. Die Schichten begrenzen unterschiedliche Risiken.",
+        "kind": "compare",
+        "labels": [
+          "Einzigartig: kein Passwort für mehrere Konten",
+          "Zusätzlich: Mehrfaktor-Anmeldung aktivieren",
+          "Wiederherstellbar: Notfallzugang sicher aufbewahren"
+        ],
+        "title": "Drei Schutzschichten",
+        "values": null
+      }
+    },
+    {
+      "cards": [
+        {
+          "text": "Wenn eine Datei auf allen Geräten synchronisiert wird, kann auch ihre Löschung überall ankommen. Eine Sicherung mit älteren Versionen erlaubt dir dagegen, zu einem früheren Zustand zurückzukehren. Welche Wiederherstellung möglich ist, hängt vom Dienst ab.",
+          "title": "Synchronisieren ist nicht dasselbe"
+        },
+        {
+          "text": "Ein Backup ist erst praktisch nützlich, wenn du etwas daraus zurückholen kannst. Prüfe an einer unkritischen Beispieldatei den Wiederherstellungsweg. Eine getrennte Kopie schützt zusätzlich vor dem Verlust des ursprünglichen Geräts oder Kontos.",
+          "title": "Den Rückweg testen"
+        }
+      ],
+      "id": "digital.backup",
+      "objective": "Du unterscheidest Synchronisation und wiederherstellbare Sicherung.",
+      "order": 3,
+      "pathID": "digital",
+      "photo": null,
+      "questions": [
+        {
+          "correctIndex": 0,
+          "explanation": "Synchronisation gleicht Zustände ab; Versionssicherung ist eine zusätzliche Eigenschaft.",
+          "id": "digital.backup.q1",
+          "options": [
+            "Die Löschung wird auf andere Geräte übertragen",
+            "Jede Version bleibt zwingend für immer erhalten",
+            "Die Datei wird automatisch öffentlich"
+          ],
+          "prompt": "Was kann bei reiner Synchronisation nach einer Löschung passieren?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Ein ungefährlicher Test zeigt, ob der Rückweg funktioniert.",
+          "id": "digital.backup.q2",
+          "options": [
+            "Eine unkritische Testdatei wiederherstellen",
+            "Alle Originale zuerst löschen",
+            "Nur die Farbe des Backup-Symbols prüfen"
+          ],
+          "prompt": "Wie prüfst du ein Backup ohne unnötiges Risiko?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Unabhängigkeit reduziert gemeinsame Ausfallursachen.",
+          "id": "digital.backup.q3",
+          "options": [
+            "Gerät oder Konto können als gemeinsamer Ausfallpunkt wegfallen",
+            "Sie macht jede Verschlüsselung unnötig",
+            "Sie verhindert jede Fehlbedienung"
+          ],
+          "prompt": "Warum kann eine getrennte Kopie helfen?"
+        },
+        {
+          "correctIndex": 0,
+          "explanation": "Konkrete Wiederherstellungsregeln bestimmen den Nutzen im Ernstfall.",
+          "id": "digital.backup.q4",
+          "options": [
+            "Versionsdauer und tatsächlichen Wiederherstellungsweg",
+            "Nur den Namen des Tarifs",
+            "Ob der Anbieter ein rundes Logo hat"
+          ],
+          "prompt": "Was solltest du bei einem Cloud-Dienst prüfen?"
+        }
+      ],
+      "reflection": "Welche Datei wäre für dich besonders ärgerlich zu verlieren? Wie sähe ihr unabhängiger Rückweg aus?",
+      "source": {
+        "title": "CISA · Back Up Business Data",
+        "url": "https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business/back-business-data"
+      },
+      "takeaway": "Denke vom Wiederherstellen her, nicht vom Häkchen neben ‚Backup aktiv‘.",
+      "title": "Eine Kopie ist noch kein Plan",
+      "visual": {
+        "caption": "Keine wichtigen Originale löschen, um ein Backup zu testen.",
+        "kind": "flow",
+        "labels": [
+          "Unkritische Beispieldatei sichern",
+          "Kopie an getrenntem Ort prüfen",
+          "Eine frühere Version testweise wiederherstellen"
+        ],
+        "title": "Ein kleiner Wiederherstellungstest",
+        "values": null
+      }
+    },
+    {
+      "id": "economy.opportunity",
+      "pathID": "economy",
+      "order": 1,
+      "title": "Die beste ausgelassene Möglichkeit",
+      "objective": "Du erkennst Opportunitätskosten auch ohne Geldzahlung.",
+      "cards": [
+        {
+          "title": "Knappheit betrifft auch Zeit",
+          "text": "Du hast eine freie Stunde. Du kannst lesen, spazieren oder ein Video ansehen. Jede Wahl lässt andere Möglichkeiten aus. Opportunitätskosten sind der Wert der besten tatsächlich verfügbaren Alternative, auf die du verzichtest – nicht die Summe sämtlicher denkbarer Möglichkeiten."
+        },
+        {
+          "title": "Ein Preis ist nicht alles",
+          "text": "Ein kostenloser Vortrag kann dennoch Zeit kosten. Wenn du stattdessen eine wichtige Aufgabe erledigen könntest, gehört deren entgangener Nutzen in deine Überlegung. Das bedeutet nicht, Freizeit ständig in Geld umzurechnen; es macht die Wahl nur sichtbar."
+        }
+      ],
+      "visual": {
+        "kind": "compare",
+        "title": "Eine Stunde · eine Wahl",
+        "labels": [
+          "Gewählt: eine Stunde Video",
+          "Beste Alternative: ein Spaziergang",
+          "Opportunitätskosten: entgangener Nutzen des Spaziergangs"
+        ],
+        "values": null,
+        "caption": "Persönliche Werte, keine allgemeingültige Rangliste."
+      },
+      "reflection": "Welche gute Alternative verdrängt eine zusätzliche halbe Stunde Konsum heute bei dir?",
+      "takeaway": "Die Alternative, die du aufgibst, gehört zur Entscheidung.",
+      "source": {
+        "title": "OpenStax · Budget Constraint and Opportunity Cost",
+        "url": "https://openstax.org/books/principles-economics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint"
+      },
+      "photo": null,
+      "questions": [
+        {
+          "id": "economy.opportunity.q1",
+          "prompt": "Ein Angebot ist gratis. Kann es Opportunitätskosten haben?",
+          "options": [
+            "Ja, etwa durch die dafür verwendete Zeit",
+            "Nein, nur Geld kann knapp sein",
+            "Nur wenn es Werbung enthält"
+          ],
+          "correctIndex": 0,
+          "explanation": "Auch nicht bezahlte Ressourcen haben alternative Verwendungsmöglichkeiten."
+        },
+        {
+          "id": "economy.opportunity.q2",
+          "prompt": "Welche Alternative zählt als Opportunitätskosten?",
+          "options": [
+            "Die beste tatsächlich aufgegebene Möglichkeit",
+            "Die Summe aller vorstellbaren Möglichkeiten",
+            "Immer das teuerste Produkt"
+          ],
+          "correctIndex": 0,
+          "explanation": "Es geht um den nächstbesten realistischen Verzicht."
+        },
+        {
+          "id": "economy.opportunity.q3",
+          "prompt": "Warum sind Opportunitätskosten persönlich?",
+          "options": [
+            "Menschen bewerten Alternativen unterschiedlich",
+            "Weil Rechnen unmöglich ist",
+            "Weil Zeit unbegrenzt ist"
+          ],
+          "correctIndex": 0,
+          "explanation": "Der Nutzen eines Spaziergangs, einer Aufgabe oder einer Pause ist nicht für alle gleich."
+        },
+        {
+          "id": "economy.opportunity.q4",
+          "prompt": "Was macht eine gute Entscheidung vollständiger?",
+          "options": [
+            "Auch die verdrängte Alternative betrachten",
+            "Nur den sichtbaren Kaufpreis betrachten",
+            "Vergangene Ausgaben ignorieren und sonst nichts prüfen"
+          ],
+          "correctIndex": 0,
+          "explanation": "Preis und alternative Verwendung beantworten unterschiedliche Teile der Frage."
+        }
+      ]
+    },
+    {
+      "id": "economy.sunk",
+      "pathID": "economy",
+      "order": 2,
+      "title": "Schon bezahlt – und jetzt?",
+      "objective": "Du trennst versunkene Kosten von künftigen Folgen.",
+      "cards": [
+        {
+          "title": "Vergangenes lässt sich nicht retten",
+          "text": "Ein nicht erstattbares Kinoticket ist bereits bezahlt. Wenn der Film dich langweilt, macht das Bleiben den Kaufpreis nicht rückgängig. Entscheidend ist, wie du die nächste Stunde im Vergleich zu einer Alternative verbringen möchtest."
+        },
+        {
+          "title": "Aber nicht jede Ausgabe ist versunken",
+          "text": "Ein verkaufbares Ticket hat noch einen möglichen Erlös. Auch Kündigungsgebühren oder Folgen für andere Menschen können künftig anfallen. Diese gehören in die Entscheidung. Die Regel lautet nicht ‚immer abbrechen‘, sondern ‚von jetzt an sauber vergleichen‘."
+        }
+      ],
+      "visual": {
+        "kind": "compare",
+        "title": "Für die nächste Entscheidung",
+        "labels": [
+          "Versunken: nicht rückholbarer Kaufpreis",
+          "Noch veränderbar: nächste Stunde",
+          "Noch relevant: Erlös, Zusatzkosten und Folgen"
+        ],
+        "values": null,
+        "caption": "Fiktives Alltagsbeispiel, keine individuelle Finanzberatung."
+      },
+      "reflection": "Bei welchem Vorhaben denkst du ‚Ich habe schon so viel investiert‘? Welche Folgen sind ab heute wirklich veränderbar?",
+      "takeaway": "Eine schlechte nächste Stunde verbessert keine verlorene letzte Stunde.",
+      "source": {
+        "title": "OpenStax · Confronting Objections to the Economic Approach",
+        "url": "https://openstax.org/books/principles-economics-3e/pages/2-3-confronting-objections-to-the-economic-approach"
+      },
+      "photo": null,
+      "questions": [
+        {
+          "id": "economy.sunk.q1",
+          "prompt": "Ein nicht erstattbares Ticket ist bezahlt. Was kann Bleiben nicht ändern?",
+          "options": [
+            "Den bereits verlorenen Kaufpreis",
+            "Die Nutzung der nächsten Stunde",
+            "Ob du den Film weiter siehst"
+          ],
+          "correctIndex": 0,
+          "explanation": "Der Preis ist unabhängig von der nächsten Entscheidung bereits angefallen."
+        },
+        {
+          "id": "economy.sunk.q2",
+          "prompt": "Ein Ticket könnte noch verkauft werden. Ist sein Verkaufserlös versunken?",
+          "options": [
+            "Nein, er hängt noch von deiner Wahl ab",
+            "Ja, weil das Ticket schon gekauft wurde",
+            "Nur wenn du bar bezahlt hast"
+          ],
+          "correctIndex": 0,
+          "explanation": "Eine veränderbare zukünftige Folge ist nicht versunken."
+        },
+        {
+          "id": "economy.sunk.q3",
+          "prompt": "Bedeutet die Regel, jedes schwierige Projekt abzubrechen?",
+          "options": [
+            "Nein, künftige Nutzen und Kosten vergleichen",
+            "Ja, sobald es unbequem wird",
+            "Ja, wenn bereits Zeit investiert wurde"
+          ],
+          "correctIndex": 0,
+          "explanation": "Weiterführen kann sinnvoll sein – nur nicht allein zur Rechtfertigung vergangener Kosten."
+        },
+        {
+          "id": "economy.sunk.q4",
+          "prompt": "Welche Frage hilft am besten?",
+          "options": [
+            "Würde ich den nächsten Schritt mit heutigem Wissen noch wählen?",
+            "Wie vermeide ich, je einen Irrtum zuzugeben?",
+            "Wie gross war die erste Rechnung?"
+          ],
+          "correctIndex": 0,
+          "explanation": "Der Blick auf den nächsten Schritt trennt Zukunft und Vergangenheit."
+        }
+      ]
+    },
+    {
+      "id": "economy.margin",
+      "pathID": "economy",
+      "order": 3,
+      "title": "Noch eine Einheit",
+      "objective": "Du vergleichst zusätzlichen Nutzen mit zusätzlichen Kosten.",
+      "cards": [
+        {
+          "title": "Am Rand entscheiden",
+          "text": "Ob eine erste Übungsstunde gut ist, beantwortet nicht automatisch, ob die fünfte zusätzliche Stunde heute noch sinnvoll ist. Marginal bedeutet: Was verändert genau die nächste Einheit? Verglichen werden deren zusätzlicher Nutzen und deren zusätzliche Kosten."
+        },
+        {
+          "title": "Ein einfaches Beispiel",
+          "text": "Eine weitere Fertigungsrunde bringt in einem fiktiven Betrieb 30 Franken zusätzlichen Erlös und verursacht 20 Franken zusätzliche Kosten. Ihr zusätzlicher Beitrag ist 10 Franken. Fixkosten, die durch diese Runde unverändert bleiben, beantworten eine andere Frage: die Tragfähigkeit des gesamten Betriebs."
+        }
+      ],
+      "visual": {
+        "kind": "bars",
+        "title": "Eine zusätzliche Runde · CHF",
+        "labels": [
+          "Zusätzlicher Erlös",
+          "Zusätzliche Kosten",
+          "Zusätzlicher Beitrag"
+        ],
+        "values": [
+          30,
+          20,
+          10
+        ],
+        "caption": "Vereinfachtes Rechenbeispiel. Kapazitäten und andere Folgewirkungen bleiben hier ausgeblendet."
+      },
+      "reflection": "Denke an deine nächste Lern- oder Arbeitsstunde: Was wäre ihr zusätzlicher Nutzen, was würdest du dafür aufgeben?",
+      "takeaway": "Prüfe den nächsten Schritt – nicht nur den bisherigen Durchschnitt.",
+      "source": {
+        "title": "OpenStax · Choice in a World of Scarcity",
+        "url": "https://openstax.org/books/principles-economics-3e/pages/2-2-the-production-possibilities-frontier-and-social-choices"
+      },
+      "photo": null,
+      "questions": [
+        {
+          "id": "economy.margin.q1",
+          "prompt": "Was meint ‚marginal‘ hier?",
+          "options": [
+            "Die Veränderung durch eine zusätzliche Einheit",
+            "Unwichtig oder nebensächlich",
+            "Den Durchschnitt aller vergangenen Einheiten"
+          ],
+          "correctIndex": 0,
+          "explanation": "Der Begriff richtet den Blick auf die zusätzliche Veränderung."
+        },
+        {
+          "id": "economy.margin.q2",
+          "prompt": "Zusätzlicher Erlös 45, zusätzliche Kosten 32. Beitrag?",
+          "options": [
+            "13",
+            "77",
+            "32"
+          ],
+          "correctIndex": 0,
+          "explanation": "45 minus 32 ergibt 13."
+        },
+        {
+          "id": "economy.margin.q3",
+          "prompt": "Beweist eine lohnende erste Stunde, dass jede weitere gleich gut ist?",
+          "options": [
+            "Nein, zusätzlicher Nutzen und Kosten können sich ändern",
+            "Ja, bei derselben Tätigkeit immer",
+            "Nur wenn die Stunde morgens liegt"
+          ],
+          "correctIndex": 0,
+          "explanation": "Ermüdung, Knappheit und andere Alternativen können die nächste Einheit verändern."
+        },
+        {
+          "id": "economy.margin.q4",
+          "prompt": "Welche Kosten gehören unmittelbar zum Vergleich einer zusätzlichen Runde?",
+          "options": [
+            "Die Kosten, die sich durch diese Runde ändern",
+            "Nur alle jemals bezahlten Kosten",
+            "Immer nur die monatliche Miete"
+          ],
+          "correctIndex": 0,
+          "explanation": "Unveränderte Fixkosten sind für andere Entscheidungen wichtig, aber nicht der zusätzliche Aufwand dieser Runde."
+        }
+      ]
+    },
+    {
+      "id": "science.energy",
+      "pathID": "science",
+      "order": 1,
+      "title": "Energie verschwindet nicht einfach",
+      "objective": "Du verfolgst Energieübertragungen statt von ‚verbrauchter Energie‘ auszugehen.",
+      "cards": [
+        {
+          "title": "Das System bestimmen",
+          "text": "Wenn ein fahrendes Velo bremst, nimmt seine Bewegungsenergie ab. Energie wird dabei unter anderem als innere Energie in Bremsen, Reifen und Umgebung übertragen. Im Alltag sagen wir ‚Energie verbraucht‘; physikalisch wird sie umgewandelt oder übertragen."
+        },
+        {
+          "title": "Nützlich ist nicht gleich vorhanden",
+          "text": "Dass die Energie erhalten bleibt, bedeutet nicht, dass sie wieder vollständig als nutzbare Bewegung verfügbar ist. Verteilte Erwärmung lässt sich nicht beliebig verlustfrei in den Ausgangszustand zurückverwandeln. Für eine Bilanz musst du die Grenze des betrachteten Systems nennen."
+        }
+      ],
+      "visual": {
+        "kind": "flow",
+        "title": "Bremsen · vereinfachte Energiebilanz",
+        "labels": [
+          "Bewegungsenergie des Velos nimmt ab",
+          "Bremsen und Umgebung werden erwärmt",
+          "Energie bleibt bilanziert, Nutzbarkeit verändert sich"
+        ],
+        "values": null,
+        "caption": "Eine qualitative Darstellung, keine massstabsgetreue Mengenbilanz."
+      },
+      "reflection": "Wohin geht Energie, wenn du einen schweren Gegenstand langsam wieder auf den Boden absenkst?",
+      "takeaway": "Frage: Wo ist die Energie jetzt – und wie nutzbar ist sie noch?",
+      "source": {
+        "title": "OpenStax · Conservation of Energy",
+        "url": "https://openstax.org/books/college-physics-2e/pages/7-6-conservation-of-energy"
+      },
+      "photo": null,
+      "questions": [
+        {
+          "id": "science.energy.q1",
+          "prompt": "Was passiert beim Bremsen mit der Bewegungsenergie?",
+          "options": [
+            "Sie wird unter anderem in innere Energie umgewandelt",
+            "Sie verschwindet aus der Physik",
+            "Sie wird vollständig zu Masse ohne weitere Folgen"
+          ],
+          "correctIndex": 0,
+          "explanation": "Bremsen und Umgebung erwärmen sich; die Energiebilanz berücksichtigt diese Übertragung."
+        },
+        {
+          "id": "science.energy.q2",
+          "prompt": "Warum die Systemgrenze nennen?",
+          "options": [
+            "Damit Energieübertragungen hinein und hinaus erkennbar werden",
+            "Damit jede Messung exakt wird",
+            "Damit Reibung verschwindet"
+          ],
+          "correctIndex": 0,
+          "explanation": "Ohne Grenze kann man eine Übertragung mit einem Verlust der Gesamtenergie verwechseln."
+        },
+        {
+          "id": "science.energy.q3",
+          "prompt": "Bedeutet Energieerhaltung stets vollständige technische Wiederverwendbarkeit?",
+          "options": [
+            "Nein",
+            "Ja",
+            "Nur bei Wärme"
+          ],
+          "correctIndex": 0,
+          "explanation": "Erhaltung einer Menge und ihre Nutzbarkeit sind unterschiedliche Aussagen."
+        },
+        {
+          "id": "science.energy.q4",
+          "prompt": "Welche Beobachtung passt zur Brems-Energiebilanz?",
+          "options": [
+            "Warme Bremsen nach langem Abbremsen",
+            "Ein Velo wird ohne Zufuhr immer schneller",
+            "Reibung erzeugt Energie aus dem Nichts"
+          ],
+          "correctIndex": 0,
+          "explanation": "Wärmeentwicklung ist mit der Umwandlung von Bewegungsenergie vereinbar."
+        }
+      ]
+    },
+    {
+      "id": "science.power",
+      "pathID": "science",
+      "order": 2,
+      "title": "Watt ist nicht Wattstunde",
+      "objective": "Du unterscheidest Leistung von übertragener Energie.",
+      "cards": [
+        {
+          "title": "Tempo und Menge",
+          "text": "Leistung ist Energie pro Zeit. Ein Watt entspricht einem Joule pro Sekunde. Ein Gerät mit konstanter Leistung von 100 Watt über zwei Stunden überträgt 200 Wattstunden Energie. Eine Kilowattstunde sind 1’000 Wattstunden."
+        },
+        {
+          "title": "Die Zeit gehört dazu",
+          "text": "Ein 2-Kilowatt-Gerät, das eine halbe Stunde läuft, überträgt 1 Kilowattstunde. Leistung allein sagt daher noch nicht, wie viel Energie im ganzen Vorgang anfällt. Vergleiche immer Leistung UND Laufzeit."
+        }
+      ],
+      "visual": {
+        "kind": "bars",
+        "title": "Gleiche Energie · verschiedene Leistung",
+        "labels": [
+          "100 W × 2 h",
+          "200 W × 1 h",
+          "400 W × 0,5 h"
+        ],
+        "values": [
+          200,
+          200,
+          200
+        ],
+        "caption": "Alle Balken zeigen Energie in Wh, nicht Leistung in W."
+      },
+      "reflection": "Warum kann ein leistungsstarkes Gerät in einer kurzen Nutzung weniger Energie benötigen als ein schwächeres über viele Stunden?",
+      "takeaway": "Energie = Leistung × Zeit. Die Einheit verrät, welche Grösse du meinst.",
+      "source": {
+        "title": "OpenStax · Power",
+        "url": "https://openstax.org/books/college-physics-2e/pages/7-7-power"
+      },
+      "photo": null,
+      "questions": [
+        {
+          "id": "science.power.q1",
+          "prompt": "100 W laufen 3 Stunden. Welche Energie?",
+          "options": [
+            "300 Wh",
+            "300 W",
+            "33 Wh"
+          ],
+          "correctIndex": 0,
+          "explanation": "100 Watt mal 3 Stunden ergibt 300 Wattstunden."
+        },
+        {
+          "id": "science.power.q2",
+          "prompt": "2 kW laufen eine halbe Stunde. Welche Energie?",
+          "options": [
+            "1 kWh",
+            "4 kWh",
+            "2 kWh"
+          ],
+          "correctIndex": 0,
+          "explanation": "2 mal 0,5 ist 1."
+        },
+        {
+          "id": "science.power.q3",
+          "prompt": "Welche Einheit steht für Leistung?",
+          "options": [
+            "Watt",
+            "Wattstunde",
+            "Kilowattstunde"
+          ],
+          "correctIndex": 0,
+          "explanation": "Watt ist Energie je Zeit; Wattstunden sind eine Energiemenge."
+        },
+        {
+          "id": "science.power.q4",
+          "prompt": "Was fehlt bei ‚dieses Gerät hat 500 Watt‘ für die Energie eines Vorgangs?",
+          "options": [
+            "Die Laufzeit und gegebenenfalls der Leistungsverlauf",
+            "Nur die Farbe",
+            "Die Anzahl Buchstaben des Herstellers"
+          ],
+          "correctIndex": 0,
+          "explanation": "Leistung kann sich ändern; für Energie zählt der Verlauf über die Zeit."
+        }
+      ]
+    },
+    {
+      "id": "science.scale",
+      "pathID": "science",
+      "order": 3,
+      "title": "Erst die Grössenordnung",
+      "objective": "Du prüfst Zahlen mit Einheiten und Zehnerfaktoren.",
+      "cards": [
+        {
+          "title": "Einheiten sind eine Denkstütze",
+          "text": "Ein Kilometer hat 1’000 Meter, eine Stunde 3’600 Sekunden. Deshalb sind 36 km/h gleich 10 m/s. Du wandelst nicht nur die Zahl um, sondern Zähler und Nenner."
+        },
+        {
+          "title": "Vor dem Taschenrechner",
+          "text": "Wenn jemand für einen Fussweg von einem Kilometer drei Sekunden angibt, sollte eine grobe Überschlagsrechnung stutzig machen. Einheiten und Grössenordnungen finden viele Fehler, bevor du eine lange Rechnung ausführst. Ein plausibler Wert beweist die Rechnung noch nicht, ein unplausibler verlangt aber Kontrolle."
+        }
+      ],
+      "visual": {
+        "kind": "flow",
+        "title": "36 km/h umrechnen",
+        "labels": [
+          "36 × 1’000 Meter pro Stunde",
+          "36’000 Meter / 3’600 Sekunden",
+          "10 Meter pro Sekunde"
+        ],
+        "values": null,
+        "caption": "Zähler und Nenner werden beide umgerechnet."
+      },
+      "reflection": "Wie lange würdest du ungefähr für einen Kilometer zu Fuss brauchen? Erkläre nur die Grössenordnung, nicht eine exakte Prognose.",
+      "takeaway": "Erst Einheit und Grössenordnung, dann Nachkommastellen.",
+      "source": {
+        "title": "OpenStax · Unit Conversion",
+        "url": "https://openstax.org/books/college-physics-2e/pages/1-3-accuracy-precision-and-significant-figures"
+      },
+      "photo": null,
+      "questions": [
+        {
+          "id": "science.scale.q1",
+          "prompt": "Wie viele Meter sind 2,5 Kilometer?",
+          "options": [
+            "2’500",
+            "250",
+            "25’000"
+          ],
+          "correctIndex": 0,
+          "explanation": "2,5 mal 1’000 ergibt 2’500."
+        },
+        {
+          "id": "science.scale.q2",
+          "prompt": "Wie viele Sekunden hat eine halbe Stunde?",
+          "options": [
+            "1’800",
+            "30",
+            "3’000"
+          ],
+          "correctIndex": 0,
+          "explanation": "30 Minuten mal 60 Sekunden ergeben 1’800."
+        },
+        {
+          "id": "science.scale.q3",
+          "prompt": "72 km/h entsprechen wie vielen m/s?",
+          "options": [
+            "20",
+            "72",
+            "200"
+          ],
+          "correctIndex": 0,
+          "explanation": "72 geteilt durch 3,6 ergibt 20."
+        },
+        {
+          "id": "science.scale.q4",
+          "prompt": "Was zeigt eine plausible Grössenordnung?",
+          "options": [
+            "Die Zahl könnte passen; die Rechnung muss dennoch stimmen",
+            "Die Rechnung ist damit bewiesen",
+            "Einheiten sind nicht mehr nötig"
+          ],
+          "correctIndex": 0,
+          "explanation": "Plausibilität ist ein Filter, keine vollständige Verifikation."
+        }
+      ]
+    },
+    {
+      "id": "earth.weather",
+      "pathID": "earth",
+      "order": 1,
+      "title": "Ein Tag ist noch kein Klima",
+      "objective": "Du unterscheidest eine Wetterbeobachtung von einer Klimabeschreibung.",
+      "cards": [
+        {
+          "title": "Moment und Verteilung",
+          "text": "Wetter beschreibt den Zustand der Atmosphäre an einem Ort zu einer bestimmten Zeit: beispielsweise Regen und Temperatur heute. Klima beschreibt typische Verteilungen und Schwankungen über lange Zeiträume. Dazu gehören nicht nur Mittelwerte, sondern auch Häufigkeiten und Extreme."
+        },
+        {
+          "title": "Was ein Foto zeigen kann",
+          "text": "Eine Erdaufnahme zeigt unter anderem die Wolken zum Aufnahmezeitpunkt. Für einen Klimatrend brauchst du vergleichbare Beobachtungen über viele Jahre. Ein kalter Tag widerlegt deshalb keine langfristige Erwärmung; ein heisser Tag beweist für sich allein ebenfalls keinen Trend."
+        }
+      ],
+      "visual": {
+        "kind": "compare",
+        "title": "Zwei Zeitskalen",
+        "labels": [
+          "Wetter: heute regnet es an diesem Ort",
+          "Klima: wie oft, wie stark und zu welcher Jahreszeit es über lange Zeit regnet"
+        ],
+        "values": null,
+        "caption": "Einzelereignis und langfristige Verteilung beantworten verschiedene Fragen."
+      },
+      "reflection": "Formuliere je einen Satz über Wetter und Klima, ohne die Begriffe zu vertauschen.",
+      "takeaway": "Für einen Trend brauchst du eine Zeitreihe, nicht einen einzelnen eindrucksvollen Moment.",
+      "source": {
+        "title": "NASA Science · Climate Change",
+        "url": "https://science.nasa.gov/climate-change/"
+      },
+      "photo": {
+        "url": "https://svs.gsfc.nasa.gov/vis/a030000/a030600/a030613/blue_marble_apollo_17_19721207_print.jpg",
+        "caption": "Die Erde am 7. Dezember 1972, aufgenommen während Apollo 17. Wolken und Kontinente zeigen einen Moment, nicht einen langfristigen Trend.",
+        "credit": "Foto: NASA / Johnson Space Center · Apollo 17",
+        "sourceURL": "https://svs.gsfc.nasa.gov/30613/"
+      },
+      "questions": [
+        {
+          "id": "earth.weather.q1",
+          "prompt": "‚Heute 12 Grad in Zürich‘ beschreibt was?",
+          "options": [
+            "Wetter",
+            "Bereits einen globalen Klimatrend",
+            "Die Temperatur jedes Ortes"
+          ],
+          "correctIndex": 0,
+          "explanation": "Ort und einzelner Zeitpunkt kennzeichnen eine Wetterbeobachtung."
+        },
+        {
+          "id": "earth.weather.q2",
+          "prompt": "Was braucht eine belastbare Aussage über einen langfristigen Trend?",
+          "options": [
+            "Vergleichbare Messungen über lange Zeit",
+            "Ein besonders eindrückliches Foto",
+            "Nur den wärmsten Tag"
+          ],
+          "correctIndex": 0,
+          "explanation": "Eine Zeitreihe ermöglicht, Veränderungen von kurzfristigen Schwankungen zu unterscheiden."
+        },
+        {
+          "id": "earth.weather.q3",
+          "prompt": "Widerlegt ein kalter Tag einen langfristigen Erwärmungstrend?",
+          "options": [
+            "Nein",
+            "Ja",
+            "Nur wenn es gleichzeitig regnet"
+          ],
+          "correctIndex": 0,
+          "explanation": "Einzelwerte können auch innerhalb eines langfristigen Trends stark schwanken."
+        },
+        {
+          "id": "earth.weather.q4",
+          "prompt": "Was kann das Apollo-Foto direkt zeigen?",
+          "options": [
+            "Wolken und sichtbare Oberflächen zu einem Zeitpunkt",
+            "Die mittlere Temperatur des nächsten Jahrhunderts",
+            "Die Niederschlagsverteilung aller Jahrzehnte"
+          ],
+          "correctIndex": 0,
+          "explanation": "Ein Foto ist räumlich reichhaltig, zeitlich aber zunächst eine Momentaufnahme."
+        }
+      ]
+    },
+    {
+      "id": "earth.greenhouse",
+      "pathID": "earth",
+      "order": 2,
+      "title": "Der Weg der Wärmestrahlung",
+      "objective": "Du erklärst den Treibhauseffekt als Strahlungsprozess.",
+      "cards": [
+        {
+          "title": "Energie hinein, Energie hinaus",
+          "text": "Die Erde erhält Energie von der Sonne und gibt Energie als Infrarotstrahlung ab. Treibhausgase absorbieren einen Teil dieser Strahlung und emittieren selbst Strahlung in verschiedene Richtungen. Das verändert, wie Energie zwischen Oberfläche, Atmosphäre und Weltraum ausgetauscht wird."
+        },
+        {
+          "title": "Nicht mit dem Ozonloch verwechseln",
+          "text": "Der natürliche Treibhauseffekt macht die Oberfläche wärmer, als sie ohne diese Gase wäre. Eine zusätzliche Erhöhung wirksamer Treibhausgase verändert die Energiebilanz. Das Ozonloch und verstärkter Treibhauseffekt sind unterschiedliche Vorgänge, auch wenn die Atmosphäre an beiden beteiligt ist."
+        }
+      ],
+      "visual": {
+        "kind": "flow",
+        "title": "Stark vereinfachtes Strahlungsmodell",
+        "labels": [
+          "Sonnenenergie erreicht Erde und Atmosphäre",
+          "Die Erde emittiert Infrarotstrahlung",
+          "Treibhausgase absorbieren und emittieren einen Teil"
+        ],
+        "values": null,
+        "caption": "Die Pfeile zeigen einen Erklärweg, keine vollständige Energiebilanz."
+      },
+      "reflection": "Erkläre den Unterschied zwischen Sonnenlicht, das ankommt, und Wärmestrahlung, die die Erde abgibt.",
+      "takeaway": "Der Treibhauseffekt betrifft den Strahlungsaustausch – nicht einfach ein Loch im Himmel.",
+      "source": {
+        "title": "NASA Science · What is the greenhouse effect?",
+        "url": "https://science.nasa.gov/climate-change/faq/what-is-the-greenhouse-effect/"
+      },
+      "photo": null,
+      "questions": [
+        {
+          "id": "earth.greenhouse.q1",
+          "prompt": "Welche Strahlung gibt die Erde als Wärme ab?",
+          "options": [
+            "Infrarotstrahlung",
+            "Ausschliesslich sichtbares Sonnenlicht",
+            "Gar keine Strahlung"
+          ],
+          "correctIndex": 0,
+          "explanation": "Die Erde emittiert thermische Infrarotstrahlung."
+        },
+        {
+          "id": "earth.greenhouse.q2",
+          "prompt": "Was machen Treibhausgase mit einem Teil dieser Strahlung?",
+          "options": [
+            "Sie absorbieren und emittieren Strahlung",
+            "Sie beseitigen jede Energie",
+            "Sie lassen grundsätzlich alles unverändert passieren"
+          ],
+          "correctIndex": 0,
+          "explanation": "Absorption und Emission verändern den Energieaustausch."
+        },
+        {
+          "id": "earth.greenhouse.q3",
+          "prompt": "Ist der natürliche Treibhauseffekt dasselbe wie das Ozonloch?",
+          "options": [
+            "Nein",
+            "Ja",
+            "Nur nachts"
+          ],
+          "correctIndex": 0,
+          "explanation": "Ozonabbau und Strahlungswirkung von Treibhausgasen sind unterschiedliche Prozesse."
+        },
+        {
+          "id": "earth.greenhouse.q4",
+          "prompt": "Warum ist eine vollständige Energiebilanz mehr als ein einzelner Pfeil?",
+          "options": [
+            "Weil mehrere Aufnahme-, Abgabe- und Austauschprozesse beteiligt sind",
+            "Weil Energieerhaltung nicht gilt",
+            "Weil die Erde keine Energie abgibt"
+          ],
+          "correctIndex": 0,
+          "explanation": "Das vereinfachte Modell erklärt einen Mechanismus, nicht alle Flüsse und Rückkopplungen."
+        }
+      ]
+    },
+    {
+      "id": "earth.water",
+      "pathID": "earth",
+      "order": 3,
+      "title": "Wasser auf Wanderschaft",
+      "objective": "Du verfolgst Zustandswechsel und Wege im Wasserkreislauf.",
+      "cards": [
+        {
+          "title": "Nicht nur ein Kreis am Himmel",
+          "text": "Wasser verdunstet, wird als Wasserdampf transportiert, kondensiert und kann als Niederschlag zurückkehren. Es fliesst oberirdisch ab, versickert oder bleibt zeitweise in Eis, Boden und Gewässern gespeichert. Auch Pflanzen geben Wasser an die Atmosphäre ab."
+        },
+        {
+          "title": "Der Antrieb",
+          "text": "Die Sonne liefert Energie für Verdunstung; die Schwerkraft treibt viele Rückwege an, etwa fallenden Regen und Abfluss. Die Aufenthaltsdauer ist nicht überall gleich. Das Kreislaufbild bedeutet deshalb nicht, dass jeder Tropfen denselben kurzen Weg nimmt."
+        }
+      ],
+      "visual": {
+        "kind": "flow",
+        "title": "Ein möglicher Weg",
+        "labels": [
+          "Meer: Verdunstung",
+          "Atmosphäre: Transport und Kondensation",
+          "Land: Niederschlag und Versickerung",
+          "Fluss: Rückweg ins Meer"
+        ],
+        "values": null,
+        "caption": "Nur ein möglicher Pfad. Speicher, Umwege und weitere Austauschprozesse sind möglich."
+      },
+      "reflection": "Wo kann Wasser auf seinem Weg lange gespeichert bleiben? Nenne zwei Orte.",
+      "takeaway": "Ein Kreislauf besteht aus Wegen und Speichern, nicht aus einer einzigen festen Runde.",
+      "source": {
+        "title": "USGS · The Water Cycle",
+        "url": "https://www.usgs.gov/special-topics/water-science-school/science/water-cycle"
+      },
+      "photo": null,
+      "questions": [
+        {
+          "id": "earth.water.q1",
+          "prompt": "Was ist Kondensation?",
+          "options": [
+            "Wasserdampf wird zu flüssigem Wasser",
+            "Flüssiges Wasser wird zu Wasserdampf",
+            "Wasser verschwindet"
+          ],
+          "correctIndex": 0,
+          "explanation": "Kondensation ist der Übergang von gasförmig zu flüssig."
+        },
+        {
+          "id": "earth.water.q2",
+          "prompt": "Welche Quelle liefert einen wesentlichen Antrieb für Verdunstung?",
+          "options": [
+            "Sonnenenergie",
+            "Nur die Erdrotation",
+            "Die Schrift im Diagramm"
+          ],
+          "correctIndex": 0,
+          "explanation": "Für den Zustandswechsel wird Energie benötigt; die Sonne ist ein wesentlicher Antrieb."
+        },
+        {
+          "id": "earth.water.q3",
+          "prompt": "Welcher Ort ist ein Wasserspeicher?",
+          "options": [
+            "Ein Gletscher",
+            "Nur eine Wolkenzeichnung",
+            "Ausschliesslich ein Fluss ohne Ufer"
+          ],
+          "correctIndex": 0,
+          "explanation": "Wasser kann in Eis über längere Zeit gespeichert sein."
+        },
+        {
+          "id": "earth.water.q4",
+          "prompt": "Nimmt jeder Tropfen denselben Weg in derselben Zeit?",
+          "options": [
+            "Nein, Wege und Aufenthaltsdauern unterscheiden sich",
+            "Ja, ein Kreis bedeutet gleiches Tempo",
+            "Nur im Winter"
+          ],
+          "correctIndex": 0,
+          "explanation": "Der Kreislauf enthält verschiedene Speicher und Abzweigungen."
+        }
+      ]
+    },
+    {
+      "id": "history.sources",
+      "pathID": "history",
+      "order": 1,
+      "title": "Eine Quelle ist eine Perspektive",
+      "objective": "Du unterscheidest Quelle, Aussage und Schlussfolgerung.",
+      "cards": [
+        {
+          "title": "Nähe zum Ereignis",
+          "text": "Ein Tagebuch aus einer Zeit kann eine Primärquelle sein. Ein späteres Geschichtsbuch ordnet Quellen ein und ist für diese historische Frage meist eine Sekundärdarstellung. Die Einteilung hängt von der Frage ab: Für die Erforschung späterer Geschichtsbilder kann auch das Geschichtsbuch selbst Quelle sein."
+        },
+        {
+          "title": "Nähe ist keine Unfehlbarkeit",
+          "text": "Auch Augenzeugen können sich irren, auswählen oder Absichten verfolgen. Prüfe Urheber, Zeitpunkt, Anlass und Publikum. Frage danach, was die Quelle tatsächlich belegt und welche Schlussfolgerung zusätzliche Belege braucht."
+        }
+      ],
+      "visual": {
+        "kind": "flow",
+        "title": "Eine Quelle untersuchen",
+        "labels": [
+          "Beobachten: Was steht oder erscheint tatsächlich?",
+          "Einordnen: Wer, wann, wofür, für wen?",
+          "Prüfen: Welche andere Quelle bestätigt oder widerspricht?"
+        ],
+        "values": null,
+        "caption": "Eine Arbeitsmethode, kein Automatismus zur Wahrheit."
+      },
+      "reflection": "Welche zwei Fragen würdest du an ein Tagebuch stellen, bevor du eine Behauptung daraus übernimmst?",
+      "takeaway": "Eine Quelle liefert Zugang zu einer Perspektive; ihre Aussage bleibt prüfbar.",
+      "source": {
+        "title": "Library of Congress · Getting Started with Primary Sources",
+        "url": "https://www.loc.gov/programs/teachers/getting-started-with-primary-sources/"
+      },
+      "photo": null,
+      "questions": [
+        {
+          "id": "history.sources.q1",
+          "prompt": "Ein zeitgenössisches Tagebuch ist automatisch in jeder Aussage zuverlässig?",
+          "options": [
+            "Nein, Nähe ersetzt keine Quellenkritik",
+            "Ja, der Autor war dabei",
+            "Nur wenn es handgeschrieben ist"
+          ],
+          "correctIndex": 0,
+          "explanation": "Wahrnehmung, Interessen und Erinnerungsfehler bleiben möglich."
+        },
+        {
+          "id": "history.sources.q2",
+          "prompt": "Welche Frage hilft zur Einordnung?",
+          "options": [
+            "Für welches Publikum wurde die Quelle erstellt?",
+            "Welche Schrift wirkt elegant?",
+            "Wie viel kostet das Papier heute?"
+          ],
+          "correctIndex": 0,
+          "explanation": "Das Publikum kann Auswahl und Darstellung beeinflussen."
+        },
+        {
+          "id": "history.sources.q3",
+          "prompt": "Kann ein späteres Geschichtsbuch selbst Primärquelle sein?",
+          "options": [
+            "Ja, etwa für die Untersuchung des damaligen Geschichtsbilds",
+            "Nein, nie",
+            "Nur ohne Fussnoten"
+          ],
+          "correctIndex": 0,
+          "explanation": "Die Rolle als Quelle hängt von der Forschungsfrage ab."
+        },
+        {
+          "id": "history.sources.q4",
+          "prompt": "Was ist beim Widerspruch zweier Quellen sinnvoll?",
+          "options": [
+            "Entstehung, Perspektiven und unabhängige Belege vergleichen",
+            "Die kürzere Quelle automatisch wählen",
+            "Immer der älteren Quelle glauben"
+          ],
+          "correctIndex": 0,
+          "explanation": "Widerspruch verlangt Prüfung statt einer pauschalen Rangregel."
+        }
+      ]
+    },
+    {
+      "id": "history.timeline",
+      "pathID": "history",
+      "order": 2,
+      "title": "Die Reihenfolge ist noch keine Erklärung",
+      "objective": "Du ordnest Daten ein, ohne zeitliche Folge mit Ursache zu verwechseln.",
+      "cards": [
+        {
+          "title": "Ordnen hilft",
+          "text": "Eine Zeitleiste zeigt, was vor und nach etwas geschah. Sie macht Abstände und Gleichzeitigkeit sichtbar. Apollo 8 flog 1968 um den Mond; die erste bemannte Mondlandung folgte 1969 mit Apollo 11; Apollo 17 startete 1972. Das sind unterschiedliche Missionsziele und Ereignisse."
+        },
+        {
+          "title": "Erklären braucht mehr",
+          "text": "Dass Ereignis B nach A liegt, beweist nicht, dass A allein B verursacht hat. Für eine historische Erklärung brauchst du Mechanismen, Bedingungen und Quellen. Auch eine Zeitleiste ist eine Auswahl: Was fehlt, kann die Geschichte verändern, die wir in ihr zu erkennen glauben."
+        }
+      ],
+      "visual": {
+        "kind": "flow",
+        "title": "Drei Stationen des Apollo-Programms",
+        "labels": [
+          "1968 · Apollo 8: bemannte Mondumkreisung",
+          "1969 · Apollo 11: erste bemannte Mondlandung",
+          "1972 · Apollo 17: letzte bemannte Apollo-Mondmission"
+        ],
+        "values": null,
+        "caption": "Ausgewählte Stationen; keine vollständige Programmgeschichte. Abstände sind hier nicht massstabsgetreu."
+      },
+      "reflection": "Was zeigt diese Zeitleiste gut, und welche wichtige Frage kann sie allein nicht beantworten?",
+      "takeaway": "Chronologie ordnet. Eine Erklärung braucht zusätzliche Belege.",
+      "source": {
+        "title": "NASA · Apollo Missions",
+        "url": "https://www.nasa.gov/the-apollo-program/"
+      },
+      "photo": null,
+      "questions": [
+        {
+          "id": "history.timeline.q1",
+          "prompt": "Was kam zuerst?",
+          "options": [
+            "Apollo 8 umkreiste den Mond",
+            "Apollo 11 landete auf dem Mond",
+            "Apollo 17 startete"
+          ],
+          "correctIndex": 0,
+          "explanation": "Die genannten Jahre sind 1968, 1969 und 1972."
+        },
+        {
+          "id": "history.timeline.q2",
+          "prompt": "Wie viele Kalenderjahre liegen zwischen 1968 und 1972?",
+          "options": [
+            "4",
+            "3",
+            "5"
+          ],
+          "correctIndex": 0,
+          "explanation": "1972 minus 1968 ergibt 4."
+        },
+        {
+          "id": "history.timeline.q3",
+          "prompt": "Beweist ‚B geschah nach A‘, dass A die alleinige Ursache war?",
+          "options": [
+            "Nein",
+            "Ja",
+            "Nur wenn beide in einer Zeitleiste stehen"
+          ],
+          "correctIndex": 0,
+          "explanation": "Zeitliche Reihenfolge ist eine notwendige Kontextinformation, aber kein ausreichender Ursachenbeleg."
+        },
+        {
+          "id": "history.timeline.q4",
+          "prompt": "Was kann eine Auswahlzeitleiste verzerren?",
+          "options": [
+            "Sie kann wichtige parallele Entwicklungen auslassen",
+            "Sie macht jede Jahreszahl falsch",
+            "Sie verbietet andere Quellen"
+          ],
+          "correctIndex": 0,
+          "explanation": "Die Auswahl beeinflusst, welche Zusammenhänge sichtbar werden."
+        }
+      ]
+    },
+    {
+      "id": "history.photos",
+      "pathID": "history",
+      "order": 3,
+      "title": "Ein Foto lesen, bevor es erzählt",
+      "objective": "Du trennst sichtbare Beobachtung von Deutung und Metadaten.",
+      "cards": [
+        {
+          "title": "Zuerst nur sehen",
+          "text": "Auf der Apollo-17-Aufnahme sind eine beleuchtete Erde, Wolken, Landflächen und ein dunkler Hintergrund zu sehen. ‚Dieses Bild hat alle Menschen sofort vereint‘ wäre dagegen eine Behauptung über Wirkung und Rezeption. Sie steht nicht als sichtbare Tatsache im Foto."
+        },
+        {
+          "title": "Dann den Kontext prüfen",
+          "text": "Die Datierung auf den 7. Dezember 1972 stammt aus der Dokumentation, nicht aus einer Uhr im Bild. Beschnitt, Auswahl und Bildunterschrift beeinflussen eine Darstellung. Das bedeutet nicht, dass jedes Foto täuscht; es bedeutet, dass Kontext Teil der Prüfung ist."
+        }
+      ],
+      "visual": {
+        "kind": "compare",
+        "title": "Drei Ebenen",
+        "labels": [
+          "Beobachtung: Wolken und Kontinente sind sichtbar",
+          "Metadaten: Aufnahme während Apollo 17, Dezember 1972",
+          "Deutung: Welche Bedeutung Menschen dem Bild gaben"
+        ],
+        "values": null,
+        "caption": "Die Ebenen können zusammenpassen, benötigen aber unterschiedliche Belege."
+      },
+      "reflection": "Nenne eine sichtbare Eigenschaft des Fotos und eine Deutung, die du ohne weitere Quellen nicht beweisen kannst.",
+      "takeaway": "Unterscheide, was das Bild zeigt, was dokumentiert ist und was du hineinliest.",
+      "source": {
+        "title": "NASA SVS · The Blue Marble from Apollo 17",
+        "url": "https://svs.gsfc.nasa.gov/30613/"
+      },
+      "photo": {
+        "url": "https://svs.gsfc.nasa.gov/vis/a030000/a030600/a030613/blue_marble_apollo_17_19721207_print.jpg",
+        "caption": "Die Erde am 7. Dezember 1972, aufgenommen während Apollo 17. Wolken und Kontinente zeigen einen Moment, nicht einen langfristigen Trend.",
+        "credit": "Foto: NASA / Johnson Space Center · Apollo 17",
+        "sourceURL": "https://svs.gsfc.nasa.gov/30613/"
+      },
+      "questions": [
+        {
+          "id": "history.photos.q1",
+          "prompt": "Welche Aussage ist zunächst eine Beobachtung?",
+          "options": [
+            "Auf dem Bild sind Wolken sichtbar",
+            "Alle Menschen empfanden dasselbe",
+            "Das Bild änderte jedes politische Gesetz"
+          ],
+          "correctIndex": 0,
+          "explanation": "Sichtbare Formen sind direkt beobachtbar; gesellschaftliche Wirkungen benötigen andere Belege."
+        },
+        {
+          "id": "history.photos.q2",
+          "prompt": "Woher kommt die genaue Datierung dieser Aufnahme?",
+          "options": [
+            "Aus der zugehörigen Dokumentation",
+            "Aus dem dunklen Hintergrund allein",
+            "Aus der Grösse auf deinem Display"
+          ],
+          "correctIndex": 0,
+          "explanation": "Metadaten ergänzen das sichtbare Bild."
+        },
+        {
+          "id": "history.photos.q3",
+          "prompt": "Was kann ein Beschnitt verändern?",
+          "options": [
+            "Welche Teile und Zusammenhänge sichtbar bleiben",
+            "Das Datum des ursprünglichen Ereignisses",
+            "Jede sichtbare Farbe zwingend"
+          ],
+          "correctIndex": 0,
+          "explanation": "Ein Ausschnitt lässt Kontext weg, ohne zwingend den gezeigten Teil zu erfinden."
+        },
+        {
+          "id": "history.photos.q4",
+          "prompt": "Was folgt aus dem Hinweis auf Quellenkritik bei Fotos?",
+          "options": [
+            "Bild und Kontext gemeinsam prüfen",
+            "Jedes Foto grundsätzlich als Fälschung behandeln",
+            "Bildunterschriften niemals lesen"
+          ],
+          "correctIndex": 0,
+          "explanation": "Quellenkritik ist differenzierte Prüfung, kein pauschales Misstrauen."
+        }
+      ]
+    }
+  ],
+  "paths": [
+    {
+      "id": "learn",
+      "number": "01",
+      "subtitle": "Wissen abrufen, verteilen und ehrlich überprüfen.",
+      "title": "Lernen & Gedächtnis"
+    },
+    {
+      "id": "think",
+      "number": "02",
+      "subtitle": "Behauptungen, Ursachen und Belege auseinanderhalten.",
+      "title": "Klares Denken"
+    },
+    {
+      "id": "data",
+      "number": "03",
+      "subtitle": "Durchschnitte, Risiken und Wahrscheinlichkeiten lesen.",
+      "title": "Zahlen verstehen"
+    },
+    {
+      "id": "digital",
+      "number": "04",
+      "subtitle": "Konten, Nachrichten und Daten bewusst schützen.",
+      "title": "Digitale Souveränität"
+    },
+    {
+      "id": "economy",
+      "number": "05",
+      "subtitle": "Knappheit, versunkene Kosten und den nächsten Schritt verstehen.",
+      "title": "Gute Entscheidungen"
+    },
+    {
+      "id": "science",
+      "number": "06",
+      "subtitle": "Energie, Leistung und Grössenordnungen begreifen.",
+      "title": "Physik im Alltag"
+    },
+    {
+      "id": "earth",
+      "number": "07",
+      "subtitle": "Wetter, Klima und Kreisläufe unterscheiden.",
+      "title": "Unser Planet"
+    },
+    {
+      "id": "history",
+      "number": "08",
+      "subtitle": "Zeit einordnen, Bilder lesen und Aussagen prüfen.",
+      "title": "Geschichte & Quellen"
+    }
+  ],
+  "version": 1
+}

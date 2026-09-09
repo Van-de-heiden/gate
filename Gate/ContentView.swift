@@ -1,251 +1,249 @@
+import Combine
 import FamilyControls
 import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var controller: ScreenTimeController
-    @State private var isPickerPresented = false
+    @ObservedObject var learning: LearningStore
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.openURL) private var openURL
+    @State private var tab = 0
+    @State private var onboarding = false
+    private let tabs = ["Heute", "Lernen", "Bilanz", "Mehr"]
+
+    init(controller: ScreenTimeController) {
+        self.controller = controller
+        self.learning = controller.learning
+    }
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 26) {
-                    header
-                    statusStrip
-
-                    if let grant = controller.activeGrant {
-                        grantCard(grant)
-                    } else if controller.pendingTarget != nil {
-                        LessonView(controller: controller)
-                    } else {
-                        setupCard
-                    }
-
-                    if let message = controller.message {
-                        notice(message, color: .green)
-                    }
-                    if let error = controller.errorMessage {
-                        notice(error, color: .red)
-                    }
-
-                    principles
+            Group {
+                switch tab {
+                case 1: LearningLibraryView(controller: controller, learning: learning)
+                case 2: GateStatisticsView(controller: controller, learning: learning)
+                case 3: GateSettingsView(controller: controller)
+                default: home
                 }
-                .padding(.horizontal, 22)
-                .padding(.vertical, 24)
             }
-            .background(Color(uiColor: .systemGroupedBackground))
-            .navigationBarHidden(true)
+            .background(GateDesign.paper)
+            .toolbar(.hidden, for: .navigationBar)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                VStack(spacing: 0) {
+                    Divider()
+                    HStack(spacing: 0) {
+                        ForEach(tabs.indices, id: \.self) { index in
+                            Button { tab = index } label: {
+                                VStack(spacing: 8) {
+                                    Rectangle().fill(tab == index ? Color.primary : .clear).frame(width: 18, height: 2)
+                                    Text(tabs[index]).font(.caption.weight(tab == index ? .semibold : .regular))
+                                }.frame(maxWidth: .infinity).frame(minHeight: 52)
+                            }.buttonStyle(.plain).accessibilityAddTraits(tab == index ? .isSelected : [])
+                        }
+                    }.padding(.horizontal, 18).background(GateDesign.paper)
+                }
+            }
         }
-        .familyActivityPicker(isPresented: $isPickerPresented, selection: $controller.selection)
-        .onAppear {
+        .tint(.primary)
+        .sheet(isPresented: $onboarding) { GateOnboardingView(controller: controller) }
+        .sheet(item: $learning.session, onDismiss: { learning.checkpoint() }) { _ in
+            LessonView(controller: controller, learning: learning)
+        }
+        .alert("Gate", isPresented: Binding(get: { controller.errorMessage != nil }, set: { if !$0 { controller.errorMessage = nil } })) {
+            Button("Verstanden") { controller.errorMessage = nil }
+        } message: { Text(controller.errorMessage ?? "") }
+        .onAppear { onboarding = !controller.state.onboardingComplete }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { controller.refreshSharedState() }
+            else { learning.checkpoint() }
+        }
+        .onReceive(Timer.publish(every: 3, on: .main, in: .common).autoconnect()) { _ in
+            if scenePhase == .active { controller.refreshSharedState() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .gateRequestOpened)) { note in
             controller.refreshSharedState()
-        }
-    }
-
-    private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("GATE")
-                .font(.system(size: 38, weight: .semibold, design: .serif))
-                .tracking(5)
-            Text("Konsum wird verdient. Fokus bleibt frei.")
-                .font(.system(size: 17, weight: .regular, design: .serif))
-                .foregroundColor(.secondary)
-        }
-    }
-
-    private var statusStrip: some View {
-        HStack(spacing: 0) {
-            statusItem(title: "SCHUTZ", value: controller.isAuthorized ? "AKTIV" : "OFFEN")
-            Divider().frame(height: 38)
-            statusItem(title: "GATE", value: controller.isMonitoring ? "LÄUFT" : "PAUSE")
-            Divider().frame(height: 38)
-            statusItem(
-                title: "FREI",
-                value: "\(GateConstants.dailyFreeMinutes) MIN"
-            )
-        }
-        .padding(.vertical, 14)
-        .background(Color(uiColor: .secondarySystemGroupedBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-    }
-
-    private func statusItem(title: String, value: String) -> some View {
-        VStack(spacing: 5) {
-            Text(title)
-                .font(.caption2.weight(.medium))
-                .tracking(1.2)
-                .foregroundColor(.secondary)
-            Text(value)
-                .font(.caption.weight(.semibold))
-        }
-        .frame(maxWidth: .infinity)
-    }
-
-    private var setupCard: some View {
-        VStack(alignment: .leading, spacing: 22) {
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Technischer Probelauf")
-                    .font(.title2.weight(.semibold))
-                Text(GateConstants.isDebugAllowance
-                     ? "Debug nutzt zwei Minuten statt der späteren freien Stunde."
-                     : "Die erste Stunde des gewählten Konsumpools bleibt frei.")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+            if let id = note.userInfo?["id"] as? UUID,
+               let request = controller.state.requests.first(where: { $0.id == id }) {
+                controller.selectRequest(request); tab = 0
             }
+        }
+        .onOpenURL { url in
+            controller.handleURL(url)
+            if url.host == "launch", let id = UUID(uuidString: url.lastPathComponent),
+               let item = controller.state.launcher.first(where: { $0.id == id && $0.enabled }) {
+                open(item)
+            } else { tab = 0 }
+        }
+    }
 
-            step(number: "01", title: "Bildschirmzeit erlauben", detail: authorizationDetail) {
-                Task { await controller.requestAuthorization() }
-            } buttonTitle: {
-                controller.isAuthorized ? "Erteilt" : "Zugriff erteilen"
-            } disabled: {
-                controller.isAuthorized || controller.isRequestingAuthorization
-            }
-
-            Divider()
-
-            step(number: "02", title: "Konsum auswählen", detail: controller.selectionSummary) {
-                isPickerPresented = true
-            } buttonTitle: {
-                controller.hasSelection ? "Auswahl ändern" : "Apps & Websites wählen"
-            } disabled: {
-                !controller.isAuthorized
-            }
-
-            Text("Wähle einzelne Konsum-Apps und Domains. Telefon, WhatsApp, Karten, Kalender und Lernwerkzeuge bleiben unmarkiert.")
-                .font(.footnote)
-                .foregroundColor(.secondary)
-
-            Divider()
-
-            HStack(spacing: 12) {
-                Button(controller.isMonitoring ? "Gate neu starten" : "Gate starten") {
-                    controller.startGate()
+    private var home: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 34) {
+                HStack {
+                    Text("gate").font(.system(.title2, design: .serif)).tracking(-1)
+                    Spacer()
+                    Eyebrow(text: Date().formatted(.dateTime.day().month(.wide)))
                 }
-                .buttonStyle(GatePrimaryButtonStyle())
-                .disabled(!controller.isAuthorized || !controller.hasSelection)
+                VStack(alignment: .leading, spacing: 16) {
+                    Text(controller.state.limitReached ? "Erst verstehen.\nDann weiter." : "Platz für das,\nwas zählt.")
+                        .font(.system(.largeTitle, design: .serif)).fixedSize(horizontal: false, vertical: true)
+                    Text(controller.state.monitoringEnabled
+                         ? "Deine Aufmerksamkeit gehört dir."
+                         : "Wähle deine Ablenkungen. Den Rest lässt Gate in Ruhe.")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                }
+                allowance
 
-                if controller.isMonitoring {
-                    Button("Anhalten") {
-                        controller.stopGate()
+                // Requests and grants are siblings, NEVER if-grant / else-if-request.
+                if let request = controller.selectedRequest {
+                    RequestCard(controller: controller, request: request)
+                }
+                if controller.state.requests.count > 1 {
+                    GateSection(title: "Weitere Anfragen") {
+                        ForEach(controller.state.requests.filter { $0.id != controller.selectedRequest?.id }) { request in
+                            Button { controller.selectRequest(request) } label: {
+                                HStack { GateTargetLabel(target: request.target); Spacer(); Text("Lektion").foregroundStyle(.secondary) }
+                                    .padding(.vertical, 12)
+                            }.buttonStyle(.plain)
+                        }
                     }
-                    .buttonStyle(GateSecondaryButtonStyle())
                 }
-            }
-        }
-        .padding(20)
-        .background(Color(uiColor: .secondarySystemGroupedBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-    }
-
-    private var authorizationDetail: String {
-        if controller.isAuthorized { return "Family Controls ist freigegeben." }
-        if controller.authorizationStatus == .denied { return "In den Einstellungen abgelehnt." }
-        return "Gate benötigt Apples Family-Controls-Freigabe."
-    }
-
-    private func step(
-        number: String,
-        title: String,
-        detail: String,
-        action: @escaping () -> Void,
-        buttonTitle: () -> String,
-        disabled: () -> Bool
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .firstTextBaseline, spacing: 12) {
-                Text(number)
-                    .font(.caption.monospacedDigit().weight(.semibold))
-                    .foregroundColor(.secondary)
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(title).font(.headline)
-                    Text(detail).font(.footnote).foregroundColor(.secondary)
+                if !controller.activeGrants.isEmpty {
+                    GateSection(title: "Deine Freigaben · unabhängig") {
+                        ForEach(controller.activeGrants) { grant in
+                            VStack(alignment: .leading, spacing: 10) {
+                                HStack {
+                                    GateTargetLabel(target: grant.target).font(.headline)
+                                    Spacer()
+                                    Text("≤ \(grant.minutes - grant.usedMinutes) min").font(.headline.monospacedDigit())
+                                }
+                                GateProgressLine(value: Double(grant.minutes - grant.usedMinutes) / Double(grant.minutes))
+                                HStack {
+                                    Text("Gültig bis \(grant.expiresAt.formatted(date: .omitted, time: .shortened))")
+                                    Spacer()
+                                    Button("Beenden") { controller.endGrant(grant) }.underline()
+                                }.font(.caption).foregroundStyle(.secondary)
+                            }.padding(18).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        Text("Restzeit anhand bestätigter iOS-Nutzungsschwellen; kein sekundengenauer Countdown.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
                 }
-            }
-            Button(buttonTitle(), action: action)
-                .buttonStyle(GateSecondaryButtonStyle())
-                .disabled(disabled())
+                if let message = controller.message {
+                    Text(message).font(.footnote).padding(16).frame(maxWidth: .infinity, alignment: .leading)
+                        .background(GateDesign.surface).onTapGesture { controller.message = nil }
+                }
+                GateSection(title: "Das Wesentliche") {
+                    VStack(spacing: 0) {
+                        ForEach(controller.state.launcher.filter(\.enabled)) { item in
+                            Button { open(item) } label: {
+                                HStack {
+                                    Text(item.title).font(.system(.title2, design: .serif))
+                                    Spacer()
+                                    Text("Öffnen").font(.caption).foregroundStyle(.secondary)
+                                }.frame(minHeight: 55).contentShape(Rectangle())
+                            }.buttonStyle(.plain)
+                            Divider()
+                        }
+                    }
+                }
+                if controller.state.limitReached && controller.state.monitoringEnabled {
+                    ProtectedTargetsView(controller: controller)
+                }
+                Button { controller.beginPractice() } label: {
+                    HStack { Text("Einfach etwas lernen"); Spacer(); Text("\(learning.dueCount) fällig").foregroundStyle(.secondary) }
+                }.buttonStyle(GateButtonStyle(prominent: false))
+                Text("Kein Feed. Kein Wettlauf. Ein guter Gedanke reicht.")
+                    .font(.system(.footnote, design: .serif)).foregroundStyle(.secondary)
+            }.padding(24).padding(.bottom, 24)
         }
     }
 
-    private func grantCard(_ grant: GateGrant) -> some View {
+    private var allowance: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("ZUGANG GEWÄHRT")
-                .font(.caption.weight(.semibold))
-                .tracking(1.5)
-                .foregroundColor(.secondary)
-            Text("\(grant.minutes) aktive Minuten")
-                .font(.title2.weight(.semibold))
-            Text("Nur die angeforderte \(grant.target.kind.displayName) ist freigegeben. Der Rest des Konsumpools bleibt gesperrt.")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-
-            TimelineView(.periodic(from: .now, by: 1)) { _ in
-                if grant.expiresAt > Date() {
-                    HStack {
-                        Text("Verfällt bei Nichtnutzung in")
-                        Spacer()
-                        Text(grant.expiresAt, style: .timer)
-                            .monospacedDigit()
-                    }
-                    .font(.footnote.weight(.medium))
-                } else {
-                    Text("Freigabe abgelaufen")
-                        .font(.footnote.weight(.medium))
-                }
+            HStack(alignment: .firstTextBaseline) {
+                Eyebrow(text: controller.state.limitReached ? "Freie Stunde aufgebraucht" : "Freie Tageszeit")
+                Spacer()
+                Text(controller.state.monitoringEnabled && controller.monitorReady ? "AKTIV" : controller.state.monitoringEnabled ? "PRÜFEN" : "PAUSIERT").font(.caption2.weight(.semibold))
             }
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text(controller.state.limitReached ? "0" : "≤ \(max(0, controller.state.freeMinutes - controller.state.confirmedMinutes))")
+                    .font(.system(size: 48, weight: .light, design: .serif)).monospacedDigit()
+                Text("min frei").font(.subheadline).foregroundStyle(.secondary)
+            }
+            GateProgressLine(value: Double(max(0, controller.state.freeMinutes - controller.state.confirmedMinutes)) / Double(controller.state.freeMinutes))
+            Text(controller.state.freeMinutes == 2 ? "Testmodus · 2 Minuten. In Mehr auf Alltag wechseln." : "60 Minuten gemeinsam für ausgewählte Konsum-Apps und Websites.")
+                .font(.caption).foregroundStyle(.secondary)
+            if let date = controller.state.lastUsageUpdate {
+                Text("Zuletzt bestätigt: \(date.formatted(date: .omitted, time: .shortened)) · Anzeige in Nutzungsschritten.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
+            if !controller.state.monitoringEnabled || !controller.monitorReady {
+                Button("Gate einrichten") { tab = 3 }.buttonStyle(GateButtonStyle())
+            }
+        }.padding(20).overlay(RoundedRectangle(cornerRadius: 14).stroke(GateDesign.line))
+    }
+
+    private func open(_ item: LauncherItem) {
+        guard let url = item.validatedURL else { return }
+        openURL(url) { accepted in
+            if !accepted { controller.errorMessage = "„\(item.title)“ konnte nicht geöffnet werden. Prüfe den Link unter Mehr → Textliste." }
         }
-        .padding(20)
-        .background(Color(uiColor: .secondarySystemGroupedBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
+}
 
-    private func notice(_ text: String, color: Color) -> some View {
-        Text(text)
-            .font(.footnote)
-            .foregroundColor(color)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(14)
-            .background(color.opacity(0.08))
-            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+private struct RequestCard: View {
+    @ObservedObject var controller: ScreenTimeController
+    let request: GateRequest
+    @State private var minutes = 5
+    var body: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            Eyebrow(text: "Eine bewusste Entscheidung")
+            GateTargetLabel(target: request.target).font(.system(.title, design: .serif))
+            Text("Wie viel Zeit möchtest du freigeben?").font(.subheadline).foregroundStyle(.secondary)
+            Picker("Freigabedauer", selection: $minutes) {
+                ForEach(LessonLoad.allowedMinutes, id: \.self) { Text("\($0) min").tag($0) }
+            }.pickerStyle(.segmented)
+            let attempt = controller.state.attempts[request.target.id] ?? GateAttempt()
+            let count = LessonLoad.questionCount(minutes: minutes, consumedMinutes: controller.state.confirmedMinutes, failures: attempt.failures)
+            Text("\(count) Fragen · Umfang wächst mit Dauer, Tagesnutzung und Fehlversuchen.")
+                .font(.caption).foregroundStyle(.secondary)
+            if let until = attempt.cooldownUntil, until > Date() {
+                Text("Kurze Pause für diese App. Neuer Versuch ab \(until.formatted(date: .omitted, time: .shortened)).")
+                    .font(.subheadline)
+            } else {
+                Button("Lektion beginnen") { controller.beginLesson(minutes: minutes) }.buttonStyle(GateButtonStyle())
+            }
+            Text("Nur diese \(request.target.kind.displayName). Andere Freigaben bleiben erhalten.")
+                .font(.caption).foregroundStyle(.secondary)
+        }.padding(20).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 14))
     }
+}
 
-    private var principles: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("UNVERHANDELBAR")
-                .font(.caption.weight(.semibold))
-                .tracking(1.5)
-                .foregroundColor(.secondary)
-            Text("Der Erwachsenenfilter und Apples Sperre für explizite Medien bleiben aktiv, auch während der freien Stunde und während einer verdienten Freigabe.")
-                .font(.footnote)
-                .foregroundColor(.secondary)
+struct ProtectedTargetsView: View {
+    @ObservedObject var controller: ScreenTimeController
+    private var targets: [GateTarget] {
+        let selected = GateShieldPolicy.selection(from: controller.state)
+        return selected.applicationTokens.compactMap { token in
+            (try? PropertyListEncoder().encode(token)).map { GateTarget(kind: .application, tokenData: $0) }
+        } + selected.webDomainTokens.compactMap { token in
+            (try? PropertyListEncoder().encode(token)).map { GateTarget(kind: .webDomain, tokenData: $0) }
         }
-        .padding(.bottom, 12)
     }
-}
-
-private struct GatePrimaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.subheadline.weight(.semibold))
-            .foregroundColor(Color(uiColor: .systemBackground))
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 13)
-            .background(Color.primary.opacity(configuration.isPressed ? 0.72 : 1))
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+    var body: some View {
+        GateSection(title: "Apps einzeln freigeben") {
+            ForEach(targets) { target in
+                Button { controller.requestLesson(for: target) } label: {
+                    HStack {
+                        GateTargetLabel(target: target)
+                        Spacer()
+                        Text(controller.state.grant(for: target, at: Date()) == nil ? "Gesperrt" : "Frei").font(.caption).foregroundStyle(.secondary)
+                    }.frame(minHeight: 44)
+                }.buttonStyle(.plain).disabled(controller.state.grant(for: target, at: Date()) != nil)
+                Divider()
+            }
+            Text("Auch erreichbar, wenn eine Shield-Mitteilung fehlt. Telefon und WhatsApp nicht in die Sperrauswahl aufnehmen.")
+                .font(.caption).foregroundStyle(.secondary)
+        }
     }
-}
-
-private struct GateSecondaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.subheadline.weight(.semibold))
-            .foregroundColor(.primary)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(Color.primary.opacity(configuration.isPressed ? 0.11 : 0.055))
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-    }
-}
-
-#Preview {
-    ContentView(controller: ScreenTimeController())
 }

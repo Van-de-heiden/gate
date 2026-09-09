@@ -3,8 +3,8 @@ import ManagedSettingsUI
 import UIKit
 
 final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
-    private let background = UIColor(red: 0.055, green: 0.055, blue: 0.06, alpha: 1)
-    private let primary = UIColor(red: 0.92, green: 0.92, blue: 0.89, alpha: 1)
+    private let background = UIColor(white: 0.055, alpha: 1)
+    private let primary = UIColor(white: 0.96, alpha: 1)
 
     override func configuration(shielding application: Application) -> ShieldConfiguration {
         configuration(for: "Diese App")
@@ -32,17 +32,17 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         ShieldConfiguration(
             backgroundBlurStyle: .systemUltraThinMaterialDark,
             backgroundColor: background,
-            icon: UIImage(systemName: "lock.shield"),
+            icon: nil,
             title: ShieldConfiguration.Label(
-                text: "Die freie Zeit ist aufgebraucht.",
+                text: "Erst verstehen. Dann weiter.",
                 color: .white
             ),
             subtitle: ShieldConfiguration.Label(
-                text: "\(subject) verlangt nun eine kurze Lektion. Der Inhaltsfilter bleibt ohne Ausnahme aktiv.",
+                text: "\(subject) ist gesperrt. Fordere eine Lektion an und öffne die Gate-Mitteilung. Du kannst Gate auch selbst öffnen. Andere Freigaben bleiben unabhängig.",
                 color: UIColor.white.withAlphaComponent(0.72)
             ),
             primaryButtonLabel: ShieldConfiguration.Label(
-                text: "Freischaltung vorbereiten",
+                text: "Lektion anfordern",
                 color: background
             ),
             primaryButtonBackgroundColor: primary,
@@ -53,4 +53,3 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         )
     }
 }
-

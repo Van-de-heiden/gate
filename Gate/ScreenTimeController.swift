@@ -4,336 +4,303 @@ import FamilyControls
 import Foundation
 import ManagedSettings
 import UserNotifications
+import WidgetKit
 
 @MainActor
 final class ScreenTimeController: ObservableObject {
-    @Published var selection = GateStorage.loadSelection()
+    @Published private(set) var state = GateState()
+    @Published var selection = FamilyActivitySelection()
     @Published private(set) var authorizationStatus = AuthorizationCenter.shared.authorizationStatus
-    @Published private(set) var isMonitoring = GateStorage.monitoringEnabled
-    @Published private(set) var limitReached = GateStorage.limitReached
-    @Published private(set) var pendingTarget = GateStorage.pendingTarget
-    @Published private(set) var activeGrant = GateStorage.activeGrant
-    @Published private(set) var consecutiveFailures = GateStorage.consecutiveFailures
-    @Published private(set) var cooldownUntil = GateStorage.cooldownUntil
-    @Published private(set) var lesson = GateLesson.make(failureLevel: GateStorage.consecutiveFailures)
-    @Published var answers: [String: Int] = [:]
+    @Published var isRequestingAuthorization = false
     @Published var message: String?
     @Published var errorMessage: String?
-    @Published var isRequestingAuthorization = false
-
+    @Published var selectedRequest: GateRequest?
+    @Published private(set) var monitorReady = false
+    let learning = LearningStore()
     private let activityCenter = DeviceActivityCenter()
-    private let settingsStore = ManagedSettingsStore()
-    private let decoder = PropertyListDecoder()
+    private var hasStorage = false
 
-    var isAuthorized: Bool {
-        authorizationStatus != .notDetermined && authorizationStatus != .denied
-    }
-
-    var hasSelection: Bool {
-        !selection.applicationTokens.isEmpty ||
-        !selection.categoryTokens.isEmpty ||
-        !selection.webDomainTokens.isEmpty
-    }
-
-    var selectionSummary: String {
-        let apps = selection.applicationTokens.count
-        let categories = selection.categoryTokens.count
-        let websites = selection.webDomainTokens.count
-        return "\(apps) Apps · \(websites) Websites · \(categories) Kategorien"
-    }
-
-    var canSubmitLesson: Bool {
-        lesson.questions.allSatisfy { answers[$0.id] != nil } && cooldownRemaining <= 0
-    }
-
-    var cooldownRemaining: TimeInterval {
-        guard let cooldownUntil else { return 0 }
-        return max(0, cooldownUntil.timeIntervalSinceNow)
-    }
+    var isAuthorized: Bool { authorizationStatus == .approved }
+    var activeGrants: [GateGrant] { state.activeGrants(at: Date()) }
+    var hasSelection: Bool { !selection.applicationTokens.isEmpty || !selection.webDomainTokens.isEmpty }
+    var selectionSummary: String { "\(selection.applicationTokens.count) Apps · \(selection.webDomainTokens.count) Websites" }
 
     init() {
-        applyAlwaysOnProtections()
+        // Migration: these are the spike's two names, never other apps' monitors.
+        activityCenter.stopMonitoring([DeviceActivityName("gate.daily"), DeviceActivityName("gate.grant")])
         refreshSharedState()
-    }
-
-    func requestAuthorization() async {
-        isRequestingAuthorization = true
-        errorMessage = nil
-        defer { isRequestingAuthorization = false }
-
-        do {
-            try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
-            authorizationStatus = AuthorizationCenter.shared.authorizationStatus
-            _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
-            applyAlwaysOnProtections()
-            message = "Bildschirmzeit-Zugriff erteilt."
-        } catch {
-            authorizationStatus = AuthorizationCenter.shared.authorizationStatus
-            errorMessage = "Die Bildschirmzeit-Freigabe ist fehlgeschlagen: \(error.localizedDescription)"
-        }
-    }
-
-    func startGate() {
-        errorMessage = nil
-        message = nil
-
-        guard isAuthorized else {
-            errorMessage = "Erteile Gate zuerst Zugriff auf Bildschirmzeit."
-            return
-        }
-        guard hasSelection else {
-            errorMessage = "Wähle mindestens eine einzelne Konsum-App oder Website aus."
-            return
-        }
-
-        do {
-            try GateStorage.saveSelection(selection)
-            activityCenter.stopMonitoring([GateConstants.dailyActivity, GateConstants.grantActivity])
-            clearUsageShields()
-            GateStorage.resetSessionState()
-
-            let schedule = DeviceActivitySchedule(
-                intervalStart: DateComponents(hour: 0, minute: 0, second: 0),
-                intervalEnd: DateComponents(hour: 23, minute: 59, second: 59),
-                repeats: true,
-                warningTime: nil
-            )
-            let event = DeviceActivityEvent(
-                applications: selection.applicationTokens,
-                categories: selection.categoryTokens,
-                webDomains: selection.webDomainTokens,
-                threshold: DateComponents(minute: GateConstants.dailyFreeMinutes)
-            )
-
-            try activityCenter.startMonitoring(
-                GateConstants.dailyActivity,
-                during: schedule,
-                events: [GateConstants.dailyLimitEvent: event]
-            )
-
-            GateStorage.monitoringEnabled = true
-            isMonitoring = true
-            limitReached = false
-            pendingTarget = nil
-            activeGrant = nil
-            consecutiveFailures = 0
-            cooldownUntil = nil
-            answers = [:]
-            lesson = .make(failureLevel: 0)
-            applyAlwaysOnProtections()
-            message = "Gate läuft. Die gemeinsame Freigrenze beträgt \(GateConstants.dailyFreeMinutes) Minuten."
-        } catch {
-            GateStorage.monitoringEnabled = false
-            isMonitoring = false
-            errorMessage = "Das Monitoring konnte nicht gestartet werden: \(error.localizedDescription)"
-        }
-    }
-
-    func stopGate() {
-        activityCenter.stopMonitoring([GateConstants.dailyActivity, GateConstants.grantActivity])
-        clearUsageShields()
-        GateStorage.monitoringEnabled = false
-        GateStorage.resetSessionState()
-        isMonitoring = false
-        limitReached = false
-        pendingTarget = nil
-        activeGrant = nil
-        consecutiveFailures = 0
-        cooldownUntil = nil
-        answers = [:]
-        lesson = .make(failureLevel: 0)
-        applyAlwaysOnProtections()
-        message = "Gate wurde für den Test angehalten. Der Inhaltsfilter bleibt aktiv."
+        selection = GateShieldPolicy.selection(from: state)
     }
 
     func refreshSharedState() {
         authorizationStatus = AuthorizationCenter.shared.authorizationStatus
-        isMonitoring = GateStorage.monitoringEnabled
-        limitReached = GateStorage.limitReached
-
-        if let storedCooldown = GateStorage.cooldownUntil, storedCooldown <= Date() {
-            GateStorage.cooldownUntil = nil
-        }
-
-        if let storedGrant = GateStorage.activeGrant, storedGrant.expiresAt <= Date() {
-            GateStorage.activeGrant = nil
-            if GateStorage.limitReached {
-                applyFullUsageShield()
+        do {
+            state = try GateSharedStore.transaction(afterCommit: { state in
+                if self.isAuthorized { GateShieldPolicy.apply(state) }
+            }) { state in
+                state.rollDay(at: Date())
+                state.expireGrants(at: Date())
+                return state
             }
-        }
-
-        pendingTarget = GateStorage.pendingTarget
-        activeGrant = GateStorage.activeGrant
-        consecutiveFailures = GateStorage.consecutiveFailures
-        cooldownUntil = GateStorage.cooldownUntil
-        lesson = .make(failureLevel: consecutiveFailures)
+            hasStorage = true
+            monitorReady = isAuthorized && activityCenter.activities.contains(DeviceActivityName(state.dailyActivityName))
+            let valid = Set(state.grants.map(\.activityName))
+            let stale = activityCenter.activities.filter {
+                $0.rawValue.hasPrefix("gate.grant.") && !valid.contains($0.rawValue)
+            }
+            if !stale.isEmpty { activityCenter.stopMonitoring(stale) }
+            if let request = selectedRequest, !state.requests.contains(where: { $0.id == request.id }) {
+                selectedRequest = nil
+            }
+            if selectedRequest == nil && learning.session == nil {
+                selectedRequest = state.requests.sorted { $0.requestedAt > $1.requestedAt }.first
+            }
+        } catch { hasStorage = false; errorMessage = error.localizedDescription }
     }
 
-    func chooseAnswer(_ answer: Int, for question: LessonQuestion) {
-        answers[question.id] = answer
+    func requestAuthorization() async {
+        isRequestingAuthorization = true
+        defer { isRequestingAuthorization = false }
+        do {
+            try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+            authorizationStatus = AuthorizationCenter.shared.authorizationStatus
+            _ = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert])
+            refreshSharedState()
+        } catch { errorMessage = error.localizedDescription }
+    }
+
+    func startGate(testMode: Bool = false) {
+        errorMessage = nil
+        guard hasStorage, isAuthorized else { errorMessage = "Erlaube zuerst Bildschirmzeit und prüfe die App Group."; return }
+        guard hasSelection, selection.categoryTokens.isEmpty else {
+            errorMessage = "Wähle einzelne Apps und Websites. Klappe Kategorien auf; ganze Kategorien würden auch wichtige Apps erfassen."
+            return
+        }
+        do {
+            let data = try PropertyListEncoder().encode(selection)
+            let oldActivity = state.dailyActivityName
+            let freeMinutes = testMode ? 2 : 60
+            let changed = state.selectionData != data || state.freeMinutes != freeMinutes
+            // Preserve today's usage when resuming or editing selection.
+            try mutate { state in
+                state.selectionData = data
+                state.freeMinutes = freeMinutes
+                state.monitoringEnabled = true
+                state.limitReached = state.confirmedMinutes >= freeMinutes
+                if changed { state.dailyActivityName = "gate.daily.\(UUID().uuidString)" }
+            }
+            if changed { activityCenter.stopMonitoring([DeviceActivityName(oldActivity)]) }
+            try installDailyMonitor()
+            monitorReady = true
+            message = testMode ? "Testmodus: 2 freie Minuten. Jede Freigabe bleibt separat." : "Gate ist bereit. 60 freie Minuten pro Tag, gemeinsam für deine Auswahl."
+            WidgetCenter.shared.reloadAllTimelines()
+        } catch {
+            // Keep any already-required shields; do not clear other grants on an API failure.
+            monitorReady = activityCenter.activities.contains(DeviceActivityName(state.dailyActivityName))
+            errorMessage = "Monitoring konnte nicht eingerichtet werden: \(error.localizedDescription)"
+        }
+    }
+
+    private func installDailyMonitor() throws {
+        let selected = GateShieldPolicy.selection(from: state)
+        let schedule = DeviceActivitySchedule(intervalStart: DateComponents(hour: 0, minute: 0),
+            intervalEnd: DateComponents(hour: 23, minute: 59, second: 59), repeats: true)
+        // These are confirmed checkpoints, not a fabricated live Screen Time total.
+        let checkpoints = Set([1, 2, state.freeMinutes] + Array(stride(from: 5, through: 240, by: 5)))
+        var events: [DeviceActivityEvent.Name: DeviceActivityEvent] = [:]
+        for minute in checkpoints {
+            events[DeviceActivityEvent.Name("gate.usage.\(minute)")] = DeviceActivityEvent(
+                applications: selected.applicationTokens, webDomains: selected.webDomainTokens,
+                threshold: DateComponents(minute: minute), includesPastActivity: true)
+        }
+        try activityCenter.startMonitoring(DeviceActivityName(state.dailyActivityName), during: schedule, events: events)
+    }
+
+    func pauseGate() {
+        do {
+            let names = state.grants.map { DeviceActivityName($0.activityName) } + [DeviceActivityName(state.dailyActivityName)]
+            try mutate { state in
+                state.monitoringEnabled = false
+                state.grants = []
+                state.requests = []
+            }
+            activityCenter.stopMonitoring(names)
+            monitorReady = false
+            learning.suspend()
+            selectedRequest = nil
+            message = "Pausiert. Tagesverbrauch und Lernstand bleiben erhalten; der Inhaltsfilter bleibt gesetzt."
+        } catch { errorMessage = error.localizedDescription }
+    }
+
+    func completeOnboarding() {
+        do { try mutate { $0.onboardingComplete = true } }
+        catch { errorMessage = error.localizedDescription }
+    }
+
+    func selectRequest(_ request: GateRequest) {
+        learning.suspend()
+        selectedRequest = request
+    }
+
+    func requestLesson(for target: GateTarget) {
+        do {
+            let request = try GateSharedStore.transaction { state -> GateRequest? in
+                state.rollDay(at: Date())
+                state.expireGrants(at: Date())
+                return state.enqueue(target)
+            }
+            refreshSharedState()
+            if let request { selectRequest(request) }
+        } catch { errorMessage = error.localizedDescription }
+    }
+
+    func beginLesson(minutes: Int) {
+        guard let request = selectedRequest, LessonLoad.allowedMinutes.contains(minutes) else { return }
+        let attempt = state.attempts[request.target.id] ?? GateAttempt()
+        guard (attempt.cooldownUntil ?? .distantPast) <= Date() else { return }
+        guard activeGrants.count < 8 else { errorMessage = "Maximal acht Freigaben gleichzeitig. Beende zuerst eine laufende Freigabe."; return }
+        learning.begin(request: request, minutes: minutes, consumed: state.confirmedMinutes, failures: attempt.failures)
+    }
+
+    func beginPractice(path: String? = nil) {
+        learning.begin(request: nil, minutes: 5, consumed: 0, failures: 0, path: path)
     }
 
     func submitLesson() {
+        guard learning.session?.result == nil else { return }
+        guard let result = learning.grade(), learning.error == nil else { return }
+        if let target = learning.session?.target, !result.passed {
+            do {
+                try mutate { state in
+                    var attempt = state.attempts[target.id] ?? GateAttempt()
+                    attempt.fail(at: Date())
+                    state.attempts[target.id] = attempt
+                }
+            } catch { errorMessage = error.localizedDescription }
+        }
+    }
+
+    func retryLesson() {
+        guard let current = learning.session, current.result?.passed == false else { return }
+        if current.isPractice {
+            learning.suspend()
+            beginPractice(path: current.pathID)
+        } else {
+            learning.suspend()
+            beginLesson(minutes: current.grantMinutes)
+        }
+    }
+
+    func finishLesson() {
+        guard let session = learning.session, session.result?.passed == true, learning.error == nil else { return }
+        if let target = session.target {
+            do {
+                try grantAccess(to: target, minutes: session.grantMinutes, requestID: session.requestID)
+                message = "\(session.grantMinutes) aktive Minuten freigegeben. Weitere Apps kannst du unabhängig freigeben."
+                learning.finish() // Success view closes; it must never cover the next request.
+                selectedRequest = nil
+                refreshSharedState()
+            } catch { errorMessage = "Freigabe noch nicht erteilt: \(error.localizedDescription). Dein bestandener Test bleibt gespeichert." }
+        } else { learning.finish() }
+    }
+
+    func endGrant(_ grant: GateGrant) {
+        do {
+            try mutate { $0.grants.removeAll { $0.id == grant.id } }
+            activityCenter.stopMonitoring([DeviceActivityName(grant.activityName)])
+        } catch { errorMessage = error.localizedDescription }
+    }
+
+    private func grantAccess(to target: GateTarget, minutes: Int, requestID: UUID?) throws {
+        guard LessonLoad.allowedMinutes.contains(minutes) else { throw GateError.invalidGrant }
+        refreshSharedState()
+        guard isAuthorized, state.monitoringEnabled, state.limitReached,
+              GateShieldPolicy.isSelected(target, in: state) else { throw GateError.selectionChanged }
+        if state.grant(for: target, at: Date()) != nil { return }
+        guard state.activeGrants(at: Date()).count < 8 else { throw GateError.tooManyGrants }
+        guard (state.attempts[target.id]?.cooldownUntil ?? .distantPast) <= Date() else { throw GateError.cooldown }
+        let now = Date()
+        let grant = GateGrant(target: target, minutes: minutes, grantedAt: now, expiresAt: now.addingTimeInterval(30 * 60))
+        // Reserve before calling DeviceActivity; an unarmed grant never removes a shield.
+        try mutate { $0.grants.append(grant) }
+        do {
+            let fields: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
+            let schedule = DeviceActivitySchedule(
+                intervalStart: Calendar.current.dateComponents(fields, from: now),
+                intervalEnd: Calendar.current.dateComponents(fields, from: grant.expiresAt), repeats: false)
+            var events: [DeviceActivityEvent.Name: DeviceActivityEvent] = [:]
+            for minute in 1...minutes {
+                events[DeviceActivityEvent.Name("gate.used.\(minute)")] = try grantEvent(target, minutes: minute)
+            }
+            try activityCenter.startMonitoring(DeviceActivityName(grant.activityName), during: schedule, events: events)
+            try mutate { state in
+                guard let index = state.grants.firstIndex(where: { $0.id == grant.id }) else { throw GateError.invalidGrant }
+                state.grants[index].armed = true
+                state.attempts[target.id] = GateAttempt()
+                state.requests.removeAll { $0.target.id == target.id }
+                state.recordGrant(minutes)
+            }
+            if let requestID { UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["gate.request.\(requestID.uuidString)"]) }
+        } catch {
+            activityCenter.stopMonitoring([DeviceActivityName(grant.activityName)])
+            try? mutate { $0.grants.removeAll { $0.id == grant.id } }
+            throw error
+        }
+    }
+
+    private func grantEvent(_ target: GateTarget, minutes: Int) throws -> DeviceActivityEvent {
+        let decoder = PropertyListDecoder()
+        switch target.kind {
+        case .application:
+            return DeviceActivityEvent(applications: [try decoder.decode(ApplicationToken.self, from: target.tokenData)],
+                threshold: DateComponents(minute: minutes), includesPastActivity: false)
+        case .webDomain:
+            return DeviceActivityEvent(webDomains: [try decoder.decode(WebDomainToken.self, from: target.tokenData)],
+                threshold: DateComponents(minute: minutes), includesPastActivity: false)
+        case .category: throw GateError.invalidGrant
+        }
+    }
+
+    func saveLauncher(_ items: [LauncherItem]) {
         errorMessage = nil
-        message = nil
+        guard items.count <= 12, items.allSatisfy({ !$0.title.trimmingCharacters(in: .whitespaces).isEmpty && $0.validatedURL != nil }) else {
+            errorMessage = "Höchstens zwölf Einträge, jeweils mit Name und gültigem App-Link oder https-Link."; return
+        }
+        do {
+            try mutate { $0.launcher = items }
+            WidgetCenter.shared.reloadAllTimelines()
+        } catch { errorMessage = error.localizedDescription }
+    }
 
-        guard cooldownRemaining <= 0 else {
-            errorMessage = "Die Abkühlzeit läuft noch."
-            return
-        }
-        guard let target = pendingTarget else {
-            errorMessage = "Öffne zuerst eine gesperrte App oder Website und merke die Freischaltung dort vor."
-            return
-        }
-        guard canSubmitLesson else {
-            errorMessage = "Beantworte zuerst jede Frage."
-            return
-        }
+    func handleURL(_ url: URL) {
+        guard url.scheme == "gate" else { return }
+        refreshSharedState()
+        if url.host == "learn" { beginPractice() }
+        if url.host == "request", let id = UUID(uuidString: url.lastPathComponent),
+           let request = state.requests.first(where: { $0.id == id }) { selectRequest(request) }
+    }
 
-        let correctAnswers = lesson.questions.reduce(into: 0) { score, question in
-            if answers[question.id] == question.correctAnswer {
-                score += 1
+    private func mutate(_ body: (inout GateState) throws -> Void) throws {
+        state = try GateSharedStore.transaction(afterCommit: { state in
+            if self.isAuthorized { GateShieldPolicy.apply(state) }
+        }) { state in
+            state.rollDay(at: Date())
+            state.expireGrants(at: Date())
+            try body(&state)
+            return state
+        }
+        WidgetCenter.shared.reloadTimelines(ofKind: "GateLauncher")
+    }
+
+    enum GateError: LocalizedError {
+        case invalidGrant, selectionChanged, tooManyGrants, cooldown
+        var errorDescription: String? {
+            switch self {
+            case .invalidGrant: return "Die Freigabe ist nicht mehr gültig."
+            case .selectionChanged: return "Die Auswahl oder der Tagesstatus hat sich geändert. Öffne die gewünschte App erneut."
+            case .tooManyGrants: return "Acht Freigaben laufen bereits."
+            case .cooldown: return "Für diese App läuft noch die Abkühlzeit."
             }
         }
-        let questionTotal = lesson.questions.count
-        let score = Double(correctAnswers) / Double(questionTotal)
-
-        guard score >= 0.8 else {
-            registerFailedAttempt(correct: correctAnswers, total: questionTotal)
-            return
-        }
-
-        do {
-            try grantAccess(to: target, for: GateConstants.prototypeGrantMinutes)
-            GateStorage.consecutiveFailures = 0
-            GateStorage.cooldownUntil = nil
-            consecutiveFailures = 0
-            cooldownUntil = nil
-            answers = [:]
-            lesson = .make(failureLevel: 0)
-            message = "Bestanden: \(correctAnswers)/\(questionTotal). Die angeforderte \(target.kind.displayName) ist für \(GateConstants.prototypeGrantMinutes) aktive Minuten frei."
-        } catch {
-            applyFullUsageShield()
-            errorMessage = "Die Freigabe konnte nicht eingerichtet werden: \(error.localizedDescription)"
-        }
-    }
-
-    private func registerFailedAttempt(correct: Int, total: Int) {
-        let newFailureCount = consecutiveFailures + 1
-        GateStorage.consecutiveFailures = newFailureCount
-        consecutiveFailures = newFailureCount
-        answers = [:]
-        lesson = .make(failureLevel: newFailureCount)
-
-        if newFailureCount.isMultiple(of: 3) {
-            let until = Date().addingTimeInterval(TimeInterval(GateConstants.cooldownMinutes * 60))
-            GateStorage.cooldownUntil = until
-            cooldownUntil = until
-            errorMessage = "Nicht bestanden: \(correct)/\(total). Nach drei Fehlversuchen folgt eine Pause von \(GateConstants.cooldownMinutes) Minuten; danach wartet eine umfangreichere Variante."
-        } else {
-            errorMessage = "Nicht bestanden: \(correct)/\(total). Keine Freigabe. Der nächste Versuch wird ungefähr 20 % umfangreicher."
-        }
-    }
-
-    private func grantAccess(to target: GateTarget, for minutes: Int) throws {
-        let expiry = Date().addingTimeInterval(TimeInterval(GateConstants.grantExpiryMinutes * 60))
-        let grant = GateGrant(target: target, minutes: minutes, grantedAt: Date(), expiresAt: expiry)
-
-        activityCenter.stopMonitoring([GateConstants.grantActivity])
-        let schedule = makeGrantSchedule(expiringAt: expiry)
-        let event = try makeGrantEvent(target: target, minutes: minutes)
-
-        try activityCenter.startMonitoring(
-            GateConstants.grantActivity,
-            during: schedule,
-            events: [GateConstants.grantLimitEvent: event]
-        )
-
-        try applyUsageShields(excluding: target)
-        GateStorage.activeGrant = grant
-        GateStorage.pendingTarget = nil
-        activeGrant = grant
-        pendingTarget = nil
-    }
-
-    private func makeGrantSchedule(expiringAt expiry: Date) -> DeviceActivitySchedule {
-        let components: Set<Calendar.Component> = [.hour, .minute, .second]
-        let calendar = Calendar.current
-        return DeviceActivitySchedule(
-            intervalStart: calendar.dateComponents(components, from: Date()),
-            intervalEnd: calendar.dateComponents(components, from: expiry),
-            repeats: false,
-            warningTime: nil
-        )
-    }
-
-    private func makeGrantEvent(target: GateTarget, minutes: Int) throws -> DeviceActivityEvent {
-        let threshold = DateComponents(minute: minutes)
-
-        switch target.kind {
-        case .application:
-            let token = try decoder.decode(ApplicationToken.self, from: target.tokenData)
-            return DeviceActivityEvent(applications: [token], threshold: threshold)
-        case .webDomain:
-            let token = try decoder.decode(WebDomainToken.self, from: target.tokenData)
-            return DeviceActivityEvent(webDomains: [token], threshold: threshold)
-        case .category:
-            let token = try decoder.decode(ActivityCategoryToken.self, from: target.tokenData)
-            return DeviceActivityEvent(categories: [token], threshold: threshold)
-        }
-    }
-
-    private func applyUsageShields(excluding target: GateTarget) throws {
-        var applications = selection.applicationTokens
-        var categories = selection.categoryTokens
-        var webDomains = selection.webDomainTokens
-
-        switch target.kind {
-        case .application:
-            applications.remove(try decoder.decode(ApplicationToken.self, from: target.tokenData))
-        case .webDomain:
-            webDomains.remove(try decoder.decode(WebDomainToken.self, from: target.tokenData))
-        case .category:
-            categories.remove(try decoder.decode(ActivityCategoryToken.self, from: target.tokenData))
-        }
-
-        settingsStore.shield.applications = applications.isEmpty ? nil : applications
-        settingsStore.shield.webDomains = webDomains.isEmpty ? nil : webDomains
-
-        if categories.isEmpty {
-            settingsStore.shield.applicationCategories = nil
-            settingsStore.shield.webDomainCategories = nil
-        } else {
-            settingsStore.shield.applicationCategories = .specific(categories, except: Set())
-            settingsStore.shield.webDomainCategories = .specific(categories, except: Set())
-        }
-    }
-
-    private func applyFullUsageShield() {
-        let storedSelection = GateStorage.loadSelection()
-        settingsStore.shield.applications = storedSelection.applicationTokens.isEmpty ? nil : storedSelection.applicationTokens
-        settingsStore.shield.webDomains = storedSelection.webDomainTokens.isEmpty ? nil : storedSelection.webDomainTokens
-
-        if storedSelection.categoryTokens.isEmpty {
-            settingsStore.shield.applicationCategories = nil
-            settingsStore.shield.webDomainCategories = nil
-        } else {
-            settingsStore.shield.applicationCategories = .specific(storedSelection.categoryTokens, except: Set())
-            settingsStore.shield.webDomainCategories = .specific(storedSelection.categoryTokens, except: Set())
-        }
-    }
-
-    private func clearUsageShields() {
-        settingsStore.shield.applications = nil
-        settingsStore.shield.applicationCategories = nil
-        settingsStore.shield.webDomains = nil
-        settingsStore.shield.webDomainCategories = nil
-    }
-
-    private func applyAlwaysOnProtections() {
-        guard isAuthorized else { return }
-        settingsStore.webContent.blockedByFilter = .auto()
-        settingsStore.media.denyExplicitContent = true
-        settingsStore.media.denyBookstoreErotica = true
     }
 }
