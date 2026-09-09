@@ -2,7 +2,7 @@ import DeviceActivity
 import Foundation
 
 enum GateConstants {
-    static let appGroupIdentifier = "group.ch.pichler.gate"
+    static let appGroupIdentifier = "group.ch.mauruspichler.gate"
 
     static let dailyActivity = DeviceActivityName("gate.daily")
     static let dailyLimitEvent = DeviceActivityEvent.Name("gate.daily.free-limit")
@@ -48,4 +48,3 @@ struct GateGrant: Codable, Equatable {
     let grantedAt: Date
     let expiresAt: Date
 }
-

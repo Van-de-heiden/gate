@@ -15,7 +15,7 @@ final class ShieldActionExtension: ShieldActionDelegate {
         let requestedAt: Date
     }
 
-    private let appGroup = "group.ch.pichler.gate"
+    private let appGroup = "group.ch.mauruspichler.gate"
     private let pendingTargetKey = "gate.pendingTarget"
 
     override func handle(

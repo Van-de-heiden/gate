@@ -5,7 +5,7 @@ import ManagedSettings
 
 final class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     private enum Shared {
-        static let appGroup = "group.ch.pichler.gate"
+        static let appGroup = "group.ch.mauruspichler.gate"
         static let selectionKey = "gate.selection"
         static let limitReachedKey = "gate.limitReached"
         static let pendingTargetKey = "gate.pendingTarget"

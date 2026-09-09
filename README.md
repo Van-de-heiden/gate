@@ -47,9 +47,9 @@ Requirements:
 
 The prototype uses these identifiers:
 
-- App: `ch.pichler.gate`
-- App Group: `group.ch.pichler.gate`
-- Extensions: `ch.pichler.gate.monitor`, `ch.pichler.gate.shieldconfiguration`, and `ch.pichler.gate.shieldaction`
+- App: `ch.mauruspichler.gate`
+- App Group: `group.ch.mauruspichler.gate`
+- Extensions: `ch.mauruspichler.gate.monitor`, `ch.mauruspichler.gate.shieldconfiguration`, and `ch.mauruspichler.gate.shieldaction`
 
 Forks should replace the bundle IDs and App Group consistently in the Xcode project, all entitlement files, and the Swift constants.
 
