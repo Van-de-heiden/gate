@@ -33,7 +33,8 @@ final class LearningStore: ObservableObject {
     func begin(request: GateRequest?, minutes: Int, consumed: Int, failures: Int, path: String? = nil,
                lesson: String? = nil, topic: String? = nil, reviewOnly: Bool = false) {
         guard let catalog, error == nil else { return }
-        let key = request?.target.id ?? (lesson.map { "chapter." + $0 } ?? topic.map { "topic." + $0 } ?? (reviewOnly ? "review" : path.map { "path." + $0 } ?? "practice"))
+        let key = LearningScheduler.storageKey(request: request, path: path, lesson: lesson,
+                                               topic: topic, reviewOnly: reviewOnly)
         if let saved = progress.sessions[key], saved.result == nil || saved.result?.passed == true {
             session = saved
             return

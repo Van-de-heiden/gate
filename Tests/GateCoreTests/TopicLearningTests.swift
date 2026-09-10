@@ -4,6 +4,16 @@ import XCTest
 final class TopicLearningTests: XCTestCase {
     private let now = Date(timeIntervalSince1970: 1_700_000_000)
 
+    func testStorageKeysShareOneExplicitPriorityForPersistenceAndPlanning() {
+        let request = GateRequest(target: GateTarget(kind: .application, tokenData: Data("A".utf8)))
+        XCTAssertEqual(LearningScheduler.storageKey(request: request, path: "money", lesson: "money.compound", topic: "case.compound", reviewOnly: true), request.target.id)
+        XCTAssertEqual(LearningScheduler.storageKey(request: nil, path: "money", lesson: "money.compound", topic: "case.compound", reviewOnly: true), "chapter.money.compound")
+        XCTAssertEqual(LearningScheduler.storageKey(request: nil, path: "money", topic: "case.compound", reviewOnly: true), "topic.case.compound")
+        XCTAssertEqual(LearningScheduler.storageKey(request: nil, path: "money", reviewOnly: true), "review")
+        XCTAssertEqual(LearningScheduler.storageKey(request: nil, path: "money"), "path.money")
+        XCTAssertEqual(LearningScheduler.storageKey(request: nil), "practice")
+    }
+
     private func round(_ catalog: LearningCatalog, minutes: Int = 5, topic: String? = nil,
                        progress: LearningProgress = .init(), failures: Int = 0,
                        remediation: [String] = [], gaps: [String] = [], seed: UInt64 = 1) -> LearningSession {

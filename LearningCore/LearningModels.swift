@@ -337,6 +337,16 @@ struct LearningSession: Codable, Identifiable {
 }
 
 enum LearningScheduler {
+    static func storageKey(request: GateRequest?, path: String? = nil, lesson: String? = nil,
+                           topic: String? = nil, reviewOnly: Bool = false) -> String {
+        if let request { return request.target.id }
+        if let lesson { return "chapter." + lesson }
+        if let topic { return "topic." + topic }
+        if reviewOnly { return "review" }
+        if let path { return "path." + path }
+        return "practice"
+    }
+
     static func dueCount(_ progress: LearningProgress, at now: Date) -> Int {
         progress.memories.values.filter { $0.due <= now }.count
     }
@@ -444,7 +454,8 @@ enum LearningScheduler {
                 isReview: progress.memories[question.id] != nil,
                 optionOrder: Array(question.options.indices).shuffled(using: &random))
         }
-        let key = request?.target.id ?? (preferredLesson.map { "chapter." + $0 } ?? preferredTopic.map { "topic." + $0 } ?? (reviewOnly ? "review" : preferredPath.map { "path." + $0 } ?? "practice"))
+        let key = storageKey(request: request, path: preferredPath, lesson: preferredLesson,
+                             topic: preferredTopic, reviewOnly: reviewOnly)
         return LearningSession(id: UUID(), storageKey: key, target: request?.target, requestID: request?.id,
             grantMinutes: minutes, pathID: topic.pathID, lessonIDs: lessonIDs, questions: deck,
             requiredQuestionIDs: Dictionary(uniqueKeysWithValues: lessonIDs.map { id in
