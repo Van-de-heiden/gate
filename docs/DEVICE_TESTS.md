@@ -115,3 +115,12 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 - At 1 minute in the deliberate 2-minute test, the gauge shows half and at most 1 minute free. Switch to everyday mode: the same usage gives at most 59 minutes and a nearly full dial; usage must not reset.
 - Check a small iPhone and the largest Dynamic Type sizes. The numeric value and explanatory text must remain readable. VoiceOver reads one free-time value, rather than the decorative ticks. Reduce Motion suppresses needle/value animation.
 - From Apple's filter page, close the browser tab and tap **gate · Pause** in the medium and large widget. Gate opens its pause even with notifications disabled. Repeat while Gate has a suspended lesson; its answers must survive. Closing the pause must not unlock any website.
+
+## Consumption chart: hours and selected-day details
+
+- In Bilanz, the vertical axis shows hours (`h`). Bar heights still use confirmed minutes divided by 60 without truncating fractions.
+- Tap any of the seven days: its bar turns blue, other bars become quieter, and a callout shows hours plus remaining minutes with the full German weekday and `dd.MM.yyyy` underneath. The weekday must come from the date, not a fixed label.
+- Check values below an hour, exactly an hour and above an hour: 35 → `0 h 35 min`, 60 → `1 h 0 min`, 125 → `2 h 5 min`. A stored 330-minute value would display `5 h 30 min`; this UI change does not extend the monitor's existing 240-minute checkpoint range or manufacture further usage.
+- Tap another day to move the highlight and callout; tap the same day again to close it. Vertical scrolling should remain available when starting a swipe over the chart.
+- Tap days with no confirmed usage, including when the whole week is empty: show `Keine Messung bestätigt`, not a claim of zero consumption. Confirmed values remain labelled as minimums.
+- Check the first/last day and tallest bar on a small iPhone, with large Dynamic Type and in dark appearance: the callout must fit inside the chart. With VoiceOver, each day can be focused and activated with its date and confirmed duration. Reduce Motion removes selection animation.

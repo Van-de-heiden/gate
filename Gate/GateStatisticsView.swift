@@ -24,10 +24,7 @@ struct GateStatisticsView: View {
                     metric("\(recent.reduce(0) { $0 + $1.activeSeconds } / 60)", "aktive Lernminuten")
                 }
                 GateSection(title: "Bestätigte Konsumzeit") {
-                    Chart(days) { day in
-                        BarMark(x: .value("Tag", day.id, unit: .day), y: .value("Minuten", day.confirmedMinutes))
-                            .foregroundStyle(Color.primary.opacity(0.75))
-                    }.frame(height: 160).chartYAxisLabel("Minuten").chartLegend(.hidden)
+                    GateUsageChart(days: days)
                     Text("Nur ausgewählte Apps und Websites. iOS meldet Nutzungsschwellen, deshalb sind dies bestätigte Mindestwerte, keine vollständige Bildschirmzeit. Eine leere Säule kann auch fehlende Messdaten bedeuten.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
@@ -69,5 +66,133 @@ struct GateStatisticsView: View {
             Text(value).font(.system(size: 40, weight: .light, design: .serif)).monospacedDigit()
             Text(label).font(.caption).foregroundStyle(.secondary)
         }.frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+private struct GateUsageChart: View {
+    let days: [GateUsageDay]
+    @State private var selectedDate: Date?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @ScaledMetric(relativeTo: .body) private var chartHeight: CGFloat = 230
+
+    private var selectedDay: GateUsageDay? {
+        guard let selectedDate else { return nil }
+        return days.first { Calendar.current.isDate($0.id, inSameDayAs: selectedDate) }
+    }
+
+    private var maximumHours: Double {
+        // Leave room for the callout above even the tallest bar.
+        max(1, ceil(Double(days.map(\.confirmedMinutes).max() ?? 0) / 60 * 1.7))
+    }
+
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "de_CH")
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = .autoupdatingCurrent
+        formatter.dateFormat = "EEEE, dd.MM.yyyy"
+        return formatter
+    }()
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            chart
+                .frame(height: chartHeight)
+                .chartYScale(domain: 0...maximumHours)
+                .chartYAxis {
+                    AxisMarks(position: .leading, values: .automatic(desiredCount: 4)) { value in
+                        AxisGridLine()
+                        AxisValueLabel {
+                            if let hours = value.as(Double.self) {
+                                Text("\(hours, format: .number.precision(.fractionLength(0...2))) h")
+                            }
+                        }
+                    }
+                }
+                .chartXAxis {
+                    AxisMarks(values: .stride(by: .day)) { _ in
+                        AxisValueLabel(format: .dateTime.weekday(.abbreviated), centered: true)
+                    }
+                }
+                .chartLegend(.hidden)
+                .chartXSelection(value: Binding(get: { selectedDate }, set: { date in
+                    if let date, let selectedDate, Calendar.current.isDate(date, inSameDayAs: selectedDate) {
+                        self.selectedDate = nil
+                    } else { selectedDate = date }
+                }))
+                .chartGesture { proxy in
+                    // A tap keeps the detail visible after lifting the finger and
+                    // leaves vertical swipes available to the surrounding ScrollView.
+                    SpatialTapGesture().onEnded { value in
+                        proxy.selectXValue(at: value.location.x)
+                    }
+                }
+                .environment(\.locale, Locale(identifier: "de_CH"))
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: selectedDay?.id)
+                .accessibilityRepresentation {
+                    VStack {
+                        ForEach(days) { day in
+                            Button { selectedDate = day.id } label: {
+                                Text("\(Self.dateFormatter.string(from: day.id)): \(accessibleDuration(day))")
+                            }
+                            .accessibilityAddTraits(selectedDay?.id == day.id ? .isSelected : [])
+                        }
+                    }
+                }
+            Text(selectedDay == nil ? "Tippe auf einen Tag für Stunden, Minuten und Datum." : "Tippe auf einen anderen Tag oder erneut, um die Details zu schliessen.")
+                .font(.caption).foregroundStyle(.secondary)
+        }
+    }
+
+    private var chart: some View {
+        Chart {
+            ForEach(days) { day in
+                BarMark(x: .value("Tag", day.id, unit: .day),
+                        y: .value("Stunden", Double(max(0, day.confirmedMinutes)) / 60),
+                        width: .ratio(0.6))
+                    .cornerRadius(5)
+                    .foregroundStyle(selectedDay?.id == day.id ? Color.blue : Color.primary.opacity(selectedDay == nil ? 0.65 : 0.2))
+            }
+            if let day = selectedDay {
+                RuleMark(x: .value("Ausgewählter Tag", day.id, unit: .day))
+                    .foregroundStyle(Color.blue.opacity(0.25))
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [3, 4]))
+                    .zIndex(-1)
+                PointMark(x: .value("Ausgewählter Tag", day.id, unit: .day),
+                          y: .value("Stunden", Double(max(0, day.confirmedMinutes)) / 60))
+                    .symbolSize(24).foregroundStyle(Color.blue)
+                    .annotation(position: .top, spacing: 10,
+                                overflowResolution: .init(x: .fit(to: .chart), y: .fit(to: .chart))) {
+                        detail(day)
+                    }
+            }
+        }
+    }
+
+    private func detail(_ day: GateUsageDay) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            if day.confirmedMinutes > 0 {
+                Text("\(day.confirmedMinutes / 60) h \(day.confirmedMinutes % 60) min")
+                    .font(.title3.weight(.semibold)).monospacedDigit()
+            } else {
+                Text("Keine Messung bestätigt").font(.subheadline.weight(.semibold))
+            }
+            Text(Self.dateFormatter.string(from: day.id))
+                .font(.caption).foregroundStyle(.secondary)
+            if day.confirmedMinutes > 0 {
+                Text("Bestätigter Mindestwert").font(.caption2).foregroundStyle(.secondary)
+            }
+        }
+        .fixedSize(horizontal: false, vertical: true)
+        .frame(maxWidth: 220, alignment: .leading)
+        .padding(.horizontal, 14).padding(.vertical, 12)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(GateDesign.line))
+        .shadow(color: .black.opacity(0.08), radius: 10, y: 4)
+    }
+
+    private func accessibleDuration(_ day: GateUsageDay) -> String {
+        guard day.confirmedMinutes > 0 else { return "Keine Messung bestätigt" }
+        return "mindestens \(day.confirmedMinutes / 60) Stunden und \(day.confirmedMinutes % 60) Minuten"
     }
 }
