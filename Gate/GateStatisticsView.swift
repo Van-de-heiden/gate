@@ -4,6 +4,8 @@ import SwiftUI
 struct GateStatisticsView: View {
     @ObservedObject var controller: ScreenTimeController
     @ObservedObject var learning: LearningStore
+    @State private var showLearning = false
+    @State private var showCheckpoints = false
     private var recent: [LearningResult] {
         learning.progress.results.filter { $0.completedAt > Date().addingTimeInterval(-7 * 86400) }
     }
@@ -15,6 +17,32 @@ struct GateStatisticsView: View {
         }
     }
     var body: some View {
+        VStack(spacing: 16) {
+            Picker("Bilanz", selection: $showLearning) {
+                Text("Bildschirmzeit").tag(false)
+                Text("Lernbilanz").tag(true)
+            }.pickerStyle(.segmented).padding(.horizontal, 20).padding(.top, 12)
+            if showLearning { learningBody }
+            else { SystemUsageView(controller: controller) { showCheckpoints = true } }
+        }
+        .sheet(isPresented: $showCheckpoints) {
+            NavigationStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        Text("Nur deine Konsum-Auswahl").font(.title3.weight(.semibold))
+                        Text("Dieser Zähler steuert die freie Stunde und die Freigaben. Er enthält nur bereits eingetroffene iOS-Nutzungsmeldungen und kann hinter dem Nutzungsbericht liegen. Er ist keine gesamte Bildschirmzeit.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                        GateUsageChart(days: days)
+                        MonitoringStatusView(controller: controller, detailed: true)
+                    }.padding(24)
+                }
+                .navigationTitle("Freigabezähler").navigationBarTitleDisplayMode(.inline)
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Fertig") { showCheckpoints = false } } }
+            }
+        }
+    }
+
+    private var learningBody: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 30) {
                 Eyebrow(text: "Letzte sieben Tage")
@@ -22,11 +50,6 @@ struct GateStatisticsView: View {
                 HStack(alignment: .top, spacing: 24) {
                     metric("\(recent.filter(\.passed).count)", "bestandene Runden")
                     metric("\(recent.reduce(0) { $0 + $1.activeSeconds } / 60)", "aktive Lernminuten")
-                }
-                GateSection(title: "Bestätigte Konsumzeit") {
-                    GateUsageChart(days: days)
-                    Text("Nur ausgewählte Apps und Websites. iOS meldet Nutzungsschwellen, deshalb sind dies bestätigte Mindestwerte, keine vollständige Bildschirmzeit. Eine leere Säule kann auch fehlende Messdaten bedeuten.")
-                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Divider()
                 GateSection(title: "Was hängen bleibt") {
@@ -110,8 +133,12 @@ private struct GateUsageChart: View {
                     }
                 }
                 .chartXAxis {
-                    AxisMarks(values: .stride(by: .day)) { _ in
-                        AxisValueLabel(format: .dateTime.weekday(.abbreviated), centered: true)
+                    AxisMarks(values: days.map(\.id)) { value in
+                        AxisValueLabel {
+                            if let date = value.as(Date.self) {
+                                Text(date.formatted(Date.FormatStyle().weekday(.abbreviated).locale(Locale(identifier: "de_CH"))))
+                            }
+                        }
                     }
                 }
                 .chartLegend(.hidden)

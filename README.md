@@ -18,6 +18,7 @@ a substantially expanded curriculum and permanent in-app selections. It is **not
 - An always-reachable request panel; a successful quiz closes its sheet.
 - A medium/large **text-only launcher widget**, extendable and reorderable in the app.
 - Onboarding, local learning history, confirmed usage checkpoints and settings.
+- An iOS usage report with separate consumption-selection and all-app views, daily app/site breakdowns and an explicit device selection when several iPhones report data.
 - A fuel-style free-time gauge and the native system tab bar, with independent navigation per tab.
 - **16 learning paths, 96 chapters, 504 questions in seven formats** with explanations.
 - Original German lesson text, diagrams, optional narration and reflection notes.
@@ -49,7 +50,7 @@ A grant expires when its active usage is exhausted **or 30 wall-clock minutes af
 whichever comes first. Its displayed remaining active time is an upper bound based on the latest
 iOS callback. It is not a fabricated second-by-second timer.
 
-Daily usage charts show **confirmed minimums for the selected consumption pool**, not total
+The **Freigabezähler** history shows **confirmed minimums for the selected consumption pool**, not total
 device Screen Time. The monitor requests a checkpoint at every active minute up to 24 hours.
 iOS delivers these callbacks; delivery can be delayed. Missing callbacks are not zero usage,
 and elapsed wall-clock time never increases the consumption counter.
@@ -79,6 +80,31 @@ background poll for total Screen Time on a wall-clock schedule. See Apple's
 [monitoring API](https://developer.apple.com/documentation/deviceactivity/deviceactivitycenter)
 and [past-activity behavior](https://developer.apple.com/documentation/deviceactivity/deviceactivityevent/includespastactivity).
 
+### Comparable iOS usage reports
+
+**Bilanz → Bildschirmzeit** uses Apple's `DeviceActivityReport` extension, not the monitor's
+threshold log, as the primary statistics display. Choose **Konsum-Auswahl** for the saved app/domain
+tokens or **Alle Apps** for all reported activity, including productive apps. Empty consumption
+selections never fall back to an all-app report. Reporting is filtered to iPhone models; if multiple
+devices report data, choose the matching device inside the report. Their totals are never silently added.
+
+Tap a day for hours, minutes, date and the app/website breakdown. The report displays iOS's
+`lastUpdatedDate`, not a locally invented refresh time. Segment totals come from iOS; adding app
+and website breakdowns again could double-count overlapping activity. Displayed minutes are rounded
+down. Missing report data is distinct from a reported zero, and reloading does not guarantee fresh data.
+
+The original checkpoint chart and monitor diagnostics remain under **Freigabezähler**. Learning
+results remain under **Lernbilanz**. Only the selected-pool monitor controls allowance and shielding;
+viewing all-app usage never adds productive activity to the allowance or changes a grant.
+
+Private usage data and app/site names remain in the report extension's memory and UI. The target
+has no App Group entitlement or shared-store code and does not export, log or network those values.
+See Apple's [report isolation](https://developer.apple.com/documentation/deviceactivity/deviceactivityreport)
+and [filter semantics](https://developer.apple.com/documentation/deviceactivity/deviceactivityfilter/init(segment:users:devices:applications:categories:webdomains:)).
+The newer iOS 26.4 [direct usage export API](https://developer.apple.com/documentation/deviceactivity/deviceactivitydata/activitydata(filteredby:using:))
+requires separate data-access authorization and entitlement and is restricted to EU customer installations.
+It is not the foundation for this Swiss app; ordinary reports retain iOS 17.4 compatibility.
+
 ## Build and try
 
 Requires **iOS 17.4+**, a compatible Xcode and an Apple development team with Family Controls.
@@ -90,8 +116,8 @@ See [Apple's adoption guide](https://developer.apple.com/documentation/technolog
 
 1. Switch to `codex/technical-spike` and pull.
 2. Open `Gate.xcodeproj`; choose the shared **Gate** scheme.
-3. Check automatic signing on the app and four extensions, including the new Widget target.
-4. App Group on shared-state targets: `group.ch.mauruspichler.gate`.
+3. Check automatic signing on the app and five extensions, including **GateReportExtension** with Family Controls enabled.
+4. App Group on shared-state targets: `group.ch.mauruspichler.gate`. The isolated report target deliberately has no App Group.
 5. Run on a **physical iPhone** for Screen Time behaviour.
 6. Complete onboarding; expand categories and select individual distraction apps/domains.
 7. Do **not** select Phone or WhatsApp. Gate cannot inspect opaque tokens to identify these
@@ -142,7 +168,7 @@ xcodebuild -project Gate.xcodeproj -scheme Gate -configuration Debug \
 ```
 
 The CI workflow runs these checks on macOS. A successful unsigned build cannot verify signing,
-Screen Time callbacks, real web blocking, notifications or widget launching on a physical phone.
+Screen Time callbacks, actual usage reports, real web blocking, notifications or widget launching on a physical phone.
 Use the [device acceptance checklist](docs/DEVICE_TESTS.md) before merging.
 
 ## Distribution
@@ -172,4 +198,4 @@ Do not add remote feeds or unreviewed autogenerated lessons at runtime.
 
 The built-in automatic adult filter stays active. Apple can show its own block page before a Gate shield. `WebContentSettings` does not provide arbitrary browser redirects or a callback to Gate when that system page appears; this version does not replace it. Gate's custom shield applies to expressly selected permanent website tokens when iOS invokes the shield extension. From Apple's page, close the browser tab and open **gate · Pause** in the widget or **Pause** at the top of Today. This manual route is independent of the filter and of notification permission. Family Controls individual authorization remains revocable and Gate itself remains uninstallable; in-app commitment is not MDM/device supervision. See [Apple's Screen Time explanation](https://developer.apple.com/videos/play/wwdc2022/110336/) and [web-filter API](https://developer.apple.com/documentation/managedsettings/webcontentsettings).
 
-Upgrade on the existing branch, build all five targets, and run the [0.3 physical-device checks](docs/DEVICE_TESTS.md). In particular check keyboard dismissal and permanent shielding on the actual iOS version. See [content design](docs/CONTENT.md) and [asset provenance](docs/ASSETS.md).
+Upgrade on the existing branch, build all six targets, and run the [0.3 physical-device checks](docs/DEVICE_TESTS.md). In particular check keyboard dismissal and permanent shielding on the actual iOS version. See [content design](docs/CONTENT.md) and [asset provenance](docs/ASSETS.md).

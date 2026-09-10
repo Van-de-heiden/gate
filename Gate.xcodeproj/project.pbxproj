@@ -11,6 +11,7 @@
 		A40000000000000000000002 /* ShieldConfigurationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A30000000000000000000002 /* ShieldConfigurationExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A40000000000000000000003 /* ShieldActionExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A30000000000000000000003 /* ShieldActionExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B40000000000000000000001 /* GateWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B30000000000000000000001; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C40000000000000000000001 /* GateReportExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C30000000000000000000001; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 			remoteInfo = ShieldActionExtension;
 		};
 		B90000000000000000000001 = {isa = PBXContainerItemProxy; containerPortal = 000000000000000000000000; proxyType = 1; remoteGlobalIDString = B50000000000000000000001; remoteInfo = GateWidgetExtension; };
+		C90000000000000000000001 = {isa = PBXContainerItemProxy; containerPortal = 000000000000000000000000; proxyType = 1; remoteGlobalIDString = C50000000000000000000001; remoteInfo = GateReportExtension; };
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +51,7 @@
 				A40000000000000000000002 /* ShieldConfigurationExtension.appex in Embed App Extensions */,
 				A40000000000000000000003 /* ShieldActionExtension.appex in Embed App Extensions */,
 				B40000000000000000000001 /* GateWidgetExtension.appex in Embed App Extensions */,
+				C40000000000000000000001 /* GateReportExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -61,6 +64,7 @@
 		A30000000000000000000002 /* ShieldConfigurationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShieldConfigurationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A30000000000000000000003 /* ShieldActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShieldActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B30000000000000000000001 /* GateWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GateWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C30000000000000000000001 /* GateReportExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GateReportExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -97,6 +101,7 @@
 			target = A50000000000000000000003 /* ShieldActionExtension */;
 		};
 		B10000000000000000000001 = {isa = PBXFileSystemSynchronizedBuildFileExceptionSet; membershipExceptions = (Info.plist, GateWidgetExtension.entitlements, ); target = B50000000000000000000001; };
+		C10000000000000000000001 = {isa = PBXFileSystemSynchronizedBuildFileExceptionSet; membershipExceptions = (Info.plist, GateReportExtension.entitlements, ); target = C50000000000000000000001; };
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -136,6 +141,8 @@
 		B20000000000000000000002 /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Shared; sourceTree = "<group>"; };
 		B20000000000000000000003 /* ScreenTimeShared */ = {isa = PBXFileSystemSynchronizedRootGroup; path = ScreenTimeShared; sourceTree = "<group>"; };
 		B20000000000000000000004 /* LearningCore */ = {isa = PBXFileSystemSynchronizedRootGroup; path = LearningCore; sourceTree = "<group>"; };
+		C20000000000000000000001 /* GateReportExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (C10000000000000000000001, ); path = GateReportExtension; sourceTree = "<group>"; };
+		C20000000000000000000002 /* ReportCore */ = {isa = PBXFileSystemSynchronizedRootGroup; path = ReportCore; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +175,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B62000000000000000000001 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		C62000000000000000000001 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -176,6 +184,8 @@
 			children = (
 				000000000000000000000010 /* Gate */,
 				A20000000000000000000001 /* DeviceActivityMonitorExtension */,
+				C20000000000000000000001 /* GateReportExtension */,
+				C20000000000000000000002 /* ReportCore */,
 				A20000000000000000000002 /* ShieldConfigurationExtension */,
 				A20000000000000000000003 /* ShieldActionExtension */,
 				000000000000000000000020 /* Products */,
@@ -190,6 +200,7 @@
 				A30000000000000000000002 /* ShieldConfigurationExtension.appex */,
 				A30000000000000000000003 /* ShieldActionExtension.appex */,
 				B30000000000000000000001 /* GateWidgetExtension.appex */,
+				C30000000000000000000001 /* GateReportExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,12 +224,14 @@
 				AA0000000000000000000002 /* PBXTargetDependency */,
 				AA0000000000000000000003 /* PBXTargetDependency */,
 				BA0000000000000000000001 /* PBXTargetDependency */,
+				CA0000000000000000000001 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				000000000000000000000010 /* Gate */,
 				B20000000000000000000002,
 				B20000000000000000000003,
 				B20000000000000000000004,
+				C20000000000000000000002 /* ReportCore */,
 			);
 			name = Gate;
 			productName = Gate;
@@ -300,6 +313,15 @@
             name = GateWidgetExtension; productName = GateWidgetExtension;
             productReference = B30000000000000000000001; productType = "com.apple.product-type.app-extension";
         };
+        C50000000000000000000001 /* GateReportExtension */ = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = C81000000000000000000001;
+            buildPhases = (C61000000000000000000001, C62000000000000000000001, C63000000000000000000001, );
+            buildRules = (); dependencies = ();
+            fileSystemSynchronizedGroups = (C20000000000000000000001, C20000000000000000000002, );
+            name = GateReportExtension; productName = GateReportExtension;
+            productReference = C30000000000000000000001; productType = "com.apple.product-type.app-extension";
+        };
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -338,6 +360,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				C50000000000000000000001 /* GateReportExtension */,
 				B50000000000000000000001 /* GateWidgetExtension */,
 				000000000000000100000000 /* Gate */,
 				A50000000000000000000001 /* DeviceActivityMonitorExtension */,
@@ -377,6 +400,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B63000000000000000000001 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		C63000000000000000000001 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -409,6 +433,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B61000000000000000000001 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		C61000000000000000000001 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -416,6 +441,7 @@
 		AA0000000000000000000002 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = A50000000000000000000002 /* ShieldConfigurationExtension */; targetProxy = A90000000000000000000002 /* PBXContainerItemProxy */; };
 		AA0000000000000000000003 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = A50000000000000000000003 /* ShieldActionExtension */; targetProxy = A90000000000000000000003 /* PBXContainerItemProxy */; };
 		BA0000000000000000000001 = {isa = PBXTargetDependency; target = B50000000000000000000001; targetProxy = B90000000000000000000001; };
+		CA0000000000000000000001 = {isa = PBXTargetDependency; target = C50000000000000000000001; targetProxy = C90000000000000000000001; };
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -775,6 +801,36 @@
                 SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;
             }; name = Release;
         };
+        C71000000000000000000001 /* Debug for GateReportExtension */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                APPLICATION_EXTENSION_API_ONLY = YES;
+                CODE_SIGN_ENTITLEMENTS = GateReportExtension/GateReportExtension.entitlements;
+                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 3;
+                DEVELOPMENT_TEAM = F2ZGB2Y8UY; GENERATE_INFOPLIST_FILE = NO;
+                INFOPLIST_FILE = GateReportExtension/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+                LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+                MARKETING_VERSION = 0.3; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.report;
+                PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos;
+                SKIP_INSTALL = YES; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+                SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;
+            }; name = Debug;
+        };
+        C71000000000000000000002 /* Release for GateReportExtension */ = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                APPLICATION_EXTENSION_API_ONLY = YES;
+                CODE_SIGN_ENTITLEMENTS = GateReportExtension/GateReportExtension.entitlements;
+                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 3;
+                DEVELOPMENT_TEAM = F2ZGB2Y8UY; GENERATE_INFOPLIST_FILE = NO;
+                INFOPLIST_FILE = GateReportExtension/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+                LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+                MARKETING_VERSION = 0.3; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.report;
+                PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos;
+                SKIP_INSTALL = YES; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+                SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;
+            }; name = Release;
+        };
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -824,6 +880,7 @@
 			defaultConfigurationName = Release;
 		};
 		B81000000000000000000001 = {isa = XCConfigurationList; buildConfigurations = (B71000000000000000000001, B71000000000000000000002, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		C81000000000000000000001 = {isa = XCConfigurationList; buildConfigurations = (C71000000000000000000001, C71000000000000000000002, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
 /* End XCConfigurationList section */
 	};
 	rootObject = 000000000000000000000000 /* Project object */;

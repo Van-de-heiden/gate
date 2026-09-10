@@ -61,9 +61,17 @@ objects = project.split("/* Begin PBXProject section */")[0] + project.split("/*
 refs = set(re.findall(r"\b[A-F0-9]{24}\b", project))
 assert refs <= set(definitions), f"Unknown IDs: {refs - set(definitions)}"
 identifiers = re.findall(r"PRODUCT_BUNDLE_IDENTIFIER = ([^;]+);", project)
-assert len(identifiers) == 10
+assert len(identifiers) == 12
 assert all(i == "ch.mauruspichler.gate" or i.startswith("ch.mauruspichler.gate.") for i in identifiers)
 assert "Gate/Info.plist" in project and "GateWidgetExtension" in project
+assert identifiers.count("ch.mauruspichler.gate.report") == 2
+report_plist = plistlib.loads((ROOT / "GateReportExtension/Info.plist").read_bytes())
+assert report_plist["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.deviceactivityui.report-extension"
+report_entitlements = plistlib.loads((ROOT / "GateReportExtension/GateReportExtension.entitlements").read_bytes())
+assert report_entitlements == {"com.apple.developer.family-controls": True}
+report_target = re.search(r"C50000000000000000000001 /\* GateReportExtension \*/ = \{(.*?)\n\s*\};", project, re.S).group(1)
+assert "C20000000000000000000001, C20000000000000000000002" in report_target
+assert "B20000000000000000000002" not in report_target  # No shared state/storage in the private report.
 assert "IPHONEOS_DEPLOYMENT_TARGET = 16.0" not in project
 assert "GateConstants" not in "\n".join(p.read_text() for p in ROOT.rglob("*.swift"))
 assert "GateStorage" not in "\n".join(p.read_text() for p in ROOT.rglob("*.swift"))
