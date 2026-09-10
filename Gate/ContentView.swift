@@ -9,8 +9,6 @@ struct ContentView: View {
     @Environment(\.openURL) private var openURL
     @State private var tab = 0
     @State private var onboarding = false
-    private let tabs = ["Heute", "Lernen", "Bilanz", "Mehr"]
-    private let tabSymbols = ["house", "books.vertical", "chart.bar.xaxis", "slider.horizontal.3"]
 
     init(controller: ScreenTimeController) {
         self.controller = controller
@@ -18,39 +16,39 @@ struct ContentView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            Group {
-                switch tab {
-                case 1: LearningLibraryView(controller: controller, learning: learning)
-                case 2: GateStatisticsView(controller: controller, learning: learning)
-                case 3: GateSettingsView(controller: controller)
-                default: home
-                }
+        // The system owns the bar, its glass appearance and selection gestures.
+        // Each tab keeps its own navigation stack when another tab is selected.
+        TabView(selection: $tab) {
+            NavigationStack {
+                home
+                    .background(GateDesign.paper)
+                    .toolbar(.hidden, for: .navigationBar)
             }
-            .background(GateDesign.paper)
-            .toolbar(.hidden, for: .navigationBar)
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                VStack(spacing: 0) {
-                    HStack(spacing: 0) {
-                        ForEach(tabs.indices, id: \.self) { index in
-                            Button { GateKeyboard.dismiss(); tab = index } label: {
-                                VStack(spacing: 5) {
-                                    Image(systemName: tabSymbols[index]).font(.system(size: 19, weight: tab == index ? .semibold : .regular)).accessibilityHidden(true)
-                                    Text(tabs[index]).font(.caption2.weight(tab == index ? .semibold : .regular))
-                                }.frame(maxWidth: .infinity).frame(minHeight: 54)
-                                    .foregroundStyle(tab == index ? Color.primary : Color.secondary)
-                                    .background(tab == index ? Color.primary.opacity(0.07) : .clear)
-                                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-                            }.buttonStyle(.plain).accessibilityAddTraits(tab == index ? .isSelected : [])
-                        }
-                    }.padding(6).background(.ultraThinMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-                        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).stroke(GateDesign.line))
-                        .shadow(color: .black.opacity(0.06), radius: 16, y: 5)
-                }.padding(.horizontal, 20).padding(.bottom, 8)
+            .tabItem { Label("Heute", systemImage: "house") }.tag(0)
+
+            NavigationStack {
+                LearningLibraryView(controller: controller, learning: learning)
+                    .background(GateDesign.paper)
+                    .toolbar(.hidden, for: .navigationBar)
             }
+            .tabItem { Label("Lernen", systemImage: "books.vertical") }.tag(1)
+
+            NavigationStack {
+                GateStatisticsView(controller: controller, learning: learning)
+                    .background(GateDesign.paper)
+                    .toolbar(.hidden, for: .navigationBar)
+            }
+            .tabItem { Label("Bilanz", systemImage: "chart.bar.xaxis") }.tag(2)
+
+            NavigationStack {
+                GateSettingsView(controller: controller)
+                    .background(GateDesign.paper)
+                    .toolbar(.hidden, for: .navigationBar)
+            }
+            .tabItem { Label("Mehr", systemImage: "slider.horizontal.3") }.tag(3)
         }
         .tint(.primary)
+        .onChange(of: tab) { _, _ in GateKeyboard.dismiss() }
         .sheet(isPresented: $onboarding) { GateOnboardingView(controller: controller) }
         .sheet(isPresented: $controller.showPause, onDismiss: { controller.closePause() }) {
             IntentionalPauseView(controller: controller)
@@ -94,9 +92,13 @@ struct ContentView: View {
                 HStack {
                     Text("gate").font(.system(.title2, design: .serif)).tracking(-1)
                     Spacer()
-                    Eyebrow(text: Date().formatted(.dateTime.day().month(.wide)))
+                    Button { controller.requestPause() } label: {
+                        Label("Pause", systemImage: "pause.circle")
+                            .font(.subheadline.weight(.medium)).padding(.vertical, 12)
+                    }.buttonStyle(.plain).accessibilityLabel("Gate-Pause öffnen")
                 }
                 VStack(alignment: .leading, spacing: 16) {
+                    Eyebrow(text: Date().formatted(.dateTime.day().month(.wide)))
                     Text(controller.state.limitReached ? "Erst verstehen.\nDann weiter." : "Platz für das,\nwas zählt.")
                         .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
                     Text(controller.state.monitoringEnabled
@@ -174,7 +176,7 @@ struct ContentView: View {
                 Button { controller.beginPractice() } label: {
                     HStack { Text("Einfach etwas lernen"); Spacer(); Text("\(learning.dueCount) fällig").foregroundStyle(.secondary) }
                 }.buttonStyle(GateButtonStyle(prominent: false))
-                Button("Einen Impuls unterbrechen") { controller.showPause = true }
+                Button("Einen Impuls unterbrechen") { controller.requestPause() }
                     .font(.footnote).underline().frame(maxWidth: .infinity)
                 Text("Kein Feed. Kein Wettlauf. Ein guter Gedanke reicht.")
                     .font(.system(.footnote, design: .serif)).foregroundStyle(.secondary)
@@ -191,12 +193,8 @@ struct ContentView: View {
                     .font(.caption2.weight(.semibold)).padding(.horizontal, 10).padding(.vertical, 6)
                     .background(GateDesign.paper).clipShape(Capsule())
             }
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Text(controller.state.remainingFreeMinutes == 0 ? "0" : "≤ \(controller.state.remainingFreeMinutes)")
-                    .font(.system(size: 56, weight: .semibold, design: .rounded)).monospacedDigit().minimumScaleFactor(0.7)
-                Text("min frei").font(.subheadline).foregroundStyle(.secondary)
-            }
-            GateProgressLine(value: Double(max(0, controller.state.freeMinutes - controller.state.confirmedMinutes)) / Double(controller.state.freeMinutes))
+            AllowanceGauge(remainingMinutes: controller.state.remainingFreeMinutes,
+                           totalMinutes: controller.state.freeMinutes)
             Text("\(controller.state.confirmedMinutes) von \(controller.state.freeMinutes) Minuten durch iOS bestätigt.")
                 .font(.caption).foregroundStyle(.secondary)
             Text("Die freie Restzeit ist eine Obergrenze zwischen iOS-Nutzungsmeldungen, kein Live-Zähler der gesamten Bildschirmzeit.")

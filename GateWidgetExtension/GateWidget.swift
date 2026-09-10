@@ -32,7 +32,9 @@ struct GateWidgetView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: family == .systemLarge ? 14 : 6) {
             HStack {
-                Text("gate").font(.system(.subheadline, design: .serif))
+                Link("gate · Pause", destination: URL(string: "gate://pause")!)
+                    .font(.system(.subheadline, design: .serif))
+                    .accessibilityLabel("Gate-Pause öffnen")
                 Spacer()
                 Text(status).font(.system(size: 9, weight: .medium)).tracking(1)
             }.foregroundStyle(.secondary)

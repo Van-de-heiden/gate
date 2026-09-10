@@ -72,6 +72,15 @@ struct GateSettingsView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }.gateCard()
                 GateSection(title: "Dauerhaft geschützte Websites") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Label("Wenn Safari „Website nicht erlaubt“ zeigt", systemImage: "hand.raised")
+                            .font(.headline)
+                        Text("Das ist Apples Filterseite. Gate kann sie weder gestalten noch von dort automatisch seine Pause öffnen. Schliess den Browser-Tab und öffne die Gate-Pause über dein Widget oder oben unter Heute.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                        Button("Gate-Pause öffnen") { controller.requestPause() }
+                            .buttonStyle(GateButtonStyle(prominent: false))
+                    }
+                    Divider()
                     Text("Hier stehen Websites, für die es keine Lernfreigabe gibt – auch nicht in der freien Stunde. Nur einzelne Websites markieren. Gespeicherte Einträge lassen sich erweitern, nicht entfernen.")
                         .font(.subheadline).foregroundStyle(.secondary)
                     Text("\(GateShieldPolicy.protectedSelection(from: controller.state).webDomainTokens.count) Websites geschützt").font(.headline)
@@ -79,8 +88,7 @@ struct GateSettingsView: View {
                         .buttonStyle(GateButtonStyle(prominent: false)).disabled(!controller.isAuthorized)
                     Button("Dauerhaft übernehmen") { controller.saveProtectedWebsites() }
                         .buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized)
-                    Button("Hilfreiche Unterbrechung ansehen") { controller.showPause = true }.font(.footnote).underline()
-                    Text("Gate kann für diese Website-Sperren einen eigenen Hinweis zeigen. Apples automatischer Erwachsenenfilter kann vorher seine Systemseite anzeigen. Er erlaubt keine beliebige Weiterleitung. Die Unterbrechung erreichst du jederzeit auch über Heute.")
+                    Text("Für diese zusätzlich ausgewählten Websites zeigt Gate seinen Hinweis, wenn iOS die Gate-Sperre aufruft. Der automatische Apple-Filter bleibt aktiv und kann Vorrang haben.")
                         .font(.caption).foregroundStyle(.secondary)
                 }.gateCard()
                 GateSection(title: "Inhalte & Privatsphäre") {
@@ -148,6 +156,7 @@ struct LauncherSettingsView: View {
                     .font(.caption).foregroundStyle(.secondary)
             }
         }.gateKeyboardDismissal().navigationTitle("Textliste").navigationBarTitleDisplayMode(.inline).tint(.primary)
+            .toolbar(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) { EditButton() }
                 ToolbarItem(placement: .topBarTrailing) {

@@ -76,9 +76,9 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 ### Permanent websites / helpful interruption
 - In **Mehr → Dauerhaft geschützte Websites**, select a benign test domain, never Phone or apps, and save it.
 - Test during the free hour, with a consumption grant, at midnight and after restart. It must remain shielded. A learning result must not grant it access.
-- On Gate's website shield, tap **Abstand gewinnen**; notification opens the pause page on iOS 26. If notifications are disabled, open Gate manually: the pending pause is persisted.
+- On Gate's website shield, tap **Pause in Gate anfordern**; notification opens the pause page on iOS 26. If notifications are disabled, open Gate manually: the pending pause is persisted.
 - Try while a different learning session was suspended. Its progress must remain.
-- Automatic adult filtering may render Apple's own block page first. It cannot be redirected by this Screen Time implementation. **Heute → Einen Impuls unterbrechen** remains the manual route.
+- Automatic adult filtering may render Apple's own block page first. It cannot be redirected by this Screen Time implementation. **Heute → Pause** and **gate · Pause** in the widget are the direct manual routes.
 - Closing/finishing the optional 60-second pause does not unlock the domain. No trigger answers are retained.
 - Individual authorization can still be revoked in iOS and the app can be uninstalled. The additive lock is an in-app commitment, not device supervision.
 
@@ -105,3 +105,13 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 - On a permanently selected website that reaches Gate's shield, check the supportive message and “Pause in Gate anfordern”. Tap the Gate notification to reach the existing pause page; with notifications disabled, opening Gate manually should still present the pending pause. Completing the pause must never grant website access.
 - Messages are chosen in 30-minute time buckets when iOS requests a configuration. iOS may cache the screen, so a new message on every visit is not promised. No attempt counter or browsing history is added.
 - The automatic adult filter remains unchanged and can still display Apple's system page instead. Do not disable it to obtain a branded screenshot.
+
+## Fuel gauge and native Liquid Glass navigation
+
+- Build with Xcode 26+ and run on iOS 26+: the bottom bar must be the native floating system bar. Check system selection gestures, scrolling content under the bar, keyboard presentation, light/dark appearance, Reduce Transparency and Reduce Motion. Earlier supported iOS versions should show their native tab bar instead.
+- Open a learning path, switch to Today and back: the path and scroll position should remain. Open Mehr → Textliste, switch tabs and return: unsaved new entries must remain; Back and Sichern must be reachable.
+- Type into library search, select another native tab, then return: the keyboard dismisses and the search text remains.
+- With 0 / 30 / 60 confirmed consumption minutes in everyday mode, the needle must show full / half / empty with upper bounds of 60 / 30 / 0 free minutes. Consumption above 60 must never send the needle below empty.
+- At 1 minute in the deliberate 2-minute test, the gauge shows half and at most 1 minute free. Switch to everyday mode: the same usage gives at most 59 minutes and a nearly full dial; usage must not reset.
+- Check a small iPhone and the largest Dynamic Type sizes. The numeric value and explanatory text must remain readable. VoiceOver reads one free-time value, rather than the decorative ticks. Reduce Motion suppresses needle/value animation.
+- From Apple's filter page, close the browser tab and tap **gate · Pause** in the medium and large widget. Gate opens its pause even with notifications disabled. Repeat while Gate has a suspended lesson; its answers must survive. Closing the pause must not unlock any website.

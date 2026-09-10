@@ -12,10 +12,16 @@ jobs:
   verify:
     runs-on: macos-15
     timeout-minutes: 15
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - name: Confirm the Liquid Glass SDK toolchain
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
       - name: Validate project and curriculum
         run: python3 scripts/validate.py
       - name: Test the real Swift state and learning engine

@@ -10,7 +10,7 @@ let package = Package(
             exclude: ["Gate.xcodeproj", "GateWidgetExtension", "DeviceActivityMonitorExtension",
                 "ShieldActionExtension", "ShieldConfigurationExtension", "ScreenTimeShared",
                 "Tests", "scripts", "docs", "README.md", "LICENSE", "Shared/GateSharedStore.swift",
-                "Gate/Assets.xcassets", "Gate/ContentView.swift", "Gate/DesignSystem.swift",
+                "Gate/Assets.xcassets", "Gate/ContentView.swift", "Gate/DesignSystem.swift", "Gate/AllowanceGauge.swift",
                 "Gate/Gate.entitlements", "Gate/GateApp.swift", "Gate/Info.plist",
                 "Gate/GateSettingsView.swift", "Gate/GateStatisticsView.swift", "Gate/LearningLibraryView.swift",
                 "Gate/LearningStore.swift", "Gate/LessonView.swift", "Gate/ScreenTimeController.swift",
