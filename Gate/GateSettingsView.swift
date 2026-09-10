@@ -9,11 +9,27 @@ struct GateSettingsView: View {
     @State private var protectedPicker = false
     @State private var showOnboarding = false
     @State private var notificationsAllowed: Bool?
+    @State private var confirmTest = false
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 30) {
                 Eyebrow(text: "Dein Rahmen")
-                Text("Wenige Regeln.\nKlar gesetzt.").font(.system(.largeTitle, design: .serif))
+                Text("Dein Gate.").font(.largeTitle.bold())
+                GateSection(title: "Tagesbudget") {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text(controller.state.isTestMode ? "Testmodus" : "Alltag").font(.title2.bold())
+                        Spacer()
+                        Text("\(controller.state.freeMinutes) min").font(.title2.weight(.semibold)).monospacedDigit()
+                    }
+                    Text(controller.state.isTestMode ? "Der Test sperrt schon nach zwei Minuten. Er gilt nur heute – du kannst sofort auf die freie Alltagsstunde wechseln." : "Eine freie Stunde pro Tag, gemeinsam für deine ausgewählten Konsum-Apps und Websites.")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                    if controller.state.isTestMode {
+                        Button("Auf Alltag wechseln · 60 Minuten") { controller.useEverydayMode() }
+                            .buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized)
+                    }
+                    Text("Von iOS bestätigt: \(controller.state.confirmedMinutes) Minuten heute. Beim Moduswechsel wird dieser Verbrauch nicht gelöscht.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }.gateCard()
                 GateSection(title: "Berechtigungen") {
                     HStack { Text("Bildschirmzeit"); Spacer(); Text(controller.isAuthorized ? "Erlaubt" : "Fehlt").foregroundStyle(.secondary) }
                     if !controller.isAuthorized {
@@ -24,24 +40,28 @@ struct GateSettingsView: View {
                          : "Mitteilungen erlauben, damit du von einer gesperrten App zu Gate kommst. Alternativ Gate selbst öffnen.")
                         .font(.caption).foregroundStyle(.secondary)
                     Link("iOS-Einstellungen öffnen", destination: URL(string: UIApplication.openSettingsURLString)!).font(.footnote).underline()
-                }
-                Divider()
+                }.gateCard()
                 GateSection(title: "Deine Ablenkungen") {
                     Text(controller.selectionSummary).font(.headline)
                     Text("Nur einzelne Konsum-Apps und Websites markieren. Telefon, WhatsApp, Karten und Lernwerkzeuge unmarkiert lassen. Die freie Stunde zählt für diesen gemeinsamen Pool.")
                         .font(.subheadline).foregroundStyle(.secondary)
                     Button(controller.state.isSelectionLocked ? "Apps & Websites ergänzen" : "Apps & Websites auswählen") { picker = true }.buttonStyle(GateButtonStyle(prominent: false)).disabled(!controller.isAuthorized)
-                    Button(controller.state.monitoringEnabled ? "Auswahl übernehmen · 60 Minuten täglich" : "Gate aktivieren · 60 Minuten täglich") {
+                    Button(controller.state.monitoringEnabled ? "Auswahl übernehmen" : "Gate aktivieren") {
                         controller.startGate()
-                    }.buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized || !controller.hasSelection)
+                    }.buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized || (!controller.hasSelection && controller.state.selectionData == nil))
                     Text("Nach dem ersten Aktivieren bleibt die Auswahl fest. Neue Apps und Websites kannst du jederzeit ergänzen. Bereits gespeicherte Einträge bleiben auch dann erhalten, wenn du sie im Apple-Auswahlfenster abwählst.")
                         .font(.caption).foregroundStyle(.secondary)
                     #if DEBUG
-                    Button("Entwicklertest mit 2 Minuten starten") { controller.startGate(testMode: true) }
-                        .font(.caption).foregroundStyle(.secondary).underline()
+                    DisclosureGroup("Entwickleroptionen") {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Nur zum Prüfen der Sperre: Das gemeinsame Tagesbudget sinkt auf zwei Minuten. Bereits gezählte Nutzung bleibt angerechnet; eine Sperre kann deshalb sofort greifen.")
+                                .font(.caption).foregroundStyle(.secondary)
+                            Button("Zwei-Minuten-Test vorbereiten") { confirmTest = true }
+                                .font(.subheadline).disabled(!controller.isAuthorized)
+                        }.padding(.top, 12)
+                    }.font(.footnote)
                     #endif
-                }
-                Divider()
+                }.gateCard()
                 GateSection(title: "Homescreen") {
                     NavigationLink { LauncherSettingsView(controller: controller) } label: {
                         HStack { Text("Textliste bearbeiten"); Spacer(); Text("\(controller.state.launcher.count) Einträge").foregroundStyle(.secondary) }
@@ -50,8 +70,7 @@ struct GateSettingsView: View {
                         .font(.subheadline).foregroundStyle(.secondary)
                     Text("Das Widget öffnet Links über Gate. Es ersetzt nicht den iOS-Homescreen und hebt keine Sperre auf. App-Links benötigen die jeweilige installierte App.")
                         .font(.caption).foregroundStyle(.secondary)
-                }
-                Divider()
+                }.gateCard()
                 GateSection(title: "Dauerhaft geschützte Websites") {
                     Text("Hier stehen Websites, für die es keine Lernfreigabe gibt – auch nicht in der freien Stunde. Nur einzelne Websites markieren. Gespeicherte Einträge lassen sich erweitern, nicht entfernen.")
                         .font(.subheadline).foregroundStyle(.secondary)
@@ -63,8 +82,7 @@ struct GateSettingsView: View {
                     Button("Hilfreiche Unterbrechung ansehen") { controller.showPause = true }.font(.footnote).underline()
                     Text("Gate kann für diese Website-Sperren einen eigenen Hinweis zeigen. Apples automatischer Erwachsenenfilter kann vorher seine Systemseite anzeigen. Er erlaubt keine beliebige Weiterleitung. Die Unterbrechung erreichst du jederzeit auch über Heute.")
                         .font(.caption).foregroundStyle(.secondary)
-                }
-                Divider()
+                }.gateCard()
                 GateSection(title: "Inhalte & Privatsphäre") {
                     Text("Der iOS-Erwachsenenfilter und die Einschränkungen für explizit markierte Apple-Medien bleiben auch während Freigaben gesetzt.")
                         .font(.subheadline)
@@ -72,20 +90,23 @@ struct GateSettingsView: View {
                         .font(.caption).foregroundStyle(.secondary)
                     Text("Lernstand, Notizen, Auswahl und Nutzungswerte werden lokal gespeichert. Die Bildmotive der Lernwege sind offline enthalten. Externe Quellenfotos werden nur auf Wunsch vom angegebenen Anbieter geladen. Es gibt keine Konten und keine Analyse-Tracker.")
                         .font(.caption).foregroundStyle(.secondary)
-                }
-                Divider()
+                }.gateCard()
                 GateSection(title: "Gate · Open Source") {
                     Text("Kostenlos nutzen, verändern und weitergeben. Code und eigene Lerntexte unter MIT; externe Fotos behalten ihre eigenen Nutzungsbedingungen.")
                         .font(.subheadline).foregroundStyle(.secondary)
                     Link("Projekt auf GitHub", destination: URL(string: "https://github.com/Van-de-heiden/gate")!).underline()
                     Button("Einführung noch einmal ansehen") { showOnboarding = true }.font(.footnote)
                     Text("Version 0.3 · Produkt-Alpha").font(.caption2).foregroundStyle(.secondary)
-                }
+                }.gateCard()
             }.padding(24)
         }
         .familyActivityPicker(isPresented: $picker, selection: $controller.selection)
         .familyActivityPicker(isPresented: $protectedPicker, selection: $controller.protectedSelection)
         .sheet(isPresented: $showOnboarding) { GateOnboardingView(controller: controller) }
+        .confirmationDialog("Zwei-Minuten-Test aktivieren?", isPresented: $confirmTest, titleVisibility: .visible) {
+            Button("Testmodus für heute starten") { controller.startGate(testMode: true) }
+            Button("Abbrechen", role: .cancel) {}
+        } message: { Text("Danach sperrt Gate bereits ab zwei Minuten bestätigter Nutzung. Über „Auf Alltag wechseln“ erhältst du wieder das normale 60-Minuten-Budget.") }
         .task {
             notificationsAllowed = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus == .authorized
         }

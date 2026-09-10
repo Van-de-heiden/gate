@@ -10,6 +10,7 @@ struct ContentView: View {
     @State private var tab = 0
     @State private var onboarding = false
     private let tabs = ["Heute", "Lernen", "Bilanz", "Mehr"]
+    private let tabSymbols = ["house", "books.vertical", "chart.bar.xaxis", "slider.horizontal.3"]
 
     init(controller: ScreenTimeController) {
         self.controller = controller
@@ -30,18 +31,23 @@ struct ContentView: View {
             .toolbar(.hidden, for: .navigationBar)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 VStack(spacing: 0) {
-                    Divider()
                     HStack(spacing: 0) {
                         ForEach(tabs.indices, id: \.self) { index in
                             Button { GateKeyboard.dismiss(); tab = index } label: {
-                                VStack(spacing: 8) {
-                                    Rectangle().fill(tab == index ? Color.primary : .clear).frame(width: 18, height: 2)
-                                    Text(tabs[index]).font(.caption.weight(tab == index ? .semibold : .regular))
-                                }.frame(maxWidth: .infinity).frame(minHeight: 52)
+                                VStack(spacing: 5) {
+                                    Image(systemName: tabSymbols[index]).font(.system(size: 19, weight: tab == index ? .semibold : .regular)).accessibilityHidden(true)
+                                    Text(tabs[index]).font(.caption2.weight(tab == index ? .semibold : .regular))
+                                }.frame(maxWidth: .infinity).frame(minHeight: 54)
+                                    .foregroundStyle(tab == index ? Color.primary : Color.secondary)
+                                    .background(tab == index ? Color.primary.opacity(0.07) : .clear)
+                                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                             }.buttonStyle(.plain).accessibilityAddTraits(tab == index ? .isSelected : [])
                         }
-                    }.padding(.horizontal, 18).background(GateDesign.paper)
-                }
+                    }.padding(6).background(.ultraThinMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                        .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).stroke(GateDesign.line))
+                        .shadow(color: .black.opacity(0.06), radius: 16, y: 5)
+                }.padding(.horizontal, 20).padding(.bottom, 8)
             }
         }
         .tint(.primary)
@@ -92,11 +98,20 @@ struct ContentView: View {
                 }
                 VStack(alignment: .leading, spacing: 16) {
                     Text(controller.state.limitReached ? "Erst verstehen.\nDann weiter." : "Platz für das,\nwas zählt.")
-                        .font(.system(.largeTitle, design: .serif)).fixedSize(horizontal: false, vertical: true)
+                        .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
                     Text(controller.state.monitoringEnabled
                          ? "Deine Aufmerksamkeit gehört dir."
                          : "Wähle deine Ablenkungen. Den Rest lässt Gate in Ruhe.")
                         .font(.subheadline).foregroundStyle(.secondary)
+                }
+                if controller.state.isTestMode {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("Zwei-Minuten-Test aktiv", systemImage: "wrench.and.screwdriver").font(.headline)
+                        Text("Aktuell gelten 2 statt 60 freie Minuten. Du kannst direkt zum Alltag zurückkehren.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                        Button("Auf Alltag wechseln") { controller.useEverydayMode() }
+                            .buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized)
+                    }.gateCard()
                 }
                 allowance
 
@@ -144,7 +159,7 @@ struct ContentView: View {
                         ForEach(controller.state.launcher.filter(\.enabled)) { item in
                             Button { open(item) } label: {
                                 HStack {
-                                    Text(item.title).font(.system(.title2, design: .serif))
+                                    Text(item.title).font(.title3.weight(.medium))
                                     Spacer()
                                     Text("Öffnen").font(.caption).foregroundStyle(.secondary)
                                 }.frame(minHeight: 55).contentShape(Rectangle())
@@ -170,18 +185,22 @@ struct ContentView: View {
     private var allowance: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .firstTextBaseline) {
-                Eyebrow(text: controller.state.limitReached ? "Freie Stunde aufgebraucht" : "Freie Tageszeit")
+                Eyebrow(text: controller.state.limitReached ? (controller.state.isTestMode ? "Testbudget aufgebraucht" : "Freie Stunde aufgebraucht") : "Dein Tagesbudget")
                 Spacer()
-                Text(controller.state.monitoringEnabled && controller.monitorReady ? "AKTIV" : controller.state.monitoringEnabled ? "PRÜFEN" : "PAUSIERT").font(.caption2.weight(.semibold))
+                Text(controller.state.monitoringEnabled && controller.monitorReady ? (controller.state.isTestMode ? "TEST" : "ALLTAG") : controller.state.monitoringEnabled ? "PRÜFEN" : "INAKTIV")
+                    .font(.caption2.weight(.semibold)).padding(.horizontal, 10).padding(.vertical, 6)
+                    .background(GateDesign.paper).clipShape(Capsule())
             }
             HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Text(controller.state.limitReached ? "0" : "≤ \(max(0, controller.state.freeMinutes - controller.state.confirmedMinutes))")
-                    .font(.system(size: 48, weight: .light, design: .serif)).monospacedDigit()
+                Text(controller.state.remainingFreeMinutes == 0 ? "0" : "≤ \(controller.state.remainingFreeMinutes)")
+                    .font(.system(size: 56, weight: .semibold, design: .rounded)).monospacedDigit().minimumScaleFactor(0.7)
                 Text("min frei").font(.subheadline).foregroundStyle(.secondary)
             }
             GateProgressLine(value: Double(max(0, controller.state.freeMinutes - controller.state.confirmedMinutes)) / Double(controller.state.freeMinutes))
-            Text(controller.state.freeMinutes == 2 ? "Testmodus · 2 Minuten. In Mehr auf Alltag wechseln." : "60 Minuten gemeinsam für ausgewählte Konsum-Apps und Websites.")
+            Text("\(controller.state.confirmedMinutes) von \(controller.state.freeMinutes) Minuten durch iOS bestätigt.")
                 .font(.caption).foregroundStyle(.secondary)
+            Text("Die freie Restzeit ist eine Obergrenze zwischen iOS-Nutzungsmeldungen, kein Live-Zähler der gesamten Bildschirmzeit.")
+                .font(.caption2).foregroundStyle(.secondary)
             if let date = controller.state.lastUsageUpdate {
                 Text("Zuletzt bestätigt: \(date.formatted(date: .omitted, time: .shortened)) · Anzeige in Nutzungsschritten.")
                     .font(.caption2).foregroundStyle(.secondary)
@@ -189,7 +208,7 @@ struct ContentView: View {
             if !controller.state.monitoringEnabled || !controller.monitorReady {
                 Button("Gate einrichten") { tab = 3 }.buttonStyle(GateButtonStyle())
             }
-        }.padding(20).overlay(RoundedRectangle(cornerRadius: 14).stroke(GateDesign.line))
+        }.gateCard()
     }
 
     private func open(_ item: LauncherItem) {

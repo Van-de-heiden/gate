@@ -45,6 +45,8 @@ final class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     private func update(_ body: (inout GateState) -> Void) {
         do {
             try GateSharedStore.transaction(afterCommit: { GateShieldPolicy.apply($0) }) { state in
+                state.rollDay(at: Date())
+                state.reconcileAllowance(at: Date())
                 body(&state)
             }
             WidgetCenter.shared.reloadTimelines(ofKind: "GateLauncher")

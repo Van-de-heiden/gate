@@ -81,6 +81,7 @@ struct GateState: Codable {
     var monitoringEnabled = false
     var dailyActivityName = "gate.daily.\(UUID().uuidString)"
     var freeMinutes = 60
+    var testModeStartedAt: Date?
     var confirmedMinutes = 0
     var lastUsageUpdate: Date?
     var limitReached = false
@@ -92,6 +93,32 @@ struct GateState: Codable {
     var onboardingComplete = false
     var launcher = LauncherItem.defaults
 
+    static let usageCheckpoints = Set([1, 2] + Array(stride(from: 5, through: 240, by: 5)))
+    var isTestMode: Bool { freeMinutes == 2 }
+    var remainingFreeMinutes: Int { max(0, freeMinutes - confirmedMinutes) }
+
+    mutating func useEverydayMode() {
+        freeMinutes = 60
+        testModeStartedAt = nil
+        reconcileAllowance(at: Date())
+    }
+
+    mutating func beginTestMode(at now: Date) {
+        freeMinutes = 2
+        testModeStartedAt = now
+        reconcileAllowance(at: now)
+    }
+
+    mutating func reconcileAllowance(at now: Date, calendar: Calendar = .current) {
+        // Old builds persisted the two-minute budget indefinitely. Migrate them to everyday mode.
+        if isTestMode && (testModeStartedAt == nil || !calendar.isDate(testModeStartedAt!, inSameDayAs: now)) {
+            freeMinutes = 60
+            testModeStartedAt = nil
+        }
+        limitReached = confirmedMinutes >= freeMinutes
+        if !limitReached { requests.removeAll() }
+    }
+
     mutating func rollDay(at now: Date, calendar: Calendar = .current) {
         let today = calendar.startOfDay(for: now)
         guard today > day else { return }
@@ -102,6 +129,8 @@ struct GateState: Codable {
         grants = []
         requests = []
         attempts = [:]
+        freeMinutes = 60
+        testModeStartedAt = nil
         history = Array(history.suffix(90))
     }
 
@@ -130,7 +159,7 @@ struct GateState: Codable {
     mutating func recordUsage(_ minutes: Int, at now: Date) {
         confirmedMinutes = max(confirmedMinutes, minutes)
         lastUsageUpdate = now
-        if confirmedMinutes >= freeMinutes { limitReached = true }
+        limitReached = confirmedMinutes >= freeMinutes
         let index = usageIndex()
         history[index].confirmedMinutes = confirmedMinutes
     }

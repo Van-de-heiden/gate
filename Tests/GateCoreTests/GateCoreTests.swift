@@ -117,6 +117,89 @@ final class GateCoreTests: XCTestCase {
         XCTAssertEqual(state.confirmedMinutes, 90)
     }
 
+    func testLegacyTwoMinuteModeMigratesWithoutErasingUsage() {
+        var state = activeState()
+        state.freeMinutes = 2
+        state.recordUsage(2, at: now)
+        state.grants = [grant("A")]
+        state.reconcileAllowance(at: now)
+        XCTAssertEqual(state.freeMinutes, 60)
+        XCTAssertEqual(state.remainingFreeMinutes, 58)
+        XCTAssertFalse(state.limitReached)
+        XCTAssertEqual(state.grants.count, 1)
+        XCTAssertEqual(state.history.last?.confirmedMinutes, 2)
+    }
+
+    func testExplicitTestModeStillBlocksAtTwoMinutes() {
+        var state = activeState()
+        state.beginTestMode(at: now)
+        state.recordUsage(1, at: now)
+        state.reconcileAllowance(at: now)
+        XCTAssertTrue(state.isTestMode)
+        XCTAssertEqual(state.remainingFreeMinutes, 1)
+        XCTAssertFalse(state.limitReached)
+        state.recordUsage(2, at: now)
+        XCTAssertTrue(state.limitReached)
+    }
+
+    func testEverydaySwitchRetainsUsageAndDoesNotChangeMonitorOrSelection() {
+        var state = activeState()
+        state.selectionData = Data("saved".utf8)
+        state.beginTestMode(at: now)
+        state.recordUsage(2, at: now)
+        let activity = state.dailyActivityName
+        state.requests = [GateRequest(target: target("A"))]
+        state.useEverydayMode()
+        XCTAssertFalse(state.limitReached)
+        XCTAssertEqual(state.remainingFreeMinutes, 58)
+        XCTAssertEqual(state.selectionData, Data("saved".utf8))
+        XCTAssertEqual(state.dailyActivityName, activity)
+        XCTAssertTrue(state.requests.isEmpty)
+        state.recordUsage(2, at: now)
+        XCTAssertFalse(state.limitReached)
+        state.recordUsage(60, at: now)
+        XCTAssertTrue(state.limitReached)
+    }
+
+    func testEverydaySwitchDoesNotGiveAnExtraHourAfterSixtyMinutes() {
+        var state = activeState()
+        state.beginTestMode(at: now)
+        state.recordUsage(70, at: now)
+        state.useEverydayMode()
+        XCTAssertEqual(state.confirmedMinutes, 70)
+        XCTAssertTrue(state.limitReached)
+        XCTAssertEqual(state.remainingFreeMinutes, 0)
+    }
+
+    func testTestModeEndsAtNextDayAndOnLegacyRelaunch() throws {
+        var state = activeState()
+        state.beginTestMode(at: now)
+        state.recordUsage(2, at: now)
+        var restored = try JSONDecoder().decode(GateState.self, from: JSONEncoder().encode(state))
+        restored.reconcileAllowance(at: now)
+        XCTAssertTrue(restored.isTestMode)
+        restored.rollDay(at: now.addingTimeInterval(86400))
+        XCTAssertEqual(restored.freeMinutes, 60)
+        XCTAssertEqual(restored.remainingFreeMinutes, 60)
+        XCTAssertNil(restored.testModeStartedAt)
+    }
+
+    func testStaleLimitFlagCannotShowZeroWithOneConfirmedMinute() {
+        var state = activeState()
+        state.confirmedMinutes = 1
+        state.limitReached = true
+        state.reconcileAllowance(at: now)
+        XCTAssertFalse(state.limitReached)
+        XCTAssertEqual(state.remainingFreeMinutes, 59)
+    }
+
+    func testEveryDailyMonitorContainsBothBudgetsAndMonotonicCheckpoints() {
+        XCTAssertTrue(GateState.usageCheckpoints.contains(2))
+        XCTAssertTrue(GateState.usageCheckpoints.contains(60))
+        XCTAssertTrue(GateState.usageCheckpoints.contains(1))
+        XCTAssertEqual(GateState.usageCheckpoints.max(), 240)
+    }
+
     func testLessonLoadIsModerateIncreasingAndBounded() {
         XCTAssertEqual(LessonLoad.questionCount(minutes: 5, consumedMinutes: 60, failures: 0), 3)
         XCTAssertEqual(LessonLoad.questionCount(minutes: 10, consumedMinutes: 60, failures: 0), 5)

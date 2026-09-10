@@ -20,7 +20,7 @@ struct LearningLibraryView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 26) {
                 Eyebrow(text: "Deine Bibliothek")
-                Text("Mehr verstehen.\nBesser leben.").font(.system(.largeTitle, design: .serif))
+                Text("Mehr verstehen.\nBesser leben.").font(.largeTitle.bold())
                 Text("\(learning.catalog?.paths.count ?? 0) Lernwege · \(learning.catalog?.lessons.count ?? 0) Kapitel\nWähle eine Frage, die dich wirklich interessiert.")
                     .font(.subheadline).foregroundStyle(.secondary)
                 HStack(spacing: 10) {
@@ -53,12 +53,12 @@ struct LearningLibraryView: View {
                             VStack(alignment: .leading, spacing: 14) {
                                 LessonArtwork(name: path.artwork ?? "learning")
                                 HStack { Eyebrow(text: "Weg \(path.number)"); Spacer(); Eyebrow(text: progressLabel(path)) }
-                                Text(path.title).font(.system(.title2, design: .serif))
+                                Text(path.title).font(.title2.weight(.semibold))
                                 Text(path.subtitle).font(.subheadline).foregroundStyle(.secondary)
                                 GateProgressLine(value: progressValue(path))
                                 HStack { Text("Kapitel entdecken"); Spacer(); Image(systemName: "arrow.right") }
                                     .font(.caption.weight(.medium)).padding(.top, 4)
-                            }.padding(.bottom, 14).contentShape(Rectangle())
+                            }.gateCard().contentShape(Rectangle())
                         }.buttonStyle(.plain)
                     }
                 } else {
@@ -88,7 +88,7 @@ struct LearningLibraryView: View {
                     Spacer()
                     Image(systemName: "arrow.up.right").font(.caption)
                 }
-                Text(lesson.title).font(.system(.title3, design: .serif))
+                Text(lesson.title).font(.title3.weight(.semibold))
                 Text(lesson.objective).font(.subheadline).foregroundStyle(.secondary)
                 Text("Ca. \(max(2, (lesson.readingSeconds + lesson.questions.count * 20 + 59) / 60)) min · \(lesson.questions.count) Aufgaben")
                     .font(.caption2).foregroundStyle(.secondary)
@@ -101,7 +101,7 @@ struct LearningLibraryView: View {
             LazyVStack(alignment: .leading, spacing: 24) {
                 LessonArtwork(name: path.artwork ?? "learning")
                 Eyebrow(text: "Weg \(path.number) · " + progressLabel(path))
-                Text(path.title).font(.system(.largeTitle, design: .serif))
+                Text(path.title).font(.largeTitle.bold())
                 Text(path.subtitle).foregroundStyle(.secondary)
                 Button("An meinem Lernstand weiter") { controller.beginPractice(path: path.id) }.buttonStyle(GateButtonStyle())
                 Text("Du kannst jedes Kapitel direkt öffnen. Eine Kapitelrunde vermittelt den Stoff und prüft ihn mit verschiedenen Aufgaben.")

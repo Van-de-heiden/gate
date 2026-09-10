@@ -3,13 +3,15 @@ import FamilyControls
 import ManagedSettings
 
 enum GateDesign {
-    static let paper = Color(uiColor: .systemBackground)
-    static let surface = Color.primary.opacity(0.045)
-    static let line = Color.primary.opacity(0.15)
+    static let paper = Color(uiColor: .systemGroupedBackground)
+    static let surface = Color(uiColor: .secondarySystemGroupedBackground)
+    static let line = Color.primary.opacity(0.09)
 }
 
 struct GateButtonStyle: ButtonStyle {
     var prominent = true
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.isEnabled) private var isEnabled
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.subheadline.weight(.semibold))
@@ -17,8 +19,19 @@ struct GateButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity)
             .foregroundStyle(prominent ? GateDesign.paper : Color.primary)
             .background(prominent ? Color.primary : GateDesign.surface)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .opacity(configuration.isPressed ? 0.7 : 1)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(prominent ? .clear : GateDesign.line))
+            .opacity(isEnabled ? (configuration.isPressed ? 0.8 : 1) : 0.4)
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.98 : 1)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.16), value: configuration.isPressed)
+    }
+}
+
+extension View {
+    func gateCard() -> some View {
+        self.padding(20).background(GateDesign.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).stroke(GateDesign.line.opacity(0.6)))
     }
 }
 

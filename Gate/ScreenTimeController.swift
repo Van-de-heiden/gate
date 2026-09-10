@@ -43,6 +43,7 @@ final class ScreenTimeController: ObservableObject {
                 if self.isAuthorized { GateShieldPolicy.apply(state) }
             }) { state in
                 state.rollDay(at: Date())
+                state.reconcileAllowance(at: Date())
                 state.expireGrants(at: Date())
                 return state
             }
@@ -74,34 +75,38 @@ final class ScreenTimeController: ObservableObject {
         } catch { errorMessage = error.localizedDescription }
     }
 
-    func startGate(testMode: Bool = false) {
+    func startGate(testMode: Bool? = nil) {
         errorMessage = nil
         guard hasStorage, isAuthorized else { errorMessage = "Erlaube zuerst Bildschirmzeit und prüfe die App Group."; return }
-        guard hasSelection, selection.categoryTokens.isEmpty else {
+        let saved = GateShieldPolicy.selection(from: state)
+        let proposed = state.isSelectionLocked ? GateShieldPolicy.retaining(saved, adding: selection) : selection
+        guard (!proposed.applicationTokens.isEmpty || !proposed.webDomainTokens.isEmpty), proposed.categoryTokens.isEmpty else {
             errorMessage = "Wähle einzelne Apps und Websites. Klappe Kategorien auf; ganze Kategorien würden auch wichtige Apps erfassen."
             return
         }
         do {
             // Do not trust the picker UI: deselection is merged back at the persistence boundary.
-            let saved = GateShieldPolicy.selection(from: state)
-            if state.isSelectionLocked { selection = GateShieldPolicy.retaining(saved, adding: selection) }
+            selection = proposed
             let data = try PropertyListEncoder().encode(selection)
             let oldActivity = state.dailyActivityName
-            let freeMinutes = testMode ? 2 : 60
-            let changed = state.selectionData != data || state.freeMinutes != freeMinutes
+            let changed = saved.applicationTokens != selection.applicationTokens
+                || saved.webDomainTokens != selection.webDomainTokens || saved.categoryTokens != selection.categoryTokens
             // Preserve today's usage when resuming or editing selection.
             try mutate { state in
                 state.selectionData = data
                 state.selectionLocked = true
-                state.freeMinutes = freeMinutes
+                if let testMode {
+                    if testMode { state.beginTestMode(at: Date()) }
+                    else { state.useEverydayMode() }
+                }
                 state.monitoringEnabled = true
-                state.limitReached = state.confirmedMinutes >= freeMinutes
+                state.reconcileAllowance(at: Date())
                 if changed { state.dailyActivityName = "gate.daily.\(UUID().uuidString)" }
             }
-            if changed { activityCenter.stopMonitoring([DeviceActivityName(oldActivity)]) }
             try installDailyMonitor()
+            if changed { activityCenter.stopMonitoring([DeviceActivityName(oldActivity)]) }
             monitorReady = true
-            message = testMode ? "Testmodus: 2 freie Minuten. Jede Freigabe bleibt separat." : "Gate ist bereit. 60 freie Minuten pro Tag, gemeinsam für deine Auswahl."
+            message = state.isTestMode ? "Testmodus: 2 freie Minuten, nur für heute. Du kannst jederzeit auf Alltag wechseln." : "Gate ist bereit. 60 freie Minuten pro Tag, gemeinsam für deine Auswahl."
             WidgetCenter.shared.reloadAllTimelines()
         } catch {
             // Keep any already-required shields; do not clear other grants on an API failure.
@@ -110,12 +115,27 @@ final class ScreenTimeController: ObservableObject {
         }
     }
 
+    func useEverydayMode() {
+        errorMessage = nil
+        refreshSharedState()
+        guard hasStorage, isAuthorized else {
+            errorMessage = "Erlaube zuerst Bildschirmzeit und prüfe die App Group."; return
+        }
+        do {
+            // Independent of any unsaved picker edits. Existing monitors already contain the 60-minute event.
+            try mutate { $0.useEverydayMode() }
+            if state.monitoringEnabled && !monitorReady { try installDailyMonitor() }
+            refreshSharedState()
+            message = "Alltag aktiv: 60 Minuten täglich. Der heutige bestätigte Verbrauch bleibt angerechnet."
+        } catch { errorMessage = "Alltag konnte nicht vollständig aktiviert werden: \(error.localizedDescription)" }
+    }
+
     private func installDailyMonitor() throws {
         let selected = GateShieldPolicy.selection(from: state)
         let schedule = DeviceActivitySchedule(intervalStart: DateComponents(hour: 0, minute: 0),
             intervalEnd: DateComponents(hour: 23, minute: 59, second: 59), repeats: true)
         // These are confirmed checkpoints, not a fabricated live Screen Time total.
-        let checkpoints = Set([1, 2, state.freeMinutes] + Array(stride(from: 5, through: 240, by: 5)))
+        let checkpoints = GateState.usageCheckpoints
         var events: [DeviceActivityEvent.Name: DeviceActivityEvent] = [:]
         for minute in checkpoints {
             events[DeviceActivityEvent.Name("gate.usage.\(minute)")] = DeviceActivityEvent(
@@ -351,6 +371,7 @@ final class ScreenTimeController: ObservableObject {
         }) { state in
             state.rollDay(at: Date())
             state.expireGrants(at: Date())
+            state.reconcileAllowance(at: Date())
             try body(&state)
             return state
         }

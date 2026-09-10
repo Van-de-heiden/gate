@@ -89,6 +89,16 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 - Open **Wissen auffrischen** when due questions exist: only due questions appear in this voluntary review mode.
 - Disable networking. All eight image motifs and all chapters remain usable; the older external NASA source photo still loads only on explicit request.
 
+## Everyday allowance and native interface regression checks
+
+- Upgrade with an old persisted two-minute test: opening Gate restores the 60-minute allowance, preserving confirmed usage and learning history. No re-selection is required.
+- Under Mehr, expand Entwickleroptionen and explicitly confirm a test. At 1 confirmed minute the test has an upper bound of 1 minute left; at 2 it blocks. The Today screen and Settings both expose Auf Alltag wechseln.
+- Leave the Apple picker draft empty or different from the saved selection, then use the dedicated everyday-mode button. It must use the saved monitoring selection and leave the draft uncommitted.
+- Switch from a used-up two-minute test to everyday mode: 2 confirmed minutes remain 2 and the free-time upper bound becomes 58. A later two-minute callback must not re-block everyday mode; the 60-minute callback must. At 70 confirmed minutes, mode switching must not grant another free hour.
+- Leave the test enabled overnight. The first next-day app/monitor update returns to 60 minutes and resets only daily usage, not selection or learning progress. A same-day restart retains an explicitly confirmed new test.
+- Compare Gate's confirmed checkpoint and timestamp with iOS Screen Time. Gate is not a live total-device counter; if the discrepancy persists in everyday mode, capture both values and the Gate timestamp rather than resetting usage.
+- Check Today, Learning and Settings in light/dark appearance, larger text and Reduce Motion. Check contrast, scroll access, tab selection and disabled-button visibility. Physical-device visual QA remains required.
+
 ## Gate-branded shields
 
 - On a consumption shield, check the ivory portal icon, Gate name, message and both buttons in light/dark device appearance and with larger text. The primary action still requests a lesson; the secondary action closes the shielded activity.
