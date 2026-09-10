@@ -414,8 +414,8 @@ final class ScreenTimeController: ObservableObject {
 
     func saveProtectedWebsites() {
         errorMessage = nil
-        guard protectedSelection.applicationTokens.isEmpty, protectedSelection.categoryTokens.isEmpty else {
-            errorMessage = "Hier nur einzelne Websites wählen, keine Apps oder Kategorien."
+        guard protectedSelection.categoryTokens.isEmpty else {
+            errorMessage = "Nur einzelne Apps und Websites wählen, keine Kategorien."
             return
         }
         do {
@@ -427,7 +427,7 @@ final class ScreenTimeController: ObservableObject {
                 state.requests.removeAll { GateShieldPolicy.isProtected($0.target, in: snapshot) }
             }
             protectedSelection = GateShieldPolicy.protectedSelection(from: state)
-            message = "Schutz-Websites ergänzt. Sie bleiben auch während der freien Zeit und nach Prüfungen gesperrt."
+            message = "Dauersperre gespeichert. Keine Lernfreigabe möglich."
         } catch { errorMessage = error.localizedDescription }
     }
 

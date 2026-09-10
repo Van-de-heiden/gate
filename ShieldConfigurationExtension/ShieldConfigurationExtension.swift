@@ -7,14 +7,16 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     private let primary = UIColor(red: 242 / 255, green: 239 / 255, blue: 231 / 255, alpha: 1)
 
     override func configuration(shielding application: Application) -> ShieldConfiguration {
-        configuration(for: "Diese App")
+        if isProtected(application) { return protectionConfiguration() }
+        return configuration(for: "Diese App")
     }
 
     override func configuration(
         shielding application: Application,
         in category: ActivityCategory
     ) -> ShieldConfiguration {
-        configuration(for: "Diese App")
+        if isProtected(application) { return protectionConfiguration() }
+        return configuration(for: "Diese App")
     }
 
     override func configuration(shielding webDomain: WebDomain) -> ShieldConfiguration {
@@ -28,6 +30,12 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     ) -> ShieldConfiguration {
         if isProtected(webDomain) { return protectionConfiguration() }
         return configuration(for: "Diese Website")
+    }
+
+    private func isProtected(_ application: Application) -> Bool {
+        guard let token = application.token, let data = try? PropertyListEncoder().encode(token),
+              let state = try? GateSharedStore.read() else { return false }
+        return GateShieldPolicy.isProtected(GateTarget(kind: .application, tokenData: data), in: state)
     }
 
     private func isProtected(_ domain: WebDomain) -> Bool {
@@ -48,7 +56,7 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
         return ShieldConfiguration(backgroundBlurStyle: nil, backgroundColor: background,
             icon: portalIcon,
             title: .init(text: "gate\n\n\(message.0)", color: primary),
-            subtitle: .init(text: "\(message.1)\n\nHilfe über die Gate-Mitteilung oder direkt in Gate. Diese Website bleibt gesperrt.", color: primary.withAlphaComponent(0.78)),
+            subtitle: .init(text: "\(message.1)\n\nKeine Freigabe. Deine Grenze bleibt.", color: primary.withAlphaComponent(0.78)),
             primaryButtonLabel: .init(text: "Pause in Gate anfordern", color: background),
             primaryButtonBackgroundColor: primary,
             secondaryButtonLabel: .init(text: "Heute nicht", color: primary))

@@ -57,8 +57,10 @@ struct GateStatisticsView: View {
                         metric("\(learning.progress.completedLessonIDs.count)", "Kapitel erarbeitet")
                         metric("\(learning.progress.memories.values.filter { $0.streak >= 3 }.count)", "Fragen wiederholt gefestigt")
                     }
-                    Text("„Erarbeitet“ bedeutet: Kapitel gelesen und alle Fragen dazu über eine oder mehrere bestandene Runden richtig gelöst. Frühere Kapitelabschlüsse bleiben erhalten. „Gefestigt“ verlangt mindestens drei über Zeit verteilte richtige Antworten pro Frage.")
-                        .font(.caption).foregroundStyle(.secondary)
+                    DisclosureGroup("Was zählt?") {
+                        Text("Erarbeitet: gelesen und alle Fragen richtig gelöst. Gefestigt: mindestens drei zeitversetzte richtige Antworten.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                    }
                 }
                 if recent.isEmpty {
                     Text("Deine erste Lektion ist der Anfang dieser Bilanz. Keine erfundenen Erfolgszahlen.")
@@ -166,8 +168,6 @@ private struct GateUsageChart: View {
                         }
                     }
                 }
-            Text(selectedDay == nil ? "Tippe auf einen Tag für Stunden, Minuten und Datum." : "Tippe auf einen anderen Tag oder erneut, um die Details zu schliessen.")
-                .font(.caption).foregroundStyle(.secondary)
         }
     }
 

@@ -12,9 +12,17 @@ enum GateShieldPolicy {
     }
 
     static func isProtected(_ target: GateTarget, in state: GateState) -> Bool {
-        guard target.kind == .webDomain,
-              let token = try? PropertyListDecoder().decode(WebDomainToken.self, from: target.tokenData) else { return false }
-        return protectedSelection(from: state).webDomainTokens.contains(token)
+        let selected = protectedSelection(from: state)
+        let decoder = PropertyListDecoder()
+        switch target.kind {
+        case .application:
+            guard let token = try? decoder.decode(ApplicationToken.self, from: target.tokenData) else { return false }
+            return selected.applicationTokens.contains(token)
+        case .webDomain:
+            guard let token = try? decoder.decode(WebDomainToken.self, from: target.tokenData) else { return false }
+            return selected.webDomainTokens.contains(token)
+        case .category: return false
+        }
     }
 
     static func retaining(_ saved: FamilyActivitySelection, adding proposed: FamilyActivitySelection) -> FamilyActivitySelection {
@@ -39,8 +47,11 @@ enum GateShieldPolicy {
         store.media.denyBookstoreErotica = true
         // Separate store: neither the free daily budget nor a consumption grant can lift these shields.
         let permanent = ManagedSettingsStore(named: ManagedSettingsStore.Name("gate.content"))
-        let protected = protectedSelection(from: state).webDomainTokens
-        permanent.shield.webDomains = protected.isEmpty ? nil : protected
+        let protected = protectedSelection(from: state)
+        permanent.shield.webDomains = protected.webDomainTokens.isEmpty ? nil : protected.webDomainTokens
+        permanent.shield.applications = protected.applicationTokens.isEmpty ? nil : protected.applicationTokens
+        // URL rules require no opaque picker token. Keep them outside all budget/grant stores.
+        permanent.webContent.blockedByFilter = .specific(Set(GatePermanentWebPolicy.domains.map { WebDomain(domain: $0) }))
         guard state.monitoringEnabled && state.limitReached else {
             store.shield.applications = nil
             store.shield.webDomains = nil

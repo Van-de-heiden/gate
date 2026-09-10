@@ -27,11 +27,11 @@ struct GateSettingsView: View {
                         Button("Auf Alltag wechseln · \(GateState.everydayFreeMinutes) Minuten") { controller.useEverydayMode() }
                             .buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized)
                     }
-                    Text("Von iOS bestätigt: \(controller.state.confirmedMinutes) Minuten heute. Beim Moduswechsel wird dieser Verbrauch nicht gelöscht.")
-                        .font(.caption).foregroundStyle(.secondary)
                 }.gateCard()
                 GateSection(title: "Nutzungsmessung") {
-                    MonitoringStatusView(controller: controller, detailed: true)
+                    DisclosureGroup("Status & Diagnose") {
+                        MonitoringStatusView(controller: controller, detailed: true)
+                    }
                 }.gateCard()
                 GateSection(title: "Berechtigungen") {
                     HStack { Text("Bildschirmzeit"); Spacer(); Text(controller.isAuthorized ? "Erlaubt" : "Fehlt").foregroundStyle(.secondary) }
@@ -39,21 +39,20 @@ struct GateSettingsView: View {
                         Button("Bildschirmzeit erlauben") { Task { await controller.requestAuthorization() } }
                             .buttonStyle(GateButtonStyle()).disabled(controller.isRequestingAuthorization)
                     }
-                    Text(notificationsAllowed == true ? "Mitteilungen erlaubt. Auf iOS 26 öffnest du damit die passende Anfrage."
-                         : "Mitteilungen erlauben, damit du von einer gesperrten App zu Gate kommst. Alternativ Gate selbst öffnen.")
+                    Text(notificationsAllowed == true ? "Mitteilungen erlaubt" : "Mitteilungen fehlen · Gate direkt öffnen")
                         .font(.caption).foregroundStyle(.secondary)
                     Link("iOS-Einstellungen öffnen", destination: URL(string: UIApplication.openSettingsURLString)!).font(.footnote).underline()
                 }.gateCard()
                 GateSection(title: "Deine Ablenkungen") {
                     Text(controller.selectionSummary).font(.headline)
-                    Text("Nur einzelne Konsum-Apps und Websites markieren. Telefon, WhatsApp, Karten und Lernwerkzeuge unmarkiert lassen. Die freie Zeit zählt für diesen gemeinsamen Pool.")
+                    Text("Telefon, WhatsApp und wichtige Werkzeuge nicht auswählen.")
                         .font(.subheadline).foregroundStyle(.secondary)
                     Button(controller.state.isSelectionLocked ? "Apps & Websites ergänzen" : "Apps & Websites auswählen") { picker = true }.buttonStyle(GateButtonStyle(prominent: false)).disabled(!controller.isAuthorized)
                     Button(controller.state.monitoringEnabled ? "Auswahl übernehmen" : "Gate aktivieren") {
                         Task { await controller.startGate() }
                     }.buttonStyle(GateButtonStyle()).disabled(controller.isCheckingMonitor || !controller.isAuthorized || (!controller.hasSelection && controller.state.selectionData == nil))
-                    Text("Nach dem ersten Aktivieren bleibt die Auswahl fest. Neue Apps und Websites kannst du jederzeit ergänzen. Bereits gespeicherte Einträge bleiben auch dann erhalten, wenn du sie im Apple-Auswahlfenster abwählst.")
-                        .font(.caption).foregroundStyle(.secondary)
+                    Text("Erweiterbar. Bereits gespeicherte Einträge bleiben gesperrt.")
+                        .font(.subheadline).foregroundStyle(.secondary)
                     #if DEBUG
                     DisclosureGroup("Entwickleroptionen") {
                         VStack(alignment: .leading, spacing: 12) {
@@ -69,38 +68,36 @@ struct GateSettingsView: View {
                     NavigationLink { LauncherSettingsView(controller: controller) } label: {
                         HStack { Text("Textliste bearbeiten"); Spacer(); Text("\(controller.state.launcher.count) Einträge").foregroundStyle(.secondary) }
                     }.buttonStyle(.plain)
-                    Text("Homescreen gedrückt halten → Bearbeiten → Widget hinzufügen → Gate. Medium zeigt vier Einträge, Gross bis zu acht. App-Icons kannst du danach manuell vom Homescreen entfernen; Apps bleiben in der App-Mediathek.")
-                        .font(.subheadline).foregroundStyle(.secondary)
-                    Text("Das Widget öffnet Links über Gate. Es ersetzt nicht den iOS-Homescreen und hebt keine Sperre auf. App-Links benötigen die jeweilige installierte App.")
-                        .font(.caption).foregroundStyle(.secondary)
-                }.gateCard()
-                GateSection(title: "Dauerhaft geschützte Websites") {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Label("Wenn Safari „Website nicht erlaubt“ zeigt", systemImage: "hand.raised")
-                            .font(.headline)
-                        Text("Das ist Apples Filterseite. Gate kann sie weder gestalten noch von dort automatisch seine Pause öffnen. Schliess den Browser-Tab und öffne die Gate-Pause über dein Widget oder oben unter Heute.")
+                    DisclosureGroup("Widget hinzufügen") {
+                        Text("Homescreen gedrückt halten → Bearbeiten → Widget hinzufügen → Gate.")
                             .font(.subheadline).foregroundStyle(.secondary)
-                        Button("Gate-Pause öffnen") { controller.requestPause() }
-                            .buttonStyle(GateButtonStyle(prominent: false))
                     }
-                    Divider()
-                    Text("Hier stehen Websites, für die es keine Lernfreigabe gibt – auch nicht während der freien Zeit. Nur einzelne Websites markieren. Gespeicherte Einträge lassen sich erweitern, nicht entfernen.")
+                }.gateCard()
+                GateSection(title: "Dauersperre · X") {
+                    Label(controller.isAuthorized ? "X-Webfilter aktiv" : "X-Webfilter · Berechtigung fehlt", systemImage: "lock.fill")
+                        .font(.headline)
+                    Text("X-App einmal unten auswählen und übernehmen. Danach keine Lernfreigabe, auch nicht im Freibudget.")
                         .font(.subheadline).foregroundStyle(.secondary)
-                    Text("\(GateShieldPolicy.protectedSelection(from: controller.state).webDomainTokens.count) Websites geschützt").font(.headline)
-                    Button("Schutz-Websites ergänzen") { protectedPicker = true }
+                    Text("\(GateShieldPolicy.protectedSelection(from: controller.state).applicationTokens.count) Apps · \(GateShieldPolicy.protectedSelection(from: controller.state).webDomainTokens.count) zusätzliche Websites")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                    Button("X-App / weitere Sperren auswählen") { protectedPicker = true }
                         .buttonStyle(GateButtonStyle(prominent: false)).disabled(!controller.isAuthorized)
                     Button("Dauerhaft übernehmen") { controller.saveProtectedWebsites() }
                         .buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized)
-                    Text("Für diese zusätzlich ausgewählten Websites zeigt Gate seinen Hinweis, wenn iOS die Gate-Sperre aufruft. Der automatische Apple-Filter bleibt aktiv und kann Vorrang haben.")
-                        .font(.caption).foregroundStyle(.secondary)
+                    DisclosureGroup("Umfang & Grenzen") {
+                        Text("X-, Twitter-, Kurzlink- und Medienadressen werden automatisch gefiltert. Apps brauchen Apples einmalige Auswahl. Gespeicherte Sperren lassen sich nur ergänzen. Fremde Spiegelwebsites sind nicht vollständig erfassbar. Safari kann Apples Standard-Sperrseite anzeigen.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                    }
                 }.gateCard()
                 GateSection(title: "Inhalte & Privatsphäre") {
                     Text("Der iOS-Erwachsenenfilter und die Einschränkungen für explizit markierte Apple-Medien bleiben auch während Freigaben gesetzt.")
                         .font(.subheadline)
-                    Text("Eine normale iPhone-App kann nicht jeden Inhalt in Snapchat, WhatsApp oder anderen Apps prüfen. Auch das Widerrufen der Berechtigung ist bei Selbstkontrolle möglich. Absolute Inhalts- oder Umgehungssicherheit ist damit nicht gegeben.")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Text("Lernstand, Notizen, Auswahl und Nutzungswerte werden lokal gespeichert. Die Bildmotive der Lernwege sind offline enthalten. Externe Quellenfotos werden nur auf Wunsch vom angegebenen Anbieter geladen. Es gibt keine Konten und keine Analyse-Tracker.")
-                        .font(.caption).foregroundStyle(.secondary)
+                    Text("iOS-Berechtigungen bleiben widerrufbar. Kein absoluter Umgehungsschutz.")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                    DisclosureGroup("Datenschutz") {
+                        Text("Lernstand und Notizen bleiben lokal. Keine Konten oder Tracker. Externe Quellenfotos laden nur auf Wunsch. Inhalte innerhalb fremder Apps kann Gate nicht vollständig prüfen.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                    }
                 }.gateCard()
                 GateSection(title: "Gate · Open Source") {
                     Text("Kostenlos nutzen, verändern und weitergeben. Code und eigene Lerntexte unter MIT; externe Fotos behalten ihre eigenen Nutzungsbedingungen.")

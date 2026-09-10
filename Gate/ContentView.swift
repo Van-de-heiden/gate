@@ -148,8 +148,6 @@ struct ContentView: View {
                                 }.font(.caption).foregroundStyle(.secondary)
                             }.padding(18).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 12))
                         }
-                        Text("Restzeit anhand bestätigter iOS-Nutzungsschwellen; kein sekundengenauer Countdown.")
-                            .font(.caption).foregroundStyle(.secondary)
                     }
                 }
                 if let message = controller.message {
@@ -163,7 +161,7 @@ struct ContentView: View {
                                 HStack {
                                     Text(item.title).font(.title3.weight(.medium))
                                     Spacer()
-                                    Text("Öffnen").font(.caption).foregroundStyle(.secondary)
+                                    Image(systemName: "arrow.up.right").foregroundStyle(.secondary)
                                 }.frame(minHeight: 55).contentShape(Rectangle())
                             }.buttonStyle(.plain)
                             Divider()
@@ -178,8 +176,6 @@ struct ContentView: View {
                 }.buttonStyle(GateButtonStyle(prominent: false))
                 Button("Einen Impuls unterbrechen") { controller.requestPause() }
                     .font(.footnote).underline().frame(maxWidth: .infinity)
-                Text("Kein Feed. Kein Wettlauf. Ein guter Gedanke reicht.")
-                    .font(.system(.footnote, design: .serif)).foregroundStyle(.secondary)
             }.padding(24).padding(.bottom, 24)
         }
     }
@@ -195,11 +191,11 @@ struct ContentView: View {
             }
             AllowanceGauge(remainingMinutes: controller.state.remainingFreeMinutes,
                            totalMinutes: controller.state.freeMinutes)
-            Text("\(controller.state.confirmedMinutes) von \(controller.state.freeMinutes) Minuten durch iOS bestätigt.")
-                .font(.caption).foregroundStyle(.secondary)
-            Text("Die freie Restzeit ist eine Obergrenze zwischen iOS-Nutzungsmeldungen, kein Live-Zähler der gesamten Bildschirmzeit.")
-                .font(.caption2).foregroundStyle(.secondary)
-            if controller.state.monitoringEnabled { MonitoringStatusView(controller: controller) }
+            Text("\(controller.state.confirmedMinutes) min bestätigt · Restzeit höchstens wie angezeigt")
+                .font(.subheadline).foregroundStyle(.secondary)
+            if controller.state.monitoringEnabled {
+                DisclosureGroup("Messstatus") { MonitoringStatusView(controller: controller) }
+            }
             if !controller.state.monitoringEnabled || !controller.monitorReady {
                 Button("Gate einrichten") { tab = 3 }.buttonStyle(GateButtonStyle())
             }
@@ -228,7 +224,7 @@ private struct RequestCard: View {
             }.pickerStyle(.segmented)
             let attempt = controller.state.attempts[request.target.id] ?? GateAttempt()
             let count = LessonLoad.questionCount(minutes: minutes, consumedMinutes: controller.state.confirmedMinutes, failures: attempt.failures)
-            Text("Ein konkretes Thema · bis zu \(count) Fragen. Mehr Zeit bedeutet mehr Tiefe, keinen Themenwechsel.")
+            Text("Ein Thema · bis zu \(count) Fragen")
                 .font(.caption).foregroundStyle(.secondary)
             if let until = attempt.cooldownUntil, until > Date() {
                 Text("Kurze Pause für diese App. Neuer Versuch ab \(until.formatted(date: .omitted, time: .shortened)).")
@@ -236,8 +232,6 @@ private struct RequestCard: View {
             } else {
                 Button("Lektion beginnen") { controller.beginLesson(minutes: minutes) }.buttonStyle(GateButtonStyle())
             }
-            Text("Nur diese \(request.target.kind.displayName). Andere Freigaben bleiben erhalten.")
-                .font(.caption).foregroundStyle(.secondary)
         }.padding(20).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 14))
     }
 }
@@ -264,8 +258,6 @@ struct ProtectedTargetsView: View {
                 }.buttonStyle(.plain).disabled(controller.state.grant(for: target, at: Date()) != nil)
                 Divider()
             }
-            Text("Auch erreichbar, wenn eine Shield-Mitteilung fehlt. Telefon und WhatsApp nicht in die Sperrauswahl aufnehmen.")
-                .font(.caption).foregroundStyle(.secondary)
         }
     }
 }

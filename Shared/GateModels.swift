@@ -1,5 +1,17 @@
 import Foundation
 
+/// Explicit X service hosts, not arbitrary sites containing the letter x.
+/// No finite domain list can cover third-party mirrors, proxies or future domains.
+enum GatePermanentWebPolicy {
+    static let domains = [
+        "x.com", "www.x.com", "mobile.x.com", "m.x.com", "api.x.com", "pro.x.com",
+        "twitter.com", "www.twitter.com", "mobile.twitter.com", "m.twitter.com",
+        "api.twitter.com", "tweetdeck.twitter.com", "platform.twitter.com", "syndication.twitter.com",
+        "t.co", "www.t.co", "twimg.com", "pbs.twimg.com", "video.twimg.com", "abs.twimg.com",
+        "tweetdeck.com", "www.tweetdeck.com"
+    ]
+}
+
 enum GateTargetKind: String, Codable {
     case application, webDomain, category
     var displayName: String { self == .application ? "App" : self == .webDomain ? "Website" : "Kategorie" }
