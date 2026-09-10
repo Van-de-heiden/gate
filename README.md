@@ -6,13 +6,13 @@ Gate is an open-source iPhone app that adds a learning step before additional co
 Code and original lesson content are available under the [MIT licence](LICENSE).
 Third-party reference photos are not relicensed under MIT.
 
-## Status: 0.3 learning-library alpha
+## Status: 0.4 coherent-learning alpha
 
 The first on-device spike worked. Gate now has independent app grants, a monochrome interface,
 a substantially expanded curriculum and permanent in-app selections. It is **not a finished, independently validated App Store release**.
 
 - A shared daily allowance of **30 minutes** for explicitly selected apps and websites.
-- Independent **5 / 10 / 15 active-minute grants**; up to eight at once.
+- Independent **5 / 10 / 15 / 20 / 30 active-minute grants**; up to eight at once.
 - Separate request, failure and cooldown state per app/domain.
 - One activity ID per grant: expiration of A does not close B.
 - An always-reachable request panel; a successful quiz closes its sheet.
@@ -20,12 +20,15 @@ a substantially expanded curriculum and permanent in-app selections. It is **not
 - Onboarding, local learning history, confirmed usage checkpoints and settings.
 - An iOS usage report with separate consumption-selection and all-app views, daily app/site breakdowns and an explicit device selection when several iPhones report data.
 - A fuel-style free-time gauge and the native system tab bar, with independent navigation per tab.
-- **16 learning paths, 96 chapters, 504 questions in seven formats** with explanations.
-- Original German lesson text, diagrams, optional narration and reflection notes.
-- Random path rotation, curriculum progression and due-question priority.
+- **16 learning paths, 144 chapters, 744 questions in seven formats** with explanations.
+- **12 new concrete cases, four connected chapters each**, plus all 96 existing foundation chapters.
+- A step-by-step reader with authored scenes, decisions, dialogue, reveals and **48 ungraded learning probes**.
+- **24 new offline scene illustrations inside lessons**, precise native diagrams, and the eight retained path covers.
+- One concrete topic per new session, including longer rounds, due retrieval and retries. A broad path is not a topic.
+- Original German text and optional reflection notes. The synthetic narrator is removed; standard VoiceOver accessibility remains.
 - Repetition starts at 1 / 3 / 7 / 14 / 30 days; errors return earlier.
 - Repeating immediately cannot inflate the long-term mastery indicator.
-- Interrupted sessions retain their target, question order and answers.
+- Interrupted sessions retain their target, question order, answers, reader/quiz position, reveals and learning probes.
 
 ### Learning paths
 
@@ -38,12 +41,30 @@ Content is AI-assisted, authored for Gate, with linked reading references. It ha
 independent subject-matter review. Source organisations do not endorse or validate Gate.
 Every tested question is accompanied by its source lesson in the session.
 
+### 0.4: one case, more depth
+
+A 30-minute unlock can follow one furniture workshop through its order, cash shortfall,
+deposit and growth decision. It cannot append Socrates, sleep or unrelated business chapters.
+Longer rounds use more chapters of that same case. Failures keep the topic and prioritise the
+actual wrong answers. Other due topics wait for separate rounds.
+
+The new cases cover Gutenberg, Stoic control, defining success, working capital, compound
+growth, chip production, sleep, a specific habit cue, negotiation, sunk costs, base rates and
+retrieval practice. The library exposes them directly, alongside every existing path and chapter.
+See the [research-to-design rationale](docs/LEARNING_DESIGN.md) and [case catalogue](docs/CONTENT.md).
+
+All previous lesson/question IDs, completed chapters, memories and notes are preserved.
+An already saved old mixed-topic session is allowed to finish once with its original answers;
+it is explicitly labelled as a saved older round. New sessions use concrete topic boundaries.
+
 ### How the time rule works
 
 The first 30 minutes form one shared pool for the selected apps and websites.
 After that, grants and failures are independent. A 5-minute grant starts with 3 questions;
-10 minutes with 5; 15 minutes with 7. More confirmed daily consumption and failed attempts add
-questions, capped at 14. Passing requires at least 80%. Every third failed attempt creates a
+10 minutes with 5; 15 minutes with 7; 20 minutes with 9; 30 minutes with 12. More confirmed daily
+consumption and failed attempts add questions, bounded by the authored topic bank (maximum 20).
+A deliberately selected short foundation chapter is never padded with another topic.
+Passing requires at least 80%. Every third failed attempt creates a
 15-minute cooldown for that target.
 
 Existing saved 60-minute everyday budgets migrate to 30 on the next app or monitor update.
@@ -188,8 +209,10 @@ TestFlight/App Store approval is already granted.
 
 Use the authored modules in `scripts/content/` and rebuild with `scripts/build_curriculum.py`.
 Keep stable lesson/question IDs so historical learning data survives. Each chapter needs a
-learning objective, explanations, a worked case, a transfer task, a source and explained questions
-in several formats. See [content design](docs/CONTENT.md); run validation and the Swift tests.
+learning objective, an engaging concrete problem, a source and explained questions in several
+formats. Author the structure for that problem, not a compulsory theory/example/summary template.
+Use exact native visuals for data and clearly labelled scene illustrations for context.
+See [content design](docs/CONTENT.md); run validation and the Swift tests.
 Do not add remote feeds or unreviewed autogenerated lessons at runtime.
 
 ## 0.3: a larger learning library and deliberate commitments

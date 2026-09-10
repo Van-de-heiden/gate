@@ -228,7 +228,7 @@ private struct RequestCard: View {
             }.pickerStyle(.segmented)
             let attempt = controller.state.attempts[request.target.id] ?? GateAttempt()
             let count = LessonLoad.questionCount(minutes: minutes, consumedMinutes: controller.state.confirmedMinutes, failures: attempt.failures)
-            Text("\(count) Fragen · Umfang wächst mit Dauer, Tagesnutzung und Fehlversuchen.")
+            Text("Ein konkretes Thema · bis zu \(count) Fragen. Mehr Zeit bedeutet mehr Tiefe, keinen Themenwechsel.")
                 .font(.caption).foregroundStyle(.secondary)
             if let until = attempt.cooldownUntil, until > Date() {
                 Text("Kurze Pause für diese App. Neuer Versuch ab \(until.formatted(date: .omitted, time: .shortened)).")

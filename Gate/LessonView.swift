@@ -1,25 +1,9 @@
-import AVFoundation
 import Combine
 import SwiftUI
-
-@MainActor
-final class LessonNarrator: ObservableObject {
-    private let speaker = AVSpeechSynthesizer()
-    func read(_ lesson: LearningLesson) {
-        speaker.stopSpeaking(at: .immediate)
-        let text = ([lesson.title, lesson.objective] + lesson.cards.map { $0.title + ". " + $0.text } + [lesson.takeaway]).joined(separator: "\n\n")
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: "de-DE")
-        utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 0.9
-        speaker.speak(utterance)
-    }
-    func stop() { speaker.stopSpeaking(at: .immediate) }
-}
 
 struct LessonView: View {
     @ObservedObject var controller: ScreenTimeController
     @ObservedObject var learning: LearningStore
-    @StateObject private var narrator = LessonNarrator()
     @Environment(\.scenePhase) private var scenePhase
     @State private var page = 0
     @State private var confirmLeave = false
@@ -39,8 +23,8 @@ struct LessonView: View {
                         }.padding(24).padding(.bottom, 30)
                     }
                 }.background(GateDesign.paper).gateKeyboardDismissal()
-                    .onChange(of: page) { _, _ in GateKeyboard.dismiss(); reader.scrollTo("top"); narrator.stop() }
-                    .onChange(of: learning.session?.phase) { _, _ in page = 0; GateKeyboard.dismiss(); reader.scrollTo("top"); narrator.stop() }
+                    .onChange(of: page) { _, value in GateKeyboard.dismiss(); learning.setPosition(value); reader.scrollTo("top") }
+                    .onChange(of: learning.session?.phase) { _, _ in restorePosition(); GateKeyboard.dismiss(); reader.scrollTo("top") }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -52,14 +36,25 @@ struct LessonView: View {
         .tint(.primary)
         .interactiveDismissDisabled()
         .confirmationDialog("Lektion unterbrechen?", isPresented: $confirmLeave, titleVisibility: .visible) {
-            Button("Speichern & schliessen") { narrator.stop(); learning.suspend() }
+            Button("Speichern & schliessen") { learning.suspend() }
             Button("Weiterlernen", role: .cancel) {}
         } message: { Text("Dein Stand bleibt erhalten. Ohne bestandenen Test gibt es keine Freigabe.") }
         .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in
             if scenePhase == .active { learning.tick() }
         }
-        .onChange(of: scenePhase) { _, phase in if phase != .active { narrator.stop(); learning.checkpoint() } }
-        .onDisappear { narrator.stop() }
+        .onChange(of: scenePhase) { _, phase in if phase != .active { learning.checkpoint() } }
+        .onAppear { restorePosition() }
+    }
+
+    private func restorePosition() {
+        guard let session = learning.session else { page = 0; return }
+        if session.phase == "quiz" {
+            let saved = session.quizIndex ?? session.questions.firstIndex { !$0.question.isComplete(session.response(for: $0)) } ?? 0
+            page = min(max(0, saved), max(0, session.questions.count - 1))
+        } else {
+            let steps = session.lessonIDs.flatMap { id in learning.catalog?.lessons.first { $0.id == id }?.cards ?? [] }
+            page = min(max(0, session.readerIndex ?? 0), max(0, steps.count - 1))
+        }
     }
 
     private func header(_ session: LearningSession) -> some View {
@@ -68,77 +63,72 @@ struct LessonView: View {
             if let target = session.target {
                 GateTargetLabel(target: target).font(.subheadline).foregroundStyle(.secondary)
             }
-            let title = learning.catalog?.paths.first { $0.id == session.pathID }?.title ?? "Wissen"
-            Text(title).font(.system(.largeTitle, design: .serif))
+            let title = session.topicID.flatMap { learning.catalog?.topic($0)?.title }
+                ?? learning.catalog?.paths.first { $0.id == session.pathID }?.title ?? "Wissen"
+            Text(title).font(.title2.weight(.semibold))
+            let stepCount = session.lessonIDs.reduce(0) { count, id in
+                count + (learning.catalog?.lessons.first { $0.id == id }?.cards.count ?? 0)
+            }
             let progress = session.phase == "result" ? 1.0 : session.phase == "quiz"
                 ? 0.5 + 0.5 * Double(session.answeredCount) / Double(max(1, session.questions.count))
-                : 0.5 * Double(session.readLessonIDs.count) / Double(max(1, session.lessonIDs.count))
+                : 0.5 * Double(session.readerIndex ?? 0) / Double(max(1, stepCount))
             GateProgressLine(value: progress)
             Text(session.phase == "learn"
-                 ? "\(session.lessonIDs.count) kurze Kapitel · \(session.questions.count) Fragen · ca. \(max(1, session.estimatedSeconds / 60))–\(max(2, session.estimatedSeconds / 60 + 1)) min"
+                 ? "\(session.topicID == nil ? "Gespeicherte Runde" : "Ein Thema") · \(session.lessonIDs.count) Kapitel · \(session.questions.count) Prüfungsfragen · ca. \(max(1, session.estimatedSeconds / 60))–\(max(2, session.estimatedSeconds / 60 + 1)) min"
                  : session.phase == "quiz" ? "Ohne Vorlage abrufen. Mindestens 80 % richtig." : "Dein Ergebnis")
                 .font(.caption).foregroundStyle(.secondary)
+            if session.topicID == nil {
+                Text("Gespeicherte Runde aus der vorherigen Version. Dein Stand bleibt erhalten; neue Runden bleiben bei einem einzigen Thema.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
         }
     }
 
     @ViewBuilder
     private func reading(_ session: LearningSession) -> some View {
-        let safePage = min(page, max(0, session.lessonIDs.count - 1))
-        if let id = session.lessonIDs[safe: safePage],
-           let lesson = learning.catalog?.lessons.first(where: { $0.id == id }) {
-            VStack(alignment: .leading, spacing: 24) {
-                HStack {
-                    Eyebrow(text: "Kapitel \(safePage + 1) / \(session.lessonIDs.count)")
-                    Spacer()
-                    Button("Anhören") { narrator.read(lesson) }.font(.caption).underline()
-                    Button("Stopp") { narrator.stop() }.font(.caption).foregroundStyle(.secondary)
-                }
-                Text(lesson.title).font(.system(.title, design: .serif))
-                Text(lesson.objective).font(.subheadline.weight(.medium))
-                LessonArtwork(name: lesson.artwork ?? learning.catalog?.paths.first { $0.id == lesson.pathID }?.artwork ?? "learning",
-                              caption: "Bildidee · " + lesson.title)
-                ForEach(Array(lesson.cards.enumerated()), id: \.offset) { _, card in
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(card.title).font(.headline)
-                        Text(card.text).font(.body).lineSpacing(5)
+        let lessons = session.lessonIDs.compactMap { id in learning.catalog?.lessons.first { $0.id == id } }
+        let steps = lessons.flatMap { lesson in lesson.cards.indices.map { LessonReadingStep(lesson: lesson, index: $0) } }
+        let safePage = min(max(0, page), max(0, steps.count - 1))
+        if let step = steps[safe: safePage] {
+            let lesson = step.lesson
+            let revealed = session.revealedCardIDs?.contains(step.id) == true
+            let requiresReveal = step.card.reveal != nil || step.card.probe != nil
+            VStack(alignment: .leading, spacing: 22) {
+                Eyebrow(text: "\(lesson.title) · \(step.index + 1)/\(lesson.cards.count)")
+                LessonStoryCard(card: step.card, cardID: step.id, learning: learning).id(step.id)
+                if step.isLast {
+                    if lesson.topicID == nil {
+                        if let photo = lesson.photo { LessonPhotoView(photo: photo) }
+                        LessonDiagram(visual: lesson.visual)
                     }
-                }
-                if let mission = lesson.mission {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Eyebrow(text: "Heute ausprobieren")
-                        Text(mission).font(.subheadline).lineSpacing(4)
-                    }.padding(18).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 12))
-                }
-                if let photo = lesson.photo { LessonPhotoView(photo: photo) }
-                LessonDiagram(visual: lesson.visual)
-                VStack(alignment: .leading, spacing: 12) {
-                    Eyebrow(text: "Denkpause · ohne Vorlage")
-                    Text(lesson.reflection).font(.system(.body, design: .serif))
-                    TextField("Deine Erklärung in eigenen Worten (optional)", text: Binding(
-                        get: { learning.session?.reflectionNotes[id] ?? "" },
-                        set: { learning.note($0, for: id) }), axis: .vertical)
-                        .lineLimit(2...5).padding(12).background(GateDesign.paper)
-                    Button("Eingabe fertig") { GateKeyboard.dismiss() }.font(.caption).underline()
-                    Text("Die Notiz wird nicht automatisch bewertet. Die Prüfung folgt danach.")
-                        .font(.caption2).foregroundStyle(.secondary)
-                }.padding(18).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 12))
-                VStack(alignment: .leading, spacing: 6) {
-                    Eyebrow(text: "Das bleibt")
                     Text(lesson.takeaway).font(.subheadline.weight(.medium))
-                }
-                if let url = URL(string: lesson.source.url) {
-                    Link("Vertiefen: \(lesson.source.title)", destination: url).font(.caption).underline()
+                    DisclosureGroup("Mitnehmen & eigene Notiz") {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text(lesson.mission ?? lesson.reflection).font(.subheadline)
+                            TextField("Deine Erklärung – optional, nicht bewertet", text: Binding(
+                                get: { learning.session?.reflectionNotes[lesson.id] ?? "" },
+                                set: { learning.note($0, for: lesson.id) }), axis: .vertical)
+                                .lineLimit(2...5).padding(12).background(GateDesign.surface)
+                            Button("Eingabe fertig") { GateKeyboard.dismiss() }.font(.caption)
+                            if let url = URL(string: lesson.source.url) {
+                                Link("Quelle / Vertiefung: \(lesson.source.title)", destination: url).font(.caption)
+                            }
+                        }.padding(.top, 12)
+                    }.font(.subheadline)
                 }
                 HStack {
                     if page > 0 {
                         Button("Zurück") { page -= 1 }.buttonStyle(GateButtonStyle(prominent: false))
                     }
-                    Button(safePage + 1 < session.lessonIDs.count ? "Verstanden · weiter" : "Zur Prüfung") {
-                        GateKeyboard.dismiss(); learning.markRead(id)
-                        if safePage + 1 < session.lessonIDs.count { page += 1 }
+                    Button(safePage + 1 < steps.count ? "Weiter" : "Jetzt selbst prüfen") {
+                        GateKeyboard.dismiss()
+                        if step.isLast { learning.markRead(lesson.id) }
+                        if safePage + 1 < steps.count { page = safePage + 1 }
                         else { learning.setPhase("quiz") }
-                    }.buttonStyle(GateButtonStyle())
+                    }.buttonStyle(GateButtonStyle()).disabled(requiresReveal && !revealed)
                 }
+                Text("\(safePage + 1) von \(steps.count) Lernschritten · dein Stand wird gespeichert")
+                    .font(.caption2).foregroundStyle(.secondary)
             }
         }
     }
@@ -180,7 +170,7 @@ struct LessonView: View {
                     .font(.system(.title2, design: .serif))
                 Text(result.passed
                      ? "Richtige Antworten kommen später wieder – mit wachsendem Abstand. Falsche Antworten werden früher wiederholt."
-                     : "Noch keine Freigabe. Lies die Erklärungen; der nächste Versuch enthält etwas mehr Stoff.")
+                     : "Noch keine Freigabe. Der nächste Versuch bleibt bei diesem Thema und übt die Lücken weiter.")
                     .font(.subheadline).foregroundStyle(.secondary)
                 ForEach(session.questions) { item in
                     let correct = session.isCorrect(item)

@@ -289,8 +289,9 @@ final class ScreenTimeController: ObservableObject {
         learning.begin(request: request, minutes: minutes, consumed: state.confirmedMinutes, failures: attempt.failures)
     }
 
-    func beginPractice(path: String? = nil, lesson: String? = nil, reviewOnly: Bool = false) {
-        learning.begin(request: nil, minutes: 5, consumed: 0, failures: 0, path: path, lesson: lesson, reviewOnly: reviewOnly)
+    func beginPractice(path: String? = nil, lesson: String? = nil, topic: String? = nil, reviewOnly: Bool = false) {
+        learning.begin(request: nil, minutes: topic == nil ? 5 : 20, consumed: 0, failures: 0,
+                       path: path, lesson: lesson, topic: topic, reviewOnly: reviewOnly)
     }
 
     func submitLesson() {
@@ -312,6 +313,7 @@ final class ScreenTimeController: ObservableObject {
         if current.isPractice {
             learning.suspend()
             beginPractice(path: current.pathID, lesson: current.storageKey.hasPrefix("chapter.") ? current.lessonIDs.first : nil,
+                          topic: current.storageKey.hasPrefix("topic.") ? current.topicID : nil,
                           reviewOnly: current.storageKey == "review")
         } else {
             learning.suspend()

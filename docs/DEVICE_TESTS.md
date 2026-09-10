@@ -33,7 +33,7 @@ The primary regression test is **A remains usable while B is requested and learn
 - Request B while A's lesson is paused: the result from A must never unlock B.
 - Force-quit/relaunch during a lesson: resume the stored attempt.
 - If monitor setup fails after passing, no new exception; preserve the passed result for retry.
-- Backgrounding the app stops narration and the learning-active-time counter.
+- Backgrounding the app stops the learning-active-time counter. Synthetic narration has been removed.
 - A previously delivered stale grant callback must not clear a newer grant.
 - Restart device, unlock once, then test grants and monitoring again.
 - Test 23:55–00:05: prior-day grants expire, free daily pool resets once.
@@ -112,7 +112,7 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 - Open a learning path, switch to Today and back: the path and scroll position should remain. Open Mehr → Textliste, switch tabs and return: unsaved new entries must remain; Back and Sichern must be reachable.
 - Type into library search, select another native tab, then return: the keyboard dismisses and the search text remains.
 - With 0 / 15 / 30 confirmed consumption minutes in everyday mode, the needle must show full / half / empty with upper bounds of 30 / 15 / 0 free minutes. Consumption above 30 must never send the needle below empty.
-- At 1 minute in the deliberate 2-minute test, the gauge shows half and at most 1 minute free. Switch to everyday mode: the same usage gives at most 59 minutes and a nearly full dial; usage must not reset.
+- At 1 minute in the deliberate 2-minute test, the gauge shows half and at most 1 minute free. Switch to everyday mode: the same usage gives at most 29 minutes and a nearly full dial; usage must not reset.
 - Check a small iPhone and the largest Dynamic Type sizes. The numeric value and explanatory text must remain readable. VoiceOver reads one free-time value, rather than the decorative ticks. Reduce Motion suppresses needle/value animation.
 - From Apple's filter page, close the browser tab and tap **gate · Pause** in the medium and large widget. Gate opens its pause even with notifications disabled. Repeat while Gate has a suspended lesson; its answers must survive. Closing the pause must not unlock any website.
 
@@ -155,3 +155,17 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 - Upgrade a saved 60-minute everyday configuration with 28 confirmed consumption minutes: opening Gate must show 2 remaining, keep usage/history/selection and retain its registered daily monitor. At 30 or more confirmed minutes it must shield ungranted selected targets immediately, while valid independent grants remain available.
 - Use the selected pool from 29 to 30 confirmed minutes and verify blocking at the 30-minute event. Switching modes, reconnecting measurement or relaunching on the same day must not create another 30-minute allowance.
 - Check new installs, onboarding, Today, settings, diagnostics and gauge labels for the 30-minute budget. Leaving the explicit 2-minute debug test must restore 30, and the next local day must start at 30. The full-day report and minute checkpoint coverage retain their existing time units.
+
+## 0.4: one-topic learning and staged reader
+
+- Upgrade with completed foundation chapters, notes, due memories, an interrupted round and a passed-but-not-yet-issued result. Nothing should reset. A pre-update mixed round must be labelled as a saved older round and keep its answers; its eventual new successor must contain one concrete topic.
+- In Lernen, open the cash-flow case and choose the whole case. All four chapters must concern the same workshop: order, payment gap, deposit, growth. Repeat with Gutenberg and both separate philosophy cases; neither philosophy case may borrow the other's questions just because the path matches.
+- For 5 / 10 / 15 / 20 / 30-minute requested grants, check that increasing depth stays in one case. Initially expect up to 1 / 2 / 3 / 4 / 4 chapters, adjusted for progress and extra question load only within the case. The duration estimate is not a mandatory waiting period. A short foundation chapter must never be padded with unrelated material.
+- Make one inline prediction wrong, then view its explanation. It must neither count as a failed exam nor create a cooldown. The next button waits for the learning-stage explanation, not for a correct guess. The final exam remains a separate step with the existing 80% pass rule.
+- Fail an actual exam while questions in another subject are due. Retry must stay on the original case, include its actual error questions and provide their teaching material again. Completing a case voluntarily must never grant screen time.
+- Close on a middle reading stage after entering an inline response and revealing feedback. Relaunch and reopen the same target or topic: position, response, reveal and optional note must remain. Repeat in the middle of the quiz; its order, response and position must remain. Use “Noch einmal nachlesen” and return to the quiz without losing answers.
+- Inspect all twelve cases offline: each has two specific scene images inside its chapters, captions distinguish illustrative scenes from evidence, and every new chapter has a scene or a relevant native visual. Tap images to enlarge and close. Check no missing assets, unrelated covers standing in for diagrams, or answer-relevant counting inside an AI picture.
+- Check numerical diagrams against the text: workshop peak shortfall 5,000 before deposits; 50% deposit leaves 1,000; compound 1,102.50; parcel alarms 9 + 99 = 108, changed population 90 + 90 = 180. Native values must remain readable with large type.
+- Confirm no synthetic narration controls remain. VoiceOver must still expose scene descriptions, questions, source links, values and controls. Check a small iPhone, largest Dynamic Type, light/dark mode and Reduce Motion. Question fields, notes and source/image sheets must dismiss keyboards and remain scrollable.
+- While A has an earned grant, study for B, interrupt, resume and pass. Both grants must remain independent. Daily free allowance stays 30 minutes; no learning UI action may reset usage or weaken permanent website protection.
+- Next day, explain the central idea without the text and try a changed example. Record where the story lost its thread, imagery distracted or distractors made guessing trivial. Compilation and unit tests do not establish lasting learning or enjoyment; use this feedback for the next editorial pass.

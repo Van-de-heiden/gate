@@ -80,10 +80,11 @@ final class LearningExpansionTests: XCTestCase {
 
     func testAChapterIsNotCompletedAfterOneLuckyAnswer() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        let lesson = catalog.lessons.first { $0.id == "business.problem" }!
+        let lesson = catalog.lessons.first { $0.id == "case.cash.1" }!
         var random = SeededRandom(state: 7)
         var session = LearningScheduler.makeSession(catalog: catalog, progress: .init(), request: nil,
-            minutes: 5, consumed: 0, failures: 0, preferredPath: "business", now: now, random: &random)
+            minutes: 5, consumed: 0, failures: 0, preferredTopic: "case.cash", now: now, random: &random)
+        XCTAssertEqual(session.lessonIDs, [lesson.id])
         XCTAssertLessThan(session.questions.count, lesson.questions.count)
         session.readLessonIDs = Set(session.lessonIDs)
         session.typedResponses = Dictionary(uniqueKeysWithValues: session.questions.map { ($0.id, correctResponse($0.question)) })

@@ -31,19 +31,22 @@ final class LearningStore: ObservableObject {
     var dueCount: Int { LearningScheduler.dueCount(progress, at: Date()) }
 
     func begin(request: GateRequest?, minutes: Int, consumed: Int, failures: Int, path: String? = nil,
-               lesson: String? = nil, reviewOnly: Bool = false) {
+               lesson: String? = nil, topic: String? = nil, reviewOnly: Bool = false) {
         guard let catalog, error == nil else { return }
-        let key = request?.target.id ?? (lesson.map { "chapter." + $0 } ?? (reviewOnly ? "review" : path.map { "path." + $0 } ?? "practice"))
+        let key = request?.target.id ?? (lesson.map { "chapter." + $0 } ?? topic.map { "topic." + $0 } ?? (reviewOnly ? "review" : path.map { "path." + $0 } ?? "practice"))
         if let saved = progress.sessions[key], saved.result == nil || saved.result?.passed == true {
             session = saved
             return
         }
         var random = SystemRandomNumberGenerator()
         let remediation = progress.sessions[key]?.result?.passed == false ? progress.sessions[key]?.lessonIDs ?? [] : []
+        let previous = progress.sessions[key]
+        let gaps = previous?.result?.passed == false
+            ? previous?.questions.filter { previous?.isCorrect($0) == false }.map(\.id) ?? [] : []
         session = LearningScheduler.makeSession(catalog: catalog, progress: progress, request: request,
             minutes: minutes, consumed: consumed, failures: failures, preferredPath: path,
-            preferredLesson: lesson, reviewOnly: reviewOnly,
-            remediation: remediation, now: Date(), random: &random)
+            preferredLesson: lesson, preferredTopic: topic, reviewOnly: reviewOnly,
+            remediation: remediation, remediationQuestionIDs: gaps, now: Date(), random: &random)
         checkpoint()
     }
 
@@ -57,6 +60,15 @@ final class LearningStore: ObservableObject {
         }
     }
     func setPhase(_ phase: String) { edit { $0.phase = phase } }
+    func setPosition(_ position: Int) {
+        edit { if $0.phase == "learn" { $0.readerIndex = position } else if $0.phase == "quiz" { $0.quizIndex = position } }
+    }
+    func probe(_ response: QuestionResponse, for id: String) {
+        edit { if $0.probeResponses == nil { $0.probeResponses = [:] }; $0.probeResponses?[id] = response }
+    }
+    func reveal(_ id: String) {
+        edit { if $0.revealedCardIDs == nil { $0.revealedCardIDs = [] }; $0.revealedCardIDs?.insert(id) }
+    }
     func note(_ text: String, for id: String) { edit { $0.reflectionNotes[id] = text } }
     func tick() {
         guard session != nil, session?.result == nil else { return }

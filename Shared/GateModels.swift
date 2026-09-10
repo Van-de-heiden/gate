@@ -241,11 +241,11 @@ enum AdditiveSelection {
 }
 
 enum LessonLoad {
-    static let allowedMinutes = [5, 10, 15]
+    static let allowedMinutes = [5, 10, 15, 20, 30]
     static func questionCount(minutes: Int, consumedMinutes: Int, failures: Int) -> Int {
-        let base = minutes <= 5 ? 3 : minutes <= 10 ? 5 : 7
+        let base = minutes <= 5 ? 3 : minutes <= 10 ? 5 : minutes <= 15 ? 7 : minutes <= 20 ? 9 : 12
         let usage = min(3, max(0, (consumedMinutes - GateState.everydayFreeMinutes) / 30))
-        return min(14, base + usage + min(4, max(0, failures)))
+        return min(20, base + usage + min(4, max(0, failures)))
     }
     static func passes(correct: Int, total: Int) -> Bool {
         total > 0 && correct * 5 >= total * 4

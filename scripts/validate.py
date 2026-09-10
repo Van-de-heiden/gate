@@ -8,14 +8,27 @@ import xml.etree.ElementTree as ET
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 catalog = json.loads((ROOT / "Gate/curriculum.json").read_text())
 assert len(catalog["paths"]) == 16
-assert len(catalog["lessons"]) == 96
+assert len(catalog["lessons"]) == 144
+topics = catalog["topics"]
+assert len(topics) == len({t["id"] for t in topics}) == 12
+topic_ids = {t["id"] for t in topics}
+assert all(t["title"] and t["hook"] and t["format"] for t in topics)
+for topic in topics:
+    chapters = [l for l in catalog["lessons"] if l.get("topicID") == topic["id"]]
+    assert [l["topicOrder"] for l in chapters] == [1, 2, 3, 4]
+    assert all(l["pathID"] == topic["pathID"] and len(l["questions"]) == 5 for l in chapters)
+assert len([l for l in catalog["lessons"] if not l.get("topicID")]) == 96
 questions = [q for lesson in catalog["lessons"] for q in lesson["questions"]]
-assert len(questions) == 504 and len({q["id"] for q in questions}) == 504
+assert len(questions) == 744 and len({q["id"] for q in questions}) == 744
+probes = [card["probe"] for l in catalog["lessons"] for card in l["cards"] if card.get("probe")]
+assert len(probes) == len({q["id"] for q in probes}) == 48
+assert not {q["id"] for q in probes} & {q["id"] for q in questions}
 formats = {q.get("format", "singleChoice") for q in questions}
 assert formats == {"singleChoice", "multipleChoice", "ordering", "matching", "numeric", "recall", "cloze"}
 for path in catalog["paths"]:
     lessons = [l for l in catalog["lessons"] if l["pathID"] == path["id"]]
-    assert sorted(l["order"] for l in lessons) == list(range(1, 7))
+    assert len(lessons) >= 6
+    assert sorted(l["order"] for l in lessons) == list(range(1, len(lessons) + 1))
     asset = ROOT / "Gate/Assets.xcassets" / ("Path-" + path["artwork"] + ".imageset")
     assert (asset / "cover.jpg").is_file()
 for lesson in catalog["lessons"]:
@@ -23,11 +36,23 @@ for lesson in catalog["lessons"]:
     assert lesson["source"]["url"].startswith("https://")
     assert lesson["reflection"] and lesson["takeaway"] and lesson["mission"]
     assert len(lesson["questions"]) >= 5
-    visual = lesson["visual"]
-    if visual["kind"] == "bars":
-        assert len(visual["labels"]) == len(visual["values"])
-        assert all(v >= 0 for v in visual["values"])
-    for q in lesson["questions"]:
+    if lesson.get("topicID"):
+        assert lesson["topicID"] in topic_ids
+        assert any(c.get("image") or c.get("visual") for c in lesson["cards"])
+    for card in lesson["cards"]:
+        assert card["text"].strip() and card["title"].strip()
+        if card.get("image"):
+            assert card["imageDescription"] and card["caption"]
+            asset = ROOT / "Gate/Assets.xcassets" / (card["image"] + ".imageset")
+            assert (asset / "scene.jpg").is_file()
+            assert json.loads((asset / "Contents.json").read_text())["images"][0]["filename"] == "scene.jpg"
+    visuals = [lesson["visual"]] + [c["visual"] for c in lesson["cards"] if c.get("visual")]
+    for visual in visuals:
+        assert visual["title"] and visual["caption"] and visual["labels"]
+        if visual["kind"] == "bars":
+            assert len(visual["labels"]) == len(visual["values"])
+            assert all(v >= 0 for v in visual["values"])
+    for q in lesson["questions"] + [c["probe"] for c in lesson["cards"] if c.get("probe")]:
         options=q["options"]
         assert len(set(options)) == len(options)
         assert q["explanation"] and q["prompt"]
@@ -44,6 +69,10 @@ for lesson in catalog["lessons"]:
         else: assert q["acceptedAnswers"] and all(a.strip() for a in q["acceptedAnswers"])
     if lesson.get("photo"):
         assert lesson["photo"]["credit"] and lesson["photo"]["sourceURL"]
+scene_ids = {c["image"] for l in catalog["lessons"] for c in l["cards"] if c.get("image")}
+scene_specs = json.loads((ROOT / "scripts/content/story_images.json").read_text())
+assert scene_ids == {"Scene-" + s["id"] for s in scene_specs}
+assert len(scene_ids) == 24
 assert (ROOT / "Gate/Assets.xcassets/AppIcon.appiconset/GateIcon.png").is_file()
 
 for file in list(ROOT.rglob("*.plist")) + list(ROOT.rglob("*.entitlements")):
@@ -76,4 +105,4 @@ assert "IPHONEOS_DEPLOYMENT_TARGET = 16.0" not in project
 assert "GateConstants" not in "\n".join(p.read_text() for p in ROOT.rglob("*.swift"))
 assert "GateStorage" not in "\n".join(p.read_text() for p in ROOT.rglob("*.swift"))
 ET.parse(ROOT / "Gate.xcodeproj/xcshareddata/xcschemes/Gate.xcscheme")
-print("PASS: 16 paths, 96 chapters, 504 unique questions, 7 formats and offline assets; plist, target ID and scheme checks.")
+print("PASS: 16 paths, 12 coherent cases, 144 chapters, 744 unique questions, 48 ungraded probes, 7 formats, 24 inline scenes; plist, target ID and scheme checks.")

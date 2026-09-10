@@ -27,8 +27,9 @@ final class GateCoreTests: XCTestCase {
         let catalog = try catalog()
         try catalog.validate()
         XCTAssertEqual(catalog.paths.count, 16)
-        XCTAssertEqual(catalog.lessons.count, 96)
-        XCTAssertEqual(catalog.questions.count, 504)
+        XCTAssertEqual(catalog.lessons.count, 144)
+        XCTAssertEqual(catalog.questions.count, 744)
+        XCTAssertEqual(catalog.topics?.count, 12)
         XCTAssertTrue(catalog.lessons.allSatisfy { $0.source.url.hasPrefix("https://") })
     }
 

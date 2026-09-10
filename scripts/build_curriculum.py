@@ -57,5 +57,21 @@ for l in lessons:
   labels,values,caption=visuals[l['id']];l['visual']=dict(kind='bars',title='Das Beispiel im Bild',labels=labels,values=values,caption=caption)
 assert len(paths)==16 and len(lessons)==96
 assert all(len([l for l in lessons if l['pathID']==p['id']])==6 for p in paths)
-path.write_text(json.dumps(dict(version=3,paths=paths,lessons=lessons),ensure_ascii=False,indent=2)+'\n')
-print(f'{len(paths)} paths, {len(lessons)} chapters, {sum(len(l["questions"]) for l in lessons)} questions; all original IDs retained.')
+# Keep the complete v3 library above intact. New cases have their own concrete
+# topic IDs; the broad path is a shelf, never the boundary of a learning round.
+topics=[]
+from story_visuals import VISUALS
+for module in ['story_history_philosophy','story_business_money','story_health_life','story_reasoning_learning']:
+ m=importlib.import_module(module)
+ topics.extend(m.TOPICS)
+ for l in m.LESSONS:
+  l['order']=1+max(x['order'] for x in lessons if x['pathID']==l['pathID'])
+  l['artwork']=next(p['artwork'] for p in paths if p['id']==l['pathID'])
+  if l['id'] in VISUALS:
+   index,visual=VISUALS[l['id']]
+   l['cards'][index]['visual']=visual
+  lessons.append(l)
+assert len(topics)==12 and len(lessons)==144
+assert sum(len(l['questions']) for l in lessons)==744
+path.write_text(json.dumps(dict(version=4,paths=paths,topics=topics,lessons=lessons),ensure_ascii=False,indent=2)+'\n')
+print(f'{len(paths)} paths, {len(topics)} new cases, {len(lessons)} chapters, {sum(len(l["questions"]) for l in lessons)} questions; all original IDs retained.')

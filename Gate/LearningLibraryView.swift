@@ -11,8 +11,10 @@ struct LearningLibraryView: View {
     }
     private var matches: [LearningLesson] {
         let ids = Set(paths.map(\.id))
-        return (learning.catalog?.lessons ?? []).filter {
-            ids.contains($0.pathID) && (query.isEmpty || ($0.title + " " + $0.objective + " " + $0.cards.map(\.text).joined(separator: " ")).localizedStandardContains(query))
+        return (learning.catalog?.lessons ?? []).filter { lesson in
+            let topic = learning.catalog?.topic(lesson.topicKey)
+            let text = [lesson.title, lesson.objective, topic?.title ?? "", topic?.hook ?? "", lesson.cards.map(\.text).joined(separator: " ")].joined(separator: " ")
+            return ids.contains(lesson.pathID) && (query.isEmpty || text.localizedStandardContains(query))
         }
     }
 
@@ -21,7 +23,7 @@ struct LearningLibraryView: View {
             LazyVStack(alignment: .leading, spacing: 26) {
                 Eyebrow(text: "Deine Bibliothek")
                 Text("Mehr verstehen.\nBesser leben.").font(.largeTitle.bold())
-                Text("\(learning.catalog?.paths.count ?? 0) Lernwege · \(learning.catalog?.lessons.count ?? 0) Kapitel\nWähle eine Frage, die dich wirklich interessiert.")
+                Text("\(learning.catalog?.paths.count ?? 0) Lernwege · \(learning.catalog?.lessons.count ?? 0) Kapitel\nJede Runde vertieft eine konkrete Frage.")
                     .font(.subheadline).foregroundStyle(.secondary)
                 HStack(spacing: 10) {
                     Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
@@ -48,6 +50,13 @@ struct LearningLibraryView: View {
                     }.buttonStyle(GateButtonStyle())
                 }
                 if query.isEmpty {
+                    if let stories = learning.catalog?.topics, !stories.isEmpty {
+                        Eyebrow(text: "Neue Lernfälle · eine Geschichte, mehrere Kapitel")
+                        ForEach(stories.filter { topic in paths.contains { $0.id == topic.pathID } }) { topic in
+                            topicLink(topic)
+                        }
+                        Eyebrow(text: "Alle Lernwege & Grundlagen")
+                    }
                     ForEach(paths) { path in
                         NavigationLink { pathDetail(path) } label: {
                             VStack(alignment: .leading, spacing: 14) {
@@ -76,6 +85,33 @@ struct LearningLibraryView: View {
         let lessons = learning.catalog?.orderedLessons(in: path.id) ?? []
         return Double(lessons.filter { learning.progress.completedLessonIDs.contains($0.id) }.count) / Double(max(1, lessons.count))
     }
+    private func topicLink(_ topic: LearningTopic) -> some View {
+        NavigationLink {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    Eyebrow(text: topic.format ?? "Lernfall")
+                    Text(topic.title).font(.largeTitle.bold())
+                    Text(topic.hook).font(.title3).foregroundStyle(.secondary)
+                    if let card = learning.catalog?.chapters(in: topic.id).first?.cards.first(where: { $0.image != nil }), let image = card.image {
+                        Image(image).resizable().scaledToFit().clipShape(RoundedRectangle(cornerRadius: 20))
+                            .accessibilityLabel(card.imageDescription ?? "Szenenbild")
+                        Text(card.caption ?? "KI-Illustration").font(.caption2).foregroundStyle(.secondary)
+                    }
+                    Text("Vier Kapitel, eine zusammenhängende Frage. Du kannst den ganzen Fall freiwillig bearbeiten oder ein Kapitel einzeln vertiefen.")
+                        .font(.subheadline)
+                    Button("In den Fall eintauchen") { controller.beginPractice(path: topic.pathID, topic: topic.id) }.buttonStyle(GateButtonStyle())
+                    ForEach(learning.catalog?.chapters(in: topic.id) ?? []) { chapterButton($0) }
+                }.padding(24)
+            }.navigationBarTitleDisplayMode(.inline)
+        } label: {
+            VStack(alignment: .leading, spacing: 12) {
+                Eyebrow(text: topic.format ?? "Lernfall")
+                Text(topic.title).font(.title2.weight(.semibold))
+                Text(topic.hook).font(.subheadline).foregroundStyle(.secondary)
+                HStack { Text("4 Kapitel · ein Thema"); Spacer(); Image(systemName: "arrow.right") }.font(.caption.weight(.medium))
+            }.gateCard()
+        }.buttonStyle(.plain)
+    }
     private func progressLabel(_ path: LearningPath) -> String {
         let lessons = learning.catalog?.orderedLessons(in: path.id) ?? []
         return "\(lessons.filter { learning.progress.completedLessonIDs.contains($0.id) }.count) / \(lessons.count) erarbeitet"
@@ -84,7 +120,7 @@ struct LearningLibraryView: View {
         Button { GateKeyboard.dismiss(); controller.beginPractice(path: lesson.pathID, lesson: lesson.id) } label: {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Eyebrow(text: "Kapitel \(lesson.order)" + (learning.progress.completedLessonIDs.contains(lesson.id) ? " · erarbeitet" : ""))
+                    Eyebrow(text: "\(lesson.topicID == nil ? "Kapitel" : "Im Lernfall") \(lesson.topicOrder ?? lesson.order)" + (learning.progress.completedLessonIDs.contains(lesson.id) ? " · erarbeitet" : ""))
                     Spacer()
                     Image(systemName: "arrow.up.right").font(.caption)
                 }
@@ -107,7 +143,7 @@ struct LearningLibraryView: View {
                 Text("Du kannst jedes Kapitel direkt öffnen. Eine Kapitelrunde vermittelt den Stoff und prüft ihn mit verschiedenen Aufgaben.")
                     .font(.subheadline).foregroundStyle(.secondary)
                 ForEach(learning.catalog?.orderedLessons(in: path.id) ?? []) { lesson in chapterButton(lesson) }
-                Text("Freiwilliges Lernen vergibt keine Bildschirmzeit. Freigabe-Lektionen wechseln weiterhin zwischen den Wegen und berücksichtigen fällige Wiederholungen.")
+                Text("Freiwilliges Lernen vergibt keine Bildschirmzeit. Zwischen Runden wechseln die Themen; innerhalb jeder neuen Runde bleiben alle Kapitel und Wiederholungen beim gleichen konkreten Thema.")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(24)
         }.background(GateDesign.paper).navigationBarTitleDisplayMode(.inline).toolbar(.visible, for: .navigationBar)
