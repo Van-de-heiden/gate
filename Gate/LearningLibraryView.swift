@@ -75,7 +75,7 @@ struct LearningLibraryView: View {
                     ForEach(matches) { lesson in chapterButton(lesson) }
                     if matches.isEmpty { Text("Versuche einen weiteren Begriff, etwa Zins, Schlaf oder Gespräch.").font(.subheadline).foregroundStyle(.secondary) }
                 }
-                Text("Wissen wird nach 1, 3, 7, 14 und 30 Tagen wieder aufgerufen. Fehler kommen früher zurück. Bildmotive sind eigens erstellte Illustrationsfotos; historische Quellen sind separat gekennzeichnet.")
+                Text("Zeitversetzte Wiederholung · KI-Illustrationen, Quellen separat gekennzeichnet")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(24)
         }.gateKeyboardDismissal()
@@ -97,7 +97,7 @@ struct LearningLibraryView: View {
                             .accessibilityLabel(card.imageDescription ?? "Szenenbild")
                         Text(card.caption ?? "KI-Illustration").font(.caption2).foregroundStyle(.secondary)
                     }
-                    Text("Vier Kapitel, eine zusammenhängende Frage. Du kannst den ganzen Fall freiwillig bearbeiten oder ein Kapitel einzeln vertiefen.")
+                    Text("Ein Fall · vier Kapitel")
                         .font(.subheadline)
                     Button("In den Fall eintauchen") { controller.beginPractice(path: topic.pathID, topic: topic.id) }.buttonStyle(GateButtonStyle())
                     ForEach(learning.catalog?.chapters(in: topic.id) ?? []) { chapterButton($0) }
@@ -140,10 +140,10 @@ struct LearningLibraryView: View {
                 Text(path.title).font(.largeTitle.bold())
                 Text(path.subtitle).foregroundStyle(.secondary)
                 Button("An meinem Lernstand weiter") { controller.beginPractice(path: path.id) }.buttonStyle(GateButtonStyle())
-                Text("Du kannst jedes Kapitel direkt öffnen. Eine Kapitelrunde vermittelt den Stoff und prüft ihn mit verschiedenen Aufgaben.")
+                Text("Wähle dein Kapitel.")
                     .font(.subheadline).foregroundStyle(.secondary)
                 ForEach(learning.catalog?.orderedLessons(in: path.id) ?? []) { lesson in chapterButton(lesson) }
-                Text("Freiwilliges Lernen vergibt keine Bildschirmzeit. Zwischen Runden wechseln die Themen; innerhalb jeder neuen Runde bleiben alle Kapitel und Wiederholungen beim gleichen konkreten Thema.")
+                Text("Freies Lernen · ohne Bildschirmzeit-Freigabe")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(24)
         }.background(GateDesign.paper).navigationBarTitleDisplayMode(.inline).toolbar(.visible, for: .navigationBar)

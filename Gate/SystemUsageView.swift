@@ -35,9 +35,9 @@ struct SystemUsageView: View {
                 ForEach(GateReportScope.allCases) { Text($0.title).tag($0) }
             }.pickerStyle(.segmented)
             Text(scope == .consumption
-                 ? "Deine gespeicherten \(savedSelection.applicationTokens.count) Apps und \(savedSelection.webDomainTokens.count) Websites. Nur diese Auswahl zählt für Freigaben."
-                 : "Gesamte von iOS berichtete Nutzung – einschliesslich Lern-, Arbeits- und Kommunikations-Apps. Diese Ansicht verändert dein Zeitbudget nicht.")
-                .font(.caption).foregroundStyle(.secondary)
+                 ? "Nur deine Konsum-Auswahl zählt fürs Budget."
+                 : "Alle Apps · unabhängig vom Freibudget")
+                .font(.subheadline).foregroundStyle(.secondary)
 
             if !controller.isAuthorized {
                 ContentUnavailableView("Bildschirmzeit erlauben", systemImage: "lock.shield",
