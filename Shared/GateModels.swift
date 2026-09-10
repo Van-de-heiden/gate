@@ -80,6 +80,9 @@ struct GateState: Codable {
     var isSelectionLocked: Bool { selectionLocked ?? (selectionData != nil) }
     var monitoringEnabled = false
     var dailyActivityName = "gate.daily.\(UUID().uuidString)"
+    var previousDailyActivityName: String?
+    var lastDailyMonitorInstallAt: Date?
+    var lastDailyMonitorCallbackAt: Date?
     var freeMinutes = 60
     var testModeStartedAt: Date?
     var confirmedMinutes = 0
@@ -93,9 +96,17 @@ struct GateState: Codable {
     var onboardingComplete = false
     var launcher = LauncherItem.defaults
 
-    static let usageCheckpoints = Set([1, 2] + Array(stride(from: 5, through: 240, by: 5)))
+    static let usageCheckpoints = Set(1...(24 * 60))
     var isTestMode: Bool { freeMinutes == 2 }
     var remainingFreeMinutes: Int { max(0, freeMinutes - confirmedMinutes) }
+
+    var protectionInputs: GateProtectionInputs {
+        GateProtectionInputs(selection: selectionData, permanentSelection: protectedSelectionData,
+            monitoringEnabled: monitoringEnabled, limitReached: limitReached,
+            // Deliberately use persisted grants here. An expired grant is removed by
+            // expireGrants, which must count as a policy change even after its deadline.
+            exemptTargetIDs: Set(grants.filter { $0.armed && $0.usedMinutes < $0.minutes }.map(\.target.id)))
+    }
 
     mutating func useEverydayMode() {
         freeMinutes = 60
@@ -125,6 +136,7 @@ struct GateState: Codable {
         day = today
         confirmedMinutes = 0
         lastUsageUpdate = nil
+        lastDailyMonitorCallbackAt = nil
         limitReached = false
         grants = []
         requests = []
@@ -157,11 +169,25 @@ struct GateState: Codable {
     }
 
     mutating func recordUsage(_ minutes: Int, at now: Date) {
-        confirmedMinutes = max(confirmedMinutes, minutes)
+        guard minutes > confirmedMinutes else { return }
+        confirmedMinutes = minutes
         lastUsageUpdate = now
         limitReached = confirmedMinutes >= freeMinutes
         let index = usageIndex()
         history[index].confirmedMinutes = confirmedMinutes
+    }
+
+    /// The callback has no measured duration payload: only registered threshold names
+    /// are evidence. Never count a timer tick, registration check or stale grant event.
+    mutating func recordDailyUsageEvent(_ event: String, activity: String, at now: Date) {
+        guard monitoringEnabled,
+              activity == dailyActivityName || activity == previousDailyActivityName,
+              event.hasPrefix("gate.usage."),
+              let minutes = Int(event.dropFirst("gate.usage.".count)),
+              event == "gate.usage.\(minutes)",
+              Self.usageCheckpoints.contains(minutes) else { return }
+        lastDailyMonitorCallbackAt = now
+        recordUsage(minutes, at: now)
     }
 
     mutating func recordGrant(_ minutes: Int) {
@@ -174,6 +200,25 @@ struct GateState: Codable {
         if let index = history.firstIndex(where: { $0.id == day }) { return index }
         history.append(GateUsageDay(id: day))
         return history.count - 1
+    }
+}
+
+struct GateProtectionInputs: Equatable {
+    let selection: Data?
+    let permanentSelection: Data?
+    let monitoringEnabled: Bool
+    let limitReached: Bool
+    let exemptTargetIDs: Set<String>
+}
+
+enum GateMonitorCadence {
+    static func shouldCheck(at now: Date, lastAttempt: Date?, enabled: Bool,
+                            authorized: Bool, checking: Bool, force: Bool = false) -> Bool {
+        guard enabled, authorized, !checking else { return false }
+        guard !force, let lastAttempt else { return true }
+        // A clock correction must not postpone checks indefinitely.
+        let elapsed = now.timeIntervalSince(lastAttempt)
+        return elapsed >= 60 || elapsed < 0
     }
 }
 

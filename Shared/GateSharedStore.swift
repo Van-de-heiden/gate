@@ -20,7 +20,9 @@ enum GateSharedStore {
 
     /// Coordinates app, monitor and shield processes. Never fall back to an unrelated defaults suite.
     @discardableResult
-    static func transaction<T>(afterCommit: ((GateState) -> Void)? = nil, _ update: (inout GateState) throws -> T) throws -> T {
+    static func transaction<T>(afterCommit: ((GateState) -> Void)? = nil,
+                               onlyWhenProtectionChanges: Bool = false,
+                               _ update: (inout GateState) throws -> T) throws -> T {
         localLock.lock()
         defer { localLock.unlock() }
         guard let folder = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)
@@ -43,12 +45,15 @@ enum GateSharedStore {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys]
         let before = try encoder.encode(state)
+        let previousProtection = state.protectionInputs
         let result = try update(&state)
         let after = try encoder.encode(state)
         if before != after || !FileManager.default.fileExists(atPath: file.path) {
             try after.write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
         }
-        afterCommit?(state)
+        if !onlyWhenProtectionChanges || previousProtection != state.protectionInputs {
+            afterCommit?(state)
+        }
         return result
     }
 }

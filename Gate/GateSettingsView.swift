@@ -30,6 +30,9 @@ struct GateSettingsView: View {
                     Text("Von iOS bestätigt: \(controller.state.confirmedMinutes) Minuten heute. Beim Moduswechsel wird dieser Verbrauch nicht gelöscht.")
                         .font(.caption).foregroundStyle(.secondary)
                 }.gateCard()
+                GateSection(title: "Nutzungsmessung") {
+                    MonitoringStatusView(controller: controller, detailed: true)
+                }.gateCard()
                 GateSection(title: "Berechtigungen") {
                     HStack { Text("Bildschirmzeit"); Spacer(); Text(controller.isAuthorized ? "Erlaubt" : "Fehlt").foregroundStyle(.secondary) }
                     if !controller.isAuthorized {
@@ -47,8 +50,8 @@ struct GateSettingsView: View {
                         .font(.subheadline).foregroundStyle(.secondary)
                     Button(controller.state.isSelectionLocked ? "Apps & Websites ergänzen" : "Apps & Websites auswählen") { picker = true }.buttonStyle(GateButtonStyle(prominent: false)).disabled(!controller.isAuthorized)
                     Button(controller.state.monitoringEnabled ? "Auswahl übernehmen" : "Gate aktivieren") {
-                        controller.startGate()
-                    }.buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized || (!controller.hasSelection && controller.state.selectionData == nil))
+                        Task { await controller.startGate() }
+                    }.buttonStyle(GateButtonStyle()).disabled(controller.isCheckingMonitor || !controller.isAuthorized || (!controller.hasSelection && controller.state.selectionData == nil))
                     Text("Nach dem ersten Aktivieren bleibt die Auswahl fest. Neue Apps und Websites kannst du jederzeit ergänzen. Bereits gespeicherte Einträge bleiben auch dann erhalten, wenn du sie im Apple-Auswahlfenster abwählst.")
                         .font(.caption).foregroundStyle(.secondary)
                     #if DEBUG
@@ -112,7 +115,7 @@ struct GateSettingsView: View {
         .familyActivityPicker(isPresented: $protectedPicker, selection: $controller.protectedSelection)
         .sheet(isPresented: $showOnboarding) { GateOnboardingView(controller: controller) }
         .confirmationDialog("Zwei-Minuten-Test aktivieren?", isPresented: $confirmTest, titleVisibility: .visible) {
-            Button("Testmodus für heute starten") { controller.startGate(testMode: true) }
+            Button("Testmodus für heute starten") { Task { await controller.startGate(testMode: true) } }
             Button("Abbrechen", role: .cancel) {}
         } message: { Text("Danach sperrt Gate bereits ab zwei Minuten bestätigter Nutzung. Über „Auf Alltag wechseln“ erhältst du wieder das normale 60-Minuten-Budget.") }
         .task {
@@ -213,12 +216,14 @@ struct GateOnboardingView: View {
                     Button(step == 3 ? "Gate starten" : "Weiter") {
                         if step < 3 { step += 1 }
                         else {
-                            controller.startGate()
-                            if controller.errorMessage == nil && controller.state.monitoringEnabled {
-                                controller.completeOnboarding(); dismiss()
+                            Task {
+                                await controller.startGate()
+                                if controller.errorMessage == nil && controller.monitorReady && controller.state.monitoringEnabled {
+                                    controller.completeOnboarding(); dismiss()
+                                }
                             }
                         }
-                    }.buttonStyle(GateButtonStyle())
+                    }.buttonStyle(GateButtonStyle()).disabled(step == 3 && controller.isCheckingMonitor)
                     if step == 3 {
                         Button("Zuerst die Lernwege ansehen") { controller.completeOnboarding(); dismiss() }
                             .font(.footnote).frame(maxWidth: .infinity)

@@ -61,7 +61,7 @@ struct ContentView: View {
         } message: { Text(controller.errorMessage ?? "") }
         .onAppear { onboarding = !controller.state.onboardingComplete }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active { controller.refreshSharedState() }
+            if phase == .active { controller.refreshSharedState(); controller.checkMonitoringNow() }
             else { learning.checkpoint() }
         }
         .onReceive(Timer.publish(every: 3, on: .main, in: .common).autoconnect()) { _ in
@@ -199,10 +199,7 @@ struct ContentView: View {
                 .font(.caption).foregroundStyle(.secondary)
             Text("Die freie Restzeit ist eine Obergrenze zwischen iOS-Nutzungsmeldungen, kein Live-Zähler der gesamten Bildschirmzeit.")
                 .font(.caption2).foregroundStyle(.secondary)
-            if let date = controller.state.lastUsageUpdate {
-                Text("Zuletzt bestätigt: \(date.formatted(date: .omitted, time: .shortened)) · Anzeige in Nutzungsschritten.")
-                    .font(.caption2).foregroundStyle(.secondary)
-            }
+            if controller.state.monitoringEnabled { MonitoringStatusView(controller: controller) }
             if !controller.state.monitoringEnabled || !controller.monitorReady {
                 Button("Gate einrichten") { tab = 3 }.buttonStyle(GateButtonStyle())
             }

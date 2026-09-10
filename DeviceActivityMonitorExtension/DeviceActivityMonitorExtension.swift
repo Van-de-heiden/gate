@@ -9,8 +9,10 @@ final class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     override func intervalDidStart(for activity: DeviceActivityName) {
         super.intervalDidStart(for: activity)
         update { state in
-            guard activity.rawValue == state.dailyActivityName else { return }
+            guard state.monitoringEnabled,
+                  activity.rawValue == state.dailyActivityName || activity.rawValue == state.previousDailyActivityName else { return }
             state.rollDay(at: Date())
+            state.lastDailyMonitorCallbackAt = Date()
         }
     }
 
@@ -19,11 +21,12 @@ final class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         update { state in
             guard state.monitoringEnabled else { return }
             state.rollDay(at: Date())
-            if activity.rawValue == state.dailyActivityName,
-               let minutes = Int(event.rawValue.replacingOccurrences(of: "gate.usage.", with: "")) {
-                state.recordUsage(minutes, at: Date())
+            if activity.rawValue == state.dailyActivityName || activity.rawValue == state.previousDailyActivityName {
+                state.recordDailyUsageEvent(event.rawValue, activity: activity.rawValue, at: Date())
             } else if let index = state.grants.firstIndex(where: { $0.activityName == activity.rawValue }),
-                      let minutes = Int(event.rawValue.replacingOccurrences(of: "gate.used.", with: "")) {
+                      event.rawValue.hasPrefix("gate.used."),
+                      let minutes = Int(event.rawValue.dropFirst("gate.used.".count)),
+                      (1...state.grants[index].minutes).contains(minutes) {
                 state.grants[index].usedMinutes = max(state.grants[index].usedMinutes, minutes)
             }
             state.expireGrants(at: Date())
@@ -44,12 +47,18 @@ final class DeviceActivityMonitorExtension: DeviceActivityMonitor {
 
     private func update(_ body: (inout GateState) -> Void) {
         do {
-            try GateSharedStore.transaction(afterCommit: { GateShieldPolicy.apply($0) }) { state in
+            var refreshWidget = false
+            try GateSharedStore.transaction(afterCommit: { GateShieldPolicy.apply($0) }, onlyWhenProtectionChanges: true) { state in
+                let previousProtection = state.protectionInputs
+                let previousDay = state.day
                 state.rollDay(at: Date())
                 state.reconcileAllowance(at: Date())
                 body(&state)
+                refreshWidget = previousDay != state.day || previousProtection != state.protectionInputs
             }
-            WidgetCenter.shared.reloadTimelines(ofKind: "GateLauncher")
+            // The widget displays protection/grant status, not a live counter.
+            // Backfilled minute events should not exhaust its refresh budget.
+            if refreshWidget { WidgetCenter.shared.reloadTimelines(ofKind: "GateLauncher") }
         } catch {
             // Do not clear an existing shield if persistence is unavailable.
             logger.error("Monitor state update failed: \(error.localizedDescription, privacy: .public)")

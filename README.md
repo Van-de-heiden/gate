@@ -50,8 +50,34 @@ whichever comes first. Its displayed remaining active time is an upper bound bas
 iOS callback. It is not a fabricated second-by-second timer.
 
 Daily usage charts show **confirmed minimums for the selected consumption pool**, not total
-device Screen Time. Checkpoints continue up to 240 minutes. Beyond that the chart remains a
-lower bound; the learning-load progression is already capped. Missing callbacks are not zero usage.
+device Screen Time. The monitor requests a checkpoint at every active minute up to 24 hours.
+iOS delivers these callbacks; delivery can be delayed. Missing callbacks are not zero usage,
+and elapsed wall-clock time never increases the consumption counter.
+
+### Monitoring and recovery
+
+Gate inspects its saved daily schedule, selected apps/domains and all minute events on opening
+and about once a minute while the app is in the foreground. Missing or older five-minute
+configurations are reinstalled automatically. Screen Time registration runs off the main actor.
+Healthy monitors are not restarted simply because no new consumption has arrived: an idle
+phone or an unselected app legitimately produces no new consumption event.
+
+**Mehr → Nutzungsmessung → Messung neu verbinden** explicitly re-registers a monitor whose
+configuration exists but whose callbacks appear stuck. It keeps confirmed usage, learning
+progress and independent grants. Past activity within the current day is requested from iOS;
+Gate never assumes a new total or resets the budget to obtain a fresh start.
+
+The interface distinguishes **Monitor geprüft** (configuration inspection) from **Neue Nutzung
+zuletzt bestätigt** (a higher iOS threshold). Duplicate/out-of-order callbacks cannot refresh the
+latter timestamp. An optional local diagnostic contains registration counts, timestamps and
+selection counts, but no app names, opaque tokens or browsing history.
+
+The foreground refresh reads shared state without rewriting unchanged shields. The monitor
+also applies policy only when the restriction inputs change, under the same process lock, so
+minute callbacks do not keep resetting identical Managed Settings. These APIs do not provide a
+background poll for total Screen Time on a wall-clock schedule. See Apple's
+[monitoring API](https://developer.apple.com/documentation/deviceactivity/deviceactivitycenter)
+and [past-activity behavior](https://developer.apple.com/documentation/deviceactivity/deviceactivityevent/includespastactivity).
 
 ## Build and try
 

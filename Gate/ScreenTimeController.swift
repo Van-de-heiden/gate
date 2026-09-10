@@ -18,8 +18,15 @@ final class ScreenTimeController: ObservableObject {
     @Published var errorMessage: String?
     @Published var selectedRequest: GateRequest?
     @Published private(set) var monitorReady = false
+    @Published private(set) var isCheckingMonitor = false
+    @Published private(set) var lastMonitorCheckAt: Date?
+    @Published private(set) var registeredUsageEvents = 0
+    @Published private(set) var monitorIssue: String?
     let learning = LearningStore()
     private let activityCenter = DeviceActivityCenter()
+    private let dailyMonitor = DailyMonitorService()
+    private var monitorCheckTask: Task<Void, Never>?
+    private var lastMonitorAttemptAt: Date?
     private var hasStorage = false
     private var pauseWaitingForLessonDismissal = false
 
@@ -29,19 +36,18 @@ final class ScreenTimeController: ObservableObject {
     var selectionSummary: String { "\(selection.applicationTokens.count) Apps · \(selection.webDomainTokens.count) Websites" }
 
     init() {
-        // Migration: these are the spike's two names, never other apps' monitors.
-        activityCenter.stopMonitoring([DeviceActivityName("gate.daily"), DeviceActivityName("gate.grant")])
         refreshSharedState()
         selection = GateShieldPolicy.selection(from: state)
         protectedSelection = GateShieldPolicy.protectedSelection(from: state)
     }
 
-    func refreshSharedState() {
+    func refreshSharedState(forceProtectionApply: Bool = false) {
+        let previouslyAuthorized = isAuthorized
         authorizationStatus = AuthorizationCenter.shared.authorizationStatus
         do {
             state = try GateSharedStore.transaction(afterCommit: { state in
                 if self.isAuthorized { GateShieldPolicy.apply(state) }
-            }) { state in
+            }, onlyWhenProtectionChanges: !forceProtectionApply && hasStorage && previouslyAuthorized == isAuthorized) { state in
                 state.rollDay(at: Date())
                 state.reconcileAllowance(at: Date())
                 state.expireGrants(at: Date())
@@ -49,19 +55,20 @@ final class ScreenTimeController: ObservableObject {
             }
             hasStorage = true
             presentPendingPause()
-            monitorReady = isAuthorized && activityCenter.activities.contains(DeviceActivityName(state.dailyActivityName))
-            let valid = Set(state.grants.map(\.activityName))
-            let stale = activityCenter.activities.filter {
-                $0.rawValue.hasPrefix("gate.grant.") && !valid.contains($0.rawValue)
-            }
-            if !stale.isEmpty { activityCenter.stopMonitoring(stale) }
+            if !isAuthorized || !state.monitoringEnabled { monitorReady = false }
             if let request = selectedRequest, !state.requests.contains(where: { $0.id == request.id }) {
                 selectedRequest = nil
             }
             if selectedRequest == nil && learning.session == nil {
                 selectedRequest = state.requests.sorted { $0.requestedAt > $1.requestedAt }.first
             }
-        } catch { hasStorage = false; errorMessage = error.localizedDescription }
+            scheduleMonitorCheck()
+        } catch {
+            hasStorage = false
+            monitorReady = false
+            monitorIssue = error.localizedDescription
+            errorMessage = error.localizedDescription
+        }
     }
 
     func requestAuthorization() async {
@@ -71,19 +78,23 @@ final class ScreenTimeController: ObservableObject {
             try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
             authorizationStatus = AuthorizationCenter.shared.authorizationStatus
             _ = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert])
-            refreshSharedState()
+            refreshSharedState(forceProtectionApply: true)
         } catch { errorMessage = error.localizedDescription }
     }
 
-    func startGate(testMode: Bool? = nil) {
+    func startGate(testMode: Bool? = nil) async {
         errorMessage = nil
         guard hasStorage, isAuthorized else { errorMessage = "Erlaube zuerst Bildschirmzeit und prüfe die App Group."; return }
+        guard !isCheckingMonitor else { message = "Die Messung wird gerade geprüft. Bitte kurz warten."; return }
         let saved = GateShieldPolicy.selection(from: state)
         let proposed = state.isSelectionLocked ? GateShieldPolicy.retaining(saved, adding: selection) : selection
         guard (!proposed.applicationTokens.isEmpty || !proposed.webDomainTokens.isEmpty), proposed.categoryTokens.isEmpty else {
             errorMessage = "Wähle einzelne Apps und Websites. Klappe Kategorien auf; ganze Kategorien würden auch wichtige Apps erfassen."
             return
         }
+        isCheckingMonitor = true
+        lastMonitorAttemptAt = Date()
+        defer { isCheckingMonitor = false }
         do {
             // Do not trust the picker UI: deselection is merged back at the persistence boundary.
             selection = proposed
@@ -101,16 +112,23 @@ final class ScreenTimeController: ObservableObject {
                 }
                 state.monitoringEnabled = true
                 state.reconcileAllowance(at: Date())
-                if changed { state.dailyActivityName = "gate.daily.\(UUID().uuidString)" }
+                if changed {
+                    // Keep the previous selected pool reporting until the replacement
+                    // has really registered. Its usage is still a valid lower bound.
+                    state.previousDailyActivityName = state.previousDailyActivityName ?? oldActivity
+                    state.dailyActivityName = "gate.daily.\(UUID().uuidString)"
+                }
             }
-            try installDailyMonitor()
-            if changed { activityCenter.stopMonitoring([DeviceActivityName(oldActivity)]) }
-            monitorReady = true
+            let name = state.dailyActivityName
+            let inspection = try await dailyMonitor.install(activityName: name, selectionData: data)
+            try await acceptMonitorInspection(inspection, activityName: name, selectionData: data, installed: true)
+            refreshSharedState()
             message = state.isTestMode ? "Testmodus: 2 freie Minuten, nur für heute. Du kannst jederzeit auf Alltag wechseln." : "Gate ist bereit. 60 freie Minuten pro Tag, gemeinsam für deine Auswahl."
             WidgetCenter.shared.reloadAllTimelines()
         } catch {
             // Keep any already-required shields; do not clear other grants on an API failure.
-            monitorReady = activityCenter.activities.contains(DeviceActivityName(state.dailyActivityName))
+            monitorReady = false
+            monitorIssue = error.localizedDescription
             errorMessage = "Monitoring konnte nicht eingerichtet werden: \(error.localizedDescription)"
         }
     }
@@ -124,25 +142,100 @@ final class ScreenTimeController: ObservableObject {
         do {
             // Independent of any unsaved picker edits. Existing monitors already contain the 60-minute event.
             try mutate { $0.useEverydayMode() }
-            if state.monitoringEnabled && !monitorReady { try installDailyMonitor() }
             refreshSharedState()
+            scheduleMonitorCheck(force: true)
             message = "Alltag aktiv: 60 Minuten täglich. Der heutige bestätigte Verbrauch bleibt angerechnet."
         } catch { errorMessage = "Alltag konnte nicht vollständig aktiviert werden: \(error.localizedDescription)" }
     }
 
-    private func installDailyMonitor() throws {
-        let selected = GateShieldPolicy.selection(from: state)
-        let schedule = DeviceActivitySchedule(intervalStart: DateComponents(hour: 0, minute: 0),
-            intervalEnd: DateComponents(hour: 23, minute: 59, second: 59), repeats: true)
-        // These are confirmed checkpoints, not a fabricated live Screen Time total.
-        let checkpoints = GateState.usageCheckpoints
-        var events: [DeviceActivityEvent.Name: DeviceActivityEvent] = [:]
-        for minute in checkpoints {
-            events[DeviceActivityEvent.Name("gate.usage.\(minute)")] = DeviceActivityEvent(
-                applications: selected.applicationTokens, webDomains: selected.webDomainTokens,
-                threshold: DateComponents(minute: minute), includesPastActivity: true)
+    func checkMonitoringNow() { scheduleMonitorCheck(force: true) }
+
+    func reconnectMonitoring() { scheduleMonitorCheck(force: true, reconnect: true) }
+
+    private func scheduleMonitorCheck(force: Bool = false, reconnect: Bool = false) {
+        guard hasStorage, GateMonitorCadence.shouldCheck(at: Date(), lastAttempt: lastMonitorAttemptAt,
+            enabled: state.monitoringEnabled, authorized: isAuthorized, checking: isCheckingMonitor, force: force) else { return }
+        isCheckingMonitor = true
+        lastMonitorAttemptAt = Date()
+        monitorCheckTask = Task { [weak self] in
+            guard let self else { return }
+            defer { self.isCheckingMonitor = false; self.monitorCheckTask = nil }
+            let name = self.state.dailyActivityName
+            let data = self.state.selectionData
+            do {
+                var inspection = try await self.dailyMonitor.inspect(activityName: name, selectionData: data)
+                guard self.isAuthorized, self.state.monitoringEnabled,
+                      self.state.dailyActivityName == name, self.state.selectionData == data else { return }
+                self.lastMonitorCheckAt = Date()
+                self.registeredUsageEvents = inspection.eventCount
+                let needsInstallation = reconnect || !inspection.configurationMatches
+                if needsInstallation {
+                    self.monitorReady = false
+                    inspection = try await self.dailyMonitor.install(activityName: name, selectionData: data)
+                }
+                try await self.acceptMonitorInspection(inspection, activityName: name,
+                                                       selectionData: data, installed: needsInstallation)
+                self.refreshSharedState()
+                if reconnect {
+                    self.message = "Messung neu verbunden. Bestätigte Minuten bleiben erhalten; weitere Nutzung bestätigt iOS."
+                }
+            } catch {
+                self.monitorReady = false
+                self.monitorIssue = error.localizedDescription
+            }
         }
-        try activityCenter.startMonitoring(DeviceActivityName(state.dailyActivityName), during: schedule, events: events)
+    }
+
+    private func acceptMonitorInspection(_ inspection: DailyMonitorInspection, activityName: String,
+                                         selectionData: Data?, installed: Bool) async throws {
+        authorizationStatus = AuthorizationCenter.shared.authorizationStatus
+        guard isAuthorized, state.monitoringEnabled,
+              state.dailyActivityName == activityName, state.selectionData == selectionData else { throw GateError.selectionChanged }
+        lastMonitorCheckAt = Date()
+        registeredUsageEvents = inspection.eventCount
+        guard inspection.configurationMatches else { throw DailyMonitorService.MonitorError.registrationIncomplete }
+        if installed || state.previousDailyActivityName != nil {
+            try mutate { state in
+                state.previousDailyActivityName = nil
+                if installed { state.lastDailyMonitorInstallAt = Date() }
+            }
+            await dailyMonitor.retireOtherDailyMonitors(keeping: activityName)
+        }
+        // Reconcile the worker's snapshot with CURRENT grants before stopping any
+        // orphan: a new grant may have been created while the worker was awaiting iOS.
+        let valid = Set(state.grants.map(\.activityName))
+        let stale = inspection.activityNames.filter { $0.hasPrefix("gate.grant.") && !valid.contains($0) }
+        if !stale.isEmpty { activityCenter.stopMonitoring(stale.map { DeviceActivityName($0) }) }
+        monitorReady = isAuthorized && state.monitoringEnabled
+        monitorIssue = nil
+    }
+
+    var usageConfirmationIsOld: Bool {
+        let reference = state.lastUsageUpdate ?? state.lastDailyMonitorInstallAt
+        return state.monitoringEnabled && reference.map { Date().timeIntervalSince($0) >= 180 } == true
+    }
+
+    var monitoringDiagnostics: String {
+        let selected = GateShieldPolicy.selection(from: state)
+        func time(_ date: Date?) -> String { date?.formatted(date: .numeric, time: .standard) ?? "keine" }
+        return """
+        Gate · Messdiagnose
+        Erstellt: \(time(Date()))
+        System: \(ProcessInfo.processInfo.operatingSystemVersionString)
+        Berechtigung: \(isAuthorized ? "erlaubt" : "fehlt")
+        Messung aktiviert: \(state.monitoringEnabled)
+        Monitor geprüft: \(time(lastMonitorCheckAt))
+        Minuten-Ereignisse: \(registeredUsageEvents)/\(GateState.usageCheckpoints.count)
+        Konfiguration bestätigt: \(monitorReady)
+        Gespeicherte Auswahl: \(selected.applicationTokens.count) Apps, \(selected.webDomainTokens.count) Websites
+        Tagesbudget: \(state.freeMinutes) min
+        Bestätigter Verbrauch: \(state.confirmedMinutes) min
+        Neue Nutzung zuletzt: \(time(state.lastUsageUpdate))
+        Letzte Monitor-Meldung: \(time(state.lastDailyMonitorCallbackAt))
+        Monitor neu verbunden: \(time(state.lastDailyMonitorInstallAt))
+        Aktive Freigaben: \(activeGrants.count)
+        Hinweis: \(monitorIssue ?? "kein Registrierungsfehler")
+        """
     }
 
     func pauseGate() {

@@ -197,7 +197,153 @@ final class GateCoreTests: XCTestCase {
         XCTAssertTrue(GateState.usageCheckpoints.contains(2))
         XCTAssertTrue(GateState.usageCheckpoints.contains(60))
         XCTAssertTrue(GateState.usageCheckpoints.contains(1))
-        XCTAssertEqual(GateState.usageCheckpoints.max(), 240)
+        for minute in [15, 16, 45, 46, 59, 61, 239, 240, 241, 330, 1440] {
+            XCTAssertTrue(GateState.usageCheckpoints.contains(minute), "Missing minute \(minute)")
+        }
+        XCTAssertEqual(GateState.usageCheckpoints.count, 1440)
+        XCTAssertEqual(GateState.usageCheckpoints.max(), 1440)
+    }
+
+    func testRemainingFortyFiveMinutesAdvancesOnNextRealMinute() {
+        var state = activeState()
+        state.recordDailyUsageEvent("gate.usage.15", activity: state.dailyActivityName, at: now)
+        XCTAssertEqual(state.remainingFreeMinutes, 45)
+        state.recordDailyUsageEvent("gate.usage.16", activity: state.dailyActivityName, at: now.addingTimeInterval(60))
+        XCTAssertEqual(state.remainingFreeMinutes, 44)
+        XCTAssertEqual(state.history.last?.confirmedMinutes, 16)
+        XCTAssertEqual(state.lastUsageUpdate, now.addingTimeInterval(60))
+    }
+
+    func testDuplicateAndOlderCallbacksCannotPretendToBeNewUsage() {
+        var state = activeState()
+        state.recordDailyUsageEvent("gate.usage.45", activity: state.dailyActivityName, at: now)
+        state.recordDailyUsageEvent("gate.usage.45", activity: state.dailyActivityName, at: now.addingTimeInterval(60))
+        state.recordDailyUsageEvent("gate.usage.30", activity: state.dailyActivityName, at: now.addingTimeInterval(120))
+        XCTAssertEqual(state.confirmedMinutes, 45)
+        XCTAssertEqual(state.lastUsageUpdate, now)
+        XCTAssertEqual(state.lastDailyMonitorCallbackAt, now.addingTimeInterval(120))
+    }
+
+    func testOnlyCanonicalRegisteredDailyEventsConfirmUsage() {
+        var state = activeState()
+        for name in ["45", "gate.used.45", "gate.usage.0", "gate.usage.-1", "gate.usage.1441", "gate.usage.045", "gate.usage.+45"] {
+            state.recordDailyUsageEvent(name, activity: state.dailyActivityName, at: now)
+        }
+        state.recordDailyUsageEvent("gate.usage.45", activity: "gate.daily.retired", at: now)
+        XCTAssertEqual(state.confirmedMinutes, 0)
+        XCTAssertNil(state.lastUsageUpdate)
+        XCTAssertNil(state.lastDailyMonitorCallbackAt)
+        state.monitoringEnabled = false
+        state.recordDailyUsageEvent("gate.usage.45", activity: state.dailyActivityName, at: now)
+        XCTAssertEqual(state.confirmedMinutes, 0)
+    }
+
+    func testReconnectionAndElapsedWallTimeDoNotInventConsumption() {
+        var state = activeState()
+        state.recordUsage(15, at: now)
+        state.grants = [grant("A", expires: 3600)]
+        let later = now.addingTimeInterval(600)
+        state.lastDailyMonitorInstallAt = later
+        state.rollDay(at: later)
+        state.reconcileAllowance(at: later)
+        state.expireGrants(at: later)
+        XCTAssertEqual(state.remainingFreeMinutes, 45)
+        XCTAssertEqual(state.lastUsageUpdate, now)
+        XCTAssertEqual(state.grants.count, 1)
+        XCTAssertEqual(state.history.last?.confirmedMinutes, 15)
+    }
+
+    func testPreviousMonitorWorksUntilReplacementIsConfirmed() {
+        var state = activeState()
+        let previousName = state.dailyActivityName
+        state.previousDailyActivityName = previousName
+        state.dailyActivityName = "gate.daily.replacement"
+        state.recordDailyUsageEvent("gate.usage.45", activity: previousName, at: now)
+        XCTAssertEqual(state.confirmedMinutes, 45)
+        state.recordDailyUsageEvent("gate.usage.46", activity: state.dailyActivityName, at: now.addingTimeInterval(60))
+        state.previousDailyActivityName = nil
+        state.recordDailyUsageEvent("gate.usage.50", activity: previousName, at: now.addingTimeInterval(120))
+        XCTAssertEqual(state.confirmedMinutes, 46)
+        XCTAssertEqual(state.lastUsageUpdate, now.addingTimeInterval(60))
+    }
+
+    func testDailyUsageCanPassTheOldFourHourCutoff() {
+        var state = activeState()
+        state.recordDailyUsageEvent("gate.usage.240", activity: state.dailyActivityName, at: now)
+        state.recordDailyUsageEvent("gate.usage.330", activity: state.dailyActivityName, at: now.addingTimeInterval(5400))
+        XCTAssertEqual(state.confirmedMinutes, 330)
+        XCTAssertEqual(state.history.last?.confirmedMinutes, 330)
+        XCTAssertTrue(state.limitReached)
+        XCTAssertEqual(state.remainingFreeMinutes, 0)
+    }
+
+    func testMonitorChecksAreThrottledWithoutLosingForegroundRecovery() {
+        XCTAssertTrue(GateMonitorCadence.shouldCheck(at: now, lastAttempt: nil, enabled: true, authorized: true, checking: false))
+        for seconds in [0.0, 3, 30, 59] {
+            XCTAssertFalse(GateMonitorCadence.shouldCheck(at: now.addingTimeInterval(seconds), lastAttempt: now,
+                enabled: true, authorized: true, checking: false))
+        }
+        XCTAssertTrue(GateMonitorCadence.shouldCheck(at: now.addingTimeInterval(60), lastAttempt: now,
+            enabled: true, authorized: true, checking: false))
+        XCTAssertTrue(GateMonitorCadence.shouldCheck(at: now.addingTimeInterval(10), lastAttempt: now,
+            enabled: true, authorized: true, checking: false, force: true))
+        XCTAssertTrue(GateMonitorCadence.shouldCheck(at: now.addingTimeInterval(-60), lastAttempt: now,
+            enabled: true, authorized: true, checking: false))
+    }
+
+    func testForcedCheckCannotOverlapOrIgnoreAuthorization() {
+        XCTAssertFalse(GateMonitorCadence.shouldCheck(at: now, lastAttempt: nil,
+            enabled: true, authorized: true, checking: true, force: true))
+        XCTAssertFalse(GateMonitorCadence.shouldCheck(at: now, lastAttempt: nil,
+            enabled: true, authorized: false, checking: false, force: true))
+        XCTAssertFalse(GateMonitorCadence.shouldCheck(at: now, lastAttempt: nil,
+            enabled: false, authorized: true, checking: false, force: true))
+    }
+
+    func testUsageRefreshDoesNotRewriteUnchangedShields() {
+        var state = activeState()
+        state.recordUsage(15, at: now)
+        let before = state.protectionInputs
+        state.recordUsage(16, at: now.addingTimeInterval(60))
+        state.lastDailyMonitorCallbackAt = now.addingTimeInterval(60)
+        XCTAssertEqual(state.protectionInputs, before)
+        state.recordUsage(60, at: now.addingTimeInterval(3600))
+        XCTAssertNotEqual(state.protectionInputs, before)
+    }
+
+    func testGrantProgressChangesPolicyOnlyWhenExemptionEnds() {
+        var state = activeState()
+        state.grants = [grant("A"), grant("B")]
+        let initial = state.protectionInputs
+        state.grants[0].usedMinutes = 4
+        XCTAssertEqual(state.protectionInputs, initial)
+        state.grants[0].usedMinutes = 5
+        XCTAssertNotEqual(state.protectionInputs, initial)
+        XCTAssertEqual(state.protectionInputs.exemptTargetIDs, [target("B").id])
+    }
+
+    func testExpiredGrantMustChangeProtectionEvenPastItsDeadline() {
+        var state = activeState()
+        state.grants = [grant("A", expires: 5), grant("B", expires: 100)]
+        let before = state.protectionInputs
+        state.expireGrants(at: now.addingTimeInterval(6))
+        XCTAssertNotEqual(state.protectionInputs, before)
+        XCTAssertEqual(state.protectionInputs.exemptTargetIDs, [target("B").id])
+    }
+
+    func testOldStateDecodesWithoutMonitoringMetadata() throws {
+        var state = activeState()
+        state.recordUsage(15, at: now)
+        state.lastDailyMonitorCallbackAt = now
+        state.lastDailyMonitorInstallAt = now
+        state.previousDailyActivityName = "gate.daily.previous"
+        var json = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(state)) as? [String: Any])
+        for key in ["lastDailyMonitorCallbackAt", "lastDailyMonitorInstallAt", "previousDailyActivityName"] { json.removeValue(forKey: key) }
+        let restored = try JSONDecoder().decode(GateState.self, from: JSONSerialization.data(withJSONObject: json))
+        XCTAssertEqual(restored.remainingFreeMinutes, 45)
+        XCTAssertEqual(restored.lastUsageUpdate, now)
+        XCTAssertNil(restored.lastDailyMonitorCallbackAt)
+        XCTAssertNil(restored.previousDailyActivityName)
     }
 
     func testLessonLoadIsModerateIncreasingAndBounded() {
