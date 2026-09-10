@@ -1,0 +1,30 @@
+name: Verify Gate
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: gate-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: macos-15
+    timeout-minutes: 15
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Confirm the Liquid Glass SDK toolchain
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+      - name: Validate project and curriculum
+        run: python3 scripts/validate.py
+      - name: Test the real Swift state and learning engine
+        run: swift test
+      - name: Build app and all extensions without signing
+        run: xcodebuild -project Gate.xcodeproj -scheme Gate -configuration Debug -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build

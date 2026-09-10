@@ -1,0 +1,108 @@
+"""Static checks only. Swift tests and an Xcode build are separate checks."""
+import json
+import pathlib
+import plistlib
+import re
+import xml.etree.ElementTree as ET
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+catalog = json.loads((ROOT / "Gate/curriculum.json").read_text())
+assert len(catalog["paths"]) == 16
+assert len(catalog["lessons"]) == 144
+topics = catalog["topics"]
+assert len(topics) == len({t["id"] for t in topics}) == 12
+topic_ids = {t["id"] for t in topics}
+assert all(t["title"] and t["hook"] and t["format"] for t in topics)
+for topic in topics:
+    chapters = [l for l in catalog["lessons"] if l.get("topicID") == topic["id"]]
+    assert [l["topicOrder"] for l in chapters] == [1, 2, 3, 4]
+    assert all(l["pathID"] == topic["pathID"] and len(l["questions"]) == 5 for l in chapters)
+assert len([l for l in catalog["lessons"] if not l.get("topicID")]) == 96
+questions = [q for lesson in catalog["lessons"] for q in lesson["questions"]]
+assert len(questions) == 744 and len({q["id"] for q in questions}) == 744
+probes = [card["probe"] for l in catalog["lessons"] for card in l["cards"] if card.get("probe")]
+assert len(probes) == len({q["id"] for q in probes}) == 48
+assert not {q["id"] for q in probes} & {q["id"] for q in questions}
+formats = {q.get("format", "singleChoice") for q in questions}
+assert formats == {"singleChoice", "multipleChoice", "ordering", "matching", "numeric", "recall", "cloze"}
+for path in catalog["paths"]:
+    lessons = [l for l in catalog["lessons"] if l["pathID"] == path["id"]]
+    assert len(lessons) >= 6
+    assert sorted(l["order"] for l in lessons) == list(range(1, len(lessons) + 1))
+    asset = ROOT / "Gate/Assets.xcassets" / ("Path-" + path["artwork"] + ".imageset")
+    assert (asset / "cover.jpg").is_file()
+for lesson in catalog["lessons"]:
+    assert len(lesson["cards"]) >= 3
+    assert lesson["source"]["url"].startswith("https://")
+    assert lesson["reflection"] and lesson["takeaway"] and lesson["mission"]
+    assert len(lesson["questions"]) >= 5
+    if lesson.get("topicID"):
+        assert lesson["topicID"] in topic_ids
+        assert any(c.get("image") or c.get("visual") for c in lesson["cards"])
+    for card in lesson["cards"]:
+        assert card["text"].strip() and card["title"].strip()
+        if card.get("image"):
+            assert card["imageDescription"] and card["caption"]
+            asset = ROOT / "Gate/Assets.xcassets" / (card["image"] + ".imageset")
+            assert (asset / "scene.jpg").is_file()
+            assert json.loads((asset / "Contents.json").read_text())["images"][0]["filename"] == "scene.jpg"
+    visuals = [lesson["visual"]] + [c["visual"] for c in lesson["cards"] if c.get("visual")]
+    for visual in visuals:
+        assert visual["title"] and visual["caption"] and visual["labels"]
+        if visual["kind"] == "bars":
+            assert len(visual["labels"]) == len(visual["values"])
+            assert all(v >= 0 for v in visual["values"])
+    for q in lesson["questions"] + [c["probe"] for c in lesson["cards"] if c.get("probe")]:
+        options=q["options"]
+        assert len(set(options)) == len(options)
+        assert q["explanation"] and q["prompt"]
+        kind=q.get("format", "singleChoice")
+        if kind == "singleChoice": assert len(options)>=2 and 0<=q["correctIndex"]<len(options)
+        elif kind == "multipleChoice":
+            assert 0<len(q["correctIndices"])<len(options)
+            assert set(q["correctIndices"])<=set(range(len(options)))
+        elif kind == "ordering": assert sorted(q["correctOrder"])==list(range(len(options)))
+        elif kind == "matching":
+            assert len(q["pairs"])==len(options)>=2
+            for side in ["left","right"]: assert len({p[side] for p in q["pairs"]})==len(options)
+        elif kind == "numeric": assert isinstance(q["numberAnswer"],(float,int)) and q.get("tolerance",0)>=0
+        else: assert q["acceptedAnswers"] and all(a.strip() for a in q["acceptedAnswers"])
+    if lesson.get("photo"):
+        assert lesson["photo"]["credit"] and lesson["photo"]["sourceURL"]
+scene_ids = {c["image"] for l in catalog["lessons"] for c in l["cards"] if c.get("image")}
+scene_specs = json.loads((ROOT / "scripts/content/story_images.json").read_text())
+assert scene_ids == {"Scene-" + s["id"] for s in scene_specs}
+assert len(scene_ids) == 24
+assert (ROOT / "Gate/Assets.xcassets/AppIcon.appiconset/GateIcon.png").is_file()
+
+for file in list(ROOT.rglob("*.plist")) + list(ROOT.rglob("*.entitlements")):
+    with file.open("rb") as stream:
+        value = plistlib.load(stream)
+    if file.name == "Info.plist" and file.parent.name.endswith("Extension"):
+        assert value["CFBundleIdentifier"] == "$(PRODUCT_BUNDLE_IDENTIFIER)", file
+        assert value["CFBundleExecutable"] == "$(EXECUTABLE_NAME)", file
+        assert "NSExtensionPointIdentifier" in value["NSExtension"], file
+
+project = (ROOT / "Gate.xcodeproj/project.pbxproj").read_text()
+definitions = re.findall(r"^\s*([A-F0-9]{24})\s*(?:/\*.*?\*/)?\s*=\s*\{", project, re.M)
+# TargetAttributes repeat IDs as metadata, not object definitions.
+objects = project.split("/* Begin PBXProject section */")[0] + project.split("/* End PBXProject section */")[1]
+refs = set(re.findall(r"\b[A-F0-9]{24}\b", project))
+assert refs <= set(definitions), f"Unknown IDs: {refs - set(definitions)}"
+identifiers = re.findall(r"PRODUCT_BUNDLE_IDENTIFIER = ([^;]+);", project)
+assert len(identifiers) == 12
+assert all(i == "ch.mauruspichler.gate" or i.startswith("ch.mauruspichler.gate.") for i in identifiers)
+assert "Gate/Info.plist" in project and "GateWidgetExtension" in project
+assert identifiers.count("ch.mauruspichler.gate.report") == 2
+report_plist = plistlib.loads((ROOT / "GateReportExtension/Info.plist").read_bytes())
+assert report_plist["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.deviceactivityui.report-extension"
+report_entitlements = plistlib.loads((ROOT / "GateReportExtension/GateReportExtension.entitlements").read_bytes())
+assert report_entitlements == {"com.apple.developer.family-controls": True}
+report_target = re.search(r"C50000000000000000000001 /\* GateReportExtension \*/ = \{(.*?)\n\s*\};", project, re.S).group(1)
+assert "C20000000000000000000001, C20000000000000000000002" in report_target
+assert "B20000000000000000000002" not in report_target  # No shared state/storage in the private report.
+assert "IPHONEOS_DEPLOYMENT_TARGET = 16.0" not in project
+assert "GateConstants" not in "\n".join(p.read_text() for p in ROOT.rglob("*.swift"))
+assert "GateStorage" not in "\n".join(p.read_text() for p in ROOT.rglob("*.swift"))
+ET.parse(ROOT / "Gate.xcodeproj/xcshareddata/xcschemes/Gate.xcscheme")
+print("PASS: 16 paths, 12 coherent cases, 144 chapters, 744 unique questions, 48 ungraded probes, 7 formats, 24 inline scenes; plist, target ID and scheme checks.")
