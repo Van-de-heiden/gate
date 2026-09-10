@@ -21,10 +21,10 @@ struct GateSettingsView: View {
                         Spacer()
                         Text("\(controller.state.freeMinutes) min").font(.title2.weight(.semibold)).monospacedDigit()
                     }
-                    Text(controller.state.isTestMode ? "Der Test sperrt schon nach zwei Minuten. Er gilt nur heute – du kannst sofort auf die freie Alltagsstunde wechseln." : "Eine freie Stunde pro Tag, gemeinsam für deine ausgewählten Konsum-Apps und Websites.")
+                    Text(controller.state.isTestMode ? "Der Test sperrt schon nach zwei Minuten. Er gilt nur heute – du kannst sofort zum normalen Tagesbudget wechseln." : "\(GateState.everydayFreeMinutes) freie Minuten pro Tag, gemeinsam für deine ausgewählten Konsum-Apps und Websites.")
                         .font(.subheadline).foregroundStyle(.secondary)
                     if controller.state.isTestMode {
-                        Button("Auf Alltag wechseln · 60 Minuten") { controller.useEverydayMode() }
+                        Button("Auf Alltag wechseln · \(GateState.everydayFreeMinutes) Minuten") { controller.useEverydayMode() }
                             .buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized)
                     }
                     Text("Von iOS bestätigt: \(controller.state.confirmedMinutes) Minuten heute. Beim Moduswechsel wird dieser Verbrauch nicht gelöscht.")
@@ -46,7 +46,7 @@ struct GateSettingsView: View {
                 }.gateCard()
                 GateSection(title: "Deine Ablenkungen") {
                     Text(controller.selectionSummary).font(.headline)
-                    Text("Nur einzelne Konsum-Apps und Websites markieren. Telefon, WhatsApp, Karten und Lernwerkzeuge unmarkiert lassen. Die freie Stunde zählt für diesen gemeinsamen Pool.")
+                    Text("Nur einzelne Konsum-Apps und Websites markieren. Telefon, WhatsApp, Karten und Lernwerkzeuge unmarkiert lassen. Die freie Zeit zählt für diesen gemeinsamen Pool.")
                         .font(.subheadline).foregroundStyle(.secondary)
                     Button(controller.state.isSelectionLocked ? "Apps & Websites ergänzen" : "Apps & Websites auswählen") { picker = true }.buttonStyle(GateButtonStyle(prominent: false)).disabled(!controller.isAuthorized)
                     Button(controller.state.monitoringEnabled ? "Auswahl übernehmen" : "Gate aktivieren") {
@@ -84,7 +84,7 @@ struct GateSettingsView: View {
                             .buttonStyle(GateButtonStyle(prominent: false))
                     }
                     Divider()
-                    Text("Hier stehen Websites, für die es keine Lernfreigabe gibt – auch nicht in der freien Stunde. Nur einzelne Websites markieren. Gespeicherte Einträge lassen sich erweitern, nicht entfernen.")
+                    Text("Hier stehen Websites, für die es keine Lernfreigabe gibt – auch nicht während der freien Zeit. Nur einzelne Websites markieren. Gespeicherte Einträge lassen sich erweitern, nicht entfernen.")
                         .font(.subheadline).foregroundStyle(.secondary)
                     Text("\(GateShieldPolicy.protectedSelection(from: controller.state).webDomainTokens.count) Websites geschützt").font(.headline)
                     Button("Schutz-Websites ergänzen") { protectedPicker = true }
@@ -117,7 +117,7 @@ struct GateSettingsView: View {
         .confirmationDialog("Zwei-Minuten-Test aktivieren?", isPresented: $confirmTest, titleVisibility: .visible) {
             Button("Testmodus für heute starten") { Task { await controller.startGate(testMode: true) } }
             Button("Abbrechen", role: .cancel) {}
-        } message: { Text("Danach sperrt Gate bereits ab zwei Minuten bestätigter Nutzung. Über „Auf Alltag wechseln“ erhältst du wieder das normale 60-Minuten-Budget.") }
+        } message: { Text("Danach sperrt Gate bereits ab zwei Minuten bestätigter Nutzung. Über „Auf Alltag wechseln“ erhältst du wieder das normale \(GateState.everydayFreeMinutes)-Minuten-Budget.") }
         .task {
             notificationsAllowed = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus == .authorized
         }
@@ -187,7 +187,7 @@ struct GateOnboardingView: View {
                     Text(titles[step]).font(.system(.largeTitle, design: .serif))
                     GateProgressLine(value: Double(step + 1) / 4)
                     if step == 0 {
-                        Text("Die erste Stunde deiner ausgewählten Konsum-Apps bleibt frei. Danach verdienst du kurze Freigaben durch Lernen und Verstehen. Nach dem Aktivieren kannst du die Auswahl nur noch erweitern.")
+                        Text("Die ersten \(GateState.everydayFreeMinutes) Minuten deiner ausgewählten Konsum-Apps bleiben frei. Danach verdienst du kurze Freigaben durch Lernen und Verstehen. Nach dem Aktivieren kannst du die Auswahl nur noch erweitern.")
                             .font(.title3).lineSpacing(5)
                         Text("Telefon, WhatsApp und wichtige Werkzeuge bleiben ausserhalb deiner Sperrauswahl. Es gibt keine Werbung und kein Konto.")
                             .foregroundStyle(.secondary)

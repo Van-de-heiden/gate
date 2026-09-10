@@ -37,7 +37,7 @@ enum GateShieldPolicy {
         store.webContent.blockedByFilter = .auto()
         store.media.denyExplicitContent = true
         store.media.denyBookstoreErotica = true
-        // Separate store: neither the free hour nor a consumption grant can lift these shields.
+        // Separate store: neither the free daily budget nor a consumption grant can lift these shields.
         let permanent = ManagedSettingsStore(named: ManagedSettingsStore.Name("gate.content"))
         let protected = protectedSelection(from: state).webDomainTokens
         permanent.shield.webDomains = protected.isEmpty ? nil : protected

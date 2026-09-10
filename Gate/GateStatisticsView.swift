@@ -30,7 +30,7 @@ struct GateStatisticsView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         Text("Nur deine Konsum-Auswahl").font(.title3.weight(.semibold))
-                        Text("Dieser Zähler steuert die freie Stunde und die Freigaben. Er enthält nur bereits eingetroffene iOS-Nutzungsmeldungen und kann hinter dem Nutzungsbericht liegen. Er ist keine gesamte Bildschirmzeit.")
+                        Text("Dieser Zähler steuert das freie Tagesbudget und die Freigaben. Er enthält nur bereits eingetroffene iOS-Nutzungsmeldungen und kann hinter dem Nutzungsbericht liegen. Er ist keine gesamte Bildschirmzeit.")
                             .font(.subheadline).foregroundStyle(.secondary)
                         GateUsageChart(days: days)
                         MonitoringStatusView(controller: controller, detailed: true)

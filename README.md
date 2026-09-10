@@ -11,7 +11,7 @@ Third-party reference photos are not relicensed under MIT.
 The first on-device spike worked. Gate now has independent app grants, a monochrome interface,
 a substantially expanded curriculum and permanent in-app selections. It is **not a finished, independently validated App Store release**.
 
-- A shared daily allowance of **60 minutes** for explicitly selected apps and websites.
+- A shared daily allowance of **30 minutes** for explicitly selected apps and websites.
 - Independent **5 / 10 / 15 active-minute grants**; up to eight at once.
 - Separate request, failure and cooldown state per app/domain.
 - One activity ID per grant: expiration of A does not close B.
@@ -40,11 +40,18 @@ Every tested question is accompanied by its source lesson in the session.
 
 ### How the time rule works
 
-The first hour is one pool, **not a separate free hour for every app**.
+The first 30 minutes form one shared pool for the selected apps and websites.
 After that, grants and failures are independent. A 5-minute grant starts with 3 questions;
 10 minutes with 5; 15 minutes with 7. More confirmed daily consumption and failed attempts add
 questions, capped at 14. Passing requires at least 80%. Every third failed attempt creates a
 15-minute cooldown for that target.
+
+Existing saved 60-minute everyday budgets migrate to 30 on the next app or monitor update.
+Confirmed usage is retained: 28 consumed minutes leave 2; 30 or more leave none. Existing
+earned grants remain independent. The 2-minute debug test still requires explicit activation,
+and both leaving the test and the next-day reset return to 30. Additional question load is
+measured from the new 30-minute allowance. This is the free consumption budget, not a hard
+cap on total device Screen Time; short learning-earned grants remain available.
 
 A grant expires when its active usage is exhausted **or 30 wall-clock minutes after issue**,
 whichever comes first. Its displayed remaining active time is an upper bound based on the latest
@@ -122,7 +129,7 @@ See [Apple's adoption guide](https://developer.apple.com/documentation/technolog
 6. Complete onboarding; expand categories and select individual distraction apps/domains.
 7. Do **not** select Phone or WhatsApp. Gate cannot inspect opaque tokens to identify these
    apps automatically, and broad category selection is rejected in this mode.
-8. Debug settings include a deliberate **2-minute test mode**. The default is still 60 minutes.
+8. Debug settings include a deliberate **2-minute test mode**. The everyday budget is 30 minutes.
 9. Add Gate's medium/large widget. Remove home-screen icons manually if desired.
 
 Migration from 0.1 preserves the selected tokens, but stops the two legacy monitors and asks you

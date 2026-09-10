@@ -123,7 +123,7 @@ final class ScreenTimeController: ObservableObject {
             let inspection = try await dailyMonitor.install(activityName: name, selectionData: data)
             try await acceptMonitorInspection(inspection, activityName: name, selectionData: data, installed: true)
             refreshSharedState()
-            message = state.isTestMode ? "Testmodus: 2 freie Minuten, nur für heute. Du kannst jederzeit auf Alltag wechseln." : "Gate ist bereit. 60 freie Minuten pro Tag, gemeinsam für deine Auswahl."
+            message = state.isTestMode ? "Testmodus: 2 freie Minuten, nur für heute. Du kannst jederzeit auf Alltag wechseln." : "Gate ist bereit. \(GateState.everydayFreeMinutes) freie Minuten pro Tag, gemeinsam für deine Auswahl."
             WidgetCenter.shared.reloadAllTimelines()
         } catch {
             // Keep any already-required shields; do not clear other grants on an API failure.
@@ -140,11 +140,11 @@ final class ScreenTimeController: ObservableObject {
             errorMessage = "Erlaube zuerst Bildschirmzeit und prüfe die App Group."; return
         }
         do {
-            // Independent of any unsaved picker edits. Existing monitors already contain the 60-minute event.
+            // Independent of any unsaved picker edits. Existing monitors already contain the everyday-budget event.
             try mutate { $0.useEverydayMode() }
             refreshSharedState()
             scheduleMonitorCheck(force: true)
-            message = "Alltag aktiv: 60 Minuten täglich. Der heutige bestätigte Verbrauch bleibt angerechnet."
+            message = "Alltag aktiv: \(GateState.everydayFreeMinutes) Minuten täglich. Der heutige bestätigte Verbrauch bleibt angerechnet."
         } catch { errorMessage = "Alltag konnte nicht vollständig aktiviert werden: \(error.localizedDescription)" }
     }
 
@@ -425,7 +425,7 @@ final class ScreenTimeController: ObservableObject {
                 state.requests.removeAll { GateShieldPolicy.isProtected($0.target, in: snapshot) }
             }
             protectedSelection = GateShieldPolicy.protectedSelection(from: state)
-            message = "Schutz-Websites ergänzt. Sie bleiben auch während der freien Stunde und nach Prüfungen gesperrt."
+            message = "Schutz-Websites ergänzt. Sie bleiben auch während der freien Zeit und nach Prüfungen gesperrt."
         } catch { errorMessage = error.localizedDescription }
     }
 

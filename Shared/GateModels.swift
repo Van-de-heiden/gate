@@ -71,6 +71,7 @@ struct LauncherItem: Codable, Equatable, Identifiable {
 }
 
 struct GateState: Codable {
+    static let everydayFreeMinutes = 30
     var version = 2
     var day = Calendar.current.startOfDay(for: Date())
     var selectionData: Data?
@@ -83,7 +84,7 @@ struct GateState: Codable {
     var previousDailyActivityName: String?
     var lastDailyMonitorInstallAt: Date?
     var lastDailyMonitorCallbackAt: Date?
-    var freeMinutes = 60
+    var freeMinutes = GateState.everydayFreeMinutes
     var testModeStartedAt: Date?
     var confirmedMinutes = 0
     var lastUsageUpdate: Date?
@@ -109,7 +110,7 @@ struct GateState: Codable {
     }
 
     mutating func useEverydayMode() {
-        freeMinutes = 60
+        freeMinutes = Self.everydayFreeMinutes
         testModeStartedAt = nil
         reconcileAllowance(at: Date())
     }
@@ -121,9 +122,12 @@ struct GateState: Codable {
     }
 
     mutating func reconcileAllowance(at now: Date, calendar: Calendar = .current) {
-        // Old builds persisted the two-minute budget indefinitely. Migrate them to everyday mode.
-        if isTestMode && (testModeStartedAt == nil || !calendar.isDate(testModeStartedAt!, inSameDayAs: now)) {
-            freeMinutes = 60
+        // Migrate persisted everyday budgets (including the former 60 minutes)
+        // without resetting usage, history, selection or existing grants.
+        // Only an explicitly started same-day test retains its two-minute limit.
+        let currentTest = isTestMode && testModeStartedAt.map { calendar.isDate($0, inSameDayAs: now) } == true
+        if !currentTest {
+            freeMinutes = Self.everydayFreeMinutes
             testModeStartedAt = nil
         }
         limitReached = confirmedMinutes >= freeMinutes
@@ -141,7 +145,7 @@ struct GateState: Codable {
         grants = []
         requests = []
         attempts = [:]
-        freeMinutes = 60
+        freeMinutes = Self.everydayFreeMinutes
         testModeStartedAt = nil
         history = Array(history.suffix(90))
     }
@@ -240,7 +244,7 @@ enum LessonLoad {
     static let allowedMinutes = [5, 10, 15]
     static func questionCount(minutes: Int, consumedMinutes: Int, failures: Int) -> Int {
         let base = minutes <= 5 ? 3 : minutes <= 10 ? 5 : 7
-        let usage = min(3, max(0, (consumedMinutes - 60) / 30))
+        let usage = min(3, max(0, (consumedMinutes - GateState.everydayFreeMinutes) / 30))
         return min(14, base + usage + min(4, max(0, failures)))
     }
     static func passes(correct: Int, total: Int) -> Bool {

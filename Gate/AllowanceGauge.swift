@@ -133,9 +133,9 @@ private struct FuelDialNeedle: Shape {
     }
 }
 
-#Preview("Freie Stunde") {
+#Preview("Freies Tagesbudget") {
     VStack(spacing: 24) {
-        AllowanceGauge(remainingMinutes: 42, totalMinutes: 60).gateCard()
-        AllowanceGauge(remainingMinutes: 0, totalMinutes: 60).gateCard()
+        AllowanceGauge(remainingMinutes: 21, totalMinutes: GateState.everydayFreeMinutes).gateCard()
+        AllowanceGauge(remainingMinutes: 0, totalMinutes: GateState.everydayFreeMinutes).gateCard()
     }.padding(24).background(GateDesign.paper)
 }

@@ -8,7 +8,7 @@ The primary regression test is **A remains usable while B is requested and learn
 - Shared App Group is provisioned; authorisation and notifications are allowed.
 - After updating from 0.1, re-arm from onboarding/settings.
 - Select two **individual** distraction apps and one website. Exclude Phone and WhatsApp.
-- Start the deliberate 2-minute debug test; later repeat with the normal 60-minute allowance.
+- Start the deliberate 2-minute debug test; later repeat with the normal 30-minute allowance.
 
 ## Independent grants
 
@@ -37,7 +37,7 @@ The primary regression test is **A remains usable while B is requested and learn
 - A previously delivered stale grant callback must not clear a newer grant.
 - Restart device, unlock once, then test grants and monitoring again.
 - Test 23:55–00:05: prior-day grants expire, free daily pool resets once.
-- Reapplying settings/resuming on the same day must not create a second free hour.
+- Reapplying settings/resuming on the same day must not create a second free allowance.
 
 ## Content and product
 
@@ -75,7 +75,7 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 
 ### Permanent websites / helpful interruption
 - In **Mehr → Dauerhaft geschützte Websites**, select a benign test domain, never Phone or apps, and save it.
-- Test during the free hour, with a consumption grant, at midnight and after restart. It must remain shielded. A learning result must not grant it access.
+- Test during the free allowance, with a consumption grant, at midnight and after restart. It must remain shielded. A learning result must not grant it access.
 - On Gate's website shield, tap **Pause in Gate anfordern**; notification opens the pause page on iOS 26. If notifications are disabled, open Gate manually: the pending pause is persisted.
 - Try while a different learning session was suspended. Its progress must remain.
 - Automatic adult filtering may render Apple's own block page first. It cannot be redirected by this Screen Time implementation. **Heute → Pause** and **gate · Pause** in the widget are the direct manual routes.
@@ -91,11 +91,11 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 
 ## Everyday allowance and native interface regression checks
 
-- Upgrade with an old persisted two-minute test: opening Gate restores the 60-minute allowance, preserving confirmed usage and learning history. No re-selection is required.
+- Upgrade with an old persisted two-minute test: opening Gate restores the 30-minute allowance, preserving confirmed usage and learning history. No re-selection is required.
 - Under Mehr, expand Entwickleroptionen and explicitly confirm a test. At 1 confirmed minute the test has an upper bound of 1 minute left; at 2 it blocks. The Today screen and Settings both expose Auf Alltag wechseln.
 - Leave the Apple picker draft empty or different from the saved selection, then use the dedicated everyday-mode button. It must use the saved monitoring selection and leave the draft uncommitted.
-- Switch from a used-up two-minute test to everyday mode: 2 confirmed minutes remain 2 and the free-time upper bound becomes 58. A later two-minute callback must not re-block everyday mode; the 60-minute callback must. At 70 confirmed minutes, mode switching must not grant another free hour.
-- Leave the test enabled overnight. The first next-day app/monitor update returns to 60 minutes and resets only daily usage, not selection or learning progress. A same-day restart retains an explicitly confirmed new test.
+- Switch from a used-up two-minute test to everyday mode: 2 confirmed minutes remain 2 and the free-time upper bound becomes 28. A later two-minute callback must not re-block everyday mode; the 30-minute callback must. At 70 confirmed minutes, mode switching must not grant another free allowance.
+- Leave the test enabled overnight. The first next-day app/monitor update returns to 30 minutes and resets only daily usage, not selection or learning progress. A same-day restart retains an explicitly confirmed new test.
 - Compare Gate's confirmed checkpoint and timestamp with iOS Screen Time. Gate is not a live total-device counter; if the discrepancy persists in everyday mode, capture both values and the Gate timestamp rather than resetting usage.
 - Check Today, Learning and Settings in light/dark appearance, larger text and Reduce Motion. Check contrast, scroll access, tab selection and disabled-button visibility. Physical-device visual QA remains required.
 
@@ -111,7 +111,7 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 - Build with Xcode 26+ and run on iOS 26+: the bottom bar must be the native floating system bar. Check system selection gestures, scrolling content under the bar, keyboard presentation, light/dark appearance, Reduce Transparency and Reduce Motion. Earlier supported iOS versions should show their native tab bar instead.
 - Open a learning path, switch to Today and back: the path and scroll position should remain. Open Mehr → Textliste, switch tabs and return: unsaved new entries must remain; Back and Sichern must be reachable.
 - Type into library search, select another native tab, then return: the keyboard dismisses and the search text remains.
-- With 0 / 30 / 60 confirmed consumption minutes in everyday mode, the needle must show full / half / empty with upper bounds of 60 / 30 / 0 free minutes. Consumption above 60 must never send the needle below empty.
+- With 0 / 15 / 30 confirmed consumption minutes in everyday mode, the needle must show full / half / empty with upper bounds of 30 / 15 / 0 free minutes. Consumption above 30 must never send the needle below empty.
 - At 1 minute in the deliberate 2-minute test, the gauge shows half and at most 1 minute free. Switch to everyday mode: the same usage gives at most 59 minutes and a nearly full dial; usage must not reset.
 - Check a small iPhone and the largest Dynamic Type sizes. The numeric value and explanatory text must remain readable. VoiceOver reads one free-time value, rather than the decorative ticks. Reduce Motion suppresses needle/value animation.
 - From Apple's filter page, close the browser tab and tap **gate · Pause** in the medium and large widget. Gate opens its pause even with notifications disabled. Repeat while Gate has a suspended lesson; its answers must survive. Closing the pause must not unlock any website.
@@ -128,9 +128,9 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 ## Minute monitoring and stalled confirmations
 
 - Upgrade without touching the saved selection or reactivating Gate. The old five-minute/240-minute configuration should be replaced automatically. **Mehr → Nutzungsmessung → Messdiagnose** must report 1,440 registered minute events and a successful configuration check. Registration size and actual callback delivery require this real-device check.
-- With 45 free minutes remaining (15 confirmed), actively use an explicitly saved app for another 1–2 minutes. Return to Gate: new minute callbacks should reduce the remainder to 44/43, with a newer usage timestamp. Also test 45 → 46 consumed minutes and the actual 60-minute blocking threshold.
+- With 15 free minutes remaining (15 confirmed), actively use an explicitly saved app for another 1–2 minutes. Return to Gate: new minute callbacks should reduce the remainder to 14/13, with a newer usage timestamp. Also test 45 → 46 consumed minutes and the actual 30-minute blocking threshold.
 - Open Gate and leave it on screen without using any selected app. The monitor-check timestamp should move about once a minute; consumption and the new-usage timestamp must stay fixed. A stale usage timestamp alone must not trigger an automatic reinstall or a fabricated increment.
-- If a monitor is removed or its event/schedule configuration is outdated during development, foreground Gate. It should recover automatically using the stored selection, even if the picker has an unsaved draft. A successful inspection alone must never change confirmed usage or grant another free hour.
+- If a monitor is removed or its event/schedule configuration is outdated during development, foreground Gate. It should recover automatically using the stored selection, even if the picker has an unsaved draft. A successful inspection alone must never change confirmed usage or grant another free allowance.
 - Press **Messung neu verbinden** with the counter stuck. The existing daily activity is updated without stopping it first. Usage and learning history remain. Higher past-activity callbacks may arrive asynchronously; replayed lower/duplicate callbacks must neither reduce usage nor pretend to be a newer consumption sample.
 - While adding an app, simulate a registration error. The previous daily monitor must continue to count its existing selected pool until the replacement is confirmed. The union remains saved, and an automatic retry should repair the new configuration. The old daily monitor is retired only after success.
 - Use an earned grant for A while the daily check/reconnection runs, and start a grant for B while the worker awaits iOS. Neither valid grant may be stopped by stale-monitor cleanup. When A expires or exhausts its time, B stays available.
@@ -149,3 +149,9 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 - Deny authorization, test an empty report and simulate the report extension failing to load. Present unavailable/loading guidance and a reload action, never a fake zero or a fallback checkpoint value labelled as an iOS report.
 - Open **Freigabezähler**: the original seven-day confirmed-checkpoint chart and diagnostics must remain accessible and labelled as selected-pool minimums. Opening reports or switching scopes must not change confirmed consumption, free minutes, granted apps or any protection setting.
 - Switch to **Lernbilanz** and verify all previous completed rounds, active study time, chapter progress and recent results remain visible. Check large Dynamic Type, VoiceOver, Reduce Motion, light/dark appearance and scrolling in the report on the physical device.
+
+## Thirty-minute everyday allowance
+
+- Upgrade a saved 60-minute everyday configuration with 28 confirmed consumption minutes: opening Gate must show 2 remaining, keep usage/history/selection and retain its registered daily monitor. At 30 or more confirmed minutes it must shield ungranted selected targets immediately, while valid independent grants remain available.
+- Use the selected pool from 29 to 30 confirmed minutes and verify blocking at the 30-minute event. Switching modes, reconnecting measurement or relaunching on the same day must not create another 30-minute allowance.
+- Check new installs, onboarding, Today, settings, diagnostics and gauge labels for the 30-minute budget. Leaving the explicit 2-minute debug test must restore 30, and the next local day must start at 30. The full-day report and minute checkpoint coverage retain their existing time units.

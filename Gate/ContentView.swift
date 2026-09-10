@@ -109,7 +109,7 @@ struct ContentView: View {
                 if controller.state.isTestMode {
                     VStack(alignment: .leading, spacing: 12) {
                         Label("Zwei-Minuten-Test aktiv", systemImage: "wrench.and.screwdriver").font(.headline)
-                        Text("Aktuell gelten 2 statt 60 freie Minuten. Du kannst direkt zum Alltag zurückkehren.")
+                        Text("Aktuell gelten 2 statt \(GateState.everydayFreeMinutes) freie Minuten. Du kannst direkt zum Alltag zurückkehren.")
                             .font(.subheadline).foregroundStyle(.secondary)
                         Button("Auf Alltag wechseln") { controller.useEverydayMode() }
                             .buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized)
@@ -187,7 +187,7 @@ struct ContentView: View {
     private var allowance: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .firstTextBaseline) {
-                Eyebrow(text: controller.state.limitReached ? (controller.state.isTestMode ? "Testbudget aufgebraucht" : "Freie Stunde aufgebraucht") : "Dein Tagesbudget")
+                Eyebrow(text: controller.state.limitReached ? (controller.state.isTestMode ? "Testbudget aufgebraucht" : "Freies Budget aufgebraucht") : "Dein Tagesbudget")
                 Spacer()
                 Text(controller.state.monitoringEnabled && controller.monitorReady ? (controller.state.isTestMode ? "TEST" : "ALLTAG") : controller.state.monitoringEnabled ? "PRÜFEN" : "INAKTIV")
                     .font(.caption2.weight(.semibold)).padding(.horizontal, 10).padding(.vertical, 6)
