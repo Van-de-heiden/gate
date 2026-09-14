@@ -1,5 +1,17 @@
 import Foundation
 
+enum GateDayPhase: String, CaseIterable {
+    case morning, day, evening, night
+    static func at(_ date: Date, calendar: Calendar = .current) -> Self {
+        switch calendar.component(.hour, from: date) {
+        case 5..<9: return .morning
+        case 9..<17: return .day
+        case 17..<21: return .evening
+        default: return .night
+        }
+    }
+}
+
 /// Explicit X service hosts, not arbitrary sites containing the letter x.
 /// No finite domain list can cover third-party mirrors, proxies or future domains.
 enum GatePermanentWebPolicy {
@@ -254,11 +266,6 @@ enum AdditiveSelection {
 
 enum LessonLoad {
     static let allowedMinutes = [5, 10, 15, 20, 30]
-    static func questionCount(minutes: Int, consumedMinutes: Int, failures: Int) -> Int {
-        let base = minutes <= 5 ? 3 : minutes <= 10 ? 5 : minutes <= 15 ? 7 : minutes <= 20 ? 9 : 12
-        let usage = min(3, max(0, (consumedMinutes - GateState.everydayFreeMinutes) / 30))
-        return min(20, base + usage + min(4, max(0, failures)))
-    }
     static func passes(correct: Int, total: Int) -> Bool {
         total > 0 && correct * 5 >= total * 4
     }

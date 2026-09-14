@@ -45,7 +45,7 @@ struct AllowanceGauge: View {
                 FuelDialArc(fraction: 1)
                     .stroke(GateDesign.line, style: StrokeStyle(lineWidth: 5, lineCap: .round))
                 FuelDialArc(fraction: fraction)
-                    .stroke(Color.primary.opacity(0.65), style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                    .stroke(GateDesign.accent.opacity(0.8), style: StrokeStyle(lineWidth: 5, lineCap: .round))
                     .opacity(remaining == 0 ? 0 : 1)
                 FuelDialTicks()
                     .stroke(Color.secondary, style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
@@ -60,14 +60,14 @@ struct AllowanceGauge: View {
                     .position(x: geometry.center.x + geometry.radius - 14, y: geometry.center.y + 16)
 
                 FuelDialNeedle()
-                    .fill(Color.primary)
+                    .fill(GateDesign.accent)
                     .frame(width: 7, height: geometry.needleLength)
                     .offset(y: -geometry.needleLength / 2)
                     .rotationEffect(.degrees(fraction * 180 - 90))
                     .position(geometry.center)
                 Circle().fill(GateDesign.surface)
                     .frame(width: 18, height: 18)
-                    .overlay(Circle().stroke(Color.primary, lineWidth: 4))
+                    .overlay(Circle().stroke(GateDesign.accent, lineWidth: 4))
                     .position(geometry.center)
             }
         }

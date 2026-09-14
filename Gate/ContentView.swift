@@ -7,6 +7,7 @@ struct ContentView: View {
     @ObservedObject var learning: LearningStore
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
+    @Environment(\.gateDayPhase) private var dayPhase
     @State private var tab = 0
     @State private var onboarding = false
 
@@ -21,33 +22,33 @@ struct ContentView: View {
         TabView(selection: $tab) {
             NavigationStack {
                 home
-                    .background(GateDesign.paper)
+                    .gateBackground()
                     .toolbar(.hidden, for: .navigationBar)
             }
             .tabItem { Label("Heute", systemImage: "house") }.tag(0)
 
             NavigationStack {
                 LearningLibraryView(controller: controller, learning: learning)
-                    .background(GateDesign.paper)
+                    .gateBackground()
                     .toolbar(.hidden, for: .navigationBar)
             }
             .tabItem { Label("Lernen", systemImage: "books.vertical") }.tag(1)
 
             NavigationStack {
                 GateStatisticsView(controller: controller, learning: learning)
-                    .background(GateDesign.paper)
+                    .gateBackground()
                     .toolbar(.hidden, for: .navigationBar)
             }
             .tabItem { Label("Bilanz", systemImage: "chart.bar.xaxis") }.tag(2)
 
             NavigationStack {
                 GateSettingsView(controller: controller)
-                    .background(GateDesign.paper)
+                    .gateBackground()
                     .toolbar(.hidden, for: .navigationBar)
             }
             .tabItem { Label("Mehr", systemImage: "slider.horizontal.3") }.tag(3)
         }
-        .tint(.primary)
+        .tint(GateDesign.accent)
         .onChange(of: tab) { _, _ in GateKeyboard.dismiss() }
         .sheet(isPresented: $onboarding) { GateOnboardingView(controller: controller) }
         .sheet(isPresented: $controller.showPause, onDismiss: { controller.closePause() }) {
@@ -88,9 +89,9 @@ struct ContentView: View {
 
     private var home: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 34) {
+            VStack(alignment: .leading, spacing: 26) {
                 HStack {
-                    Text("gate").font(.system(.title2, design: .serif)).tracking(-1)
+                    Text("gate").font(.system(.title2, design: .rounded)).tracking(-1)
                     Spacer()
                     Button { controller.requestPause() } label: {
                         Label("Pause", systemImage: "pause.circle")
@@ -98,7 +99,8 @@ struct ContentView: View {
                     }.buttonStyle(.plain).accessibilityLabel("Gate-Pause öffnen")
                 }
                 VStack(alignment: .leading, spacing: 16) {
-                    Eyebrow(text: Date().formatted(.dateTime.day().month(.wide)))
+                    GateLandscape()
+                    Eyebrow(text: dayPhase.greeting)
                     Text(controller.state.limitReached ? "Erst verstehen.\nDann weiter." : "Platz für das,\nwas zählt.")
                         .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
                     Text(controller.state.monitoringEnabled
@@ -187,7 +189,7 @@ struct ContentView: View {
                 Spacer()
                 Text(controller.state.monitoringEnabled && controller.monitorReady ? (controller.state.isTestMode ? "TEST" : "ALLTAG") : controller.state.monitoringEnabled ? "PRÜFEN" : "INAKTIV")
                     .font(.caption2.weight(.semibold)).padding(.horizontal, 10).padding(.vertical, 6)
-                    .background(GateDesign.paper).clipShape(Capsule())
+                    .gateBackground().clipShape(Capsule())
             }
             AllowanceGauge(remainingMinutes: controller.state.remainingFreeMinutes,
                            totalMinutes: controller.state.freeMinutes)
@@ -217,15 +219,14 @@ private struct RequestCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             Eyebrow(text: "Eine bewusste Entscheidung")
-            GateTargetLabel(target: request.target).font(.system(.title, design: .serif))
+            GateTargetLabel(target: request.target).font(.system(.title, design: .rounded))
             Text("Wie viel Zeit möchtest du freigeben?").font(.subheadline).foregroundStyle(.secondary)
             Picker("Freigabedauer", selection: $minutes) {
                 ForEach(LessonLoad.allowedMinutes, id: \.self) { Text("\($0) min").tag($0) }
             }.pickerStyle(.segmented)
             let attempt = controller.state.attempts[request.target.id] ?? GateAttempt()
-            let count = LessonLoad.questionCount(minutes: minutes, consumedMinutes: controller.state.confirmedMinutes, failures: attempt.failures)
-            Text("Ein Thema · bis zu \(count) Fragen")
-                .font(.caption).foregroundStyle(.secondary)
+            Text("Ein Thema verstehen · jede Frage zählt")
+                .font(.subheadline).foregroundStyle(.secondary)
             if let until = attempt.cooldownUntil, until > Date() {
                 Text("Kurze Pause für diese App. Neuer Versuch ab \(until.formatted(date: .omitted, time: .shortened)).")
                     .font(.subheadline)

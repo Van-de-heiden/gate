@@ -40,12 +40,12 @@ struct QuestionView: View {
                               ? (selected ? "checkmark.square.fill" : "square")
                               : (selected ? "largecircle.fill.circle" : "circle"))
                             .font(.body).padding(.top, 2).accessibilityHidden(true)
-                        Text(item.question.options[index]).font(.subheadline).multilineTextAlignment(.leading)
+                        Text(item.question.options[index]).font(.body).multilineTextAlignment(.leading)
                         Spacer(minLength: 0)
                     }.padding(16).frame(maxWidth: .infinity, alignment: .leading)
-                        .background(selected ? Color.primary.opacity(0.09) : GateDesign.surface)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                }.buttonStyle(.plain).accessibilityAddTraits(selected ? .isSelected : [])
+                        .background(selected ? GateDesign.accent.opacity(0.13) : GateDesign.paper)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                }.buttonStyle(.plain).foregroundStyle(selected ? GateDesign.accent : Color.primary).accessibilityAddTraits(selected ? .isSelected : [])
             }
         }
     }
@@ -57,7 +57,7 @@ struct QuestionView: View {
             ForEach(Array(order.enumerated()), id: \.element) { position, index in
                 HStack(spacing: 10) {
                     Text("\(position + 1)").font(.caption.monospaced()).foregroundStyle(.secondary)
-                    Text(item.question.options[index]).font(.subheadline)
+                    Text(item.question.options[index]).font(.body)
                     Spacer(minLength: 0)
                     Button { move(position, by: -1) } label: { Image(systemName: "arrow.up").frame(width: 36, height: 44) }
                         .disabled(position == 0).accessibilityLabel("\(item.question.options[index]) nach oben")

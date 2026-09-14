@@ -17,7 +17,7 @@ final class LearningExpansionTests: XCTestCase {
 
     func testAllPublishedQuestionsHaveGradableAnswersAndRejectMissingAnswers() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        XCTAssertEqual(Set(catalog.questions.map(\.kind)), Set(QuestionFormat.allCases))
+        XCTAssertEqual(Set(catalog.questions.map(\.kind)), Set([QuestionFormat.singleChoice, .multipleChoice, .ordering]))
         for question in catalog.questions {
             XCTAssertTrue(question.isValid, question.id)
             XCTAssertTrue(question.isCorrect(correctResponse(question)), question.id)
@@ -44,7 +44,7 @@ final class LearningExpansionTests: XCTestCase {
     }
 
     func testNumericalInputSupportsSwissAndGermanFormattingWithoutAcceptingGarbage() throws {
-        let question = try LearningCatalog.packageCatalog().questions.first { $0.numberAnswer == 1102.5 }!
+        let question = LearningQuestion(id: "legacy.numeric", prompt: "Gespeicherte alte Zahlenfrage", options: [], correctIndex: 0, explanation: "Altes Format bleibt decodierbar.", format: .numeric, numberAnswer: 1102.5, tolerance: 0.01)
         for value in ["1’102,50", "1'102.5", "1102.50", " 1102,5 "] {
             XCTAssertTrue(question.isCorrect(QuestionResponse(text: value)), value)
         }
@@ -54,14 +54,14 @@ final class LearningExpansionTests: XCTestCase {
     }
 
     func testRecallAllowsCaseAndUmlautsButNotSubstringGuessing() throws {
-        let question = try LearningCatalog.packageCatalog().questions.first { $0.acceptedAnswers?.contains("Liquidität") == true }!
+        let question = LearningQuestion(id: "legacy.recall", prompt: "Begriff", options: [], correctIndex: 0, explanation: "Altes Format.", format: .recall, acceptedAnswers: ["Liquidität"])
         XCTAssertTrue(question.isCorrect(QuestionResponse(text: "  LIQUIDITÄT! ")))
         XCTAssertTrue(question.isCorrect(QuestionResponse(text: "liquiditaet")))
         XCTAssertFalse(question.isCorrect(QuestionResponse(text: "Liquidität ist die falsche Antwort")))
     }
 
     func testMatchingRequiresACompleteBijection() throws {
-        let question = try LearningCatalog.packageCatalog().questions.first { $0.kind == .matching }!
+        let question = LearningQuestion(id: "legacy.matching", prompt: "Zuordnen", options: ["Geld", "Ergebnis"], correctIndex: 0, explanation: "Altes Format.", format: .matching, pairs: [QuestionPair(left: "Liquidität", right: "Geld"), QuestionPair(left: "Gewinn", right: "Ergebnis")])
         let repeated = QuestionResponse(matches: Dictionary(uniqueKeysWithValues: question.options.indices.map { ($0, 0) }))
         XCTAssertFalse(question.isComplete(repeated))
         XCTAssertFalse(question.isCorrect(QuestionResponse(matches: [0: 0])))
@@ -78,17 +78,20 @@ final class LearningExpansionTests: XCTestCase {
         XCTAssertEqual(session.storageKey, "chapter.money.compound")
     }
 
-    func testAChapterIsNotCompletedAfterOneLuckyAnswer() throws {
+    func testAReviewOfOneQuestionCannotCompleteAnUncoveredChapter() throws {
         let catalog = try LearningCatalog.packageCatalog()
         let lesson = catalog.lessons.first { $0.id == "case.cash.1" }!
         var random = SeededRandom(state: 7)
-        var session = LearningScheduler.makeSession(catalog: catalog, progress: .init(), request: nil,
-            minutes: 5, consumed: 0, failures: 0, preferredTopic: "case.cash", now: now, random: &random)
-        XCTAssertEqual(session.lessonIDs, [lesson.id])
-        XCTAssertLessThan(session.questions.count, lesson.questions.count)
-        session.readLessonIDs = Set(session.lessonIDs)
-        session.typedResponses = Dictionary(uniqueKeysWithValues: session.questions.map { ($0.id, correctResponse($0.question)) })
         var progress = LearningProgress()
+        progress.memories[lesson.questions[0].id] = QuestionMemory(due: now.addingTimeInterval(-1))
+        var session = LearningScheduler.makeSession(catalog: catalog, progress: progress, request: nil,
+            minutes: 5, consumed: 0, failures: 0, reviewOnly: true, now: now, random: &random)
+        XCTAssertEqual(session.lessonIDs, [lesson.id])
+        XCTAssertEqual(session.questions.count, 1)
+        session.readLessonIDs = Set(session.lessonIDs)
+        session.typedResponses = [session.questions[0].id: correctResponse(session.questions[0].question)]
+        session.lockedQuestionIDs = session.inlineQuestionIDs
+        session.lockedQuestionIDs = session.inlineQuestionIDs
         XCTAssertTrue(LearningScheduler.grade(&session, progress: &progress, now: now)!.passed)
         XCTAssertFalse(progress.completedLessonIDs.contains(lesson.id))
     }
@@ -101,6 +104,7 @@ final class LearningExpansionTests: XCTestCase {
         session.readLessonIDs = Set(session.lessonIDs)
         session.typedResponses = Dictionary(uniqueKeysWithValues: session.questions.map { ($0.id, correctResponse($0.question)) })
         var progress = LearningProgress()
+        session.lockedQuestionIDs = session.inlineQuestionIDs
         XCTAssertTrue(LearningScheduler.grade(&session, progress: &progress, now: now)!.passed)
         XCTAssertTrue(progress.completedLessonIDs.contains("business.problem"))
         _ = LearningScheduler.grade(&session, progress: &progress, now: now)

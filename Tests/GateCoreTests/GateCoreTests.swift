@@ -28,7 +28,7 @@ final class GateCoreTests: XCTestCase {
         try catalog.validate()
         XCTAssertEqual(catalog.paths.count, 16)
         XCTAssertEqual(catalog.lessons.count, 144)
-        XCTAssertEqual(catalog.questions.count, 744)
+        XCTAssertEqual(catalog.questions.count, 295)
         XCTAssertEqual(catalog.topics?.count, 12)
         XCTAssertTrue(catalog.lessons.allSatisfy { $0.source.url.hasPrefix("https://") })
     }
@@ -401,14 +401,12 @@ final class GateCoreTests: XCTestCase {
         XCTAssertNil(restored.previousDailyActivityName)
     }
 
-    func testLessonLoadIsModerateIncreasingAndBounded() {
-        XCTAssertEqual(LessonLoad.questionCount(minutes: 5, consumedMinutes: 30, failures: 0), 3)
-        XCTAssertEqual(LessonLoad.questionCount(minutes: 10, consumedMinutes: 30, failures: 0), 5)
-        XCTAssertEqual(LessonLoad.questionCount(minutes: 15, consumedMinutes: 30, failures: 0), 7)
-        XCTAssertEqual(LessonLoad.questionCount(minutes: 5, consumedMinutes: 59, failures: 0), 3)
-        XCTAssertEqual(LessonLoad.questionCount(minutes: 5, consumedMinutes: 60, failures: 0), 4)
-        XCTAssertGreaterThan(LessonLoad.questionCount(minutes: 5, consumedMinutes: 120, failures: 2), 3)
-        XCTAssertEqual(LessonLoad.questionCount(minutes: 15, consumedMinutes: 999, failures: 99), 14)
+    func testGrantLengthAndFailureHistoryNeverPadTheLesson() throws {
+        let short = try session(minutes: 5, failures: 0)
+        let long = try session(minutes: 30, failures: 99)
+        XCTAssertEqual(short.lessonIDs, long.lessonIDs)
+        XCTAssertEqual(short.questions.map(\.id), long.questions.map(\.id))
+        XCTAssertEqual(short.estimatedSeconds, long.estimatedSeconds)
     }
 
     func testPassBoundaryUsesIntegerArithmetic() {
@@ -474,6 +472,7 @@ final class GateCoreTests: XCTestCase {
         value.readLessonIDs = Set(value.lessonIDs)
         value.typedResponses = Dictionary(uniqueKeysWithValues: value.questions.map { ($0.id, correctResponse($0.question)) })
         var progress = LearningProgress()
+        value.lockedQuestionIDs = value.inlineQuestionIDs
         XCTAssertTrue(LearningScheduler.grade(&value, progress: &progress, now: now)?.passed == true)
         _ = LearningScheduler.grade(&value, progress: &progress, now: now)
         XCTAssertEqual(progress.results.count, 1)

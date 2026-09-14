@@ -46,7 +46,7 @@ struct GateStatisticsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 30) {
                 Eyebrow(text: "Letzte sieben Tage")
-                Text("Weniger zerstreut.\nMehr mitgenommen.").font(.system(.largeTitle, design: .serif))
+                Text("Weniger zerstreut.\nMehr mitgenommen.").font(.system(.largeTitle, design: .rounded))
                 HStack(alignment: .top, spacing: 24) {
                     metric("\(recent.filter(\.passed).count)", "bestandene Runden")
                     metric("\(recent.reduce(0) { $0 + $1.activeSeconds } / 60)", "aktive Lernminuten")
@@ -64,7 +64,7 @@ struct GateStatisticsView: View {
                 }
                 if recent.isEmpty {
                     Text("Deine erste Lektion ist der Anfang dieser Bilanz. Keine erfundenen Erfolgszahlen.")
-                        .font(.system(.body, design: .serif)).foregroundStyle(.secondary)
+                        .font(.system(.body, design: .rounded)).foregroundStyle(.secondary)
                 } else {
                     GateSection(title: "Zuletzt gelernt") {
                         ForEach(Array(recent.suffix(8).reversed())) { result in
@@ -88,7 +88,7 @@ struct GateStatisticsView: View {
 
     private func metric(_ value: String, _ label: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(value).font(.system(size: 40, weight: .light, design: .serif)).monospacedDigit()
+            Text(value).font(.system(size: 40, weight: .light, design: .rounded)).monospacedDigit()
             Text(label).font(.caption).foregroundStyle(.secondary)
         }.frame(maxWidth: .infinity, alignment: .leading)
     }

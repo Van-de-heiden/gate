@@ -1,11 +1,11 @@
-"""Merge authored additions without removing v0.2 chapters or changing their IDs."""
+"""Rebuild the catalog deterministically from authored sources, never from its output."""
 from pathlib import Path
 import json,sys,importlib
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts/content'))
 from enrichment import UPDATES
 path=ROOT/'Gate/curriculum.json'
-c=json.loads(path.read_text())
+c=json.loads((ROOT/'scripts/content/legacy_base.json').read_text())
 original_ids=set(UPDATES)
 assert original_ids <= {l['id'] for l in c['lessons']}
 base=[l for l in c['lessons'] if l['id'] in original_ids]
@@ -72,6 +72,10 @@ for module in ['story_history_philosophy','story_business_money','story_health_l
    l['cards'][index]['visual']=visual
   lessons.append(l)
 assert len(topics)==12 and len(lessons)==144
-assert sum(len(l['questions']) for l in lessons)==744
-path.write_text(json.dumps(dict(version=4,paths=paths,topics=topics,lessons=lessons),ensure_ascii=False,indent=2)+'\n')
-print(f'{len(paths)} paths, {len(topics)} new cases, {len(lessons)} chapters, {sum(len(l["questions"]) for l in lessons)} questions; all original IDs retained.')
+from editorial_v5 import apply_editorial
+from researched_media import apply_media, write_credits
+apply_editorial(lessons)
+apply_media(lessons)
+path.write_text(json.dumps(dict(version=5,paths=paths,topics=topics,lessons=lessons),ensure_ascii=False,indent=2)+'\n')
+write_credits(ROOT)
+print(f'{len(paths)} paths, {len(topics)} cases, {len(lessons)} edited chapters, {sum(len(l["questions"]) for l in lessons)} questions, including {sum(bool(c.get("probe")) for l in lessons for c in l["cards"])} graded inline checks.')

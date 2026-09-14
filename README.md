@@ -6,31 +6,15 @@ Gate is an open-source iPhone app that adds a learning step before additional co
 Code and original lesson content are available under the [MIT licence](LICENSE).
 Third-party reference photos are not relicensed under MIT.
 
-## Status: 0.4 coherent-learning alpha
+## Status: 0.5 learning refresh
 
-The first on-device spike worked. Gate now has independent app grants, a monochrome interface,
-a substantially expanded curriculum and permanent in-app selections. It is **not a finished, independently validated App Store release**.
+The native iOS app now has 144 edited German chapters and 295 explained understanding questions. All 144 inline checks count once toward the result; feedback locks the submitted answer. Nineteen researched photos and published diagrams appear at 39 relevant points with attribution, licences and zoom. Lessons have content-driven lengths and question counts, independent of the requested grant duration.
 
-- A shared daily allowance of **30 minutes** for explicitly selected apps and websites.
-- Independent **5 / 10 / 15 / 20 / 30 active-minute grants**; up to eight at once.
-- Separate request, failure and cooldown state per app/domain.
-- One activity ID per grant: expiration of A does not close B.
-- An always-reachable request panel; a successful quiz closes its sheet.
-- A medium/large **text-only launcher widget**, extendable and reorderable in the app.
-- Onboarding, local learning history, confirmed usage checkpoints and settings.
-- An iOS usage report with separate consumption-selection and all-app views, daily app/site breakdowns and an explicit device selection when several iPhones report data.
-- A fuel-style free-time gauge and the native system tab bar, with independent navigation per tab.
-- **16 learning paths, 144 chapters, 744 questions in seven formats** with explanations.
-- **12 new concrete cases, four connected chapters each**, plus all 96 existing foundation chapters.
-- A step-by-step reader with authored scenes, decisions, dialogue, reveals and **48 ungraded learning probes**.
-- **24 new offline scene illustrations inside lessons**, precise native diagrams, and the eight retained path covers.
-- One concrete topic per new session, including longer rounds, due retrieval and retries. A broad path is not a topic.
-- Original German text and optional reflection notes. The synthetic narrator is removed; standard VoiceOver accessibility remains.
-- Repetition starts at 1 / 3 / 7 / 14 / 30 days; errors return earlier.
-- Repeating immediately cannot inflate the long-term mastery indicator.
-- Interrupted sessions retain their target, question order, answers, reader/quiz position, reveals and learning probes.
+A local time-of-day palette, animated sky/meadow/tree scene, rounded system typography and coloured continuous cards replace the monochrome treatment. Animations respect Reduce Motion, Low Power Mode and app visibility. Screen Time grants, daily allowance, permanent commitments and report privacy keep their existing behaviour.
 
-### Learning paths
+See [content and migration](docs/CONTENT.md), [media sources](docs/MEDIA_SOURCES.md) and [design](docs/LEARNING_DESIGN.md). Existing draft PR #1 remains the development delivery path. The historical implementation notes below describe earlier iterations where labelled.
+
+## Learning paths
 
 Learning & memory · Clear thinking · Statistics · Digital safety · Decisions & economics ·
 Everyday physics · Earth systems · History & source criticism · Philosophy · Business ·
@@ -41,38 +25,29 @@ Content is AI-assisted, authored for Gate, with linked reading references. It ha
 independent subject-matter review. Source organisations do not endorse or validate Gate.
 Every tested question is accompanied by its source lesson in the session.
 
-### 0.4: one case, more depth
+### One case, one coherent idea
 
-A 30-minute unlock can follow one furniture workshop through its order, cash shortfall,
-deposit and growth decision. It cannot append Socrates, sleep or unrelated business chapters.
-Longer rounds use more chapters of that same case. Failures keep the topic and prioritise the
-actual wrong answers. Other due topics wait for separate rounds.
+Cases cover Gutenberg, Stoic control, defining success, working capital, compound growth,
+chip production, sleep, a habit cue, negotiation, sunk costs, base rates and retrieval practice.
+A new round teaches the selected topic's authored chapters. Retry rounds revisit the chapters
+behind the actual errors; other topics wait for another round. Grant length never adds material.
 
-The new cases cover Gutenberg, Stoic control, defining success, working capital, compound
-growth, chip production, sleep, a specific habit cue, negotiation, sunk costs, base rates and
-retrieval practice. The library exposes them directly, alongside every existing path and chapter.
-See the [research-to-design rationale](docs/LEARNING_DESIGN.md) and [case catalogue](docs/CONTENT.md).
-
-All previous lesson/question IDs, completed chapters, memories and notes are preserved.
-An already saved old mixed-topic session is allowed to finish once with its original answers;
-it is explicitly labelled as a saved older round. New sessions use concrete topic boundaries.
+Chapter IDs, completed history and earned results remain. Rewritten questions receive new IDs.
+Unfinished old decks restart with current questions; personal notes are carried forward.
+Current-version rounds preserve reading position, shuffled options and locked inline answers.
 
 ### How the time rule works
 
 The first 30 minutes form one shared pool for the selected apps and websites.
-After that, grants and failures are independent. A 5-minute grant starts with 3 questions;
-10 minutes with 5; 15 minutes with 7; 20 minutes with 9; 30 minutes with 12. More confirmed daily
-consumption and failed attempts add questions, bounded by the authored topic bank (maximum 20).
-A deliberately selected short foundation chapter is never padded with another topic.
-Passing requires at least 80%. Every third failed attempt creates a
-15-minute cooldown for that target.
+After that, grants and failures are independent. Choose 5, 10, 15, 20 or 30 active minutes.
+The authored topic determines the question count and lesson scope. There is no minimum reading
+time or penalty question quota. Passing requires at least 80% across inline and final questions.
+Every third failed attempt creates a 15-minute cooldown for that target.
 
 Existing saved 60-minute everyday budgets migrate to 30 on the next app or monitor update.
 Confirmed usage is retained: 28 consumed minutes leave 2; 30 or more leave none. Existing
-earned grants remain independent. The 2-minute debug test still requires explicit activation,
-and both leaving the test and the next-day reset return to 30. Additional question load is
-measured from the new 30-minute allowance. This is the free consumption budget, not a hard
-cap on total device Screen Time; short learning-earned grants remain available.
+earned grants remain independent. The explicit two-minute debug test returns to everyday mode
+on exit or the next day. This allowance covers the selected consumption pool.
 
 A grant expires when its active usage is exhausted **or 30 wall-clock minutes after issue**,
 whichever comes first. Its displayed remaining active time is an upper bound based on the latest

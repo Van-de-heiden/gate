@@ -181,7 +181,7 @@ struct GateOnboardingView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
                     Eyebrow(text: "Willkommen bei Gate · \(step + 1) / 4")
-                    Text(titles[step]).font(.system(.largeTitle, design: .serif))
+                    Text(titles[step]).font(.system(.largeTitle, design: .rounded))
                     GateProgressLine(value: Double(step + 1) / 4)
                     if step == 0 {
                         Text("Die ersten \(GateState.everydayFreeMinutes) Minuten deiner ausgewählten Konsum-Apps bleiben frei. Danach verdienst du kurze Freigaben durch Lernen und Verstehen. Nach dem Aktivieren kannst du die Auswahl nur noch erweitern.")
@@ -198,11 +198,12 @@ struct GateOnboardingView: View {
                         Text("Der Inhaltsfilter hilft gegen Erwachsenen-Websites und explizit markierte Apple-Medien. Inhalte innerhalb jeder fremden App kann Gate nicht vollständig kontrollieren.")
                             .font(.caption).foregroundStyle(.secondary)
                     } else if step == 2 {
-                        LessonDiagram(visual: LessonVisual(kind: "flow", title: "Dein Lernrhythmus",
-                            labels: ["Verstehen · kurze Lektion", "Abrufen · mindestens 80 % richtig", "Wiederholen · später erneut"], values: nil,
-                            caption: "Die Wege wechseln. Wiederholungen und Fehler werden beim nächsten Lernplan berücksichtigt."))
-                        Text("5, 10 oder 15 Minuten Zugang. Mehr Konsum bedeutet etwas mehr Lernstoff. Drei Fehlversuche führen für diese App zu einer Pause; andere Apps bleiben unabhängig.")
-                            .font(.subheadline).foregroundStyle(.secondary)
+                        VStack(alignment: .leading, spacing: 18) {
+                            Text("Eine Idee verstehen").font(.title2.bold())
+                            Text("Eine konkrete Situation, eine verständliche Erklärung, deine Entscheidung. Zwischenfragen und Abschluss zählen gemeinsam; zum Bestehen brauchst du mindestens 80 Prozent.").font(.body).lineSpacing(5)
+                            Text("Freigaben: 5, 10, 15, 20 oder 30 Minuten. Der Inhalt bestimmt die Länge der Lektion. Drei Fehlversuche führen für diese App zu einer Pause.")
+                                .font(.subheadline).foregroundStyle(.secondary)
+                        }.gateCard()
                     } else {
                         Text("Füge das Gate-Widget zum Homescreen hinzu und entferne ablenkende Icons manuell. Deine wichtigsten Einträge stehen dann als ruhige Textliste bereit.")
                             .font(.title3)

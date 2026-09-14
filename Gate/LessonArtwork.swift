@@ -3,26 +3,32 @@ import SwiftUI
 struct LessonArtwork: View {
     let name: String
     var caption: String?
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Image("Path-" + name).resizable().aspectRatio(1.5, contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 14)).accessibilityLabel(description)
-            if let caption {
-                Text(caption).font(.caption2).foregroundStyle(.secondary)
-            }
+    private var symbol: String {
+        switch name {
+        case "history": return "globe.europe.africa.fill"
+        case "business": return "building.2.fill"
+        case "money": return "chart.line.uptrend.xyaxis"
+        case "health": return "leaf.fill"
+        case "science": return "sparkles"
+        case "digital": return "network"
+        case "communication": return "bubble.left.and.bubble.right.fill"
+        default: return "book.closed.fill"
         }
     }
-    private var description: String {
+    private var color: Color {
         switch name {
-        case "history": return "Stille Bibliothek mit Steinbogen und einer klassischen Büste."
-        case "business": return "Werkstatt mit Werkzeugen und mechanischen Bauteilen."
-        case "money": return "Münzstapel, eine Waage und eine Sanduhr."
-        case "health": return "Frühstück, Gehschuhe und Blick in einen Garten."
-        case "science": return "Gewächshaus mit Pflanzen und Glasgefässen."
-        case "digital": return "Geschlossener Laptop, Sicherheitsschlüssel und abgelegtes Telefon."
-        case "communication": return "Zwei Stühle und eine ruhige Gelegenheit zum Gespräch."
-        default: return "Offenes Buch, Notizzettel und ein Prisma im Sonnenlicht."
+        case "money", "health": return GateDesign.accent
+        case "history", "business": return GateDesign.caution
+        default: return GateDesign.blue
         }
+    }
+    var body: some View {
+        HStack {
+            Image(systemName: symbol).font(.system(size: 25, weight: .medium))
+                .frame(width: 60, height: 60).background(color.opacity(0.12))
+                .clipShape(RoundedRectangle(cornerRadius: 21))
+            Spacer()
+        }.foregroundStyle(color).accessibilityHidden(true)
     }
 }
 
@@ -38,71 +44,51 @@ struct LessonStoryCard: View {
     let card: LessonCard
     let cardID: String
     @ObservedObject var learning: LearningStore
-    @State private var showImage = false
-    private var revealed: Bool { learning.session?.revealedCardIDs?.contains(cardID) == true }
-    private var response: QuestionResponse? { card.probe.flatMap { learning.session?.probeResponses?[$0.id] } }
-    private var label: String {
-        switch card.kind {
-        case "scene": return "Mittendrin"
-        case "decision": return "Deine Entscheidung"
-        case "evidence": return "Die Spur prüfen"
-        case "lab": return "Gedankenlabor"
-        case "reveal": return "Erst überlegen"
-        case "dialogue": return "Zwei Perspektiven"
-        case "transfer": return "Du bist dran"
-        default: return "Genauer hinsehen"
-        }
+    private var item: SessionQuestion? {
+        card.probe.flatMap { probe in learning.session?.questions.first { $0.id == probe.id } }
+    }
+    private var locked: Bool {
+        item.map { learning.session?.lockedQuestionIDs?.contains($0.id) == true } ?? false
     }
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Eyebrow(text: label)
-            Text(card.title).font(.largeTitle.weight(.bold)).fixedSize(horizontal: false, vertical: true)
-            if let name = card.image {
-                Button { showImage = true } label: {
-                    Image(name).resizable().scaledToFit().clipShape(RoundedRectangle(cornerRadius: 20))
-                }.buttonStyle(.plain).accessibilityLabel((card.imageDescription ?? "Szenenbild") + " · Vergrössern")
-                Text(card.caption ?? "KI-Illustration, keine historische Quelle.").font(.caption2).foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 22) {
+            if card.probe == nil {
+                Text(card.title).font(.system(.title, design: .rounded, weight: .bold))
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(card.text).font(.body).lineSpacing(6).fixedSize(horizontal: false, vertical: true)
             }
-            Text(card.text).font(.body).lineSpacing(6).fixedSize(horizontal: false, vertical: true)
-            if let visual = card.visual { LessonDiagram(visual: visual) }
-            if let question = card.probe {
-                let indices = Array(question.options.indices)
-                let offset = indices.isEmpty ? 0 : question.id.utf8.reduce(0) { ($0 + Int($1)) % indices.count }
-                let order = Array(indices.dropFirst(offset)) + Array(indices.prefix(offset))
-                QuestionView(item: SessionQuestion(question: question, lessonID: cardID, isReview: false, optionOrder: order),
-                             response: response) { learning.probe($0, for: question.id) }
-                    .disabled(revealed)
-                Text("Lernversuch, keine Prüfungsnote. Eine falsche Vermutung kostet keine Freigabe.")
-                    .font(.caption).foregroundStyle(.secondary)
-            }
-            if card.reveal != nil || card.probe != nil {
-                if revealed {
+            if let media = card.media { LessonMediaView(media: media) }
+            if let item {
+                Eyebrow(text: "Deine Entscheidung · zählt zum Ergebnis")
+                QuestionView(item: item, response: learning.session?.response(for: item)) {
+                    learning.answer($0, for: item.id)
+                }.disabled(locked)
+                if locked {
+                    let correct = learning.session?.isCorrect(item) == true
                     VStack(alignment: .leading, spacing: 12) {
-                        Label(card.probe == nil ? "Auflösung" : card.probe!.isCorrect(response) ? "Gut begründet" : "Ein wichtiger Unterschied", systemImage: "lightbulb")
-                            .font(.subheadline.weight(.semibold))
-                        if let question = card.probe { Text(question.explanation).font(.body).lineSpacing(5) }
-                        if let reveal = card.reveal { Text(reveal).font(.body).lineSpacing(5) }
-                    }.padding(20).frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color.accentColor.opacity(0.08)).clipShape(RoundedRectangle(cornerRadius: 18))
+                        Label(correct ? "Richtig eingeordnet" : "Hier liegt der Unterschied",
+                              systemImage: correct ? "checkmark.circle.fill" : "arrow.trianglehead.clockwise")
+                            .font(.headline).foregroundStyle(correct ? GateDesign.success : GateDesign.caution)
+                        Text(item.question.explanation).font(.body).lineSpacing(5)
+                        Text("Antwort gewertet. Diese Frage erscheint im Abschluss nicht nochmals.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
+                        .background((correct ? GateDesign.success : GateDesign.caution).opacity(0.09))
+                        .clipShape(RoundedRectangle(cornerRadius: 22))
                         .accessibilityElement(children: .combine)
                 } else {
-                    Button(card.probe == nil ? "Gedanken vergleichen" : "Begründung ansehen") {
-                        GateKeyboard.dismiss(); learning.reveal(cardID)
-                    }.buttonStyle(GateButtonStyle(prominent: false))
-                        .disabled(card.probe != nil && !(card.probe?.isComplete(response) ?? false))
+                    Button("Antwort abgeben") {
+                        GateKeyboard.dismiss(); learning.submitProbe(item.id, cardID: cardID)
+                    }.buttonStyle(GateButtonStyle())
+                        .disabled(!item.question.isComplete(learning.session?.response(for: item)))
+                    Text("Nach dem Abgeben siehst du die Begründung. Deine erste Antwort zählt.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
+            } else if let probe = card.probe {
+                // A due-only review may not include this chapter's inline question.
+                Text("Mitnehmen").font(.title2.bold())
+                Text(probe.explanation).font(.body).lineSpacing(6)
             }
-        }
-        .sheet(isPresented: $showImage) {
-            NavigationStack {
-                ScrollView {
-                    if let name = card.image {
-                        Image(name).resizable().scaledToFit().accessibilityLabel(card.imageDescription ?? "Szenenbild")
-                        Text(card.caption ?? "KI-Illustration").font(.subheadline).padding()
-                    }
-                }.navigationTitle("Im Detail").navigationBarTitleDisplayMode(.inline)
-                    .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Fertig") { showImage = false } } }
-            }
-        }
+        }.gateCard()
     }
 }

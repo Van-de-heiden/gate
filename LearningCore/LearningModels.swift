@@ -36,6 +36,10 @@ struct LessonPhoto: Codable {
     let caption: String
     let credit: String
     let sourceURL: String
+    var license: String?
+    var licenseURL: String?
+    var alt: String?
+    var asset: String?
 }
 
 struct LessonCard: Codable {
@@ -49,6 +53,7 @@ struct LessonCard: Codable {
     var reveal: String?
     var probe: LearningQuestion?
     var visual: LessonVisual?
+    var media: LessonPhoto?
 }
 
 struct LearningTopic: Codable, Identifiable {
@@ -59,7 +64,7 @@ struct LearningTopic: Codable, Identifiable {
     var format: String?
 }
 
-struct LearningQuestion: Codable, Identifiable {
+struct LearningQuestion: Codable, Identifiable, Equatable {
     let id: String
     let prompt: String
     let options: [String]
@@ -163,7 +168,7 @@ enum QuestionFormat: String, Codable, CaseIterable, Hashable {
         }
     }
 }
-struct QuestionPair: Codable { let left: String; let right: String }
+struct QuestionPair: Codable, Equatable { let left: String; let right: String }
 struct QuestionResponse: Codable, Equatable {
     var indices: [Int] = []
     var matches: [Int: Int] = [:]
@@ -177,7 +182,7 @@ struct LearningLesson: Codable, Identifiable {
     let title: String
     let objective: String
     let cards: [LessonCard]
-    let visual: LessonVisual
+    let visual: LessonVisual?
     let photo: LessonPhoto?
     let reflection: String
     let takeaway: String
@@ -218,9 +223,9 @@ struct LearningCatalog: Codable {
         guard pathIDs.count == paths.count, Set(lessons.map(\.id)).count == lessons.count,
               Set(questions.map(\.id)).count == questions.count,
               Set(probes.map(\.id)).count == probes.count,
-              Set(probes.map(\.id)).isDisjoint(with: Set(questions.map(\.id))),
+              Set(probes.map(\.id)).isSubset(of: Set(questions.map(\.id))),
               paths.allSatisfy({ orderedLessons(in: $0.id).count >= 3 }),
-              lessons.allSatisfy({ pathIDs.contains($0.pathID) && $0.cards.count >= 2 && $0.questions.count >= 4 }),
+              lessons.allSatisfy({ pathIDs.contains($0.pathID) && $0.cards.count >= 2 && !$0.questions.isEmpty }),
               questions.allSatisfy({ $0.isValid }),
               Set(allTopics.map(\.id)).count == allTopics.count,
               allTopics.allSatisfy({ topic in
@@ -234,7 +239,11 @@ struct LearningCatalog: Codable {
               lessons.allSatisfy({ lesson in
                   topic(lesson.topicKey)?.pathID == lesson.pathID && lesson.cards.allSatisfy { card in
                       !card.title.isEmpty && !card.text.isEmpty && (card.probe?.isValid ?? true)
+                          && (card.probe == nil || lesson.questions.contains(card.probe!))
                           && (card.image == nil || (card.imageDescription?.isEmpty == false && card.caption?.isEmpty == false))
+                          && (card.media == nil || (card.media!.url.hasPrefix("https://")
+                              && card.media!.sourceURL.hasPrefix("https://")
+                              && card.media!.alt?.isEmpty == false && card.media!.license?.isEmpty == false))
                   }
               })
         else { throw CatalogError.invalid }
@@ -286,6 +295,17 @@ struct LearningProgress: Codable {
     var recentTopicIDs: [String]?
     var results: [LearningResult] = []
     var sessions: [String: LearningSession] = [:]
+    var savedNotes: [String: String]?
+
+    mutating func reconcileCatalogVersion(_ version: Int) {
+        // Retire unfinished decks whose questions changed, but preserve the user's writing,
+        // history, completed chapters and passed results that have not yet issued their grant.
+        for session in sessions.values where session.catalogVersion != version && session.result == nil {
+            if savedNotes == nil { savedNotes = [:] }
+            savedNotes?.merge(session.reflectionNotes) { _, newest in newest }
+        }
+        sessions = sessions.filter { $0.value.catalogVersion == version || $0.value.result != nil }
+    }
 }
 
 struct SessionQuestion: Codable, Identifiable {
@@ -321,8 +341,17 @@ struct LearningSession: Codable, Identifiable {
     var quizIndex: Int?
     var probeResponses: [String: QuestionResponse]?
     var revealedCardIDs: Set<String>?
+    var catalogVersion: Int?
+    var inlineQuestionIDs: Set<String>?
+    var lockedQuestionIDs: Set<String>?
     var estimatedSeconds: Int { max(60, questions.count * 20 + (readingEstimateSeconds ?? lessonIDs.count * 55)) }
-    var readyForQuiz: Bool { Set(lessonIDs).isSubset(of: readLessonIDs) }
+    var readyForQuiz: Bool {
+        Set(lessonIDs).isSubset(of: readLessonIDs)
+            && (inlineQuestionIDs ?? []).isSubset(of: lockedQuestionIDs ?? [])
+    }
+    var finalQuestions: [SessionQuestion] {
+        questions.filter { !(lockedQuestionIDs ?? []).contains($0.id) }
+    }
     var isPractice: Bool { target == nil }
     func response(for item: SessionQuestion) -> QuestionResponse? {
         if let response = typedResponses?[item.id] { return response }
@@ -334,6 +363,27 @@ struct LearningSession: Codable, Identifiable {
     var answeredCount: Int { questions.filter { $0.question.isComplete(response(for: $0)) }.count }
     var allAnswered: Bool { answeredCount == questions.count }
     func isCorrect(_ item: SessionQuestion) -> Bool { item.question.isCorrect(response(for: item)) }
+
+    mutating func setAnswer(_ response: QuestionResponse, for id: String) {
+        guard result == nil, questions.contains(where: { $0.id == id }),
+              !(lockedQuestionIDs ?? []).contains(id) else { return }
+        if typedResponses == nil { typedResponses = [:] }
+        typedResponses?[id] = response
+        responses.removeValue(forKey: id)
+    }
+
+    @discardableResult
+    mutating func submitInlineQuestion(_ id: String, cardID: String) -> Bool {
+        guard result == nil, (inlineQuestionIDs ?? []).contains(id),
+              !(lockedQuestionIDs ?? []).contains(id),
+              let item = questions.first(where: { $0.id == id }),
+              item.question.isComplete(response(for: item)) else { return false }
+        if lockedQuestionIDs == nil { lockedQuestionIDs = [] }
+        lockedQuestionIDs?.insert(id)
+        if revealedCardIDs == nil { revealedCardIDs = [] }
+        revealedCardIDs?.insert(cardID)
+        return true
+    }
 }
 
 enum LearningScheduler {
@@ -358,19 +408,14 @@ enum LearningScheduler {
         remediation: [String] = [], remediationQuestionIDs: [String] = [], now: Date, random: inout R
     ) -> LearningSession {
         let focusedLesson = preferredLesson.flatMap { id in catalog.lessons.first { $0.id == id } }
-        let count = focusedLesson?.questions.count ?? LessonLoad.questionCount(minutes: minutes, consumedMinutes: consumed, failures: failures)
         let due = catalog.questions.filter { (progress.memories[$0.id]?.due ?? .distantFuture) <= now }
             .sorted { (progress.memories[$0.id]?.due ?? now) < (progress.memories[$1.id]?.due ?? now) }
-        // A topic is a concrete question/case, NOT a broad path such as philosophy.
-        // Pick it once, before choosing questions. Due items and retries cannot cross it.
         let remediationTopic = remediation.first.flatMap { catalog.topicID(forLesson: $0) }
         let explicitTopic = focusedLesson?.topicKey ?? remediationTopic ?? preferredTopic
         let eligible = catalog.allTopics.filter { preferredPath == nil || $0.pathID == preferredPath }
         let available = eligible.isEmpty ? catalog.allTopics : eligible
         let overdue = due.first { question in
-            guard let lesson = catalog.lesson(forQuestion: question.id) else { return false }
-            return available.contains { $0.id == lesson.topicKey }
-                && (reviewOnly || catalog.chapters(in: lesson.topicKey).flatMap(\.questions).count >= count)
+            available.contains { $0.id == catalog.lesson(forQuestion: question.id)?.topicKey }
         }.flatMap { catalog.lesson(forQuestion: $0.id)?.topicKey }
         let topicID: String
         if let explicitTopic, catalog.topic(explicitTopic) != nil {
@@ -378,90 +423,46 @@ enum LearningScheduler {
         } else if let overdue {
             topicID = overdue
         } else {
-            let sufficient = available.filter { catalog.chapters(in: $0.id).flatMap(\.questions).count >= count }
-            var candidates = sufficient.isEmpty ? available : sufficient
+            var candidates = available
             let freshPaths = candidates.filter { !progress.recentPathIDs.suffix(2).contains($0.pathID) }
             if !freshPaths.isEmpty { candidates = freshPaths }
             let freshTopics = candidates.filter { !(progress.recentTopicIDs ?? []).suffix(3).contains($0.id) }
             if !freshTopics.isEmpty { candidates = freshTopics }
-            let unfinished = candidates.filter { catalog.chapters(in: $0.id).contains { !progress.completedLessonIDs.contains($0.id) } }
-            if !unfinished.isEmpty { candidates = unfinished }
-            // Prefer the new authored cases, but keep the foundation library available.
-            let stories = candidates.filter { catalog.chapters(in: $0.id).count > 1 }
-            if !stories.isEmpty { candidates = stories }
+            let untried = candidates.filter { topic in
+                catalog.chapters(in: topic.id).flatMap(\.questions).contains { progress.memories[$0.id] == nil }
+            }
+            if !untried.isEmpty { candidates = untried }
             topicID = candidates.randomElement(using: &random)!.id
         }
         let topic = catalog.topic(topicID)!
         let ordered = catalog.chapters(in: topicID)
         let scopedDue = due.filter { catalog.lesson(forQuestion: $0.id)?.topicKey == topicID }
-        let gaps = ordered.flatMap(\.questions).filter { remediationQuestionIDs.contains($0.id) }
-        var taught: [LearningLesson]
-        if let focusedLesson {
-            taught = [focusedLesson]
-        } else if reviewOnly && !scopedDue.isEmpty {
-            let ids = Set(scopedDue.prefix(count).compactMap { catalog.lesson(forQuestion: $0.id)?.id })
+        // Authored content determines scope. Grant duration, usage and failures NEVER add material.
+        // A retry revisits the chapters behind the mistakes, within the original topic.
+        let gaps = ordered.filter { lesson in lesson.questions.contains { remediationQuestionIDs.contains($0.id) } }
+        let taught: [LearningLesson]
+        if let focusedLesson { taught = [focusedLesson] }
+        else if reviewOnly && !scopedDue.isEmpty {
+            let ids = Set(scopedDue.compactMap { catalog.lesson(forQuestion: $0.id)?.id })
             taught = ordered.filter { ids.contains($0.id) }
-        } else {
-            let depth = min(ordered.count, minutes <= 5 ? 1 : minutes <= 10 ? 2 : minutes <= 15 ? 3 : 4)
-            let next = ordered.firstIndex { !progress.completedLessonIDs.contains($0.id) } ?? 0
-            let start = min(next, max(0, ordered.count - depth))
-            taught = Array(ordered.dropFirst(start).prefix(depth))
-            // Add earlier context / more practice ONLY inside the same case.
-            for lesson in ordered where !taught.contains(where: { $0.id == lesson.id }) {
-                if taught.flatMap(\.questions).count >= count { break }
-                taught.append(lesson)
-            }
-            if let dueLesson = scopedDue.first.flatMap({ catalog.lesson(forQuestion: $0.id) }),
-               !taught.contains(where: { $0.id == dueLesson.id }) { taught.append(dueLesson) }
-            for lesson in ordered where gaps.contains(where: { gap in lesson.questions.contains { $0.id == gap.id } }) {
-                if !taught.contains(where: { $0.id == lesson.id }) { taught.append(lesson) }
-            }
-            taught.sort { ($0.topicOrder ?? $0.order) < ($1.topicOrder ?? $1.order) }
-        }
-        var selected: [LearningQuestion] = []
-        var seen = Set<String>()
-        func append(_ question: LearningQuestion) {
-            if selected.count < count && seen.insert(question.id).inserted { selected.append(question) }
-        }
-        // Spread formats and prioritise gaps, instead of completing a chapter after one lucky answer.
-        func balanced(_ questions: [LearningQuestion]) -> [LearningQuestion] {
-            let shuffled = questions.shuffled(using: &random).sorted {
-                (progress.memories[$0.id]?.correctAttempts ?? 0) < (progress.memories[$1.id]?.correctAttempts ?? 0)
-            }
-            var kinds = Set<QuestionFormat>()
-            let first = shuffled.filter { kinds.insert($0.kind).inserted }
-            let ids = Set(first.map(\.id))
-            return first + shuffled.filter { !ids.contains($0.id) }
-        }
-        if focusedLesson != nil {
-            for question in balanced(taught[0].questions) { append(question) }
-        } else if reviewOnly && !scopedDue.isEmpty {
-            for question in scopedDue { append(question) }
-        } else {
-            let taughtIDs = Set(taught.map(\.id))
-            for question in gaps { append(question) }
-            for question in scopedDue.filter({ taughtIDs.contains(catalog.lesson(forQuestion: $0.id)!.id) }).prefix(max(1, count / 3)) { append(question) }
-            let decks = taught.map { balanced($0.questions) }
-            // Round-robin gives every taught chapter an assessment, not just the first.
-            for index in 0..<(decks.map(\.count).max() ?? 0) {
-                for deck in decks where deck.indices.contains(index) { append(deck[index]) }
-            }
-        }
-        let lessonIDs = taught.map(\.id)
+        } else if !gaps.isEmpty { taught = gaps }
+        else { taught = ordered }
+        let selected = reviewOnly && !scopedDue.isEmpty ? scopedDue : taught.flatMap(\.questions)
+        let selectedIDs = Set(selected.map(\.id))
+        let inlineIDs = Set(taught.flatMap(\.cards).compactMap(\.probe).map(\.id)).intersection(selectedIDs)
         let deck = selected.shuffled(using: &random).map { question -> SessionQuestion in
-            let lesson = catalog.lesson(forQuestion: question.id)!
-            return SessionQuestion(question: question, lessonID: lesson.id,
+            SessionQuestion(question: question, lessonID: catalog.lesson(forQuestion: question.id)!.id,
                 isReview: progress.memories[question.id] != nil,
                 optionOrder: Array(question.options.indices).shuffled(using: &random))
         }
         let key = storageKey(request: request, path: preferredPath, lesson: preferredLesson,
                              topic: preferredTopic, reviewOnly: reviewOnly)
         return LearningSession(id: UUID(), storageKey: key, target: request?.target, requestID: request?.id,
-            grantMinutes: minutes, pathID: topic.pathID, lessonIDs: lessonIDs, questions: deck,
-            requiredQuestionIDs: Dictionary(uniqueKeysWithValues: lessonIDs.map { id in
-                (id, catalog.lessons.first { $0.id == id }!.questions.map(\.id))
-            }), topicID: topicID,
-            readingEstimateSeconds: taught.map { $0.readingSeconds + $0.cards.filter { $0.probe != nil }.count * 15 }.reduce(0, +))
+            grantMinutes: minutes, pathID: topic.pathID, lessonIDs: taught.map(\.id), questions: deck,
+            requiredQuestionIDs: Dictionary(uniqueKeysWithValues: taught.map { ($0.id, $0.questions.map(\.id)) }),
+            reflectionNotes: (progress.savedNotes ?? [:]).filter { taught.map(\.id).contains($0.key) },
+            topicID: topicID, readingEstimateSeconds: taught.map(\.readingSeconds).reduce(0, +),
+            catalogVersion: catalog.version, inlineQuestionIDs: inlineIDs, lockedQuestionIDs: [])
     }
 
     @discardableResult

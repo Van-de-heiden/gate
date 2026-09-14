@@ -16,11 +16,11 @@ struct IntentionalPauseView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 26) {
                     HStack {
-                        Text("gate").font(.system(.title2, design: .serif)).tracking(-1)
+                        Text("gate").font(.system(.title2, design: .rounded)).tracking(-1)
                         Spacer()
                         Eyebrow(text: "Ein Moment für dich")
                     }
-                    Text("Ein Impuls ist\nkein Auftrag.").font(.system(.largeTitle, design: .serif))
+                    Text("Ein Impuls ist\nkein Auftrag.").font(.system(.largeTitle, design: .rounded))
                     Text("Du hast entschieden, explizite Inhalte aus deinem Alltag herauszuhalten. Diese Grenze gilt auch jetzt.")
                         .font(.title3).lineSpacing(4)
                     VStack(alignment: .leading, spacing: 12) {
@@ -34,7 +34,7 @@ struct IntentionalPauseView: View {
                         Text("Schliess den Browser-Tab. Lass die Schultern locker und atme ruhig. Beobachte den Drang, ohne ihn sofort umzusetzen.")
                             .font(.subheadline)
                         HStack(alignment: .firstTextBaseline) {
-                            Text("\(seconds)").font(.system(size: 60, weight: .light, design: .serif)).monospacedDigit()
+                            Text("\(seconds)").font(.system(size: 60, weight: .light, design: .rounded)).monospacedDigit()
                             Text("Sekunden für dich").font(.subheadline).foregroundStyle(.secondary)
                         }
                         Button(seconds == 0 ? "Noch eine ruhige Minute" : running ? "Pause unterbrechen" : "Ruhige Minute starten") {
@@ -66,7 +66,7 @@ struct IntentionalPauseView: View {
                     Text("Wenn sich der Konsum wiederholt deiner Kontrolle entzieht oder dich belastet, kann ein Gespräch mit einer qualifizierten Beratungsstelle oder Fachperson helfen.")
                         .font(.caption).foregroundStyle(.secondary)
                 }.padding(24)
-            }.background(GateDesign.paper).navigationBarTitleDisplayMode(.inline)
+            }.gateBackground().navigationBarTitleDisplayMode(.inline)
                 .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Schliessen") { controller.closePause() } } }
         }.tint(.primary)
             .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in

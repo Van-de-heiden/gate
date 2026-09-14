@@ -20,9 +20,9 @@ struct LessonView: View {
                             if session.phase == "result" { resultView(session) }
                             else if session.phase == "quiz" { quiz(session) }
                             else { reading(session) }
-                        }.padding(24).padding(.bottom, 30)
+                        }.padding(20).padding(.bottom, 30)
                     }
-                }.background(GateDesign.paper).gateKeyboardDismissal()
+                }.gateBackground().gateKeyboardDismissal()
                     .onChange(of: page) { _, value in GateKeyboard.dismiss(); learning.setPosition(value); reader.scrollTo("top") }
                     .onChange(of: learning.session?.phase) { _, _ in restorePosition(); GateKeyboard.dismiss(); reader.scrollTo("top") }
             }
@@ -30,10 +30,10 @@ struct LessonView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Schliessen") { GateKeyboard.dismiss(); confirmLeave = true }.foregroundStyle(.primary)
                 }
-                ToolbarItem(placement: .topBarTrailing) { Text("gate / lernen").font(.system(.subheadline, design: .serif)) }
+                ToolbarItem(placement: .topBarTrailing) { Text("gate / lernen").font(.system(.subheadline, design: .rounded)) }
             }
         }
-        .tint(.primary)
+        .tint(GateDesign.accent)
         .interactiveDismissDisabled()
         .confirmationDialog("Lektion unterbrechen?", isPresented: $confirmLeave, titleVisibility: .visible) {
             Button("Speichern & schliessen") { learning.suspend() }
@@ -49,8 +49,8 @@ struct LessonView: View {
     private func restorePosition() {
         guard let session = learning.session else { page = 0; return }
         if session.phase == "quiz" {
-            let saved = session.quizIndex ?? session.questions.firstIndex { !$0.question.isComplete(session.response(for: $0)) } ?? 0
-            page = min(max(0, saved), max(0, session.questions.count - 1))
+            let saved = session.quizIndex ?? session.finalQuestions.firstIndex { !$0.question.isComplete(session.response(for: $0)) } ?? 0
+            page = min(max(0, saved), max(0, session.finalQuestions.count - 1))
         } else {
             let steps = session.lessonIDs.flatMap { id in learning.catalog?.lessons.first { $0.id == id }?.cards ?? [] }
             page = min(max(0, session.readerIndex ?? 0), max(0, steps.count - 1))
@@ -74,8 +74,8 @@ struct LessonView: View {
                 : 0.5 * Double(session.readerIndex ?? 0) / Double(max(1, stepCount))
             GateProgressLine(value: progress)
             Text(session.phase == "learn"
-                 ? "\(session.topicID == nil ? "Gespeicherte Runde" : "Ein Thema") · \(session.lessonIDs.count) Kapitel · \(session.questions.count) Prüfungsfragen · ca. \(max(1, session.estimatedSeconds / 60))–\(max(2, session.estimatedSeconds / 60 + 1)) min"
-                 : session.phase == "quiz" ? "Ohne Vorlage abrufen. Mindestens 80 % richtig." : "Dein Ergebnis")
+                 ? "\(session.questions.count) Fragen insgesamt · davon \(session.inlineQuestionIDs?.count ?? 0) unterwegs · ca. \(max(1, (session.estimatedSeconds + 59) / 60)) min"
+                 : session.phase == "quiz" ? "Zum Bestehen: \(Int(ceil(Double(session.questions.count) * 0.8))) von \(session.questions.count) richtig. Die Zwischenfragen zählen mit." : "Dein Ergebnis")
                 .font(.caption).foregroundStyle(.secondary)
             if session.topicID == nil {
                 Text("Gespeicherte Runde aus der vorherigen Version. Dein Stand bleibt erhalten; neue Runden bleiben bei einem einzigen Thema.")
@@ -92,16 +92,12 @@ struct LessonView: View {
         if let step = steps[safe: safePage] {
             let lesson = step.lesson
             let revealed = session.revealedCardIDs?.contains(step.id) == true
-            let requiresReveal = step.card.reveal != nil || step.card.probe != nil
+            let requiresReveal = step.card.probe.map { session.inlineQuestionIDs?.contains($0.id) == true } ?? false
             VStack(alignment: .leading, spacing: 22) {
                 Eyebrow(text: "\(lesson.title) · \(step.index + 1)/\(lesson.cards.count)")
                 LessonStoryCard(card: step.card, cardID: step.id, learning: learning).id(step.id)
                 if step.isLast {
-                    if lesson.topicID == nil {
-                        if let photo = lesson.photo { LessonPhotoView(photo: photo) }
-                        LessonDiagram(visual: lesson.visual)
-                    }
-                    Text(lesson.takeaway).font(.subheadline.weight(.medium))
+
                     DisclosureGroup("Mitnehmen & eigene Notiz") {
                         VStack(alignment: .leading, spacing: 12) {
                             Text(lesson.mission ?? lesson.reflection).font(.subheadline)
@@ -120,7 +116,7 @@ struct LessonView: View {
                     if page > 0 {
                         Button("Zurück") { page -= 1 }.buttonStyle(GateButtonStyle(prominent: false))
                     }
-                    Button(safePage + 1 < steps.count ? "Weiter" : "Jetzt selbst prüfen") {
+                    Button(safePage + 1 < steps.count ? "Weiter" : "Zum Abschluss") {
                         GateKeyboard.dismiss()
                         if step.isLast { learning.markRead(lesson.id) }
                         if safePage + 1 < steps.count { page = safePage + 1 }
@@ -134,29 +130,34 @@ struct LessonView: View {
     }
 
     private func quiz(_ session: LearningSession) -> some View {
-        VStack(alignment: .leading, spacing: 28) {
-            ForEach(Array(session.questions.enumerated()).filter { $0.offset == min(page, session.questions.count - 1) }, id: \.element.id) { index, item in
-                VStack(alignment: .leading, spacing: 12) {
-                    Eyebrow(text: "Frage \(index + 1) / \(session.questions.count)" + (item.isReview ? " · Wiederholung" : " · " + item.question.kind.title))
+        let questions = session.finalQuestions
+        let index = min(max(0, page), max(0, questions.count - 1))
+        return VStack(alignment: .leading, spacing: 24) {
+            if let item = questions[safe: index] {
+                VStack(alignment: .leading, spacing: 18) {
+                    Eyebrow(text: "Abschluss · \(index + 1) von \(questions.count)" + (item.isReview ? " · Wiederholung" : ""))
                     QuestionView(item: item, response: session.response(for: item)) {
                         learning.answer($0, for: item.id)
-                    }
-                }
+                    }.id(item.id)
+                }.gateCard()
+            } else {
+                Text("Alle Antworten sind abgegeben.").font(.title2.bold())
+                Text("Du kannst deine Runde jetzt auswerten.").foregroundStyle(.secondary)
             }
             HStack(spacing: 12) {
                 if page > 0 {
                     Button("Zurück") { GateKeyboard.dismiss(); page -= 1 }.buttonStyle(GateButtonStyle(prominent: false))
                 }
-                if page + 1 < session.questions.count {
-                    Button("Nächste Aufgabe") { GateKeyboard.dismiss(); page += 1 }.buttonStyle(GateButtonStyle())
-                        .disabled(!session.questions[min(page, session.questions.count - 1)].question.isComplete(session.response(for: session.questions[min(page, session.questions.count - 1)])))
+                if index + 1 < questions.count {
+                    Button("Weiter") { GateKeyboard.dismiss(); page += 1 }.buttonStyle(GateButtonStyle())
+                        .disabled(!questions[index].question.isComplete(session.response(for: questions[index])))
                 } else {
-                    Button("Antworten prüfen") { GateKeyboard.dismiss(); controller.submitLesson() }.buttonStyle(GateButtonStyle())
+                    Button("Runde auswerten") { GateKeyboard.dismiss(); controller.submitLesson() }.buttonStyle(GateButtonStyle())
                         .disabled(!session.readyForQuiz || !session.allAnswered)
                 }
             }
             Button("Noch einmal nachlesen") { learning.setPhase("learn") }
-                .font(.footnote).frame(maxWidth: .infinity).foregroundStyle(.secondary)
+                .font(.subheadline).frame(maxWidth: .infinity, minHeight: 44).foregroundStyle(GateDesign.accent)
         }
     }
 
@@ -165,9 +166,9 @@ struct LessonView: View {
         if let result = session.result {
             VStack(alignment: .leading, spacing: 24) {
                 Text("\(result.correct) / \(result.total)")
-                    .font(.system(size: 64, weight: .light, design: .serif)).monospacedDigit()
+                    .font(.system(size: 64, weight: .bold, design: .rounded)).monospacedDigit().foregroundStyle(result.passed ? GateDesign.success : GateDesign.caution)
                 Text(result.passed ? "Gut erarbeitet." : "Hier liegt noch eine Lücke.")
-                    .font(.system(.title2, design: .serif))
+                    .font(.system(.title2, design: .rounded))
                 Text(result.passed
                      ? "Richtige Antworten kommen später wieder – mit wachsendem Abstand. Falsche Antworten werden früher wiederholt."
                      : "Noch keine Freigabe. Der nächste Versuch bleibt bei diesem Thema und übt die Lücken weiter.")
@@ -198,75 +199,6 @@ struct LessonView: View {
     }
 }
 
-struct LessonPhotoView: View {
-    let photo: LessonPhoto
-    @State private var showPhoto = false
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            if showPhoto {
-                AsyncImage(url: URL(string: photo.url)) { phase in
-                    switch phase {
-                    case .success(let image): image.resizable().scaledToFit().clipShape(RoundedRectangle(cornerRadius: 10))
-                    case .failure: Text("Foto gerade nicht verfügbar. Die Lektion und das Diagramm funktionieren auch ohne Verbindung.").font(.footnote).padding(16)
-                    default: ProgressView().tint(.primary).frame(maxWidth: .infinity).frame(height: 140)
-                    }
-                }
-            } else {
-                Button("Quellenfoto laden") { showPhoto = true }.buttonStyle(GateButtonStyle(prominent: false))
-                Text("Lädt dieses Bild direkt von NASA; dabei erhält der Anbieter deine IP-Adresse.")
-                    .font(.caption2).foregroundStyle(.secondary)
-            }
-            Text(photo.caption).font(.footnote)
-            if let url = URL(string: photo.sourceURL) {
-                Link(photo.credit, destination: url).font(.caption2).foregroundStyle(.secondary).underline()
-            }
-        }
-    }
-}
-
-struct LessonDiagram: View {
-    let visual: LessonVisual
-    var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            Eyebrow(text: visual.title)
-            if visual.kind == "bars", let values = visual.values, values.count == visual.labels.count {
-                let maxValue = max(1, values.max() ?? 1)
-                ForEach(visual.labels.indices, id: \.self) { i in
-                    VStack(alignment: .leading, spacing: 7) {
-                        HStack {
-                            Text(visual.labels[i])
-                            Spacer()
-                            Text(values[i], format: .number.precision(.fractionLength(0...2))).monospacedDigit()
-                        }.font(.caption)
-                        GateProgressLine(value: values[i] / maxValue)
-                    }
-                }
-            } else if visual.kind == "compare" {
-                ForEach(visual.labels.indices, id: \.self) { i in
-                    HStack(alignment: .top, spacing: 14) {
-                        Text(String(format: "%02d", i + 1)).font(.caption.monospaced()).foregroundStyle(.secondary)
-                        Text(visual.labels[i]).font(.subheadline).fixedSize(horizontal: false, vertical: true)
-                    }.padding(.vertical, 8)
-                    if i + 1 < visual.labels.count { Divider() }
-                }
-            } else {
-                ForEach(visual.labels.indices, id: \.self) { i in
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(visual.labels[i]).font(.subheadline.weight(.medium))
-                            .padding(12).frame(maxWidth: .infinity, alignment: .leading).background(GateDesign.paper)
-                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(GateDesign.line))
-                        if i + 1 < visual.labels.count {
-                            Image(systemName: "arrow.down").font(.caption).foregroundStyle(.secondary).padding(.leading, 16).accessibilityHidden(true)
-                        }
-                    }
-                }
-            }
-            Text(visual.caption).font(.caption).foregroundStyle(.secondary)
-        }.padding(18).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 12))
-            .accessibilityElement(children: .contain)
-    }
-}
-
-private extension Array {
+extension Array {
     subscript(safe index: Int) -> Element? { indices.contains(index) ? self[index] : nil }
 }

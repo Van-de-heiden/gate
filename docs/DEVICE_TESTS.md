@@ -1,3 +1,15 @@
+# Acceptance additions for learning refresh v5
+
+- Try one foundation and one complete case: scene → explanation/media → graded decision → remaining questions → result. Confirm there is no timer gate, repeated inline question or grant-duration question quota.
+- Give one deliberately wrong inline answer. Submit, reopen the app, and verify it is still locked and counted as wrong. Its explanation remains readable; it appears once in the result.
+- Review one due inline question only: after reading, the empty final deck must still offer evaluation. Review a due final question only: the absent inline check must not block reading.
+- Upgrade with an unfinished old round containing a personal note and an earned, unissued result. The note, history and earned result survive; the obsolete unfinished deck restarts.
+- Check day/night colours and the tree/sky animation. Reduce Motion and Low Power Mode stop motion; leaving the tab or backgrounding the app pauses it.
+- Use Accessibility Extra Extra Extra Large text and VoiceOver. Read options, submit feedback, navigate backwards, open sources and zoom a diagram without truncation.
+- Open a media chapter online, reopen offline, then try an uncached image offline. Cached media displays; unavailable media explains the image in text and does not block learning. Pinch and double-tap zoom preserve the complete figure.
+
+The established Screen Time and device checks below still apply.
+
 # Physical-device acceptance: Gate 0.2
 
 The primary regression test is **A remains usable while B is requested and learned**.

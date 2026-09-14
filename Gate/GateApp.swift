@@ -35,5 +35,5 @@ final class GateAppDelegate: NSObject, UIApplicationDelegate, UNUserNotification
 struct GateApp: App {
     @UIApplicationDelegateAdaptor(GateAppDelegate.self) private var delegate
     @StateObject private var controller = ScreenTimeController()
-    var body: some Scene { WindowGroup { ContentView(controller: controller) } }
+    var body: some Scene { WindowGroup { ContentView(controller: controller).modifier(GateAtmosphere()) } }
 }

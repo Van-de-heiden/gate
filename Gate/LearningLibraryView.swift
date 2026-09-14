@@ -30,14 +30,14 @@ struct LearningLibraryView: View {
                     TextField("Thema oder Kapitel suchen", text: $query)
                         .submitLabel(.search).onSubmit { GateKeyboard.dismiss() }
                     if !query.isEmpty { Button { query = ""; GateKeyboard.dismiss() } label: { Image(systemName: "xmark.circle.fill") }.accessibilityLabel("Suche löschen") }
-                }.padding(14).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 12))
+                }.padding(14).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 22))
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(categories, id: \.self) { item in
                             Button { category = item; GateKeyboard.dismiss() } label: {
                                 Text(item).font(.caption.weight(.medium)).padding(.horizontal, 14).padding(.vertical, 10)
-                                    .background(category == item ? Color.primary : GateDesign.surface)
-                                    .foregroundStyle(category == item ? GateDesign.paper : Color.primary)
+                                    .background(category == item ? GateDesign.accent : GateDesign.surface)
+                                    .foregroundStyle(category == item ? GateDesign.accentInk : Color.primary)
                                     .clipShape(Capsule())
                             }.buttonStyle(.plain).accessibilityAddTraits(category == item ? .isSelected : [])
                         }
@@ -51,7 +51,7 @@ struct LearningLibraryView: View {
                 }
                 if query.isEmpty {
                     if let stories = learning.catalog?.topics, !stories.isEmpty {
-                        Eyebrow(text: "Neue Lernfälle · eine Geschichte, mehrere Kapitel")
+                        Eyebrow(text: "Lernfälle · eine Frage wirklich verstehen")
                         ForEach(stories.filter { topic in paths.contains { $0.id == topic.pathID } }) { topic in
                             topicLink(topic)
                         }
@@ -75,10 +75,10 @@ struct LearningLibraryView: View {
                     ForEach(matches) { lesson in chapterButton(lesson) }
                     if matches.isEmpty { Text("Versuche einen weiteren Begriff, etwa Zins, Schlaf oder Gespräch.").font(.subheadline).foregroundStyle(.secondary) }
                 }
-                Text("Zeitversetzte Wiederholung · KI-Illustrationen, Quellen separat gekennzeichnet")
+                Text("Recherchierte Abbildungen mit Quellen · Wiederholung nach deinem Lernstand")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(24)
-        }.gateKeyboardDismissal()
+        }.gateBackground().gateKeyboardDismissal()
     }
 
     private func progressValue(_ path: LearningPath) -> Double {
@@ -92,23 +92,21 @@ struct LearningLibraryView: View {
                     Eyebrow(text: topic.format ?? "Lernfall")
                     Text(topic.title).font(.largeTitle.bold())
                     Text(topic.hook).font(.title3).foregroundStyle(.secondary)
-                    if let card = learning.catalog?.chapters(in: topic.id).first?.cards.first(where: { $0.image != nil }), let image = card.image {
-                        Image(image).resizable().scaledToFit().clipShape(RoundedRectangle(cornerRadius: 20))
-                            .accessibilityLabel(card.imageDescription ?? "Szenenbild")
-                        Text(card.caption ?? "KI-Illustration").font(.caption2).foregroundStyle(.secondary)
+                    if let media = learning.catalog?.chapters(in: topic.id).flatMap(\.cards).compactMap(\.media).first {
+                        LessonMediaView(media: media).gateCard()
                     }
-                    Text("Ein Fall · vier Kapitel")
+                    Text("\(learning.catalog?.chapters(in: topic.id).count ?? 0) Kapitel · ein zusammenhängender Fall")
                         .font(.subheadline)
                     Button("In den Fall eintauchen") { controller.beginPractice(path: topic.pathID, topic: topic.id) }.buttonStyle(GateButtonStyle())
                     ForEach(learning.catalog?.chapters(in: topic.id) ?? []) { chapterButton($0) }
                 }.padding(24)
-            }.navigationBarTitleDisplayMode(.inline)
+            }.gateBackground().navigationBarTitleDisplayMode(.inline)
         } label: {
             VStack(alignment: .leading, spacing: 12) {
                 Eyebrow(text: topic.format ?? "Lernfall")
                 Text(topic.title).font(.title2.weight(.semibold))
                 Text(topic.hook).font(.subheadline).foregroundStyle(.secondary)
-                HStack { Text("4 Kapitel · ein Thema"); Spacer(); Image(systemName: "arrow.right") }.font(.caption.weight(.medium))
+                HStack { Text("\(learning.catalog?.chapters(in: topic.id).count ?? 0) Kapitel · ein Thema"); Spacer(); Image(systemName: "arrow.right") }.font(.caption.weight(.medium))
             }.gateCard()
         }.buttonStyle(.plain)
     }
@@ -129,7 +127,7 @@ struct LearningLibraryView: View {
                 Text("Ca. \(max(2, (lesson.readingSeconds + lesson.questions.count * 20 + 59) / 60)) min · \(lesson.questions.count) Aufgaben")
                     .font(.caption2).foregroundStyle(.secondary)
             }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
-                .background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 14))
+                .background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 24))
         }.buttonStyle(.plain)
     }
     private func pathDetail(_ path: LearningPath) -> some View {
@@ -146,6 +144,6 @@ struct LearningLibraryView: View {
                 Text("Freies Lernen · ohne Bildschirmzeit-Freigabe")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(24)
-        }.background(GateDesign.paper).navigationBarTitleDisplayMode(.inline).toolbar(.visible, for: .navigationBar)
+        }.gateBackground().navigationBarTitleDisplayMode(.inline).toolbar(.visible, for: .navigationBar)
     }
 }

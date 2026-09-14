@@ -22,13 +22,18 @@ final class LearningStore: ObservableObject {
             self.catalog = catalog
             if FileManager.default.fileExists(atPath: file.path) {
                 progress = try JSONDecoder().decode(LearningProgress.self, from: Data(contentsOf: file))
+                // Keep completed history and earned results; replace unfinished obsolete question decks.
+                progress.reconcileCatalogVersion(catalog.version)
+                save()
             }
         } catch {
             self.error = "Lerninhalte oder Lernstand konnten nicht geladen werden: \(error.localizedDescription)"
         }
     }
 
-    var dueCount: Int { LearningScheduler.dueCount(progress, at: Date()) }
+    var dueCount: Int {
+        catalog?.questions.filter { (progress.memories[$0.id]?.due ?? .distantFuture) <= Date() }.count ?? 0
+    }
 
     func begin(request: GateRequest?, minutes: Int, consumed: Int, failures: Int, path: String? = nil,
                lesson: String? = nil, topic: String? = nil, reviewOnly: Bool = false) {
@@ -52,20 +57,17 @@ final class LearningStore: ObservableObject {
     }
 
     func markRead(_ id: String) { edit { $0.readLessonIDs.insert(id) } }
-    func answer(_ index: Int, for id: String) { edit { $0.responses[id] = index } }
-    func answer(_ response: QuestionResponse, for id: String) {
-        edit {
-            if $0.typedResponses == nil { $0.typedResponses = [:] }
-            $0.typedResponses?[id] = response
-            $0.responses.removeValue(forKey: id)
-        }
-    }
+    func answer(_ index: Int, for id: String) { answer(QuestionResponse(indices: [index]), for: id) }
+    func answer(_ response: QuestionResponse, for id: String) { edit { $0.setAnswer(response, for: id) } }
     func setPhase(_ phase: String) { edit { $0.phase = phase } }
     func setPosition(_ position: Int) {
         edit { if $0.phase == "learn" { $0.readerIndex = position } else if $0.phase == "quiz" { $0.quizIndex = position } }
     }
     func probe(_ response: QuestionResponse, for id: String) {
-        edit { if $0.probeResponses == nil { $0.probeResponses = [:] }; $0.probeResponses?[id] = response }
+        answer(response, for: id)
+    }
+    func submitProbe(_ id: String, cardID: String) {
+        edit { $0.submitInlineQuestion(id, cardID: cardID) }
     }
     func reveal(_ id: String) {
         edit { if $0.revealedCardIDs == nil { $0.revealedCardIDs = [] }; $0.revealedCardIDs?.insert(id) }
