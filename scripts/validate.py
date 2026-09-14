@@ -12,7 +12,7 @@ assert len(catalog['paths']) == 10
 assert len(catalog['lessons']) == 15
 assert len(catalog['topics']) == 10
 questions = [q for l in catalog['lessons'] for q in l['questions']]
-assert len(questions) == len({q['id'] for q in questions}) == 35
+assert len(questions) == len({q['id'] for q in questions}) == 32
 assert {len(l['questions']) for l in catalog['lessons']} == {2, 3}
 assert {q.get('format', 'singleChoice') for q in questions} == {'singleChoice', 'multipleChoice', 'ordering'}
 media = []

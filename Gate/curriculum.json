@@ -196,8 +196,8 @@
             "prompt": "Die ersten Abzüge haben alle denselben falschen Buchstaben. Wo suchst du zuerst?",
             "options": [
               "In der gemeinsam benutzten gesetzten Druckform.",
-              "In der Handschrift jedes einzelnen Käufers.",
-              "In der Geschwindigkeit, mit der die Blätter trocknen."
+              "Zuerst im Druck, den die Presse auf die Buchstaben ausübt.",
+              "Zuerst in der Farbmenge, die auf die unveränderte Form aufgetragen wird."
             ],
             "correctIndex": 0,
             "explanation": "Wiederholbare Abdrücke teilen eine Vorlage. Ein systematisch wiederkehrender Buchstabenfehler spricht zuerst für den Satz, nicht für einen zufälligen Fehler auf jedem Blatt.",
@@ -210,8 +210,8 @@
           "prompt": "Die ersten Abzüge haben alle denselben falschen Buchstaben. Wo suchst du zuerst?",
           "options": [
             "In der gemeinsam benutzten gesetzten Druckform.",
-            "In der Handschrift jedes einzelnen Käufers.",
-            "In der Geschwindigkeit, mit der die Blätter trocknen."
+            "Zuerst im Druck, den die Presse auf die Buchstaben ausübt.",
+            "Zuerst in der Farbmenge, die auf die unveränderte Form aufgetragen wird."
           ],
           "correctIndex": 0,
           "explanation": "Wiederholbare Abdrücke teilen eine Vorlage. Ein systematisch wiederkehrender Buchstabenfehler spricht zuerst für den Satz, nicht für einen zufälligen Fehler auf jedem Blatt.",
@@ -221,8 +221,8 @@
           "prompt": "Was ermöglicht beweglicher Satz zusätzlich zu einer geschnitzten ganzen Seite?",
           "options": [
             "Die Buchstaben nach dem Druck für einen anderen Text neu zusammenzustellen.",
-            "Ohne jede Vorbereitung sofort irgendeinen Text zu drucken.",
-            "Bei jedem Abdruck automatisch den Inhalt zu prüfen."
+            "Die gesetzte Seite dauerhaft unverändert aufzubewahren, um das Material zu schonen.",
+            "Jede Seite nur einmal zu drucken und für weitere Kopien neu abzuschreiben."
           ],
           "correctIndex": 0,
           "explanation": "Beweglich bedeutet neu kombinierbar. Das senkt die Bindung des Materials an eine einzige Seite; Setzen und Prüfen bleiben Arbeit.",
@@ -278,7 +278,7 @@
             "options": [
               "Der gedruckte Text konnte nachträglich von Hand unterschiedlich ausgestattet werden.",
               "Der unterschiedliche Schmuck beweist, dass keines der Bücher gedruckt wurde.",
-              "Die Presse muss für jeden Käufer zufällige Farben gewählt haben."
+              "Alle sichtbaren Farben müssen zusammen mit dem schwarzen Text gedruckt worden sein."
             ],
             "correctIndex": 0,
             "explanation": "Gedruckter Text und spätere Handarbeit können im selben Buch vorkommen. Unterschiedliche Ausstattung widerlegt den gemeinsamen Druck nicht.",
@@ -292,7 +292,7 @@
           "options": [
             "Der gedruckte Text konnte nachträglich von Hand unterschiedlich ausgestattet werden.",
             "Der unterschiedliche Schmuck beweist, dass keines der Bücher gedruckt wurde.",
-            "Die Presse muss für jeden Käufer zufällige Farben gewählt haben."
+            "Alle sichtbaren Farben müssen zusammen mit dem schwarzen Text gedruckt worden sein."
           ],
           "correctIndex": 0,
           "explanation": "Gedruckter Text und spätere Handarbeit können im selben Buch vorkommen. Unterschiedliche Ausstattung widerlegt den gemeinsamen Druck nicht.",
@@ -304,7 +304,7 @@
             "Druck und Handarbeit wurden hier kombiniert.",
             "Jedes Gutenberg-Exemplar sah genau gleich aus.",
             "Das einzelne Exemplar belegt nicht das Ende aller Handschriften.",
-            "Die Abbildung ist ein Foto aus Gutenbergs Werkstatt."
+            "Der sichtbare Farbschmuck muss ebenfalls mit beweglichen Lettern gedruckt worden sein."
           ],
           "correctIndex": 0,
           "correctIndices": [
@@ -365,7 +365,7 @@
             "options": [
               "Nein. Erst das anschliessende Ätzen überträgt in diesem Verfahren das Muster auf diese Schicht.",
               "Ja. Licht müsste die untere Schicht bereits vollständig wegschneiden.",
-              "Ja. Nach dem Entwickeln muss schon der ganze Prozessor fertig sein."
+              "Nein. Der Lack bleibt in diesem Verfahren als endgültige Materialschicht bestehen."
             ],
             "correctIndex": 0,
             "explanation": "Die Lackmaske bestimmt, wo geätzt werden kann. Das Herstellen der Maske und die Bearbeitung des Materials sind zwei verschiedene Vorgänge.",
@@ -379,7 +379,7 @@
           "options": [
             "Nein. Erst das anschliessende Ätzen überträgt in diesem Verfahren das Muster auf diese Schicht.",
             "Ja. Licht müsste die untere Schicht bereits vollständig wegschneiden.",
-            "Ja. Nach dem Entwickeln muss schon der ganze Prozessor fertig sein."
+            "Nein. Der Lack bleibt in diesem Verfahren als endgültige Materialschicht bestehen."
           ],
           "correctIndex": 0,
           "explanation": "Die Lackmaske bestimmt, wo geätzt werden kann. Das Herstellen der Maske und die Bearbeitung des Materials sind zwei verschiedene Vorgänge.",
@@ -403,17 +403,6 @@
           "format": "ordering",
           "explanation": "Erst entsteht eine lichtempfindliche Schicht, dann die selektive Maske. Sie schützt während des Ätzens und wird erst danach entfernt.",
           "id": "case.chip.1.v6.q2"
-        },
-        {
-          "prompt": "Welche Rolle hat der Fotolack während des Ätzens?",
-          "options": [
-            "Er schützt ausgewählte Bereiche des darunterliegenden Materials.",
-            "Er ist schon der endgültige elektrische Leiter jeder Verbindung.",
-            "Er prüft automatisch, ob das Schaltungsdesign sinnvoll ist."
-          ],
-          "correctIndex": 0,
-          "explanation": "Fotolack ist hier eine vorübergehende Prozessmaske. Die Schaltung entsteht durch weitere Material- und Bearbeitungsschritte.",
-          "id": "case.chip.1.v6.q3"
         }
       ],
       "takeaway": "Licht formt eine Maske. Die Maske steuert die Bearbeitung. Diese Trennung macht feinste wiederholbare Muster möglich.",
@@ -465,7 +454,7 @@
             "options": [
               "Die Ausrichtung der Schichten zueinander prüfen.",
               "Nur die Schärfe einer einzelnen Schicht noch einmal bestätigen.",
-              "Die Aufschrift auf der fertigen Verpackung kontrollieren."
+              "Nur nach einzelnen Kratzern suchen und die Lage der Schichten ausblenden."
             ],
             "correctIndex": 0,
             "explanation": "Der beschriebene Fehler liegt in der Lagebeziehung. Eine weitere Schärfemessung allein prüft nicht, ob Kontakte übereinanderliegen.",
@@ -479,7 +468,7 @@
           "options": [
             "Die Ausrichtung der Schichten zueinander prüfen.",
             "Nur die Schärfe einer einzelnen Schicht noch einmal bestätigen.",
-            "Die Aufschrift auf der fertigen Verpackung kontrollieren."
+            "Nur nach einzelnen Kratzern suchen und die Lage der Schichten ausblenden."
           ],
           "correctIndex": 0,
           "explanation": "Der beschriebene Fehler liegt in der Lagebeziehung. Eine weitere Schärfemessung allein prüft nicht, ob Kontakte übereinanderliegen.",
@@ -582,8 +571,8 @@
           "prompt": "Ein Labor ersetzt seine gefilterte Beleuchtung durch helle normale Lampen. Die Luft bleibt sauber. Welches Problem ist dadurch nicht automatisch gelöst?",
           "options": [
             "Der empfindliche Lack könnte ungewollt belichtet werden.",
-            "Die Luft muss sofort grobe sichtbare Staubwolken enthalten.",
-            "Alle Schichten müssen sich durch das Licht mechanisch verdrehen."
+            "Der Lack ist durch saubere Luft zugleich vor ungeeigneten Lichtanteilen geschützt.",
+            "Der Lack reagiert ausschliesslich auf Licht in der eigentlichen Belichtungsmaschine."
           ],
           "correctIndex": 0,
           "explanation": "Saubere Luft schützt nicht gegen jede Lichtwirkung. Die Art des Schutzes muss zur jeweiligen Fehlerquelle passen.",
@@ -663,29 +652,12 @@
           "prompt": "Was zeigt der Lichtweg in der Abbildung vor allem?",
           "options": [
             "Wie ein Umweltsignal zur zeitlichen Abstimmung der inneren Uhr beiträgt.",
-            "Wie das Auge die fehlenden Schlafstunden exakt zählt.",
-            "Wie helles Licht jede Form von Müdigkeit dauerhaft beseitigt."
+            "Wie das Auge den angesammelten Schlafdruck unmittelbar abbaut.",
+            "Warum die innere Uhr ausschliesslich von der bisherigen Wachzeit abhängt."
           ],
           "correctIndex": 0,
           "explanation": "Licht liefert Zeitinformation. Schlafdruck und innere Uhr wirken zusammen, erfüllen aber unterschiedliche Aufgaben.",
           "id": "case.sleep.1.v6.q2"
-        },
-        {
-          "prompt": "Welche zwei Fragen trennt dieses Kapitel?",
-          "options": [
-            "Wie lange bin ich schon wach?",
-            "Welche Tageszeit signalisiert mein Rhythmus gerade?",
-            "Wie viele Wörter passen in einen Traum?",
-            "Welche Bettzeit muss für alle Menschen identisch sein?"
-          ],
-          "correctIndex": 0,
-          "correctIndices": [
-            0,
-            1
-          ],
-          "format": "multipleChoice",
-          "explanation": "Wachzeit und zeitliche Abstimmung sind verschiedene Einflüsse. Das Modell begründet keine universelle persönliche Bettzeit.",
-          "id": "case.sleep.1.v6.q3"
         }
       ],
       "takeaway": "Ein Wachheitssignal ist kein Ersatz für Schlaf. Frage getrennt nach Schlafdruck und innerer Uhr.",
@@ -761,8 +733,8 @@
           "prompt": "Eine Lern-App behauptet: «Diese Kurve sagt genau voraus, was du morgen vergessen hast.» Was fehlt für diese Schlussfolgerung?",
           "options": [
             "Ein Beleg, dass die Messung bei dieser Person, diesem Inhalt und dieser Abrufaufgabe so übertragbar ist.",
-            "Nur eine zusätzliche Dezimalstelle an der Zeitachse.",
-            "Eine möglichst dramatische Farbe für den Kurvenabfall."
+            "Nur die Bestätigung, dass die Kurve im ursprünglichen Experiment korrekt gezeichnet wurde.",
+            "Nur die Information, dass der neue Lernstoff ebenfalls aus Wörtern besteht."
           ],
           "correctIndex": 0,
           "explanation": "Ein Experiment mit bestimmtem Material und Messkriterium wird durch ein präzises Diagramm nicht automatisch zu einer individuellen Vorhersage.",
@@ -842,8 +814,8 @@
           "prompt": "Warum können im gezeigten Modell mehr Fehlalarme als echte Treffer entstehen?",
           "options": [
             "Die viel grössere Gruppe ohne Erkrankung liefert ebenfalls positive Ergebnisse.",
-            "Ein Test, der echte Fälle erkennt, muss absichtlich falsche Ergebnisse erfinden.",
-            "Weil ein positiver Befund grundsätzlich keinerlei Information enthält."
+            "Die Fehlalarmrate wird ausschliesslich innerhalb der bereits Erkrankten berechnet.",
+            "Die Erkennungsrate allein legt fest, welcher Anteil aller positiven Ergebnisse echt ist."
           ],
           "correctIndex": 0,
           "explanation": "Ein Anteil einer grossen Ausgangsgruppe kann mehr Fälle ergeben als ein hoher Anteil einer kleinen. Das macht Alarme nicht bedeutungslos.",
@@ -854,7 +826,7 @@
           "options": [
             "Im Postfach, in dem Spam vorab häufiger vorkommt.",
             "In beiden muss der Anteil echter Spamnachrichten unter den Alarmen immer identisch sein.",
-            "Im Postfach mit längeren Betreffzeilen, unabhängig vom Inhalt."
+            "Die Ausgangshäufigkeit kann nur negative Ergebnisse beeinflussen, keine Alarme."
           ],
           "correctIndex": 0,
           "explanation": "Bei gleichen Erkennungs- und Fehlalarmraten verändert die Ausgangshäufigkeit die Zusammensetzung der Alarme. Darum braucht eine Aussage über einen Alarm auch Kontext.",
@@ -909,8 +881,8 @@
             "prompt": "Welche Information erklärt das unmittelbare Problem der Werkstatt am besten?",
             "options": [
               "Die eigene Zahlung wird fällig, bevor genügend Kundengeld eingeht.",
-              "Jeder profitable Auftrag muss sofort Verlust verursachen.",
-              "Der Verkaufspreis wurde mit zu wenigen Nachkommastellen angegeben."
+              "Der ausgewiesene Gewinn muss bereits als frei verfügbares Kontoguthaben vorliegen.",
+              "Die offene Kundenrechnung steht für die morgige Zahlung bereits wie Bargeld bereit."
             ],
             "correctIndex": 0,
             "explanation": "Ertrag und verfügbarer Geldbestand fallen zeitlich auseinander. Für die nächste Zahlung zählt, wann Geld tatsächlich verfügbar ist.",
@@ -923,8 +895,8 @@
           "prompt": "Welche Information erklärt das unmittelbare Problem der Werkstatt am besten?",
           "options": [
             "Die eigene Zahlung wird fällig, bevor genügend Kundengeld eingeht.",
-            "Jeder profitable Auftrag muss sofort Verlust verursachen.",
-            "Der Verkaufspreis wurde mit zu wenigen Nachkommastellen angegeben."
+            "Der ausgewiesene Gewinn muss bereits als frei verfügbares Kontoguthaben vorliegen.",
+            "Die offene Kundenrechnung steht für die morgige Zahlung bereits wie Bargeld bereit."
           ],
           "correctIndex": 0,
           "explanation": "Ertrag und verfügbarer Geldbestand fallen zeitlich auseinander. Für die nächste Zahlung zählt, wann Geld tatsächlich verfügbar ist.",
@@ -953,8 +925,8 @@
           "prompt": "Ein zweiter Kunde bestellt unter denselben Bedingungen. Warum ist «mehr Umsatz löst das sofort» keine sichere Antwort?",
           "options": [
             "Auch der zweite Auftrag kann weitere Vorleistungen verlangen, bevor er bezahlt wird.",
-            "Weil eine zweite Rechnung bereits vorhandenes Geld automatisch vernichtet.",
-            "Weil Umsatz und Gewinn immer dieselbe Grösse sind."
+            "Der zweite Verkauf verändert den Finanzierungsbedarf erst, wenn der Kunde bezahlt hat.",
+            "Jede zusätzliche Forderung erhöht sofort das verfügbare Bankguthaben."
           ],
           "correctIndex": 0,
           "explanation": "Wachstum kann den Vorfinanzierungsbedarf erhöhen. Mehr verkaufte Leistung ist nicht automatisch früher verfügbares Geld.",
@@ -1091,7 +1063,7 @@
             "options": [
               "Dass David ihn in seine Darstellung aufgenommen hat.",
               "Dass Platon beim historischen Ereignis sicher im Raum sass.",
-              "Dass Platons Texte keinerlei Bezug zu Sokrates haben."
+              "Dass David eine antike Augenzeugenskizze unverändert kopiert hat."
             ],
             "correctIndex": 0,
             "explanation": "Das Gemälde belegt zuerst seine eigene Gestaltung. Laut Museumsbeschreibung verweist Platon hier auf den überliefernden Autor, nicht auf einen anwesenden Augenzeugen.",
@@ -1105,7 +1077,7 @@
           "options": [
             "Dass David ihn in seine Darstellung aufgenommen hat.",
             "Dass Platon beim historischen Ereignis sicher im Raum sass.",
-            "Dass Platons Texte keinerlei Bezug zu Sokrates haben."
+            "Dass David eine antike Augenzeugenskizze unverändert kopiert hat."
           ],
           "correctIndex": 0,
           "explanation": "Das Gemälde belegt zuerst seine eigene Gestaltung. Laut Museumsbeschreibung verweist Platon hier auf den überliefernden Autor, nicht auf einen anwesenden Augenzeugen.",
@@ -1171,8 +1143,8 @@
             "prompt": "Ein Symbol soll doppelt so viel zeigen und wird zugleich doppelt so hoch und breit. Was ist das Problem?",
             "options": [
               "Die sichtbare Fläche wächst stärker als die dargestellte Menge.",
-              "Jede Vergrösserung eines Symbols ist grundsätzlich verboten.",
-              "Die Farbe müsste ebenfalls doppelt so dunkel werden."
+              "Die Fläche bleibt proportional, solange das Symbol seine ursprüngliche Form behält.",
+              "Die unveränderten Zahlen machen jede Flächenskalierung automatisch angemessen."
             ],
             "correctIndex": 0,
             "explanation": "Zwei veränderte Dimensionen multiplizieren sich in der Fläche. Für eine Verdopplung der Menge wirkt das ganze Symbol dadurch übergross.",
@@ -1185,8 +1157,8 @@
           "prompt": "Ein Symbol soll doppelt so viel zeigen und wird zugleich doppelt so hoch und breit. Was ist das Problem?",
           "options": [
             "Die sichtbare Fläche wächst stärker als die dargestellte Menge.",
-            "Jede Vergrösserung eines Symbols ist grundsätzlich verboten.",
-            "Die Farbe müsste ebenfalls doppelt so dunkel werden."
+            "Die Fläche bleibt proportional, solange das Symbol seine ursprüngliche Form behält.",
+            "Die unveränderten Zahlen machen jede Flächenskalierung automatisch angemessen."
           ],
           "correctIndex": 0,
           "explanation": "Zwei veränderte Dimensionen multiplizieren sich in der Fläche. Für eine Verdopplung der Menge wirkt das ganze Symbol dadurch übergross.",
@@ -1197,7 +1169,7 @@
           "options": [
             "Zwei gleiche Symbole statt eines.",
             "Ein Symbol mit doppelter Höhe und doppelter Breite.",
-            "Ein unverändertes Symbol mit abgeschnittener Beschriftung."
+            "Ein einzelnes gleich grosses Symbol, das nur etwas dunkler eingefärbt wird."
           ],
           "correctIndex": 0,
           "explanation": "Gleich grosse Einheiten halten die visuelle Menge vergleichbar. Die Verdopplung entsteht durch die Anzahl, nicht durch zusätzliche Flächenvergrösserung.",
@@ -1277,8 +1249,8 @@
           "prompt": "Ein Erfolgsratgeber befragt nur erfolgreiche Firmen. Welche Ergänzung hilft gegen denselben Auswahlfehler?",
           "options": [
             "Auch vergleichbare gescheiterte Firmen und ihr Vorgehen untersuchen.",
-            "Die Fotos der erfolgreichen Gründer grösser abdrucken.",
-            "Nur die Antworten besonders berühmter Firmen mehrfach zählen."
+            "Noch mehr erfolgreiche Firmen befragen, weiterhin ohne gescheiterte Vergleichsfälle.",
+            "Die Erfolgreichen genauer nach den gemeinsamen Eigenschaften ihrer Erfolge fragen."
           ],
           "correctIndex": 0,
           "explanation": "Du musst wissen, ob das gelobte Verhalten auch bei Misserfolgen vorkam. Mehr Details derselben ausgewählten Gruppe beseitigen die Auswahl nicht.",
@@ -1358,8 +1330,8 @@
           "prompt": "Bei zunächst gleicher Temperatur kommt mehr Energie an, als die Erde ins All abgibt. Was bedeutet das für die Bilanz?",
           "options": [
             "Energie sammelt sich an; das System erwärmt sich.",
-            "Die zusätzliche Energie muss ohne Wirkung verschwinden.",
-            "Die Sonne muss dadurch automatisch heller werden."
+            "Die Temperatur bleibt allein deshalb gleich, weil die einfallende Sonnenenergie unverändert ist.",
+            "Das Ungleichgewicht kann nur durch eine stärkere Sonnenstrahlung entstanden sein."
           ],
           "correctIndex": 0,
           "explanation": "Ein Überschuss im Energiezufluss erhöht den Energieinhalt. Eine veränderte Abgabe setzt keine gleichzeitige Veränderung der Sonne voraus.",
@@ -1415,7 +1387,7 @@
             "options": [
               "Die bekannte Bank-App selbst öffnen und dort nachsehen oder über einen bekannten Kontakt nachfragen.",
               "Den Link öffnen, weil das Logo genau passt.",
-              "Auf die Mail antworten und denselben Absender nach seiner Echtheit fragen."
+              "Auf die Mail antworten und vom selben Absender eine Bestätigung anfordern."
             ],
             "correctIndex": 0,
             "explanation": "Eine unabhängige Prüfung nutzt ein bereits bekanntes Ziel. Ein Absender, der sich selbst bestätigt, liefert keinen unabhängigen Herkunftsnachweis.",
@@ -1429,40 +1401,22 @@
           "options": [
             "Die bekannte Bank-App selbst öffnen und dort nachsehen oder über einen bekannten Kontakt nachfragen.",
             "Den Link öffnen, weil das Logo genau passt.",
-            "Auf die Mail antworten und denselben Absender nach seiner Echtheit fragen."
+            "Auf die Mail antworten und vom selben Absender eine Bestätigung anfordern."
           ],
           "correctIndex": 0,
           "explanation": "Eine unabhängige Prüfung nutzt ein bereits bekanntes Ziel. Ein Absender, der sich selbst bestätigt, liefert keinen unabhängigen Herkunftsnachweis.",
           "id": "digital.phishing.v6.q1"
         },
         {
-          "prompt": "Welche Merkmale sind allein kein Nachweis für den behaupteten Absender?",
-          "options": [
-            "Ein bekanntes Logo.",
-            "Fehlerfreie Sprache.",
-            "Ein dringender Ton.",
-            "Die erfolgreiche Klärung über einen zuvor verifizierten Kontakt."
-          ],
-          "correctIndex": 0,
-          "correctIndices": [
-            0,
-            1,
-            2
-          ],
-          "format": "multipleChoice",
-          "explanation": "Aufmachung und Dringlichkeit können nachgeahmt werden. Ein separat verifizierter Kontakt ist eine andere Art der Prüfung.",
-          "id": "digital.phishing.v6.q2"
-        },
-        {
           "prompt": "Ein verdächtiger Link führt zu einer verschlüsselten Website. Was bestätigt das Schlosssymbol allein?",
           "options": [
             "Eine geschützte Verbindung zu dieser Website, nicht ihre Zugehörigkeit zur behaupteten Bank.",
-            "Dass jede Aussage auf dieser Website richtig ist.",
-            "Dass die Bank die ursprüngliche Mail persönlich genehmigt hat."
+            "Dass die angezeigte Domain zur im Mailtext behaupteten Bank gehört.",
+            "Dass der Link in der ursprünglichen Mail von der Bank geprüft wurde."
           ],
           "correctIndex": 0,
           "explanation": "Verbindungsverschlüsselung und Identität der behaupteten Organisation sind verschiedene Fragen. Auch eine betrügerische Seite kann eine verschlüsselte Verbindung anbieten.",
-          "id": "digital.phishing.v6.q3"
+          "id": "digital.phishing.v6.q2"
         }
       ],
       "takeaway": "Verifiziere das Ziel über einen unabhängigen bekannten Weg. Eine überzeugende Oberfläche kann kopiert werden.",

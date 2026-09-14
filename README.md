@@ -10,7 +10,7 @@ Third-party reference photos are not relicensed under MIT.
 
 Gate now offers **10 topics with 15 newly authored German chapters**, reduced from 144.
 Every chapter has its own published photograph, historical object or diagram, a specific
-observation task, and explained questions. There are 35 questions in total; all 15 inline
+observation task, and explained questions. There are 32 questions in total; all 15 inline
 questions count once toward the result. Topics contain one to three chapters according to
 the subject. There is no minimum reading time or fixed question quota.
 

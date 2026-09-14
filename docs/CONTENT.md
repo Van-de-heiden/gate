@@ -1,6 +1,6 @@
 # Aktiver Katalog · Version 6
 
-Die Ausgabe enthält 10 Themen, 15 eigenständige Kapitel und 35 Fragen. 15 Zwischenfragen zählen zum selben Ergebnis wie die Abschlussfragen; jede wird nur einmal gewertet. Jede Abbildung ist veröffentlicht und mit einer Beobachtungsaufgabe verbunden. Es gibt keine generierten Lehrbilder und keine isolierte Prozentrechnung auf Nachkommastellen.
+Die Ausgabe enthält 10 Themen, 15 eigenständige Kapitel und 32 Fragen. 15 Zwischenfragen zählen zum selben Ergebnis wie die Abschlussfragen; jede wird nur einmal gewertet. Jede Abbildung ist veröffentlicht und mit einer Beobachtungsaufgabe verbunden. Es gibt keine generierten Lehrbilder und keine isolierte Prozentrechnung auf Nachkommastellen.
 
 ## Quellen und Aufbau
 
