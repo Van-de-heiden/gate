@@ -67,7 +67,7 @@ struct LessonStoryCard: View {
                     let correct = learning.session?.isCorrect(item) == true
                     VStack(alignment: .leading, spacing: 12) {
                         Label(correct ? "Richtig eingeordnet" : "Hier liegt der Unterschied",
-                              systemImage: correct ? "checkmark.circle.fill" : "arrow.trianglehead.clockwise")
+                              systemImage: correct ? "checkmark.circle.fill" : "arrow.clockwise")
                             .font(.headline).foregroundStyle(correct ? GateDesign.success : GateDesign.caution)
                         Text(item.question.explanation).font(.body).lineSpacing(5)
                         Text("Antwort gewertet. Diese Frage erscheint im Abschluss nicht nochmals.")

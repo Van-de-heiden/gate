@@ -54,7 +54,7 @@ final class LearningExpansionTests: XCTestCase {
     }
 
     func testRecallAllowsCaseAndUmlautsButNotSubstringGuessing() throws {
-        let question = LearningQuestion(id: "legacy.recall", prompt: "Begriff", options: [], correctIndex: 0, explanation: "Altes Format.", format: .recall, acceptedAnswers: ["Liquidität"])
+        let question = LearningQuestion(id: "legacy.recall", prompt: "Begriff", options: [], correctIndex: 0, explanation: "Altes Format.", format: .recall, acceptedAnswers: ["Liquidität", "Liquiditaet"])
         XCTAssertTrue(question.isCorrect(QuestionResponse(text: "  LIQUIDITÄT! ")))
         XCTAssertTrue(question.isCorrect(QuestionResponse(text: "liquiditaet")))
         XCTAssertFalse(question.isCorrect(QuestionResponse(text: "Liquidität ist die falsche Antwort")))
