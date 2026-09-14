@@ -96,10 +96,10 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 
 ### Curriculum and images
 - Search a term, filter by category, open a specific chapter, finish it, and reopen it. Explicit chapter practice must not jump to a different chapter.
-- Try all seven formats, including wrong/missing numeric values, unmatched pairs, multiple selections and reordered steps.
-- Suspend/reopen each input format. Answers and permutation persist. A short partial round must not prematurely mark a new chapter complete.
+- Try current single-choice, multiple-choice and ordering questions. Verify missing and wrong responses; legacy formats remain covered by core tests.
+- Suspend/reopen each input format. Answers, permutations and submitted inline locks persist. A partial due review must not prematurely mark a new chapter complete.
 - Open **Wissen auffrischen** when due questions exist: only due questions appear in this voluntary review mode.
-- Disable networking. All eight image motifs and all chapters remain usable; the older external NASA source photo still loads only on explicit request.
+- Disable networking. Text and questions remain usable. Previously cached media stays available; uncached media shows a descriptive fallback and retry action.
 
 ## Everyday allowance and native interface regression checks
 

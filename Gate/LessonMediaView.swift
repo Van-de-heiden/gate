@@ -1,4 +1,5 @@
 import CryptoKit
+import ImageIO
 import SwiftUI
 import UIKit
 
@@ -12,12 +13,15 @@ private actor LessonMediaCache {
         guard let url = URL(string: address), url.scheme == "https" else { throw URLError(.badURL) }
         let key = SHA256.hash(data: Data(address.utf8)).map { String(format: "%02x", $0) }.joined()
         let file = folder.appendingPathComponent(key)
-        if let cached = try? Data(contentsOf: file) { return cached }
+        if let cached = try? Data(contentsOf: file) {
+            if isImage(cached) { return cached }
+            try? FileManager.default.removeItem(at: file)
+        }
         var request = URLRequest(url: url)
         request.timeoutInterval = 20
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode),
-              http.mimeType?.hasPrefix("image/") == true, data.count <= 12_000_000 else {
+              http.mimeType?.hasPrefix("image/") == true, data.count <= 12_000_000, isImage(data) else {
             throw URLError(.badServerResponse)
         }
         try Task.checkCancellation()
@@ -25,6 +29,11 @@ private actor LessonMediaCache {
         try? data.write(to: file, options: .atomic)
         trimCache()
         return data
+    }
+
+    private func isImage(_ data: Data) -> Bool {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil) else { return false }
+        return CGImageSourceGetCount(source) > 0
     }
 
     private func trimCache() {

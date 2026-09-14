@@ -95,7 +95,7 @@ struct GateSettingsView: View {
                     Text("iOS-Berechtigungen bleiben widerrufbar. Kein absoluter Umgehungsschutz.")
                         .font(.subheadline).foregroundStyle(.secondary)
                     DisclosureGroup("Datenschutz") {
-                        Text("Lernstand und Notizen bleiben lokal. Keine Konten oder Tracker. Externe Quellenfotos laden nur auf Wunsch. Inhalte innerhalb fremder Apps kann Gate nicht vollständig prüfen.")
+                        Text("Lernstand und Notizen bleiben lokal. Keine Konten oder Tracker. Quellenbilder laden beim Öffnen einer Lektion vom angegebenen Anbieter; dieser erhält übliche Verbindungsdaten wie die IP-Adresse. Bereits geladene Bilder werden lokal zwischengespeichert.")
                             .font(.subheadline).foregroundStyle(.secondary)
                     }
                 }.gateCard()
@@ -104,7 +104,7 @@ struct GateSettingsView: View {
                         .font(.subheadline).foregroundStyle(.secondary)
                     Link("Projekt auf GitHub", destination: URL(string: "https://github.com/Van-de-heiden/gate")!).underline()
                     Button("Einführung noch einmal ansehen") { showOnboarding = true }.font(.footnote)
-                    Text("Version 0.3 · Produkt-Alpha").font(.caption2).foregroundStyle(.secondary)
+                    Text("Version 0.5 · Produkt-Alpha").font(.caption2).foregroundStyle(.secondary)
                 }.gateCard()
             }.padding(24)
         }

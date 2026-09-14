@@ -99,7 +99,7 @@ struct ContentView: View {
                     }.buttonStyle(.plain).accessibilityLabel("Gate-Pause öffnen")
                 }
                 VStack(alignment: .leading, spacing: 16) {
-                    GateLandscape()
+                    GateLandscape(active: tab == 0 && !onboarding && learning.session == nil && !controller.showPause)
                     Eyebrow(text: dayPhase.greeting)
                     Text(controller.state.limitReached ? "Erst verstehen.\nDann weiter." : "Platz für das,\nwas zählt.")
                         .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)

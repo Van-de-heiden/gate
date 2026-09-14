@@ -58,6 +58,7 @@ private struct GatePageBackground: View {
 /// Decorative landscape only. Lesson photographs and charts come from cited publishers.
 /// The renderer stops completely when hidden, backgrounded, in Low Power Mode or Reduce Motion.
 struct GateLandscape: View {
+    var active = true
     @Environment(\.gateDayPhase) private var phase
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -65,7 +66,7 @@ struct GateLandscape: View {
     @State private var lowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
     var body: some View {
         TimelineView(.animation(minimumInterval: 1.0 / 15.0,
-                                paused: !visible || scenePhase != .active || reduceMotion || lowPower)) { timeline in
+                                paused: !active || !visible || scenePhase != .active || reduceMotion || lowPower)) { timeline in
             let time = reduceMotion || lowPower ? 0 : timeline.date.timeIntervalSinceReferenceDate
             Canvas { context, size in draw(context, size: size, time: time) }
         }
