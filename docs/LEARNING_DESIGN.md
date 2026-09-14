@@ -1,25 +1,25 @@
-# Lern- und Oberflächendesign · Version 5
+# Lern- und Oberflächendesign · Version 6
 
-Die Rückmeldung war konkret: langweilige Texte, sinnlose Rechenfragen, folgenlose Zwischenfragen und eine klobige schwarze Oberfläche. Die Überarbeitung setzt deshalb bei Inhalt, Entscheidung und Rückmeldung an.
+Die Rückmeldung nach Ausgabe 5 war weiterhin: zu viele ähnliche Kapitel, zu wenig Erkenntnis und zu wenige Bilder. Diese Ausgabe reduziert deshalb 144 Kapitel auf 15 und schreibt die verbleibenden Kapitel neu.
 
-## Ein Kapitel muss einen Gedanken tragen
+## Woran sich ein Kapitel messen muss
 
-Ein konkreter Einstieg eröffnet ein Problem. Eine knappe Erklärung macht den Unterschied verständlich. Die bewertete Entscheidung verlangt eine Anwendung dieses Unterschieds; zusätzliche Abschlussfragen behandeln einen anderen Aspekt oder Transfer. Es gibt weder eine Mindestlesedauer noch eine Verbindung zwischen gewünschter Bildschirmzeit und Inhaltsumfang. Die Zeitschätzung wird aus tatsächlichen Wörtern und der tatsächlichen Fragenzahl abgeleitet.
+- Eine eigenständige Frage mit einer konkreten Entdeckung, beispielsweise Platon als abwesender «Augenzeuge» im Sokrates-Gemälde.
+- Eine veröffentlichte Abbildung, an der der Leser etwas erkennen, verfolgen oder vergleichen kann.
+- Eine verständliche Erklärung des Mechanismus und seiner Grenzen.
+- Eine Anwendung, die mehr verlangt als eine Zahl oder einen Satz auswendig wiederzugeben.
+- Keine Mindestwortzahl, erzwungene Lernzeit oder feste Fragenzahl.
 
-Zwischenfragen zählen zum gleichen Ergebnis wie die Abschlussfragen. Die erste abgegebene Antwort wird vor der Rückmeldung gesperrt. Die Auflösung erklärt den Unterschied auch nach einer falschen Antwort; Lesen bleibt möglich. Die App zeigt die für das konkrete Ergebnis erforderliche Anzahl richtiger Antworten. Der bestehende Bestehenswert beträgt 80 Prozent.
+Das Prüfprotokoll `scripts/content/review_v6.json` verknüpft jedes Kapitel mit seiner Entdeckung, Bildaufgabe, Fachquelle und den Zwecken seiner Fragen. Es ist ein redaktionelles Arbeitsprotokoll, kein Nachweis für extern geprüfte Lehrqualität. Gefallen, Schwierigkeit und Lernerfolg müssen zusätzlich mit Nutzern beobachtet werden.
 
-## Medien müssen etwas erklären
+## Ablauf
 
-Recherchierte Fotos und publizierte Grafiken stehen dort, wo sie eine Quelle, Struktur oder einen Vergleich sichtbar machen. Bildunterschriften unterscheiden Original, spätere Darstellung, Modell und Messung. Eine Ebbinghaus-Kurve über Wiederlern-Ersparnis ist kein persönlicher Gedächtnisfahrplan. Das Flugzeugschema zum Survivorship Bias wird als hypothetische moderne Darstellung gekennzeichnet. Die vollständigen Nachweise stehen in [MEDIA_SOURCES.md](MEDIA_SOURCES.md).
+Eine neue Pflichtrunde beginnt mit zwei gespeicherten zufälligen Themenvorschlägen. Titel und Einstieg beschreiben die konkrete Entdeckung; Kapitelzahl, Aufgaben und ungefähre Dauer helfen bei der Wahl. Das Auswählen startet genau dieses Thema. Die Bibliothek zeigt dieselben Themen ohne parallelen, doppelt aufgeführten Grundlagenkatalog.
 
-## Tagesverlauf und Lesbarkeit
+Kurze Leseseiten wechseln mit Originalabbildungen und bewerteten Aufgaben. Abbildungen lassen sich unbeschnitten vergrössern und bei Zwischenfragen erneut öffnen. Nach der Abgabe bleibt die Antwort gesperrt; die Begründung erklärt auch einen Fehler. Die Schlussrunde enthält nur noch nicht unterwegs gewertete Fragen. Bestehen erfordert weiterhin 80 Prozent über die tatsächliche Gesamtzahl.
 
-Eine animierte Landschaft mit Baum, Wiesen, Wolken, Sonne beziehungsweise Mond und Sternen eröffnet die Startseite. Die lokale Stunde bestimmt Morgen (5–8), Tag (9–16), Abend (17–20) und Nacht (21–4); der Verlauf ist eine gestalterische Tageszeit, keine astronomische Sonnenstandsberechnung. Die übrigen Seiten tragen dieselbe Farbwelt auf ruhigen Flächen weiter.
+## Visuelle Sprache
 
-Runde Systemschrift, grössere Radien, grüne und blaue Akzente sowie farbige Ergebniszustände lösen die monochrome Gestaltung ab. Text skaliert mit Dynamic Type; Diagramme werden nicht beschnitten. Die native TabView mit ihren eigenen Navigationsstapeln bleibt erhalten. Animationen pausieren bei Reduce Motion, Stromsparmodus, nicht sichtbarer Landschaft und inaktivem App-Zustand. Die Lesekarten bewegen sich nicht.
+Die native Startseitenlandschaft variiert mit der lokalen Tageszeit: Morgenlicht, blauer Tageshimmel, Abendfarben und Midnight Blue mit Sternen. Wiese, Baum und ruhige Wolkenbewegung ergänzen die Oberfläche. Abgerundete Systemschrift, kontinuierlich gerundete Karten und grüne/blaue Akzente bleiben konsistent. Die Lernabbildungen sind recherchierte Medien; die dekorative Landschaft erklärt keinen Fachinhalt.
 
-## Prüfung und verbleibende Gerätekontrolle
-
-Core-Regressionen prüfen insbesondere die einmalige Wertung und Sperrung, unvollständige Abgaben, kalten Neustart, Wiederholungen ohne Abschlussfrage, Versionsmigration und lokale Tagesgrenzen. Bestehende Tests zu Freigaben, Dauersperren, Nutzungszählung und Berichten laufen weiterhin.
-
-Auf einem iPhone sind grosse Schrift, VoiceOver, Pinch-Zoom, Offline-Wiederöffnung und der Wechsel der Tagesphase zu prüfen. Ein bestandener Compiler-Build ersetzt diese Interaktionsprüfung nicht. Inhaltliche Tiefe bemisst sich daran, ob sich der Gedanke an einem neuen Beispiel erklären lässt; die App behauptet keine garantierte Lernwirkung.
+Bewegung pausiert bei Reduce Motion, Low Power Mode, inaktivem Zustand, anderen Tabs und allen überdeckenden Lernansichten einschliesslich Themenwahl. VoiceOver, Dynamic Type, Bildzoom, echte Netzfehler und die Übergänge zwischen Themenwahl, Leser, Ergebnis und Pause gehören zum Gerätetest.

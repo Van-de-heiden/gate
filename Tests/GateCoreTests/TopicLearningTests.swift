@@ -41,7 +41,7 @@ final class TopicLearningTests: XCTestCase {
         let catalog = try LearningCatalog.packageCatalog()
         for topic in catalog.topics! {
             let chapters = catalog.chapters(in: topic.id)
-            XCTAssertEqual(chapters.map(\.topicOrder), [1, 2, 3, 4])
+            XCTAssertEqual(chapters.compactMap(\.topicOrder), Array(1...chapters.count))
             XCTAssertTrue(chapters.allSatisfy { $0.pathID == topic.pathID })
             XCTAssertGreaterThanOrEqual(chapters.flatMap(\.questions).count, chapters.count)
             XCTAssertTrue(chapters.allSatisfy { $0.cards.contains { $0.probe != nil } })
@@ -62,17 +62,17 @@ final class TopicLearningTests: XCTestCase {
         }
     }
 
-    func testPhilosophyDoesNotMeanMixingTwoDifferentPhilosophyCases() throws {
+    func testExplicitTopicDoesNotAbsorbOverdueQuestionsFromOtherTopics() throws {
         let catalog = try LearningCatalog.packageCatalog()
         var progress = LearningProgress()
-        for lesson in catalog.chapters(in: "case.socrates") {
+        for lesson in catalog.chapters(in: "case.images") {
             for question in lesson.questions { progress.memories[question.id] = QuestionMemory(due: now.addingTimeInterval(-100)) }
         }
         let session = round(catalog, minutes: 30, topic: "case.stoic", progress: progress)
         assertOneTopic(session, catalog: catalog)
         XCTAssertEqual(session.topicID, "case.stoic")
         XCTAssertEqual(session.pathID, "philosophy")
-        XCTAssertEqual(session.lessonIDs, ["case.stoic.1", "case.stoic.2", "case.stoic.3", "case.stoic.4"])
+        XCTAssertEqual(session.lessonIDs, ["case.stoic.1"])
     }
 
     func testDueQuestionsChooseOneCaseBeforeTheDeckIsBuilt() throws {
@@ -95,7 +95,7 @@ final class TopicLearningTests: XCTestCase {
         let catalog = try LearningCatalog.packageCatalog()
         var progress = LearningProgress()
         let first = catalog.chapters(in: "case.stoic")[0].questions[0]
-        let other = catalog.chapters(in: "case.socrates")[0].questions[0]
+        let other = catalog.chapters(in: "case.images")[0].questions[0]
         progress.memories[first.id] = QuestionMemory(due: now.addingTimeInterval(-2))
         progress.memories[other.id] = QuestionMemory(due: now.addingTimeInterval(-1))
         var random = SeededRandom(state: 5)
@@ -124,9 +124,9 @@ final class TopicLearningTests: XCTestCase {
 
     func testRetryCannotSmuggleAnUnrelatedGapIntoTheCase() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        let unrelated = catalog.chapters(in: "case.socrates")[0].questions[0].id
+        let unrelated = catalog.chapters(in: "case.images")[0].questions[0].id
         let session = round(catalog, minutes: 20, topic: "case.stoic", failures: 2,
-                            remediation: ["case.stoic.2"], gaps: [unrelated])
+                            remediation: ["case.stoic.1"], gaps: [unrelated])
         assertOneTopic(session, catalog: catalog)
         XCTAssertFalse(session.questions.contains { $0.id == unrelated })
     }
@@ -135,7 +135,7 @@ final class TopicLearningTests: XCTestCase {
         let catalog = try LearningCatalog.packageCatalog()
         for minutes in LessonLoad.allowedMinutes {
             let session = round(catalog, minutes: minutes, topic: "case.cash")
-            XCTAssertEqual(session.lessonIDs, Array((1...4).map { "case.cash.\($0)" }))
+            XCTAssertEqual(session.lessonIDs, catalog.chapters(in: "case.cash").map(\.id))
             XCTAssertEqual(Set(session.questions.map(\.lessonID)), Set(session.lessonIDs))
             assertOneTopic(session, catalog: catalog)
         }
@@ -153,24 +153,24 @@ final class TopicLearningTests: XCTestCase {
     func testLongRoundRetainsContextWhenOnlyLastChapterIsUnfinished() throws {
         let catalog = try LearningCatalog.packageCatalog()
         var progress = LearningProgress()
-        progress.completedLessonIDs = ["case.cash.1", "case.cash.2", "case.cash.3"]
-        let session = round(catalog, minutes: 30, topic: "case.cash", progress: progress)
-        XCTAssertEqual(session.lessonIDs, catalog.chapters(in: "case.cash").map(\.id))
+        progress.completedLessonIDs = ["case.chip.1", "case.chip.2"]
+        let session = round(catalog, minutes: 30, topic: "case.chip", progress: progress)
+        XCTAssertEqual(session.lessonIDs, catalog.chapters(in: "case.chip").map(\.id))
         assertOneTopic(session, catalog: catalog)
     }
 
-    func testAnOldFoundationChapterIsItsOwnTopicNotAFillerForAnother() throws {
+    func testSingleChapterTopicIsNotPaddedWithOtherTopics() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        let session = round(catalog, minutes: 30, topic: "money.compound")
-        XCTAssertEqual(session.lessonIDs, ["money.compound"])
-        XCTAssertEqual(session.questions.count, catalog.chapters(in: "money.compound")[0].questions.count)
+        let session = round(catalog, minutes: 30, topic: "case.recall")
+        XCTAssertEqual(session.lessonIDs, ["case.recall.1"])
+        XCTAssertEqual(session.questions.count, catalog.chapters(in: "case.recall")[0].questions.count)
         assertOneTopic(session, catalog: catalog)
     }
 
     func testEveryInlineProbeIsPartOfItsChaptersGradedBank() throws {
         let catalog = try LearningCatalog.packageCatalog()
         let probes = catalog.lessons.flatMap(\.cards).compactMap(\.probe)
-        XCTAssertEqual(probes.count, 144)
+        XCTAssertEqual(probes.count, catalog.lessons.count)
         XCTAssertEqual(Set(probes.map(\.id)).count, probes.count)
         XCTAssertTrue(Set(probes.map(\.id)).isSubset(of: Set(catalog.questions.map(\.id))))
         for probe in probes {
@@ -219,7 +219,7 @@ final class TopicLearningTests: XCTestCase {
 
     func testLegacyMixedRoundAndProgressArePreservedWithoutPretendingTheyAreNew() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        let ids = ["money.compound", "business.problem"]
+        let ids = ["case.recall.1", "case.cash.1"]
         let deck = ids.map { id -> SessionQuestion in
             let q = catalog.lessons.first { $0.id == id }!.questions[0]
             return SessionQuestion(question: q, lessonID: id, isReview: false, optionOrder: Array(q.options.indices))

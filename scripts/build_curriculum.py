@@ -1,81 +1,18 @@
-"""Rebuild the catalog deterministically from authored sources, never from its output."""
+"""Build only the curated edition; older authoring files remain an archive."""
 from pathlib import Path
-import json,sys,importlib
-ROOT=Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(ROOT/'scripts/content'))
-from enrichment import UPDATES
-path=ROOT/'Gate/curriculum.json'
-c=json.loads((ROOT/'scripts/content/legacy_base.json').read_text())
-original_ids=set(UPDATES)
-assert original_ids <= {l['id'] for l in c['lessons']}
-base=[l for l in c['lessons'] if l['id'] in original_ids]
-pathmeta={
-'learn':('Denken & Wissen','learning'),'think':('Denken & Wissen','learning'),'data':('Denken & Wissen','money'),
-'digital':('Alltag & Entwicklung','digital'),'economy':('Geld & Wirtschaft','money'),'science':('Natur & Technik','science'),
-'earth':('Natur & Technik','science'),'history':('Mensch & Gesellschaft','history')}
-paths=[]
-for p in c['paths']:
- if p['id'] in pathmeta:
-  p['category'],p['artwork']=pathmeta[p['id']];paths.append(p)
-for l in base:
- text,mission,q1,q2=UPDATES[l['id']]
- l['cards']=[x for x in l['cards'] if x['title']!='Im Alltag anwenden']+[dict(title='Im Alltag anwenden',text=text)]
- l['mission']=mission
- l['artwork']=pathmeta[l['pathID']][1]
- # Preserve all four original questions, then attach two format extensions.
- l['questions']=[q for q in l['questions'] if not q['id'].endswith(('.extra1','.extra2'))]
- for i,q in enumerate([q1,q2],1):
-  q['id']=l['id']+f'.extra{i}';l['questions'].append(q)
-lessons=base[:]
-for module in ['foundations','data_digital','economy_science','earth_history','philosophy','business','money','industries','health','development','communication','civics']:
- m=importlib.import_module(module)
- if hasattr(m,'PATH'): paths.append(m.PATH)
- for l in m.LESSONS:
-  l['order']=1+max([x['order'] for x in lessons if x['pathID']==l['pathID']],default=0)
-  meta=next(p for p in paths if p['id']==l['pathID']);l['artwork']=meta['artwork']
-  assert l['source']
-  lessons.append(l)
-for i,p in enumerate(paths,1):p['number']=f'{i:02d}'
-# More precise further-reading destinations for the introductory money/civics chapters.
-sources={
-'money.budget':('Investor.gov · Save for a Rainy Day','https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/save-rainy-day'),
-'money.diversify':('Investor.gov · Asset Allocation and Diversification','https://www.investor.gov/introduction-investing/getting-started/asset-allocation'),
-'money.costs':('Investor.gov · Understanding Fees','https://www.investor.gov/introduction-investing/getting-started/understanding-fees'),
-'civics.federalism':('ch.ch · Swiss Federalism','https://www.ch.ch/en/political-system/operation-and-organisation-of-switzerland/federalism/'),
-}
-for l in lessons:
- if l['id'] in sources: l['source']=dict(zip(['title','url'],sources[l['id']]))
- # Replace a generic term list by an exact visual comparison where the numbers teach the concept.
- visuals={
- 'money.compound':(['Start','Nach Jahr 1','Nach Jahr 2'],[1000,1050,1102.5],'Modell: 5 % jährlich, ohne Kosten und Steuern; keine Prognose.'),
- 'industries.software':(['100 Kunden','90 Kunden'],[3000,2700],'Monatlicher Umsatz bei konstant 30 CHF pro Kunde.'),
- 'business.cash':(['Heute vorhanden','Morgen fällig'],[1000,3000],'Franken im beschriebenen Beispiel; die offene Forderung ist noch kein Kontoguthaben.'),
- 'data.charts':(['Vorher','Nachher'],[98,100],'Bewusst mit Nullbasis: Die absolute Veränderung beträgt 2 Einheiten.'),
- 'earth.stocks':(['Zufluss','Abfluss','Nettozunahme'],[4,3,1],'Liter pro Minute. Der Bestand wächst um 1 Liter pro Minute.'),
- }
- if l['id'] in visuals:
-  labels,values,caption=visuals[l['id']];l['visual']=dict(kind='bars',title='Das Beispiel im Bild',labels=labels,values=values,caption=caption)
-assert len(paths)==16 and len(lessons)==96
-assert all(len([l for l in lessons if l['pathID']==p['id']])==6 for p in paths)
-# Keep the complete v3 library above intact. New cases have their own concrete
-# topic IDs; the broad path is a shelf, never the boundary of a learning round.
-topics=[]
-from story_visuals import VISUALS
-for module in ['story_history_philosophy','story_business_money','story_health_life','story_reasoning_learning']:
- m=importlib.import_module(module)
- topics.extend(m.TOPICS)
- for l in m.LESSONS:
-  l['order']=1+max(x['order'] for x in lessons if x['pathID']==l['pathID'])
-  l['artwork']=next(p['artwork'] for p in paths if p['id']==l['pathID'])
-  if l['id'] in VISUALS:
-   index,visual=VISUALS[l['id']]
-   l['cards'][index]['visual']=visual
-  lessons.append(l)
-assert len(topics)==12 and len(lessons)==144
-from editorial_v5 import apply_editorial
-from researched_media import apply_media, write_credits
-apply_editorial(lessons)
-apply_media(lessons)
-path.write_text(json.dumps(dict(version=5,paths=paths,topics=topics,lessons=lessons),ensure_ascii=False,indent=2)+'\n')
-write_credits(ROOT)
-print(f'{len(paths)} paths, {len(topics)} cases, {len(lessons)} edited chapters, {sum(len(l["questions"]) for l in lessons)} questions, including {sum(bool(c.get("probe")) for l in lessons for c in l["cards"])} graded inline checks.')
+import json, sys
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'scripts/content'))
+from curated_v6 import catalog, REVIEW
+c = catalog()
+(ROOT / 'Gate/curriculum.json').write_text(json.dumps(c, ensure_ascii=False, indent=2) + '\n')
+(ROOT / 'scripts/content/review_v6.json').write_text(json.dumps(REVIEW, ensure_ascii=False, indent=2) + '\n')
+media = [(l, card['media']) for l in c['lessons'] for card in l['cards'] if card.get('media')]
+lines = ['# Medien und Originalquellen · Gate 0.6', '',
+ 'Jedes aktive Kapitel enthält eine veröffentlichte Abbildung und eine konkrete Beobachtungsaufgabe. Keine generierten Lernbilder. Recherche: 14. September 2026. Abbildungen bleiben unbeschnitten; deutsche Bildbeschreibungen, Quellen, Urheber und Lizenzen sind in der App erreichbar. HTTPS-Abruf beim ersten Öffnen, danach lokaler Cache. Bei fehlendem Netz steht eine Bildbeschreibung bereit; die Quelle kann später erneut geladen werden.', '',
+ '| Kapitel | Abbildung / Quelle | Urheber | Nutzung | Fachquelle |', '| --- | --- | --- | --- | --- |']
+for l,m in media:
+ lines.append(f"| {l['title']} | [Original]({m['sourceURL']}) · [Bilddatei]({m['url']}) | {m['credit']} | [{m['license']}]({m['licenseURL']}) | [{l['source']['title']}]({l['source']['url']}) |")
+lines += ['', 'Weitere Fachquelle im Phishing-Kapitel: [Mozilla · Verbindungsverschlüsselung und Website-Identität](https://support.mozilla.org/en-US/kb/how-do-i-tell-if-my-connection-is-secure).']
+(ROOT/'docs/MEDIA_SOURCES.md').write_text('\n'.join(lines)+'\n')
+print(f"Curated v{c['version']}: {len(c['topics'])} topics, {len(c['lessons'])} chapters, {sum(len(l['questions']) for l in c['lessons'])} questions, {len(media)} published images.")

@@ -95,6 +95,10 @@ struct LessonView: View {
             let requiresReveal = step.card.probe.map { session.inlineQuestionIDs?.contains($0.id) == true } ?? false
             VStack(alignment: .leading, spacing: 22) {
                 Eyebrow(text: "\(lesson.title) · \(step.index + 1)/\(lesson.cards.count)")
+                if step.card.probe != nil, let media = lesson.cards.compactMap(\.media).first {
+                    DisclosureGroup("Abbildung nochmals ansehen") { LessonMediaView(media: media) }
+                        .font(.subheadline.weight(.semibold)).gateCard()
+                }
                 LessonStoryCard(card: step.card, cardID: step.id, learning: learning).id(step.id)
                 if step.isLast {
 
@@ -106,8 +110,14 @@ struct LessonView: View {
                                 set: { learning.note($0, for: lesson.id) }), axis: .vertical)
                                 .lineLimit(2...5).padding(12).background(GateDesign.surface)
                             Button("Eingabe fertig") { GateKeyboard.dismiss() }.font(.caption)
-                            if let url = URL(string: lesson.source.url) {
-                                Link("Quelle / Vertiefung: \(lesson.source.title)", destination: url).font(.caption)
+                        }.padding(.top, 12)
+                    }.font(.subheadline)
+                    DisclosureGroup("Originalquellen & Vertiefung") {
+                        VStack(alignment: .leading, spacing: 12) {
+                            ForEach([lesson.source] + (lesson.additionalSources ?? []), id: \.url) { source in
+                                if let url = URL(string: source.url) {
+                                    Link(source.title, destination: url).font(.subheadline).padding(.vertical, 6)
+                                }
                             }
                         }.padding(.top, 12)
                     }.font(.subheadline)

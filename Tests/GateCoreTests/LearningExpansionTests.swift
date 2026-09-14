@@ -69,13 +69,13 @@ final class LearningExpansionTests: XCTestCase {
 
     func testExplicitChapterPracticeContainsTheWholeChosenChapter() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        let lesson = catalog.lessons.first { $0.id == "money.compound" }!
+        let lesson = catalog.lessons.first { $0.id == "case.chip.2" }!
         var random = SeededRandom(state: 44)
         let session = LearningScheduler.makeSession(catalog: catalog, progress: .init(), request: nil,
             minutes: 5, consumed: 0, failures: 0, preferredLesson: lesson.id, now: now, random: &random)
         XCTAssertEqual(session.lessonIDs, [lesson.id])
         XCTAssertEqual(Set(session.questions.map(\.id)), Set(lesson.questions.map(\.id)))
-        XCTAssertEqual(session.storageKey, "chapter.money.compound")
+        XCTAssertEqual(session.storageKey, "chapter.case.chip.2")
     }
 
     func testAReviewOfOneQuestionCannotCompleteAnUncoveredChapter() throws {
@@ -100,13 +100,13 @@ final class LearningExpansionTests: XCTestCase {
         let catalog = try LearningCatalog.packageCatalog()
         var random = SeededRandom(state: 1)
         var session = LearningScheduler.makeSession(catalog: catalog, progress: .init(), request: nil,
-            minutes: 5, consumed: 0, failures: 0, preferredLesson: "business.problem", now: now, random: &random)
+            minutes: 5, consumed: 0, failures: 0, preferredLesson: "case.cash.1", now: now, random: &random)
         session.readLessonIDs = Set(session.lessonIDs)
         session.typedResponses = Dictionary(uniqueKeysWithValues: session.questions.map { ($0.id, correctResponse($0.question)) })
         var progress = LearningProgress()
         session.lockedQuestionIDs = session.inlineQuestionIDs
         XCTAssertTrue(LearningScheduler.grade(&session, progress: &progress, now: now)!.passed)
-        XCTAssertTrue(progress.completedLessonIDs.contains("business.problem"))
+        XCTAssertTrue(progress.completedLessonIDs.contains("case.cash.1"))
         _ = LearningScheduler.grade(&session, progress: &progress, now: now)
         XCTAssertEqual(progress.results.count, 1)
     }
@@ -125,7 +125,7 @@ final class LearningExpansionTests: XCTestCase {
 
     func testVersionTwoSessionAndProgressStillDecode() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        let lesson = catalog.lessons.first { $0.id == "learn.recall" }!
+        let lesson = catalog.lessons.first { $0.id == "case.recall.1" }!
         let question = lesson.questions.first { $0.format == nil }!
         let legacy = LearningSession(id: UUID(), storageKey: "practice", target: nil, requestID: nil,
             grantMinutes: 5, pathID: lesson.pathID, lessonIDs: [lesson.id],

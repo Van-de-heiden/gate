@@ -104,7 +104,7 @@ struct GateSettingsView: View {
                         .font(.subheadline).foregroundStyle(.secondary)
                     Link("Projekt auf GitHub", destination: URL(string: "https://github.com/Van-de-heiden/gate")!).underline()
                     Button("Einführung noch einmal ansehen") { showOnboarding = true }.font(.footnote)
-                    Text("Version 0.5 · Produkt-Alpha").font(.caption2).foregroundStyle(.secondary)
+                    Text("Version 0.6 · Produkt-Alpha").font(.caption2).foregroundStyle(.secondary)
                 }.gateCard()
             }.padding(24)
         }

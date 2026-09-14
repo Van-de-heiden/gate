@@ -59,7 +59,7 @@ final class ScreenTimeController: ObservableObject {
             if let request = selectedRequest, !state.requests.contains(where: { $0.id == request.id }) {
                 selectedRequest = nil
             }
-            if selectedRequest == nil && learning.session == nil {
+            if selectedRequest == nil && !learning.isPresented {
                 selectedRequest = state.requests.sorted { $0.requestedAt > $1.requestedAt }.first
             }
             scheduleMonitorCheck()
@@ -286,7 +286,7 @@ final class ScreenTimeController: ObservableObject {
         let attempt = state.attempts[request.target.id] ?? GateAttempt()
         guard (attempt.cooldownUntil ?? .distantPast) <= Date() else { return }
         guard activeGrants.count < 8 else { errorMessage = "Maximal acht Freigaben gleichzeitig. Beende zuerst eine laufende Freigabe."; return }
-        learning.begin(request: request, minutes: minutes, consumed: state.confirmedMinutes, failures: attempt.failures)
+        learning.prepare(request: request, minutes: minutes, consumed: state.confirmedMinutes, failures: attempt.failures)
     }
 
     func beginPractice(path: String? = nil, lesson: String? = nil, topic: String? = nil, reviewOnly: Bool = false) {
@@ -434,7 +434,7 @@ final class ScreenTimeController: ObservableObject {
     func requestPause() {
         do { try mutate { $0.pauseRequestedAt = Date() } }
         catch { errorMessage = error.localizedDescription }
-        if learning.session != nil {
+        if learning.isPresented {
             // Present the next sheet only after the current one has actually dismissed.
             pauseWaitingForLessonDismissal = true
             learning.suspend()
@@ -448,7 +448,7 @@ final class ScreenTimeController: ObservableObject {
     }
 
     private func presentPendingPause() {
-        guard !pauseWaitingForLessonDismissal, learning.session == nil, state.onboardingComplete,
+        guard !pauseWaitingForLessonDismissal, !learning.isPresented, state.onboardingComplete,
               let requested = state.pauseRequestedAt,
               Date().timeIntervalSince(requested) < 300 else { return }
         showPause = true

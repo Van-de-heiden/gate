@@ -1,21 +1,27 @@
-# Lerninhalte · Version 5
+# Aktiver Katalog · Version 6
 
-144 redaktionell überarbeitete Kapitel in 16 Lernwegen, darunter zwölf zusammenhängende Lernfälle. Jedes Kapitel beginnt mit einer konkreten Situation, erklärt den entscheidenden Zusammenhang und lässt ihn anwenden. Nützliche fachliche Erklärungen wurden übernommen; neue Einstiege und Prüfungsaufgaben ersetzen das bisherige Gerüst und alle alten Aufgaben.
+Die Ausgabe enthält 10 Themen, 15 eigenständige Kapitel und 35 Fragen. 15 Zwischenfragen zählen zum selben Ergebnis wie die Abschlussfragen; jede wird nur einmal gewertet. Jede Abbildung ist veröffentlicht und mit einer Beobachtungsaufgabe verbunden. Es gibt keine generierten Lehrbilder und keine isolierte Prozentrechnung auf Nachkommastellen.
 
-Der Katalog enthält 295 begründete Verständnisfragen: 144 davon stehen als bewertete Zwischenfragen im Leser. Diese Fragen zählen genau einmal, werden mit der Abgabe gesperrt und erscheinen im Abschluss nicht erneut. Die übrigen Aufgaben prüfen zusätzliche Unterschiede oder den Transfer. Aktuell verwenden die Kapitel zwei oder drei Aufgaben, die Fälle insgesamt acht oder neun. Das sind redaktionelle Entscheidungen dieser Ausgabe, keine Quoten des Schedulers. Eine spätere Ausgabe kann andere sinnvolle Umfänge haben.
+## Quellen und Aufbau
 
-Keine Zahlen-Eingabefragen, vorgeschriebenen Dezimalstellen oder versteckten Zeitvorgaben. Der Paketfall prüft Grundhäufigkeit, Fehlalarm, Unsicherheit und eine sinnvolle Nachprüfung. Er verlangt keine Prozentrechnung. Die allgemeine Unterstützung alter Aufgabenformate bleibt für gespeicherte Ergebnisse erhalten.
+`scripts/content/curated_v6.py` ist die einzige aktive redaktionelle Quelle. `scripts/build_curriculum.py` erzeugt daraus `Gate/curriculum.json`, die Mediennachweise und das Inhaltsprüfprotokoll. Alte Module bleiben als Archiv erhalten, werden aber nicht in die App importiert. Die Entscheidungen für alle 144 bisherigen Kapitel stehen in `CURRICULUM_REVIEW.md`.
 
-Die Freigabedauer 5/10/15/20/30 Minuten bestimmt ausschliesslich die Konsumfreigabe. Nutzungszeit und Fehlversuche fügen keine Lernkapitel oder Aufgaben hinzu. Eine neue Runde behandelt ein vollständiges konkretes Thema. Eine Fehlerrunde behandelt die Kapitel der offenen Lücken desselben Themas; eine fällige Wiederholung enthält nur die ausgewählten fälligen Aufgaben. Ein einzelnes Grundlagenkapitel ist ebenfalls ein vollständiges Thema.
+Die Themen sind unterschiedlich lang: sieben bestehen aus einem Kapitel, eines aus zwei und zwei aus drei Kapiteln. Umfang und Fragenzahl entstehen aus dem Inhalt. Weder Freigabeminuten noch Konsumzeit oder Fehlerzahl verlängern ein Thema. Jede Frage hat einen benannten Zweck; falsche Antworten stehen für ein konkretes Missverständnis. Aufgaben verlangen Beobachten, Erklären, Zuordnen, Ordnen oder Übertragen.
 
-19 recherchierte externe Abbildungen stehen an 39 passenden Stellen: historische Darstellungen, reale Fotos und veröffentlichte Diagramme. Quellen, Nutzungsbedingungen, Alt-Texte und Einordnung sind in [MEDIA_SOURCES.md](MEDIA_SOURCES.md) dokumentiert und in der App sichtbar. Keine generierten Lernbilder. Der erste Abruf benötigt Internet; bereits geladene Abbildungen werden bis zu einem Cache-Limit von 64 MB gespeichert. Eine nicht erreichbare Abbildung blockiert weder Lesen noch Prüfung. Diagramme werden vollständig dargestellt und lassen sich vergrössern.
+## Auswahl und Fortsetzen
 
-## Fortschritt beim Update
+Eine neue Freigaberunde zeigt zwei verschiedene zufällige Themen. Kürzlich gelernte Themen werden vermieden, solange mindestens zwei andere verfügbar sind. Wenn möglich kommen die Vorschläge aus verschiedenen Bereichen. Die Auswahl wird unter der UUID der Anfrage gespeichert. Schliessen, Neustart und andere gewünschte Freigabeminuten würfeln sie nicht neu. Gewählte Themen sind fest; Fehlversuche wiederholen nur Kapitel hinter den tatsächlichen Lücken. Eine andere App hat ihre eigene Auswahl. Nach erfolgreicher Freigabe wird das Angebot entfernt.
 
-Kapitel-IDs bleiben stabil. Jede geänderte Frage hat eine neue v5-ID; alte richtige Antworten gelten nicht als gelöste neue Aufgaben. Lernhistorie, erarbeitete Kapitel, vorhandene Erinnerungsdaten und bereits bestandene, noch nicht eingelöste Ergebnisse bleiben erhalten. Unfertige Runden mit ersetzten Fragen starten neu, eigene Notizen werden in die neuen Runden übernommen. Aktuelle Runden speichern Leseposition, Antwortreihenfolge, Abgaben und Fragenstand weiterhin.
+In der freiwilligen Bibliothek kann jedes Thema direkt geöffnet werden. Fällige Wiederholungen bleiben auf ein Thema beschränkt und können nur eine einzige Frage enthalten. Das Auswahlsystem funktioniert auch bei einem kleinen künftigen Katalog; es erfindet keine zweite Option, wenn nur ein Thema vorhanden ist.
 
-## Reproduzieren
+## Migration
 
-`python3 scripts/build_curriculum.py` baut ausschliesslich aus den Autorendateien und der eingefrorenen historischen Basis. `editorial_v5.py` muss alle 144 Kapitel genau einmal bearbeiten; `researched_media.py` liefert die Quellen und erzeugt die Medienübersicht. Der aktuelle Ausgabekatalog wird niemals als Bau-Eingabe verwendet.
+Fragen tragen `.v6.q…`-IDs. Version 5 hatte `.v5.q…`; alte Erinnerungsdaten geben den neuen Fragen deshalb keinen Lernstatus. Historische Ergebnisse, alte Abschluss-IDs und persönliche Notizen bleiben erhalten. Die Oberfläche markiert ein aktuelles Kapitel erst als erarbeitet, wenn seine aktuellen Fragen entsprechend bearbeitet wurden.
 
-`python3 scripts/validate.py` prüft Zuordnung, Eindeutigkeit, Antwortschemata, die Zugehörigkeit bewerteter Zwischenfragen, Mediennachweise und das Xcode-Projekt. `swift test` prüft Wertung, Migration, Wiederholung und Bildschirmzeitregeln; der Simulator-Build prüft die native Oberfläche. Fachliche Qualität und Lesefluss werden zusätzlich anhand der tatsächlich formulierten Kapitel beurteilt, nicht aus Wortzahl oder Verweildauer abgeleitet.
+Veraltete offene und nicht bestandene Sitzungen werden entfernt; ihre Notizen werden vorher gesichert. Bestandene Sitzungen bleiben bis zur erteilten Freigabe erhalten. Veraltete Themenangebote werden verworfen. Eine laufende Sitzung dieser Version bleibt unverändert gespeichert.
+
+## Medien
+
+Jedes Kapitel besitzt mindestens eine vollständige, zugeordnete Abbildung mit Urheber, Lizenz, Quelle, deutscher Bildbeschreibung und erklärender Bildunterschrift. Historische Darstellungen, schematische Modelle und Forschungsdaten werden unterschieden. Bei den bewerteten Zwischenfragen lässt sich die Kapitelabbildung erneut öffnen.
+
+Bilder werden derzeit beim ersten Öffnen über HTTPS geladen und danach in einem validierten, begrenzten Cache gespeichert. Der Erstabruf braucht eine Verbindung. Bei Ausfall bleiben Bildbeschreibung und Erklärung sichtbar; erneuter Abruf ist möglich. Quellen- und Dateiadressen sind dokumentiert; die tatsächliche Darstellung aller Bilder auf dem iPhone bleibt ein Gerätecheck.

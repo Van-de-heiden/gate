@@ -6,35 +6,45 @@ Gate is an open-source iPhone app that adds a learning step before additional co
 Code and original lesson content are available under the [MIT licence](LICENSE).
 Third-party reference photos are not relicensed under MIT.
 
-## Status: 0.5 learning refresh
+## Status: 0.6 curated learning
 
-The native iOS app now has 144 edited German chapters and 295 explained understanding questions. All 144 inline checks count once toward the result; feedback locks the submitted answer. Nineteen researched photos and published diagrams appear at 39 relevant points with attribution, licences and zoom. Lessons have content-driven lengths and question counts, independent of the requested grant duration.
+Gate now offers **10 topics with 15 newly authored German chapters**, reduced from 144.
+Every chapter has its own published photograph, historical object or diagram, a specific
+observation task, and explained questions. There are 35 questions in total; all 15 inline
+questions count once toward the result. Topics contain one to three chapters according to
+the subject. There is no minimum reading time or fixed question quota.
 
-A local time-of-day palette, animated sky/meadow/tree scene, rounded system typography and coloured continuous cards replace the monochrome treatment. Animations respect Reduce Motion, Low Power Mode and app visibility. Screen Time grants, daily allowance, permanent commitments and report privacy keep their existing behaviour.
+Before a new Screen Time learning round, choose **one of two random topics**. The pair is
+saved for that request and survives dismissal, a cold restart and a change of requested
+minutes. A chosen topic stays chosen, including on a retry. Other apps have independent
+requests. Voluntary library topics and due reviews remain directly accessible.
 
-See [content and migration](docs/CONTENT.md), [media sources](docs/MEDIA_SOURCES.md) and [design](docs/LEARNING_DESIGN.md). Existing draft PR #1 remains the development delivery path. The historical implementation notes below describe earlier iterations where labelled.
+The time-of-day sky and meadow, rounded typography and coloured cards remain. Motion also
+pauses while the topic chooser covers the home screen. Reading, picture zoom, grading and
+the final grant share one learning presentation.
 
-## Learning paths
+See [content and migration](docs/CONTENT.md), [the editorial audit](docs/CURRICULUM_REVIEW.md),
+[media and original sources](docs/MEDIA_SOURCES.md) and [learning design](docs/LEARNING_DESIGN.md).
+Existing draft PR #1 remains the development delivery path.
 
-Learning & memory · Clear thinking · Statistics · Digital safety · Decisions & economics ·
-Everyday physics · Earth systems · History & source criticism · Philosophy · Business ·
-Personal money · Industries · Health · Self-development · Communication · Society & institutions.
+## This edition's topics
 
-The curriculum is an **introductory, extensible edition**, not sixteen complete specialist courses.
-Content is AI-assisted, authored for Gate, with linked reading references. It has not received
-independent subject-matter review. Source organisations do not endorse or validate Gate.
-Every tested question is accompanied by its source lesson in the session.
+Printing and handwritten decoration · Photolithography, overlay and cleanrooms · Sleep
+pressure and the body clock · What a forgetting curve measures · Interpreting positive
+test results · Working capital · Epictetus' bathhouse example · Visual source criticism,
+area scaling and missing cases · Greenhouse radiation · Phishing and independent verification.
 
-### One case, one coherent idea
+This is a deliberately small introductory edition. It is AI-assisted and source-checked,
+but has not received independent subject-matter or learner usability review. The chapter
+sources and image sources are visible in the app; they do not imply endorsement.
 
-Cases cover Gutenberg, Stoic control, defining success, working capital, compound growth,
-chip production, sleep, a habit cue, negotiation, sunk costs, base rates and retrieval practice.
-A new round teaches the selected topic's authored chapters. Retry rounds revisit the chapters
-behind the actual errors; other topics wait for another round. Grant length never adds material.
+### Learning history and upgrades
 
-Chapter IDs, completed history and earned results remain. Rewritten questions receive new IDs.
-Unfinished old decks restart with current questions; personal notes are carried forward.
-Current-version rounds preserve reading position, shuffled options and locked inline answers.
+Retired material remains in the repository's authoring archive, outside the active catalog.
+Rewritten questions receive versioned IDs. Old results, personal notes and earned grants
+remain; unfinished and failed obsolete decks are retired. New chapter completion requires
+answers to its current questions, so an old completion cannot label rewritten material mastered.
+Current rounds preserve their topic, reading position, shuffled options and locked answers.
 
 ### How the time rule works
 

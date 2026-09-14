@@ -3,7 +3,7 @@ import XCTest
 
 final class LearningRefreshTests: XCTestCase {
     private let now = Date(timeIntervalSince1970: 1_700_000_000)
-    private func session(topic: String = "business.cash", progress: LearningProgress = .init(), review: Bool = false) throws -> LearningSession {
+    private func session(topic: String = "case.cash", progress: LearningProgress = .init(), review: Bool = false) throws -> LearningSession {
         var random = SeededRandom(state: 17)
         return LearningScheduler.makeSession(catalog: try .packageCatalog(), progress: progress, request: nil,
             minutes: 30, consumed: 999, failures: 99, preferredTopic: topic, reviewOnly: review, now: now, random: &random)
@@ -14,10 +14,10 @@ final class LearningRefreshTests: XCTestCase {
         let inline = round.questions.first { round.inlineQuestionIDs!.contains($0.id) }!
         let wrong = QuestionResponse(indices: [(inline.question.correctIndex + 1) % inline.question.options.count])
         round.setAnswer(wrong, for: inline.id)
-        XCTAssertTrue(round.submitInlineQuestion(inline.id, cardID: "business.cash.step.2"))
+        XCTAssertTrue(round.submitInlineQuestion(inline.id, cardID: "case.cash.step.2"))
         round.setAnswer(correctResponse(inline.question), for: inline.id)
         XCTAssertEqual(round.response(for: inline), wrong)
-        XCTAssertFalse(round.submitInlineQuestion(inline.id, cardID: "business.cash.step.2"))
+        XCTAssertFalse(round.submitInlineQuestion(inline.id, cardID: "case.cash.step.2"))
         XCTAssertFalse(round.finalQuestions.contains { $0.id == inline.id })
         for question in round.finalQuestions { round.setAnswer(correctResponse(question.question), for: question.id) }
         round.readLessonIDs = Set(round.lessonIDs)
@@ -73,23 +73,23 @@ final class LearningRefreshTests: XCTestCase {
 
     func testDueReviewCanFinishEntirelyWithItsOneInlineQuestion() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        let probe = catalog.chapters(in: "business.cash")[0].cards.compactMap(\.probe)[0]
+        let probe = catalog.chapters(in: "case.cash")[0].cards.compactMap(\.probe)[0]
         var progress = LearningProgress()
         progress.memories[probe.id] = QuestionMemory(due: now.addingTimeInterval(-1))
         var round = try session(progress: progress, review: true)
         round.setAnswer(correctResponse(probe), for: probe.id)
-        round.submitInlineQuestion(probe.id, cardID: "business.cash.step.2")
+        round.submitInlineQuestion(probe.id, cardID: "case.cash.step.2")
         round.readLessonIDs = Set(round.lessonIDs)
         XCTAssertTrue(round.finalQuestions.isEmpty)
         XCTAssertTrue(round.readyForQuiz)
         XCTAssertTrue(try XCTUnwrap(LearningScheduler.grade(&round, progress: &progress, now: now)).passed)
         XCTAssertEqual(progress.results[0].total, 1)
-        XCTAssertFalse(progress.completedLessonIDs.contains("business.cash"))
+        XCTAssertFalse(progress.completedLessonIDs.contains("case.cash.1"))
     }
 
     func testDueReviewWithOnlyFinalQuestionDoesNotRequireAnAbsentInlineProbe() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        let question = catalog.chapters(in: "business.cash")[0].questions[1]
+        let question = catalog.chapters(in: "case.cash")[0].questions[1]
         var progress = LearningProgress()
         progress.memories[question.id] = QuestionMemory(due: now.addingTimeInterval(-1))
         var round = try session(progress: progress, review: true)
@@ -102,8 +102,8 @@ final class LearningRefreshTests: XCTestCase {
     func testCatalogUpgradePreservesEarnedResultHistoryAndWriting() throws {
         var unfinished = try session()
         unfinished.catalogVersion = 4
-        unfinished.reflectionNotes = ["business.cash": "Mein eigener Vergleich"]
-        var earned = try session(topic: "case.cash")
+        unfinished.reflectionNotes = ["case.cash.1": "Mein eigener Vergleich"]
+        var earned = try session(topic: "case.recall")
         earned.catalogVersion = 4
         earned.readLessonIDs = Set(earned.lessonIDs)
         earned.lockedQuestionIDs = earned.inlineQuestionIDs
@@ -112,24 +112,24 @@ final class LearningRefreshTests: XCTestCase {
         let result = try XCTUnwrap(LearningScheduler.grade(&earned, progress: &progress, now: now))
         progress.sessions = [unfinished.storageKey: unfinished, earned.storageKey: earned]
         let oldMemories = Set(progress.memories.keys)
-        progress.reconcileCatalogVersion(5)
+        progress.reconcileCatalogVersion(6)
         XCTAssertNil(progress.sessions[unfinished.storageKey])
         XCTAssertEqual(progress.sessions[earned.storageKey]?.result?.id, result.id)
         XCTAssertEqual(progress.results.count, 1)
         XCTAssertEqual(Set(progress.memories.keys), oldMemories)
-        XCTAssertTrue(progress.completedLessonIDs.contains("case.cash.1"))
-        XCTAssertEqual(try session(progress: progress).reflectionNotes["business.cash"], "Mein eigener Vergleich")
+        XCTAssertTrue(progress.completedLessonIDs.contains("case.recall.1"))
+        XCTAssertEqual(try session(progress: progress).reflectionNotes["case.cash.1"], "Mein eigener Vergleich")
         let restored = try JSONDecoder().decode(LearningProgress.self, from: JSONEncoder().encode(progress))
         XCTAssertEqual(restored.savedNotes, progress.savedNotes)
     }
 
     func testNewQuestionsDoNotInheritMasteryOfReplacedQuestionIDs() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        XCTAssertTrue(catalog.questions.allSatisfy { $0.id.contains(".v5.q") })
+        XCTAssertTrue(catalog.questions.allSatisfy { $0.id.contains(".v6.q") })
         XCTAssertFalse(catalog.questions.contains { $0.kind == .numeric })
         XCTAssertTrue(catalog.lessons.flatMap(\.cards).allSatisfy { $0.image == nil })
         let media = catalog.lessons.flatMap(\.cards).compactMap(\.media)
-        XCTAssertEqual(Set(media.map(\.url)).count, 19)
+        XCTAssertEqual(Set(media.map(\.url)).count, 15)
         XCTAssertTrue(media.allSatisfy { $0.alt?.isEmpty == false && $0.license?.isEmpty == false })
     }
 

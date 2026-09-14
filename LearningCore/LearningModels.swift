@@ -188,6 +188,7 @@ struct LearningLesson: Codable, Identifiable {
     let takeaway: String
     let source: LessonSource
     let questions: [LearningQuestion]
+    var additionalSources: [LessonSource]?
     var mission: String?
     var artwork: String?
     var topicID: String?
@@ -220,11 +221,11 @@ struct LearningCatalog: Codable {
     func validate() throws {
         let pathIDs = Set(paths.map(\.id))
         let probes = lessons.flatMap(\.cards).compactMap(\.probe)
-        guard pathIDs.count == paths.count, Set(lessons.map(\.id)).count == lessons.count,
+        guard !lessons.isEmpty, pathIDs.count == paths.count, Set(lessons.map(\.id)).count == lessons.count,
               Set(questions.map(\.id)).count == questions.count,
               Set(probes.map(\.id)).count == probes.count,
               Set(probes.map(\.id)).isSubset(of: Set(questions.map(\.id))),
-              paths.allSatisfy({ orderedLessons(in: $0.id).count >= 3 }),
+              paths.allSatisfy({ !orderedLessons(in: $0.id).isEmpty }),
               lessons.allSatisfy({ pathIDs.contains($0.pathID) && $0.cards.count >= 2 && !$0.questions.isEmpty }),
               questions.allSatisfy({ $0.isValid }),
               Set(allTopics.map(\.id)).count == allTopics.count,
@@ -237,13 +238,17 @@ struct LearningCatalog: Codable {
                   return topicChapters.enumerated().allSatisfy { $0.element.topicOrder == $0.offset + 1 }
               }),
               lessons.allSatisfy({ lesson in
-                  topic(lesson.topicKey)?.pathID == lesson.pathID && lesson.cards.allSatisfy { card in
+                  topic(lesson.topicKey)?.pathID == lesson.pathID
+                      && (version < 6 || lesson.cards.contains { $0.media != nil })
+                      && lesson.cards.allSatisfy { card in
                       !card.title.isEmpty && !card.text.isEmpty && (card.probe?.isValid ?? true)
                           && (card.probe == nil || lesson.questions.contains(card.probe!))
                           && (card.image == nil || (card.imageDescription?.isEmpty == false && card.caption?.isEmpty == false))
                           && (card.media == nil || (card.media!.url.hasPrefix("https://")
                               && card.media!.sourceURL.hasPrefix("https://")
-                              && card.media!.alt?.isEmpty == false && card.media!.license?.isEmpty == false))
+                              && card.media!.alt?.isEmpty == false && card.media!.license?.isEmpty == false
+                              && card.media!.licenseURL?.hasPrefix("https://") == true
+                              && !card.media!.credit.isEmpty && !card.media!.caption.isEmpty))
                   }
               })
         else { throw CatalogError.invalid }
@@ -296,15 +301,75 @@ struct LearningProgress: Codable {
     var results: [LearningResult] = []
     var sessions: [String: LearningSession] = [:]
     var savedNotes: [String: String]?
+    var topicOffers: [String: LearningTopicOffer]?
 
     mutating func reconcileCatalogVersion(_ version: Int) {
         // Retire unfinished decks whose questions changed, but preserve the user's writing,
         // history, completed chapters and passed results that have not yet issued their grant.
-        for session in sessions.values where session.catalogVersion != version && session.result == nil {
+        for session in sessions.values where session.catalogVersion != version && session.result?.passed != true {
             if savedNotes == nil { savedNotes = [:] }
             savedNotes?.merge(session.reflectionNotes) { _, newest in newest }
         }
-        sessions = sessions.filter { $0.value.catalogVersion == version || $0.value.result != nil }
+        sessions = sessions.filter { $0.value.catalogVersion == version || $0.value.result?.passed == true }
+        topicOffers = topicOffers?.filter { $0.value.catalogVersion == version }
+    }
+}
+
+/// A request gets a stable pair, including across restarts and minute-picker changes.
+struct LearningTopicOffer: Codable, Identifiable, Equatable {
+    let id: String
+    let catalogVersion: Int
+    let topicIDs: [String]
+    let createdAt: Date
+    var selectedTopicID: String?
+}
+
+extension LearningProgress {
+    func hasCompleted(_ lesson: LearningLesson) -> Bool {
+        completedLessonIDs.contains(lesson.id) && !lesson.questions.isEmpty
+            && lesson.questions.allSatisfy { (memories[$0.id]?.correctAttempts ?? 0) > 0 }
+    }
+
+    static func offerKey(request: GateRequest?) -> String {
+        request.map { "request." + $0.id.uuidString } ?? "practice"
+    }
+
+    mutating func topicOffer<R: RandomNumberGenerator>(catalog: LearningCatalog, key: String,
+        now: Date, random: inout R) -> LearningTopicOffer? {
+        let topics = catalog.allTopics
+        guard !topics.isEmpty else { return nil }
+        if let saved = topicOffers?[key], saved.catalogVersion == catalog.version,
+           saved.topicIDs.count == min(2, topics.count),
+           Set(saved.topicIDs).count == saved.topicIDs.count,
+           saved.topicIDs.allSatisfy({ catalog.topic($0) != nil }),
+           saved.selectedTopicID == nil || saved.topicIDs.contains(saved.selectedTopicID!) {
+            return saved
+        }
+        let fresh = topics.filter { !(recentTopicIDs ?? []).suffix(3).contains($0.id) }
+        let pool = (fresh.count >= 2 ? fresh : topics).shuffled(using: &random)
+        let first = pool[0]
+        let different = pool.filter { $0.id != first.id && $0.pathID != first.pathID }
+        let second = (different.isEmpty ? pool.filter { $0.id != first.id } : different).randomElement(using: &random)
+        let offer = LearningTopicOffer(id: key, catalogVersion: catalog.version,
+            topicIDs: [first.id] + (second.map { [$0.id] } ?? []), createdAt: now)
+        if topicOffers == nil { topicOffers = [:] }
+        topicOffers?[key] = offer
+        // Unchosen, stale requests cannot grow the progress file indefinitely.
+        if let offers = topicOffers, offers.count > 32 {
+            let keep = Set(offers.values.sorted { $0.createdAt > $1.createdAt }.prefix(31).map(\.id) + [key])
+            topicOffers = offers.filter { keep.contains($0.key) }
+        }
+        return offer
+    }
+
+    @discardableResult
+    mutating func chooseTopic(_ topicID: String, from key: String, catalog: LearningCatalog) -> Bool {
+        guard var offer = topicOffers?[key], offer.catalogVersion == catalog.version,
+              offer.topicIDs.contains(topicID), catalog.topic(topicID) != nil,
+              offer.selectedTopicID == nil || offer.selectedTopicID == topicID else { return false }
+        offer.selectedTopicID = topicID
+        topicOffers?[key] = offer
+        return true
     }
 }
 

@@ -1,157 +1,23 @@
-# Recherchierte Lernmedien
-
-Quellen und Nutzungsbedingungen geprüft am 14. September 2026. Die App zeigt vollständige Abbildungen, Bildbeschreibungen, Urheber, Quelle und Lizenz. Alle Lernfragen funktionieren auch ohne Bildabruf. Bilder werden beim ersten Öffnen über HTTPS geladen und anschliessend lokal zwischengespeichert.
-
-Keine dieser Abbildungen wurde für Gate generiert. Historische Darstellungen, didaktische Modelle und Messdaten werden in ihren Bildunterschriften unterschieden.
-
-## press
-
-[Jost Amman · Ständebuch, 1568](https://commons.wikimedia.org/wiki/File:Printer_in_1568-ce.png) · [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/)
-
-Eine Druckwerkstatt von 1568: Setzen, Einfärben und Drucken sind verschiedene Arbeitsschritte. Der Holzschnitt zeigt eine spätere Werkstatt, nicht Gutenbergs Betrieb um 1450.
-
-Kapitel: history.print, history.sources, case.press.1, case.press.2, case.press.4
-
-## forgetting
-
-[Jaap M. J. Murre · Replication and Analysis of Ebbinghaus’ Forgetting Curve, 2015](https://commons.wikimedia.org/wiki/File:Ebbinghaus_curve.png) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
-
-Die Kurve zeigt die Ersparnis beim Wiederlernen im untersuchten Silbenexperiment. Sie ist kein genauer Fahrplan dafür, wann du einen beliebigen Inhalt vergisst.
-
-Kapitel: learn.spacing, case.recall.3
-
-## charts
-
-[Smallman12q / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Comparison_of_properly_and_improperly_scaled_picture_graph.svg) · [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
-
-Vergleiche die Bildflächen: Wer Höhe und Breite gleichzeitig vergrössert, kann einen Zahlenunterschied visuell übertreiben.
-
-Kapitel: data.charts, science.scale
-
-## compound
-
-[Pbergerd / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Compound_interest.png) · [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-
-Veröffentlichtes Modell: 100 Startkapital bei konstant 5 % Zins. Die Kurve illustriert den Zinseszins; sie ist keine Renditeprognose und enthält keine Kosten.
-
-Kapitel: money.compound, case.compound.1, case.compound.2
-
-## lithography
-
-[Cmglee · deutsche Bearbeitung: Cepheiden / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Photolithography_etching_process_(DE).svg) · [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
-
-Ein vereinfachter Lithografie- und Ätzprozess: Lack auftragen, belichten, entwickeln und das Muster übertragen. Die Schichten sind schematisch dargestellt.
-
-Kapitel: case.chip.1
-
-## overlay
-
-[Cepheiden / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Photolithography_overlay_error_(DE).svg) · [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
-
-Die veröffentlichten Schemata machen verschiedene Überlagerungsfehler sichtbar. Auch scharfe Einzelmuster können gegeneinander verschoben oder verdreht sein.
-
-Kapitel: case.chip.2
-
-## cleanroom
-
-[O. Usher · UCL MAPS, 2013](https://commons.wikimedia.org/wiki/File:Scientist_in_the_LCN_cleanroom_photolithography_lab.jpg) · [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
-
-Reales Lithografielabor am London Centre for Nanotechnology. Die orange Beleuchtung hilft, den lichtempfindlichen Lack vor ungeeigneten Lichtanteilen zu schützen.
-
-Kapitel: case.chip.3, case.chip.4
-
-## clock
-
-[NIH / NIGMS](https://commons.wikimedia.org/wiki/File:Circadian_rhythm_labeled.jpg) · [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/)
-
-Licht erreicht über die Augen das System der inneren Uhr. Das NIH-Schema zeigt einen Signalweg, keine persönliche Schlafempfehlung.
-
-Kapitel: health.sleep, case.sleep.2
-
-## water
-
-[John M. Even / USGS](https://commons.wikimedia.org/wiki/File:Water_cycle.png) · [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/)
-
-Der Wasserkreislauf verbindet Speicher und Flüsse: Verdunstung, Kondensation, Niederschlag, Versickerung und Abfluss. Die englischen Pfeilbeschriftungen zeigen diese Wege.
-
-Kapitel: earth.water, earth.stocks
-
-## market
-
-[Paweł Zdziarski (faxe), Astarot / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Supply-and-demand.svg) · [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
-
-Ein Modell, keine Marktstatistik: P steht für Preis, Q für Menge, S für Angebot und D für Nachfrage. Eine verschobene Nachfragekurve verändert den Schnittpunkt.
-
-Kapitel: economy.elasticity
-
-## cash
-
-[Georgeobancroft / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Company_Cash_Cycle.jpg) · [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
-
-Der Geldkreislauf eines Unternehmens: Ausgaben, Bestand und Forderungen können Geld binden, bevor ein Kunde bezahlt. Das Schema enthält nicht die Zahlen unseres Falls.
-
-Kapitel: business.cash, case.cash.1, case.cash.2
-
-## parliament
-
-[Parlamentsdienste / Schweizerische Bundesversammlung · parlament.ch](https://commons.wikimedia.org/wiki/File:Nationalratssaal_w%C3%A4hrend_Session.jpg) · [Nutzung mit Quellenangabe](https://commons.wikimedia.org/wiki/File:Nationalratssaal_w%C3%A4hrend_Session.jpg)
-
-Der Nationalratssaal während einer Session. Das Foto zeigt die parlamentarische Ebene; Volksabstimmung, Gericht und Regierung erfüllen andere Aufgaben.
-
-Kapitel: civics.federalism, civics.powers, civics.participation
-
-## survivors
-
-[Martin Grandjean, McGeddon / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Survivorship-bias.svg) · [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-
-Modernes, hypothetisches Schema zum Survivorship Bias, keine originale Trefferstatistik: Sichtbar sind Schäden an zurückgekehrten Flugzeugen. Die nicht zurückgekehrten fehlen.
-
-Kapitel: think.survivors, data.sample
-
-## socrates
-
-[Jacques-Louis David · Der Tod des Sokrates, 1787 · The Metropolitan Museum of Art](https://commons.wikimedia.org/wiki/File:Jacques-Louis_David_-_The_Death_of_Socrates_-_Google_Art_Project.jpg) · [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/)
-
-David malte diese Szene 1787, lange nach Sokrates. Das Werk ist eine spätere Deutung; Kleidung, Gesten und Anordnung sind kein unmittelbarer Augenzeugenbericht.
-
-Kapitel: philosophy.questions, case.socrates.1, history.photos
-
-## phishing
-
-[Andrew Levine / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:PhishingTrustedBank.png) · [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/)
-
-Ein veröffentlichtes, fiktives Phishing-Beispiel. Die Aufmachung als Banknachricht belegt nicht, dass Absender und Link wirklich zur Bank gehören.
-
-Kapitel: digital.phishing
-
-## epictetus
-
-[Historische Darstellung von Epiktet · Urheber nicht angegeben / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Epictetus.jpg) · [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/)
-
-Eine spätere Darstellung von Epiktet, kein zeitgenössisches Porträt. Die Abbildung ordnet die Person ein; ihre Erscheinung beweist keine philosophische Aussage.
-
-Kapitel: philosophy.control, case.stoic.1
-
-## shoes
-
-[Tiia Monto / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Running_shoes.jpg) · [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-
-Ein konkreter Startreiz: Bereitgelegte Schuhe machen den ersten Handlungsschritt sichtbar. Das Foto illustriert Vorbereitung, keine Produktempfehlung.
-
-Kapitel: development.environment, case.habit.1
-
-## greenhouse
-
-[ZooFari / Wikimedia Commons, 2009](https://commons.wikimedia.org/wiki/File:The_green_house_effect.svg) · [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
-
-Ein veröffentlichtes Schema der Energiebilanz von 2009, keine aktuellen Messwerte. Unterscheide einfallendes Sonnenlicht von der Wärmestrahlung der Erde.
-
-Kapitel: earth.greenhouse
-
-## frequencies
-
-[Karin Binder, Stefan Krauss, Ralf Schmidmaier, Leah T. Braun · Abbildung 1, 2021](https://link.springer.com/article/10.1007/s10459-020-10025-8) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
-
-Veröffentlichtes medizinisches Lehrbeispiel mit eigenen Modellzahlen. Oben Wahrscheinlichkeiten, unten natürliche Häufigkeiten: Uns interessiert die Gruppierung. Die Zahlen gehören nicht zum Paketfall und sind keine persönliche Diagnose.
-
-Kapitel: case.rates.3
+# Medien und Originalquellen · Gate 0.6
+
+Jedes aktive Kapitel enthält eine veröffentlichte Abbildung und eine konkrete Beobachtungsaufgabe. Keine generierten Lernbilder. Recherche: 14. September 2026. Abbildungen bleiben unbeschnitten; deutsche Bildbeschreibungen, Quellen, Urheber und Lizenzen sind in der App erreichbar. HTTPS-Abruf beim ersten Öffnen, danach lokaler Cache. Bei fehlendem Netz steht eine Bildbeschreibung bereit; die Quelle kann später erneut geladen werden.
+
+| Kapitel | Abbildung / Quelle | Urheber | Nutzung | Fachquelle |
+| --- | --- | --- | --- | --- |
+| Die Presse ist nur ein Teil der Erfindung | [Original](https://commons.wikimedia.org/wiki/File:Printer_in_1568-ce.png) · [Bilddatei](https://upload.wikimedia.org/wikipedia/commons/f/f8/Printer_in_1568-ce.png) | Jost Amman · Ständebuch, 1568 | [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/) | [Jost Amman · Druckwerkstatt im Ständebuch, 1568](https://commons.wikimedia.org/wiki/File:Printer_in_1568-ce.png) |
+| Warum diese Druckseite von Hand weiterbearbeitet wurde | [Original](https://commons.wikimedia.org/wiki/File:Gutenberg_bible_Old_Testament_Epistle_of_St_Jerome.jpg) · [Bilddatei](https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/Gutenberg_bible_Old_Testament_Epistle_of_St_Jerome.jpg/960px-Gutenberg_bible_Old_Testament_Epistle_of_St_Jerome.jpg) | Johannes Gutenberg und Werkstatt · 1454/55 · Exemplar des Harry Ransom Center | [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/) | [Harry Ransom Center · The Gutenberg Bible](https://www.hrc.utexas.edu/gutenberg-bible/) |
+| Eine Schablone aus Licht | [Original](https://commons.wikimedia.org/wiki/File:Photolithography_etching_process_(DE).svg) · [Bilddatei](https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Photolithography_etching_process_%28DE%29.svg/960px-Photolithography_etching_process_%28DE%29.svg.png) | Cmglee · deutsche Bearbeitung: Cepheiden / Wikimedia Commons | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) | [ASML · Six crucial steps in semiconductor manufacturing](https://www.asml.com/en/company/stories/2021/semiconductor-manufacturing-process-steps) |
+| Zwei perfekte Muster können zusammen falsch sein | [Original](https://commons.wikimedia.org/wiki/File:Photolithography_overlay_error_(DE).svg) · [Bilddatei](https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Photolithography_overlay_error_%28DE%29.svg/960px-Photolithography_overlay_error_%28DE%29.svg.png) | Cepheiden / Wikimedia Commons | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) | [ASML · Overachieving with overlay control](https://www.asml.com/en/company/stories/2023/novel-lens-manipulator) |
+| Warum dieser Raum orange leuchtet | [Original](https://commons.wikimedia.org/wiki/File:Scientist_in_the_LCN_cleanroom_photolithography_lab.jpg) · [Bilddatei](https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/Scientist_in_the_LCN_cleanroom_photolithography_lab.jpg/960px-Scientist_in_the_LCN_cleanroom_photolithography_lab.jpg) | O. Usher · UCL MAPS, 2013 | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) | [ASML · How microchips are made](https://www.asml.com/en/technology/all-about-microchips/how-microchips-are-made) |
+| Schlafdruck ist keine Uhr | [Original](https://commons.wikimedia.org/wiki/File:Circadian_rhythm_labeled.jpg) · [Bilddatei](https://upload.wikimedia.org/wikipedia/commons/5/55/Circadian_rhythm_labeled.jpg) | NIH / NIGMS | [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/) | [NIH / NHLBI · Your Sleep/Wake Cycle](https://www.nhlbi.nih.gov/health/sleep/sleep-wake-cycle) |
+| Die Kurve misst nicht, wie viel von dir gelöscht ist | [Original](https://commons.wikimedia.org/wiki/File:Ebbinghaus_curve.png) · [Bilddatei](https://upload.wikimedia.org/wikipedia/commons/8/81/Ebbinghaus_curve.png) | Jaap M. J. Murre · Replication and Analysis of Ebbinghaus’ Forgetting Curve, 2015 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | [Murre & Dros · Replication and Analysis of Ebbinghaus’ Forgetting Curve, 2015](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0120644) |
+| Welche Menschen gehören in die Vergleichsgruppe? | [Original](https://link.springer.com/article/10.1007/s10459-020-10025-8) · [Bilddatei](https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs10459-020-10025-8/MediaObjects/10459_2020_10025_Fig1_HTML.png) | Karin Binder, Stefan Krauss, Ralf Schmidmaier, Leah T. Braun · Abbildung 1, 2021 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | [Binder et al. · Natural frequency trees improve diagnostic efficiency in Bayesian reasoning, 2021](https://link.springer.com/article/10.1007/s10459-020-10025-8) |
+| Der Auftrag, der die Werkstatt in Bedrängnis bringt | [Original](https://commons.wikimedia.org/wiki/File:Company_Cash_Cycle.jpg) · [Bilddatei](https://upload.wikimedia.org/wikipedia/commons/7/79/Company_Cash_Cycle.jpg) | Georgeobancroft / Wikimedia Commons | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) | [OpenStax · Principles of Finance: What Is Working Capital?](https://openstax.org/books/principles-finance/pages/19-1-what-is-working-capital) |
+| Epiktet rechnet mit unhöflichen Badegästen | [Original](https://commons.wikimedia.org/wiki/File:Epictetus.jpg) · [Bilddatei](https://upload.wikimedia.org/wikipedia/commons/9/90/Epictetus.jpg) | Historische Darstellung von Epiktet · Urheber nicht angegeben / Wikimedia Commons | [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/) | [Epiktet · Enchiridion, Abschnitte 1, 4 und 5 · englische Übersetzung von Elizabeth Carter](https://classics.mit.edu/Epictetus/epicench.html) |
+| Der Augenzeuge, der gar nicht da war | [Original](https://commons.wikimedia.org/wiki/File:Jacques-Louis_David_-_The_Death_of_Socrates_-_Google_Art_Project.jpg) · [Bilddatei](https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Jacques-Louis_David_-_The_Death_of_Socrates_-_Google_Art_Project.jpg/960px-Jacques-Louis_David_-_The_Death_of_Socrates_-_Google_Art_Project.jpg) | Jacques-Louis David · Der Tod des Sokrates, 1787 · The Metropolitan Museum of Art | [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/) | [The Metropolitan Museum of Art · The Death of Socrates](https://www.metmuseum.org/art/collection/search/436105) |
+| Wenn doppelt plötzlich vierfach aussieht | [Original](https://commons.wikimedia.org/wiki/File:Comparison_of_properly_and_improperly_scaled_picture_graph.svg) · [Bilddatei](https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Comparison_of_properly_and_improperly_scaled_picture_graph.svg/1049px-Comparison_of_properly_and_improperly_scaled_picture_graph.svg.png) | Smallman12q / Wikimedia Commons | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) | [Smallman12q · Vergleich korrekt und irreführend skalierter Bilddiagramme](https://commons.wikimedia.org/wiki/File:Comparison_of_properly_and_improperly_scaled_picture_graph.svg) |
+| Die Einschusslöcher zeigen nur die Rückkehrer | [Original](https://commons.wikimedia.org/wiki/File:Survivorship-bias.svg) · [Bilddatei](https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Survivorship-bias.svg/960px-Survivorship-bias.svg.png) | Martin Grandjean, McGeddon / Wikimedia Commons | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | [Martin Grandjean / McGeddon · Hypothetisches Schema zum Survivorship Bias](https://commons.wikimedia.org/wiki/File:Survivorship-bias.svg) |
+| Licht hinein, Wärmestrahlung hinaus | [Original](https://commons.wikimedia.org/wiki/File:The_green_house_effect.svg) · [Bilddatei](https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/The_green_house_effect.svg/960px-The_green_house_effect.svg.png) | ZooFari / Wikimedia Commons, 2009 | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) | [UCAR · The Greenhouse Effect](https://scied.ucar.edu/learning-zone/how-climate-works/greenhouse-effect) |
+| Das Logo ist kein Herkunftsnachweis | [Original](https://commons.wikimedia.org/wiki/File:PhishingTrustedBank.png) · [Bilddatei](https://upload.wikimedia.org/wikipedia/commons/d/d0/PhishingTrustedBank.png) | Andrew Levine / Wikimedia Commons | [Public Domain](https://creativecommons.org/publicdomain/mark/1.0/) | [NCSC · How to spot a scam email, text message or call](https://www.ncsc.gov.uk/collection/phishing-scams/spot-scams) |
+
+Weitere Fachquelle im Phishing-Kapitel: [Mozilla · Verbindungsverschlüsselung und Website-Identität](https://support.mozilla.org/en-US/kb/how-do-i-tell-if-my-connection-is-secure).

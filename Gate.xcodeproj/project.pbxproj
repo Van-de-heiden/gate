@@ -565,7 +565,7 @@
 				CODE_SIGN_ENTITLEMENTS = Gate/Gate.entitlements;
                 ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -577,7 +577,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -596,7 +596,7 @@
 				CODE_SIGN_ENTITLEMENTS = Gate/Gate.entitlements;
                 ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -608,7 +608,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -627,13 +627,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -652,13 +652,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.monitor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -677,13 +677,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.shieldconfiguration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -702,13 +702,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = ShieldConfigurationExtension/ShieldConfigurationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldConfigurationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.shieldconfiguration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -727,13 +727,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = ShieldActionExtension/ShieldActionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldActionExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.shieldaction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -752,13 +752,13 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = ShieldActionExtension/ShieldActionExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = F2ZGB2Y8UY;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = ShieldActionExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.shieldaction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -776,11 +776,11 @@
             buildSettings = {
                 APPLICATION_EXTENSION_API_ONLY = YES;
                 CODE_SIGN_ENTITLEMENTS = GateWidgetExtension/GateWidgetExtension.entitlements;
-                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 5;
+                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 6;
                 DEVELOPMENT_TEAM = F2ZGB2Y8UY; GENERATE_INFOPLIST_FILE = NO;
                 INFOPLIST_FILE = GateWidgetExtension/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.4;
                 LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-                MARKETING_VERSION = 0.5; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.widget;
+                MARKETING_VERSION = 0.6; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.widget;
                 PRODUCT_NAME = "$(TARGET_NAME)"; REGISTER_APP_GROUPS = YES; SDKROOT = iphoneos;
                 SKIP_INSTALL = YES; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
                 SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;
@@ -791,11 +791,11 @@
             buildSettings = {
                 APPLICATION_EXTENSION_API_ONLY = YES;
                 CODE_SIGN_ENTITLEMENTS = GateWidgetExtension/GateWidgetExtension.entitlements;
-                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 5;
+                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 6;
                 DEVELOPMENT_TEAM = F2ZGB2Y8UY; GENERATE_INFOPLIST_FILE = NO;
                 INFOPLIST_FILE = GateWidgetExtension/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.4;
                 LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-                MARKETING_VERSION = 0.5; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.widget;
+                MARKETING_VERSION = 0.6; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.widget;
                 PRODUCT_NAME = "$(TARGET_NAME)"; REGISTER_APP_GROUPS = YES; SDKROOT = iphoneos;
                 SKIP_INSTALL = YES; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
                 SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;
@@ -806,11 +806,11 @@
             buildSettings = {
                 APPLICATION_EXTENSION_API_ONLY = YES;
                 CODE_SIGN_ENTITLEMENTS = GateReportExtension/GateReportExtension.entitlements;
-                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 5;
+                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 6;
                 DEVELOPMENT_TEAM = F2ZGB2Y8UY; GENERATE_INFOPLIST_FILE = NO;
                 INFOPLIST_FILE = GateReportExtension/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.4;
                 LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-                MARKETING_VERSION = 0.5; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.report;
+                MARKETING_VERSION = 0.6; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.report;
                 PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos;
                 SKIP_INSTALL = YES; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
                 SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;
@@ -821,11 +821,11 @@
             buildSettings = {
                 APPLICATION_EXTENSION_API_ONLY = YES;
                 CODE_SIGN_ENTITLEMENTS = GateReportExtension/GateReportExtension.entitlements;
-                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 5;
+                CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 6;
                 DEVELOPMENT_TEAM = F2ZGB2Y8UY; GENERATE_INFOPLIST_FILE = NO;
                 INFOPLIST_FILE = GateReportExtension/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.4;
                 LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-                MARKETING_VERSION = 0.5; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.report;
+                MARKETING_VERSION = 0.6; PRODUCT_BUNDLE_IDENTIFIER = ch.mauruspichler.gate.report;
                 PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos;
                 SKIP_INSTALL = YES; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
                 SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;

@@ -54,7 +54,7 @@ struct GateStatisticsView: View {
                 Divider()
                 GateSection(title: "Was hängen bleibt") {
                     HStack(alignment: .top, spacing: 24) {
-                        metric("\(learning.progress.completedLessonIDs.count)", "Kapitel erarbeitet")
+                        metric("\(learning.catalog?.lessons.filter { learning.progress.hasCompleted($0) }.count ?? 0)", "Kapitel erarbeitet")
                         metric("\(learning.progress.memories.values.filter { $0.streak >= 3 }.count)", "Fragen wiederholt gefestigt")
                     }
                     DisclosureGroup("Was zählt?") {

@@ -22,8 +22,8 @@ struct LearningLibraryView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 26) {
                 Eyebrow(text: "Deine Bibliothek")
-                Text("Mehr verstehen.\nBesser leben.").font(.largeTitle.bold())
-                Text("\(learning.catalog?.paths.count ?? 0) Lernwege · \(learning.catalog?.lessons.count ?? 0) Kapitel\nJede Runde vertieft eine konkrete Frage.")
+                Text("Etwas entdecken.\nWirklich verstehen.").font(.largeTitle.bold())
+                Text("\(learning.catalog?.allTopics.count ?? 0) Themen · \(learning.catalog?.lessons.count ?? 0) Kapitel\nJede Runde vertieft eine konkrete Frage.")
                     .font(.subheadline).foregroundStyle(.secondary)
                 HStack(spacing: 10) {
                     Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
@@ -51,29 +51,15 @@ struct LearningLibraryView: View {
                 }
                 if query.isEmpty {
                     if let stories = learning.catalog?.topics, !stories.isEmpty {
-                        Eyebrow(text: "Lernfälle · eine Frage wirklich verstehen")
+                        Eyebrow(text: "Ausgewählte Entdeckungen")
                         ForEach(stories.filter { topic in paths.contains { $0.id == topic.pathID } }) { topic in
                             topicLink(topic)
                         }
-                        Eyebrow(text: "Alle Lernwege & Grundlagen")
-                    }
-                    ForEach(paths) { path in
-                        NavigationLink { pathDetail(path) } label: {
-                            VStack(alignment: .leading, spacing: 14) {
-                                LessonArtwork(name: path.artwork ?? "learning")
-                                HStack { Eyebrow(text: "Weg \(path.number)"); Spacer(); Eyebrow(text: progressLabel(path)) }
-                                Text(path.title).font(.title2.weight(.semibold))
-                                Text(path.subtitle).font(.subheadline).foregroundStyle(.secondary)
-                                GateProgressLine(value: progressValue(path))
-                                HStack { Text("Kapitel entdecken"); Spacer(); Image(systemName: "arrow.right") }
-                                    .font(.caption.weight(.medium)).padding(.top, 4)
-                            }.gateCard().contentShape(Rectangle())
-                        }.buttonStyle(.plain)
                     }
                 } else {
                     Eyebrow(text: "\(matches.count) passende Kapitel")
                     ForEach(matches) { lesson in chapterButton(lesson) }
-                    if matches.isEmpty { Text("Versuche einen weiteren Begriff, etwa Zins, Schlaf oder Gespräch.").font(.subheadline).foregroundStyle(.secondary) }
+                    if matches.isEmpty { Text("Versuche einen weiteren Begriff, etwa Chip, Schlaf oder Bild.").font(.subheadline).foregroundStyle(.secondary) }
                 }
                 Text("Recherchierte Abbildungen mit Quellen · Wiederholung nach deinem Lernstand")
                     .font(.caption).foregroundStyle(.secondary)
@@ -83,7 +69,7 @@ struct LearningLibraryView: View {
 
     private func progressValue(_ path: LearningPath) -> Double {
         let lessons = learning.catalog?.orderedLessons(in: path.id) ?? []
-        return Double(lessons.filter { learning.progress.completedLessonIDs.contains($0.id) }.count) / Double(max(1, lessons.count))
+        return Double(lessons.filter { learning.progress.hasCompleted($0) }.count) / Double(max(1, lessons.count))
     }
     private func topicLink(_ topic: LearningTopic) -> some View {
         NavigationLink {
@@ -95,9 +81,9 @@ struct LearningLibraryView: View {
                     if let media = learning.catalog?.chapters(in: topic.id).flatMap(\.cards).compactMap(\.media).first {
                         LessonMediaView(media: media).gateCard()
                     }
-                    Text("\(learning.catalog?.chapters(in: topic.id).count ?? 0) Kapitel · ein zusammenhängender Fall")
+                    Text("\(learning.catalog?.chapters(in: topic.id).count ?? 0) Kapitel · ein Thema")
                         .font(.subheadline)
-                    Button("In den Fall eintauchen") { controller.beginPractice(path: topic.pathID, topic: topic.id) }.buttonStyle(GateButtonStyle())
+                    Button("Thema starten") { controller.beginPractice(path: topic.pathID, topic: topic.id) }.buttonStyle(GateButtonStyle())
                     ForEach(learning.catalog?.chapters(in: topic.id) ?? []) { chapterButton($0) }
                 }.padding(24)
             }.gateBackground().navigationBarTitleDisplayMode(.inline)
@@ -112,13 +98,13 @@ struct LearningLibraryView: View {
     }
     private func progressLabel(_ path: LearningPath) -> String {
         let lessons = learning.catalog?.orderedLessons(in: path.id) ?? []
-        return "\(lessons.filter { learning.progress.completedLessonIDs.contains($0.id) }.count) / \(lessons.count) erarbeitet"
+        return "\(lessons.filter { learning.progress.hasCompleted($0) }.count) / \(lessons.count) erarbeitet"
     }
     private func chapterButton(_ lesson: LearningLesson) -> some View {
         Button { GateKeyboard.dismiss(); controller.beginPractice(path: lesson.pathID, lesson: lesson.id) } label: {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Eyebrow(text: "\(lesson.topicID == nil ? "Kapitel" : "Im Lernfall") \(lesson.topicOrder ?? lesson.order)" + (learning.progress.completedLessonIDs.contains(lesson.id) ? " · erarbeitet" : ""))
+                    Eyebrow(text: "\(lesson.topicID == nil ? "Kapitel" : "Im Lernfall") \(lesson.topicOrder ?? lesson.order)" + (learning.progress.hasCompleted(lesson) ? " · erarbeitet" : ""))
                     Spacer()
                     Image(systemName: "arrow.up.right").font(.caption)
                 }

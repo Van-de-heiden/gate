@@ -23,13 +23,13 @@ final class GateCoreTests: XCTestCase {
             now: now, random: &random)
     }
 
-    func testCurriculumHasSixteenCompletePathsAndUniqueQuestions() throws {
+    func testCuratedCatalogHasReviewedScopeAndUniqueQuestions() throws {
         let catalog = try catalog()
         try catalog.validate()
-        XCTAssertEqual(catalog.paths.count, 16)
-        XCTAssertEqual(catalog.lessons.count, 144)
-        XCTAssertEqual(catalog.questions.count, 295)
-        XCTAssertEqual(catalog.topics?.count, 12)
+        XCTAssertEqual(catalog.paths.count, 10)
+        XCTAssertEqual(catalog.lessons.count, 15)
+        XCTAssertEqual(catalog.questions.count, 35)
+        XCTAssertEqual(catalog.topics?.count, 10)
         XCTAssertTrue(catalog.lessons.allSatisfy { $0.source.url.hasPrefix("https://") })
     }
 

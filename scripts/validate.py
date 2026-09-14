@@ -7,12 +7,12 @@ import xml.etree.ElementTree as ET
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 catalog = json.loads((ROOT / "Gate/curriculum.json").read_text())
-assert catalog['version'] == 5
-assert len(catalog['paths']) == 16
-assert len(catalog['lessons']) == 144
-assert len(catalog['topics']) == 12
+assert catalog['version'] == 6
+assert len(catalog['paths']) == 10
+assert len(catalog['lessons']) == 15
+assert len(catalog['topics']) == 10
 questions = [q for l in catalog['lessons'] for q in l['questions']]
-assert len(questions) == len({q['id'] for q in questions}) == 295
+assert len(questions) == len({q['id'] for q in questions}) == 35
 assert {len(l['questions']) for l in catalog['lessons']} == {2, 3}
 assert {q.get('format', 'singleChoice') for q in questions} == {'singleChoice', 'multipleChoice', 'ordering'}
 media = []
@@ -25,6 +25,7 @@ for topic in catalog['topics']:
     assert all(l['pathID'] == topic['pathID'] for l in chapters)
 for lesson in catalog['lessons']:
     assert lesson['source']['url'].startswith('https://')
+    assert any(c.get('media') for c in lesson['cards']), lesson['id']
     assert len(lesson['cards']) >= 3
     probes = [c['probe'] for c in lesson['cards'] if c.get('probe')]
     assert probes and all(probe in lesson['questions'] for probe in probes)
@@ -38,14 +39,18 @@ for lesson in catalog['lessons']:
             assert all(item.get(key) for key in ['alt','caption','credit','license','licenseURL','url','sourceURL'])
             assert all(item[key].startswith('https://') for key in ['url','sourceURL','licenseURL'])
     for q in lesson['questions']:
-        assert q['id'].startswith(lesson['id'] + '.v5.q')
+        assert q['id'].startswith(lesson['id'] + '.v6.q')
         assert q['prompt'] and q['explanation']
         options = q['options']; assert len(set(options)) == len(options)
         kind = q.get('format', 'singleChoice')
         if kind == 'singleChoice': assert len(options) >= 2 and 0 <= q['correctIndex'] < len(options)
         elif kind == 'multipleChoice': assert 0 < len(q['correctIndices']) < len(options) and set(q['correctIndices']) <= set(range(len(options)))
         elif kind == 'ordering': assert sorted(q['correctOrder']) == list(range(len(options)))
-assert len({m['url'] for m in media}) == 19
+assert len({m['url'] for m in media}) == 15
+review = json.loads((ROOT / 'scripts/content/review_v6.json').read_text())
+assert {r['lessonID'] for r in review} == {l['id'] for l in catalog['lessons']}
+assert all(r['discovery'] and r['visualTask'] and r['questionPurposes'] for r in review)
+assert len({len([l for l in catalog['lessons'] if l['topicID'] == t['id']]) for t in catalog['topics']}) > 1
 assert (ROOT / 'Gate/Assets.xcassets/AppIcon.appiconset/GateIcon.png').is_file()
 
 for file in list(ROOT.rglob("*.plist")) + list(ROOT.rglob("*.entitlements")):
@@ -78,4 +83,4 @@ assert "IPHONEOS_DEPLOYMENT_TARGET = 16.0" not in project
 assert "GateConstants" not in "\n".join(p.read_text() for p in ROOT.rglob("*.swift"))
 assert "GateStorage" not in "\n".join(p.read_text() for p in ROOT.rglob("*.swift"))
 ET.parse(ROOT / "Gate.xcodeproj/xcshareddata/xcschemes/Gate.xcscheme")
-print(f"PASS: 144 edited chapters; {len(questions)} unique questions including graded inline checks; 19 attributed media in {len(media)} placements; project, plist and scheme checks.")
+print(f"PASS: 15 curated chapters; {len(questions)} unique questions including graded inline checks; 15 attributed media in {len(media)} placements; project, plist and scheme checks.")

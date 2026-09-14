@@ -181,3 +181,16 @@ by green unit tests. Record failures with iOS/Xcode versions and exact reproduct
 - Confirm no synthetic narration controls remain. VoiceOver must still expose scene descriptions, questions, source links, values and controls. Check a small iPhone, largest Dynamic Type, light/dark mode and Reduce Motion. Question fields, notes and source/image sheets must dismiss keyboards and remain scrollable.
 - While A has an earned grant, study for B, interrupt, resume and pass. Both grants must remain independent. Daily free allowance stays 30 minutes; no learning UI action may reset usage or weaken permanent website protection.
 - Next day, explain the central idea without the text and try a changed example. Record where the story lost its thread, imagery distracted or distractors made guessing trivial. Compilation and unit tests do not establish lasting learning or enjoyment; use this feedback for the next editorial pass.
+
+
+## Ausgabe 0.6: Themenwahl und kuratierter Katalog
+
+- Neue Anfrage: genau zwei verschiedene Themen. Schliessen und Neustart: dasselbe Paar. Freigabeminuten ändern: dasselbe Paar.
+- Thema wählen: genau dessen Kapitel; nach Unterbruch dieselbe Leseposition. Fehlversuch: gleiches Thema, keine neue Auswahl.
+- Zweite App parallel anfragen: eigene Auswahl. Erste Anfrage abschliessen: die zweite bleibt bestehen.
+- Aus der Themenwahl die Pause öffnen: erst das Lernblatt schliessen, dann das Pausenblatt zeigen. Keine gleichzeitige Blattpräsentation.
+- Alle 15 Kapitel: Originalabbildung lädt, ist unbeschnitten, vergrösserbar und lesbar. Quellen, Lizenz und deutsche Bildbeschreibung öffnen beziehungsweise vorlesen. Zwischenfrage: Abbildung erneut einblenden.
+- Offline vor Erstabruf: ehrliche Bildbeschreibung und Wiederholen-Knopf. Offline nach Abruf: Bild aus Cache. Keine Behauptung, dass alle Medien bereits gebündelt sind.
+- Upgrade von 0.5: alte Ergebnisse und Notizen behalten; offene/fehlgeschlagene alte Decks ersetzen; bestandene noch nicht eingelöste Runde behalten. Neue Kapitel nicht aufgrund alter Frage-IDs als erarbeitet markieren.
+- Ein Thema mit einem Kapitel und eines mit drei Kapiteln lesen. Keine erzwungene Mindestzeit oder Zusatzfragen für 30 statt 5 Freigabeminuten.
+- Abwechslungsreichtum und Anspruch mit echten Lernenden prüfen. Compiler- und Ablaufprüfungen sind keine Nutzerstudie.

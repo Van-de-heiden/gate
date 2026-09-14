@@ -54,8 +54,12 @@ struct ContentView: View {
         .sheet(isPresented: $controller.showPause, onDismiss: { controller.closePause() }) {
             IntentionalPauseView(controller: controller)
         }
-        .sheet(item: $learning.session, onDismiss: { controller.lessonDidClose() }) { _ in
-            LessonView(controller: controller, learning: learning)
+        .sheet(isPresented: Binding(get: { learning.isPresented }, set: { if !$0 { learning.suspend() } }), onDismiss: { controller.lessonDidClose() }) {
+            if learning.session != nil {
+                LessonView(controller: controller, learning: learning)
+            } else {
+                TopicChoiceView(learning: learning)
+            }
         }
         .alert("Gate", isPresented: Binding(get: { controller.errorMessage != nil }, set: { if !$0 { controller.errorMessage = nil } })) {
             Button("Verstanden") { controller.errorMessage = nil }
@@ -99,7 +103,7 @@ struct ContentView: View {
                     }.buttonStyle(.plain).accessibilityLabel("Gate-Pause öffnen")
                 }
                 VStack(alignment: .leading, spacing: 16) {
-                    GateLandscape(active: tab == 0 && !onboarding && learning.session == nil && !controller.showPause)
+                    GateLandscape(active: tab == 0 && !onboarding && !learning.isPresented && !controller.showPause)
                     Eyebrow(text: dayPhase.greeting)
                     Text(controller.state.limitReached ? "Erst verstehen.\nDann weiter." : "Platz für das,\nwas zählt.")
                         .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
@@ -231,7 +235,7 @@ private struct RequestCard: View {
                 Text("Kurze Pause für diese App. Neuer Versuch ab \(until.formatted(date: .omitted, time: .shortened)).")
                     .font(.subheadline)
             } else {
-                Button("Lektion beginnen") { controller.beginLesson(minutes: minutes) }.buttonStyle(GateButtonStyle())
+                Button("Thema wählen") { controller.beginLesson(minutes: minutes) }.buttonStyle(GateButtonStyle())
             }
         }.padding(20).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 14))
     }
