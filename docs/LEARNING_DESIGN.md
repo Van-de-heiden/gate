@@ -1,3 +1,5 @@
+> Stand 0.7: [100 Kapitel und Quellen](CURRICULUM_V7.md). Eine neue Runde umfasst ein Kapitel; Abbildungen sind optional. Die nachfolgende Dokumentation der Ausgabe 0.6 bleibt als Historie erhalten.
+
 # Lern- und Oberflächendesign · Version 6
 
 Die Rückmeldung nach Ausgabe 5 war weiterhin: zu viele ähnliche Kapitel, zu wenig Erkenntnis und zu wenige Bilder. Diese Ausgabe reduziert deshalb 144 Kapitel auf 15 und schreibt die verbleibenden Kapitel neu.

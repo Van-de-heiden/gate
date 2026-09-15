@@ -83,7 +83,7 @@ struct LearningLibraryView: View {
                     }
                     Text("\(learning.catalog?.chapters(in: topic.id).count ?? 0) Kapitel · ein Thema")
                         .font(.subheadline)
-                    Button("Thema starten") { controller.beginPractice(path: topic.pathID, topic: topic.id) }.buttonStyle(GateButtonStyle())
+                    Button(learning.progress.nextChapter(in: topic.id, catalog: learning.catalog!) == nil ? "Kapitel wiederholen" : "Nächstes Kapitel") { controller.beginPractice(path: topic.pathID, topic: topic.id) }.buttonStyle(GateButtonStyle())
                     ForEach(learning.catalog?.chapters(in: topic.id) ?? []) { chapterButton($0) }
                 }.padding(24)
             }.gateBackground().navigationBarTitleDisplayMode(.inline)

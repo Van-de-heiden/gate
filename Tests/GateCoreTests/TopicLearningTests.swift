@@ -56,7 +56,7 @@ final class TopicLearningTests: XCTestCase {
                     let session = round(catalog, minutes: minutes, failures: failures, seed: seed)
                     assertOneTopic(session, catalog: catalog)
                     XCTAssertEqual(session.questions.count,
-                                   catalog.chapters(in: session.topicID!).flatMap(\.questions).count)
+                                   catalog.lessons.filter { session.lessonIDs.contains($0.id) }.flatMap(\.questions).count)
                 }
             }
         }
@@ -75,7 +75,7 @@ final class TopicLearningTests: XCTestCase {
         XCTAssertEqual(session.lessonIDs, ["case.stoic.1"])
     }
 
-    func testDueQuestionsChooseOneCaseBeforeTheDeckIsBuilt() throws {
+    func testDueQuestionsDoNotForcePreviouslyAttemptedContentBeforeNewTopics() throws {
         let catalog = try LearningCatalog.packageCatalog()
         var progress = LearningProgress()
         for topic in ["case.cash", "case.press", "case.stoic"] {
@@ -87,8 +87,8 @@ final class TopicLearningTests: XCTestCase {
         }
         let session = round(catalog, minutes: 30, progress: progress)
         assertOneTopic(session, catalog: catalog)
-        XCTAssertEqual(session.topicID, "case.cash")
-        XCTAssertTrue(session.questions.allSatisfy(\.isReview))
+        XCTAssertFalse(session.questions.isEmpty)
+        XCTAssertEqual(session.lessonIDs.count, 1)
     }
 
     func testVoluntaryReviewUsesOnlyDueQuestionsWithinOneTopic() throws {
@@ -131,11 +131,11 @@ final class TopicLearningTests: XCTestCase {
         XCTAssertFalse(session.questions.contains { $0.id == unrelated })
     }
 
-    func testEveryGrantDurationTeachesTheWholeAuthoredCaseInOrder() throws {
+    func testEveryGrantDurationTeachesOneIndependentChapter() throws {
         let catalog = try LearningCatalog.packageCatalog()
         for minutes in LessonLoad.allowedMinutes {
             let session = round(catalog, minutes: minutes, topic: "case.cash")
-            XCTAssertEqual(session.lessonIDs, catalog.chapters(in: "case.cash").map(\.id))
+            XCTAssertEqual(session.lessonIDs, ["case.cash.1"])
             XCTAssertEqual(Set(session.questions.map(\.lessonID)), Set(session.lessonIDs))
             assertOneTopic(session, catalog: catalog)
         }
@@ -146,7 +146,7 @@ final class TopicLearningTests: XCTestCase {
         var progress = LearningProgress()
         progress.completedLessonIDs = ["case.cash.1", "case.cash.2"]
         let session = round(catalog, topic: "case.cash", progress: progress)
-        XCTAssertEqual(session.lessonIDs, catalog.chapters(in: "case.cash").map(\.id))
+        XCTAssertEqual(session.lessonIDs, ["case.cash.1"])
         assertOneTopic(session, catalog: catalog)
     }
 
@@ -155,7 +155,7 @@ final class TopicLearningTests: XCTestCase {
         var progress = LearningProgress()
         progress.completedLessonIDs = ["case.chip.1", "case.chip.2"]
         let session = round(catalog, minutes: 30, topic: "case.chip", progress: progress)
-        XCTAssertEqual(session.lessonIDs, catalog.chapters(in: "case.chip").map(\.id))
+        XCTAssertEqual(session.lessonIDs, ["case.chip.1"])
         assertOneTopic(session, catalog: catalog)
     }
 
@@ -263,7 +263,7 @@ final class TopicLearningTests: XCTestCase {
         let catalog = try LearningCatalog.packageCatalog()
         let short = round(catalog, topic: "case.cash")
         let long = round(catalog, minutes: 30, topic: "case.cash")
-        let chapters = catalog.chapters(in: "case.cash")
+        let chapters = catalog.lessons.filter { long.lessonIDs.contains($0.id) }
         let expected = chapters.reduce(0) { $0 + $1.readingSeconds }
         XCTAssertEqual(long.readingEstimateSeconds, expected)
         XCTAssertEqual(long.estimatedSeconds, expected + long.questions.count * 20)

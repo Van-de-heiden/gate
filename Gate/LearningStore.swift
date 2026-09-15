@@ -37,7 +37,7 @@ final class LearningStore: ObservableObject {
             if FileManager.default.fileExists(atPath: file.path) {
                 progress = try JSONDecoder().decode(LearningProgress.self, from: Data(contentsOf: file))
                 // Keep completed history and earned results; replace unfinished obsolete question decks.
-                progress.reconcileCatalogVersion(catalog.version)
+                progress.reconcileCatalog(catalog)
                 save()
             }
         } catch {
@@ -72,8 +72,11 @@ final class LearningStore: ObservableObject {
     }
 
     func choose(_ topicID: String) {
-        guard let choice, let catalog,
-              progress.chooseTopic(topicID, from: choice.offer.id, catalog: catalog) else { return }
+        guard let choice, let catalog else { return }
+        guard progress.chooseTopic(topicID, from: choice.offer.id, catalog: catalog) else {
+            prepare(request: choice.request, minutes: choice.minutes, consumed: choice.consumed, failures: choice.failures)
+            return
+        }
         save()
         guard error == nil else { return }
         begin(request: choice.request, minutes: choice.minutes, consumed: choice.consumed,

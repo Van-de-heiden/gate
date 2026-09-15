@@ -1,3 +1,5 @@
+> Stand 0.7: [100 Kapitel und Quellen](CURRICULUM_V7.md). Eine neue Runde umfasst ein Kapitel; Abbildungen sind optional. Die nachfolgende Dokumentation der Ausgabe 0.6 bleibt als Historie erhalten.
+
 # Aktiver Katalog · Version 6
 
 Die Ausgabe enthält 10 Themen, 15 eigenständige Kapitel und 32 Fragen. 15 Zwischenfragen zählen zum selben Ergebnis wie die Abschlussfragen; jede wird nur einmal gewertet. Jede Abbildung ist veröffentlicht und mit einer Beobachtungsaufgabe verbunden. Es gibt keine generierten Lehrbilder und keine isolierte Prozentrechnung auf Nachkommastellen.

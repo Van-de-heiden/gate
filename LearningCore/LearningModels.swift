@@ -239,7 +239,7 @@ struct LearningCatalog: Codable {
               }),
               lessons.allSatisfy({ lesson in
                   topic(lesson.topicKey)?.pathID == lesson.pathID
-                      && (version < 6 || lesson.cards.contains { $0.media != nil })
+                      && (version != 6 || lesson.cards.contains { $0.media != nil })
                       && lesson.cards.allSatisfy { card in
                       !card.title.isEmpty && !card.text.isEmpty && (card.probe?.isValid ?? true)
                           && (card.probe == nil || lesson.questions.contains(card.probe!))
@@ -302,6 +302,20 @@ struct LearningProgress: Codable {
     var sessions: [String: LearningSession] = [:]
     var savedNotes: [String: String]?
     var topicOffers: [String: LearningTopicOffer]?
+    var finishedChapterIDs: Set<String>?
+
+    mutating func reconcileCatalog(_ catalog: LearningCatalog) {
+        // An additive edition preserves compatible answers, positions and permutations.
+        for (key, var session) in sessions {
+            if session.questions.allSatisfy({ item in
+                catalog.lesson(forQuestion: item.id)?.questions.contains(item.question) == true
+            }) {
+                session.catalogVersion = catalog.version
+                sessions[key] = session
+            }
+        }
+        reconcileCatalogVersion(catalog.version)
+    }
 
     mutating func reconcileCatalogVersion(_ version: Int) {
         // Retire unfinished decks whose questions changed, but preserve the user's writing,
@@ -322,6 +336,8 @@ struct LearningTopicOffer: Codable, Identifiable, Equatable {
     let topicIDs: [String]
     let createdAt: Date
     var selectedTopicID: String?
+    var chapterIDs: [String: String]?
+    var isReview: Bool?
 }
 
 extension LearningProgress {
@@ -330,18 +346,37 @@ extension LearningProgress {
             && lesson.questions.allSatisfy { (memories[$0.id]?.correctAttempts ?? 0) > 0 }
     }
 
+    func hasFinished(_ lesson: LearningLesson) -> Bool {
+        let recorded = finishedChapterIDs?.contains(lesson.id) == true
+            || results.contains { $0.passed && $0.lessonIDs.contains(lesson.id) }
+        return hasCompleted(lesson) || (recorded && lesson.questions.allSatisfy {
+            (memories[$0.id]?.attempts ?? 0) > 0
+        })
+    }
+
+    func nextChapter(in topic: String, catalog: LearningCatalog) -> LearningLesson? {
+        catalog.chapters(in: topic).first { !hasFinished($0) }
+    }
+
     static func offerKey(request: GateRequest?) -> String {
         request.map { "request." + $0.id.uuidString } ?? "practice"
     }
 
     mutating func topicOffer<R: RandomNumberGenerator>(catalog: LearningCatalog, key: String,
         now: Date, random: inout R) -> LearningTopicOffer? {
-        let topics = catalog.allTopics
+        let unseenTopics = catalog.allTopics.filter { nextChapter(in: $0.id, catalog: catalog) != nil }
+        let review = catalog.version >= 7 && unseenTopics.isEmpty
+        let topics = catalog.version >= 7 && !review ? unseenTopics : catalog.allTopics
         guard !topics.isEmpty else { return nil }
         if let saved = topicOffers?[key], saved.catalogVersion == catalog.version,
            saved.topicIDs.count == min(2, topics.count),
            Set(saved.topicIDs).count == saved.topicIDs.count,
            saved.topicIDs.allSatisfy({ catalog.topic($0) != nil }),
+           catalog.version < 7 || (saved.isReview == review && saved.topicIDs.allSatisfy { topic in
+               guard let id = saved.chapterIDs?[topic],
+                     let lesson = catalog.lessons.first(where: { $0.id == id && $0.topicKey == topic }) else { return false }
+               return review || !hasFinished(lesson)
+           }),
            saved.selectedTopicID == nil || saved.topicIDs.contains(saved.selectedTopicID!) {
             return saved
         }
@@ -350,8 +385,17 @@ extension LearningProgress {
         let first = pool[0]
         let different = pool.filter { $0.id != first.id && $0.pathID != first.pathID }
         let second = (different.isEmpty ? pool.filter { $0.id != first.id } : different).randomElement(using: &random)
+        let selectedTopics = [first.id] + (second.map { [$0.id] } ?? [])
+        var chapterIDs: [String: String] = [:]
+        for id in selectedTopics {
+            let chapter = review ? catalog.chapters(in: id).randomElement(using: &random)
+                : nextChapter(in: id, catalog: catalog)
+            chapterIDs[id] = chapter?.id
+        }
         let offer = LearningTopicOffer(id: key, catalogVersion: catalog.version,
-            topicIDs: [first.id] + (second.map { [$0.id] } ?? []), createdAt: now)
+            topicIDs: selectedTopics, createdAt: now,
+            chapterIDs: catalog.version >= 7 ? chapterIDs : nil,
+            isReview: catalog.version >= 7 ? review : nil)
         if topicOffers == nil { topicOffers = [:] }
         topicOffers?[key] = offer
         // Unchosen, stale requests cannot grow the progress file indefinitely.
@@ -367,6 +411,11 @@ extension LearningProgress {
         guard var offer = topicOffers?[key], offer.catalogVersion == catalog.version,
               offer.topicIDs.contains(topicID), catalog.topic(topicID) != nil,
               offer.selectedTopicID == nil || offer.selectedTopicID == topicID else { return false }
+        if catalog.version >= 7 && offer.isReview != true {
+            guard let id = offer.chapterIDs?[topicID],
+                  let chapter = catalog.lessons.first(where: { $0.id == id && $0.topicKey == topicID }),
+                  !hasFinished(chapter) else { return false }
+        }
         offer.selectedTopicID = topicID
         topicOffers?[key] = offer
         return true
@@ -478,14 +527,16 @@ enum LearningScheduler {
         let remediationTopic = remediation.first.flatMap { catalog.topicID(forLesson: $0) }
         let explicitTopic = focusedLesson?.topicKey ?? remediationTopic ?? preferredTopic
         let eligible = catalog.allTopics.filter { preferredPath == nil || $0.pathID == preferredPath }
-        let available = eligible.isEmpty ? catalog.allTopics : eligible
+        let base = eligible.isEmpty ? catalog.allTopics : eligible
+        let fresh = base.filter { progress.nextChapter(in: $0.id, catalog: catalog) != nil }
+        let available = catalog.version >= 7 && !reviewOnly && !fresh.isEmpty ? fresh : base
         let overdue = due.first { question in
             available.contains { $0.id == catalog.lesson(forQuestion: question.id)?.topicKey }
         }.flatMap { catalog.lesson(forQuestion: $0.id)?.topicKey }
         let topicID: String
         if let explicitTopic, catalog.topic(explicitTopic) != nil {
             topicID = explicitTopic
-        } else if let overdue {
+        } else if let overdue, catalog.version < 7 || reviewOnly {
             topicID = overdue
         } else {
             var candidates = available
@@ -511,7 +562,13 @@ enum LearningScheduler {
             let ids = Set(scopedDue.compactMap { catalog.lesson(forQuestion: $0.id)?.id })
             taught = ordered.filter { ids.contains($0.id) }
         } else if !gaps.isEmpty { taught = gaps }
-        else { taught = ordered }
+        else if catalog.version >= 7 && !reviewOnly {
+            let offer = progress.topicOffers?[LearningProgress.offerKey(request: request)]
+            let offered = offer?.selectedTopicID == topicID ? offer?.chapterIDs?[topicID] : nil
+            let chapter = ordered.first { $0.id == offered }
+                ?? progress.nextChapter(in: topicID, catalog: catalog) ?? ordered[0]
+            taught = [chapter]
+        } else { taught = ordered }
         let selected = reviewOnly && !scopedDue.isEmpty ? scopedDue : taught.flatMap(\.questions)
         let selectedIDs = Set(selected.map(\.id))
         let inlineIDs = Set(taught.flatMap(\.cards).compactMap(\.probe).map(\.id)).intersection(selectedIDs)
@@ -536,6 +593,10 @@ enum LearningScheduler {
               session.allAnswered else { return session.result }
         let correct = session.questions.filter { session.isCorrect($0) }.count
         let passed = LessonLoad.passes(correct: correct, total: session.questions.count)
+        if passed {
+            if progress.finishedChapterIDs == nil { progress.finishedChapterIDs = [] }
+            progress.finishedChapterIDs?.formUnion(session.lessonIDs)
+        }
         for item in session.questions {
             var memory = progress.memories[item.id] ?? QuestionMemory()
             memory.record(correct: session.isCorrect(item), now: now)

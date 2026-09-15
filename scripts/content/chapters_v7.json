@@ -1,0 +1,2240 @@
+{
+  "data": [
+    [
+      "median",
+      "Der Millionär im kleinen Café",
+      [
+        "Eine Zahl kippt",
+        "Zwei verschiedene Fragen",
+        "Was du damit anfängst"
+      ],
+      [
+        "In einem gedachten Café sitzen fünf Menschen mit gewöhnlichen Einkommen. Ein Millionär setzt sich dazu. Plötzlich steigt das Durchschnittseinkommen der Gäste stark. Niemand an den anderen Tischen hat mehr Geld als zuvor. Wie kann eine richtige Zahl ein so falsches Bild vom typischen Gast vermitteln?",
+        "Der Mittelwert verteilt die Summe rechnerisch auf alle Personen. Ein einzelner sehr hoher Wert zieht ihn nach oben. Der Median fragt stattdessen nach der Mitte der sortierten Werte: Eine Hälfte liegt darunter, eine darüber. Er reagiert weniger stark darauf, wie weit ein einzelner Spitzenwert entfernt ist.",
+        "Keines der Masse gewinnt immer. Für die gesamte Lohnsumme eines Teams ist der Mittelwert nützlich. Für die Frage nach einem typischen Einkommen lohnt sich der Median. Bei einem Lohnvergleich frage deshalb zuerst: Geht es um die Gesamtkosten, die Mitte oder um die Unterschiede innerhalb der Gruppe?"
+      ],
+      [
+        "OpenStax · Introductory Statistics 2e",
+        "https://openstax.org/books/introductory-statistics-2e/pages/2-5-measures-of-the-center-of-the-data"
+      ],
+      [
+        "Eine Firma erhöht nur das ohnehin höchste Gehalt stark. Welche Entwicklung ist möglich?",
+        [
+          "Der Mittelwert steigt, während der Median gleich bleibt.",
+          "Der Median muss ebenso stark steigen wie das höchste Gehalt.",
+          "Alle übrigen Gehälter liegen danach näher am Mittelwert."
+        ],
+        "Eine Erhöhung am oberen Rand verändert die Summe, aber nicht zwingend die mittlere Position der sortierten Gehälter."
+      ],
+      "Ein Durchschnitt beschreibt eine bestimmte Frage; er ist kein Porträt jedes Einzelnen."
+    ],
+    [
+      "spread",
+      "Zwei Züge sind im Durchschnitt pünktlich",
+      [
+        "Dieselbe Mitte",
+        "Die verschwundene Unsicherheit",
+        "Eine Entscheidung statt einer Formel"
+      ],
+      [
+        "Zug A kommt jeden Tag ungefähr zur gleichen Zeit. Zug B kommt manchmal deutlich zu früh und manchmal deutlich zu spät. Im Durchschnitt liegen beide gleich. Für deinen knappen Anschluss sind sie trotzdem nicht gleich zuverlässig. Die Mitte verschluckt gerade die Information, die du brauchst.",
+        "Streuung beschreibt, wie stark Werte auseinanderliegen. Die Spannweite betrachtet nur den kleinsten und grössten Wert. Die Standardabweichung berücksichtigt Abstände aller Werte vom Mittelwert. Du musst sie hier nicht ausrechnen: Entscheidend ist, dass gleiche Durchschnitte mit sehr unterschiedlichen Verteilungen vereinbar sind.",
+        "Für einen Anschluss interessiert zusätzlich die verspätete Seite: Wie häufig überschreitet der Zug deinen Puffer? Ein symmetrisches Streuungsmass allein beantwortet auch das nicht vollständig. Gute Kennzahlen entstehen aus der Entscheidung, die du treffen willst. Frage nach typischen Werten, Schwankungen und den für dich teuren Ausnahmen."
+      ],
+      [
+        "OpenStax · Introductory Statistics 2e",
+        "https://openstax.org/books/introductory-statistics-2e/pages/2-7-measures-of-the-spread-of-the-data"
+      ],
+      [
+        "Zwei Lieferanten brauchen im Mittel drei Tage. Einer schwankt stark. Welche Zusatzinformation hilft für eine feste Veranstaltung am Freitag?",
+        [
+          "Wie oft Lieferungen später als der späteste brauchbare Termin eintreffen.",
+          "Ob die mittlere Lieferzeit mit mehr Nachkommastellen angegeben werden kann.",
+          "Welcher Lieferant die kürzeste jemals gemessene Einzelzeit erreicht hat."
+        ],
+        "Bei einer Frist zählt das Risiko der zu späten Lieferung. Zusätzliche Dezimalstellen im Mittelwert ersetzen diese Information nicht."
+      ],
+      "Gleiche Mittelwerte können sehr unterschiedliche Risiken verbergen."
+    ],
+    [
+      "sample",
+      "Tausend Antworten aus der falschen Ecke",
+      [
+        "Die beeindruckende Umfrage",
+        "Viele ist nicht repräsentativ",
+        "Der fehlende Eingang"
+      ],
+      [
+        "Ein Fitnessstudio fragt auf seinem Instagram-Kanal nach gewünschten Öffnungszeiten. Tausend Menschen antworten. Die Auswertung wirkt solide. Aber wer das Studio ohne Instagram besucht, konnte dort gar nicht mitreden. Die Zahl der Antworten löst dieses Problem nicht.",
+        "Eine Stichprobe soll Aussagen über eine grössere Gruppe ermöglichen. Dabei zählt, wie Menschen hineingelangen. Bei freiwilligen Online-Antworten können besonders engagierte oder verärgerte Personen überwiegen. Eine grosse verzerrte Auswahl liefert eine präzise Beschreibung der falschen Gruppe.",
+        "Für die nächste Befragung braucht das Studio zuerst eine Zielgruppe: alle Mitglieder oder mögliche Neukunden? Dann einen Weg, auch die bisher Unsichtbaren zu erreichen. Eine zufällige Auswahl aus einer geeigneten Mitgliederliste wäre etwas anderes als ein frei geteilter Link. Auch zufällig Eingeladene können ausfallen; deshalb bleibt wichtig, wer tatsächlich antwortet."
+      ],
+      [
+        "OpenStax · Introductory Statistics 2e",
+        "https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling"
+      ],
+      [
+        "Eine Umfrage unter Newsletter-Lesern soll alle Kunden vertreten. Welche Änderung adressiert den wichtigsten blinden Fleck?",
+        [
+          "Kunden unabhängig vom Newsletter aus der gesamten Kundenliste auswählen.",
+          "Die Zahl der Antworten durch weitere Einladungen nur an Newsletter-Leser erhöhen.",
+          "Die bestehende Auswahl durch genaueres Runden ausgleichen."
+        ],
+        "Mehr Antworten aus demselben eingeschränkten Zugang beheben die fehlende Abdeckung anderer Kunden nicht."
+      ],
+      "Prüfe den Weg in eine Statistik, bevor du ihrer Grösse vertraust."
+    ],
+    [
+      "randomize",
+      "Hat die neue Startseite wirklich geholfen?",
+      [
+        "Der scheinbar klare Erfolg",
+        "Ein fairerer Vergleich",
+        "Was ein Test noch braucht"
+      ],
+      [
+        "Ein Shop gestaltet im Dezember seine Startseite neu. Danach steigen die Bestellungen. Die Designer feiern. Vielleicht zu Recht – vielleicht war es das Weihnachtsgeschäft. Ein Vorher-nachher-Vergleich verändert gleichzeitig das Design und die Zeit.",
+        "Bei einem zufälligen A/B-Test sehen Besucher im selben Zeitraum unterschiedliche Varianten. Die Zuteilung soll systematische Unterschiede zwischen den Gruppen vermeiden. Zufall garantiert keine identischen Gruppen, schafft aber eine nachvollziehbare Grundlage, um Unterschiede und Unsicherheit zu untersuchen.",
+        "Lege vorher fest, was Erfolg bedeutet: Bestellungen statt nur Klicks auf einen grossen Knopf. Prüfe zudem, ob die Zuteilung korrekt funktioniert und die Varianten wirklich vergleichbar ausgespielt werden. Ein Test mit zufälliger Aufteilung ist stärker als eine schöne Erfolgsgeschichte, aber seine Umsetzung entscheidet, welche Aussage er trägt."
+      ],
+      [
+        "OpenStax · Introductory Statistics 2e",
+        "https://openstax.org/books/introductory-statistics-2e/pages/1-4-experimental-design-and-ethics"
+      ],
+      [
+        "Variante A läuft nur morgens, B nur abends. Was schwächt die Aussage über das Design?",
+        [
+          "Tageszeit und Variante sind miteinander vermischt.",
+          "Dass für einen Vergleich zwingend dieselben Personen beide Varianten sehen müssen.",
+          "Dass eine Designänderung grundsätzlich nicht experimentell untersucht werden kann."
+        ],
+        "Wenn sich das Publikum nach Tageszeit unterscheidet, lässt sich sein Einfluss nicht sauber vom Design trennen."
+      ],
+      "Ein guter Vergleich verändert gezielt die untersuchte Ursache."
+    ],
+    [
+      "confound",
+      "Eisverkäufe und Badeunfälle steigen gemeinsam",
+      [
+        "Zwei Kurven, eine dritte Grösse",
+        "Gemeinsam ist noch nicht verursacht"
+      ],
+      [
+        "An heissen Tagen werden mehr Glaces verkauft und mehr Menschen gehen baden. Wenn dann auch mehr Badeunfälle auftreten, können Eisverkäufe und Unfälle gemeinsam steigen, ohne dass das Eis die Unfälle verursacht.",
+        "Eine dritte Grösse kann beide Beobachtungen beeinflussen. Solche Zusammenhänge machen Korrelation interessant, aber nicht zu einem automatischen Ursachenbeweis. Ebenso möglich sind umgekehrte Wirkungsrichtungen oder Zufall. Eine Erklärung braucht zusätzliche Überlegung und passende Daten. Frage konkret: Welche andere Bedingung verändert beide Grössen, und wie könnte ein Vergleich ihren Einfluss trennen? Bloss zwei ähnlich verlaufende Linien nebeneinanderzustellen beantwortet das nicht."
+      ],
+      [
+        "OpenStax · Psychology 2e: Analyzing Findings",
+        "https://openstax.org/books/psychology-2e/pages/2-3-analyzing-findings"
+      ],
+      [
+        "Welche zusätzliche Grösse ist im beschriebenen Fall besonders relevant?",
+        [
+          "Hitze und damit verbundene Badeaktivität.",
+          "Der durchschnittliche Preis einer Glace als alleinige Erklärung.",
+          "Nur die stärkste Einzelkorrelation ohne weitere Einflussgrössen."
+        ],
+        "Wetter und Aktivität können beide beobachteten Grössen beeinflussen, ohne einen direkten Effekt des Eiskonsums zu belegen."
+      ],
+      "Prüfe bei einem Zusammenhang mögliche gemeinsame Ursachen."
+    ],
+    [
+      "interval",
+      "Warum eine Schätzung einen Bereich verdient",
+      [
+        "Die Umfrage hätte anders ausfallen können",
+        "Unsicherheit sichtbar lassen"
+      ],
+      [
+        "Du fragst eine zufällig ausgewählte Gruppe nach ihrer Wartezeit und berechnest einen Mittelwert. Eine andere Auswahl hätte vermutlich einen etwas anderen Wert ergeben. Der berechnete Punkt beschreibt deshalb nicht die Unsicherheit der Schätzung.",
+        "Ein Konfidenzintervall verbindet einen Schätzwert mit einem Verfahren, dessen langfristige Abdeckung unter bestimmten Annahmen beschrieben wird. Ein breiteres Intervall zeigt geringere Präzision als ein engeres unter vergleichbaren Bedingungen. Es beseitigt aber keine systematisch verzerrte Auswahl oder falsch gemessenen Wartezeiten. Gute Statistik macht Unsicherheit ausdrücklich sichtbar, statt sie hinter zusätzlichen Nachkommastellen zu verstecken."
+      ],
+      [
+        "OpenStax · Introductory Statistics 2e",
+        "https://openstax.org/books/introductory-statistics-2e/pages/8-1-a-single-population-mean-using-the-normal-distribution"
+      ],
+      [
+        "Was löst ein enges Intervall aus einer systematisch verzerrten Umfrage nicht?",
+        [
+          "Die Verzerrung durch eine ungeeignete Auswahl der Befragten.",
+          "Sie beweist zusätzlich, dass die Wartezeiten korrekt gemessen wurden.",
+          "Sie garantiert die Übertragbarkeit auf eine anders zusammengesetzte Zielgruppe."
+        ],
+        "Präzision innerhalb eines Verfahrens ersetzt keine geeignete Datengrundlage."
+      ],
+      "Eine präzise Schätzung kann trotzdem systematisch am Ziel vorbeigehen."
+    ],
+    [
+      "null",
+      "Nicht nachgewiesen heisst nicht: sicher nicht vorhanden",
+      [
+        "Der Test bleibt unentschieden",
+        "Zwei Aussagen mit verschiedenen Ansprüchen"
+      ],
+      [
+        "Ein Versuch findet keinen statistisch klaren Unterschied zwischen zwei Varianten. Das wird verkürzt zu «Beide sind gleich». Vielleicht war der tatsächliche Unterschied klein, die Stichprobe zu gering oder die Messung zu ungenau, um ihn zu erkennen.",
+        "In einem klassischen Hypothesentest ist das Nichtverwerfen der Nullhypothese nicht dasselbe wie ihr endgültiger Beweis. Für eine gezielte Gleichwertigkeitsaussage braucht es eine entsprechende Fragestellung und Prüfung. Benenne deshalb, was der Versuch tatsächlich gezeigt hat: keinen ausreichend deutlichen Unterschied unter diesen Bedingungen. Das ist weniger spektakulär, aber eine andere und meist ehrlichere Aussage als nachgewiesene Identität."
+      ],
+      [
+        "OpenStax · Introductory Statistics 2e",
+        "https://openstax.org/books/introductory-statistics-2e/pages/9-1-null-and-alternative-hypotheses"
+      ],
+      [
+        "Welche Formulierung passt zu einem Test, der die Nullhypothese nicht verwirft?",
+        [
+          "Die vorliegenden Daten reichen hier nicht für den behaupteten Unterschied.",
+          "Die Varianten sind damit für jeden denkbaren Einsatz identisch bewiesen.",
+          "Es darf grundsätzlich nie wieder ein Vergleich stattfinden."
+        ],
+        "Nichtverwerfen beschreibt die Evidenzlage des Tests und beweist keine universelle Gleichheit."
+      ],
+      "Fehlender Nachweis und Nachweis des Fehlens sind unterschiedliche Ergebnisse."
+    ],
+    [
+      "measurement",
+      "Die Zimmernummer ist keine Menge",
+      [
+        "Zahlen können Namen tragen",
+        "Die Rechenoperation braucht Bedeutung"
+      ],
+      [
+        "Hotelzimmer 204 ist nicht doppelt so gross wie Zimmer 102, nur weil seine Nummer doppelt so hoch ist. Manche Zahlen dienen als Bezeichnungen. Andere ordnen, zählen oder messen. Das Schriftzeichen allein sagt noch nicht, welche Rechnung sinnvoll ist.",
+        "Messniveaus unterscheiden solche Eigenschaften. Bei einer Rangfolge weisst du etwa, was vor etwas anderem liegt, aber nicht automatisch, ob die Abstände gleich sind. Für eine Bewertungsskala solltest du deshalb prüfen, welche Interpretation die Daten erlauben. Ein rechnerisch möglicher Mittelwert ist nicht immer eine sachlich sinnvolle Zusammenfassung. Die Bedeutung muss vor der Operation geklärt werden."
+      ],
+      [
+        "OpenStax · Introductory Statistics 2e",
+        "https://openstax.org/books/introductory-statistics-2e/pages/1-3-frequency-frequency-tables-and-levels-of-measurement"
+      ],
+      [
+        "Was ist das zentrale Problem beim Durchschnitt von Postleitzahlen als Mass für einen typischen Wohnort?",
+        [
+          "Die Zahlen sind Kennzeichnungen und keine räumlichen Mengen mit passenden Rechenabständen.",
+          "Postleitzahlen dürfen grundsätzlich nicht gespeichert werden.",
+          "Jede Zahl ist automatisch eine Längenmessung."
+        ],
+        "Numerische Kennzeichnungen bekommen durch Rechnen nicht plötzlich eine passende räumliche Bedeutung."
+      ],
+      "Kläre, was Zahlen bedeuten, bevor du sie verrechnest."
+    ],
+    [
+      "weights",
+      "Warum zwei Erfolgsquoten nicht einfach halbiert werden dürfen",
+      [
+        "Zwei Teams, ungleiche Mengen",
+        "Die Fälle tragen das Gewicht"
+      ],
+      [
+        "Ein kleines Team bearbeitet wenige einfache Anfragen, ein grosses sehr viele schwierige. Beide haben eine eigene Erfolgsquote. Wenn du die zwei Quoten einfach mitteln würdest, hätte das kleine Team dasselbe Gewicht wie das grosse – unabhängig von der Zahl seiner Fälle.",
+        "Für eine gemeinsame Quote brauchst du die gesamten Erfolge im Verhältnis zu allen betrachteten Fällen. Das entspricht einer Gewichtung nach Fallzahlen. Selbst diese korrekte Gesamtrate beantwortet nicht automatisch, welches Team besser arbeitet: Die Schwierigkeit der Aufgaben unterscheidet sich. Aggregation und fairer Leistungsvergleich sind zwei verschiedene Fragen. Eine saubere Rechnung braucht deshalb zusätzlich eine sinnvolle Vergleichsbasis."
+      ],
+      [
+        "OpenStax · Introductory Statistics 2e",
+        "https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling"
+      ],
+      [
+        "Welche Information brauchst du neben den beiden Quoten für eine gemeinsame fallbezogene Erfolgsquote?",
+        [
+          "Die Zahl der zugrunde liegenden Fälle je Team.",
+          "Der einfache Durchschnitt beider Prozentangaben ohne weitere Angaben.",
+          "Nur die höhere Quote, weil sie das erreichbare Ergebnis zeigt."
+        ],
+        "Gruppen mit mehr Fällen müssen entsprechend stärker zur Gesamtquote beitragen."
+      ],
+      "Beim Zusammenfassen von Raten gehören ihre Bezugsgrössen mit in die Rechnung."
+    ]
+  ],
+  "learn": [
+    [
+      "recognition",
+      "Du kennst die Seite. Kennst du auch die Antwort?",
+      [
+        "Das vertraute Gelb",
+        "Ein kleiner Selbstversuch"
+      ],
+      [
+        "Du schlägst eine markierte Seite auf und alles kommt dir bekannt vor. Dann klappt das Buch zu, und die Erklärung fehlt. Das ist kein Widerspruch: Wiedererkennen bietet Hinweise, die beim freien Abruf fehlen. Der farbige Absatz kann Vertrautheit auslösen, ohne dass du den Gedanken selbst aufbauen kannst.",
+        "Schreibe vor dem Nachlesen eine Frage auf: Warum funktioniert dieser Mechanismus? Antworte ohne Vorlage und öffne erst danach das Buch. Vergleiche nicht nur einzelne Wörter, sondern die Verbindung zwischen Ursache und Wirkung. So wird die Lücke sichtbar. Wiedererkennen bleibt nützlich, etwa beim Lesen einer Fremdsprache; es prüft nur etwas anderes als selbständiges Erklären."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/8-1-how-memory-functions"
+      ],
+      [
+        "Du erkennst jede richtige Antwort, sobald du sie siehst. Was prüft zusätzlich den selbständigen Abruf?",
+        [
+          "Die Erklärung vor dem Anzeigen der Lösung formulieren.",
+          "Die richtige Antwort in einer kräftigeren Farbe anzeigen.",
+          "Die Antwort länger betrachten und dabei zustimmen."
+        ],
+        "Beim freien Antworten musst du den Inhalt ohne den entscheidenden Hinweis selbst hervorholen."
+      ],
+      "Vertrautheit und selbständig verfügbares Wissen sind verschiedene Leistungen."
+    ],
+    [
+      "interference",
+      "Warum dir die alte PIN dazwischenfunkt",
+      [
+        "Die falsche Zahl kommt zuerst",
+        "Zwei Richtungen der Störung"
+      ],
+      [
+        "Du hast eine neue PIN, tippst aber automatisch die alte. Dabei ist nicht alles vergessen: Gerade die gut gelernte alte Antwort drängt sich vor. Frühere Inhalte können das Lernen oder Abrufen neuer Inhalte stören. Die Psychologie nennt diese Richtung proaktive Interferenz.",
+        "Es geht auch umgekehrt: Nach dem Lernen einer neuen Telefonnummer fällt die alte schwerer ein. Das heisst retroaktive Interferenz. Die Begriffe unterscheiden die zeitliche Richtung, nicht zwei völlig verschiedene Speicherorte. Für das Lernen ähnlicher Begriffe hilft eine konkrete Gegenüberstellung: Woran erkenne ich, welcher hier passt? Bloss beide Definitionen schnell hintereinander zu lesen, macht ihre Abgrenzung noch nicht verfügbar."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/8-3-problems-with-memory"
+      ],
+      [
+        "Nach dem Umzug nennst du auf Nachfrage automatisch die frühere Adresse. Welche Erklärung passt?",
+        [
+          "Die ältere Antwort konkurriert mit der neuen.",
+          "Die neue Adresse hat die alte vollständig gelöscht.",
+          "Du kannst nur eine Adresse dauerhaft speichern."
+        ],
+        "Die frühere Information behindert hier die neuere; das ist die proaktive Richtung der Interferenz."
+      ],
+      "Ähnliche Erinnerungen können miteinander konkurrieren, ohne vollständig verschwunden zu sein."
+    ],
+    [
+      "chunking",
+      "Warum ein Profi weniger Einzelteile sieht",
+      [
+        "Dieselbe Liste, andere Einheiten",
+        "Ordnung braucht Vorwissen"
+      ],
+      [
+        "Ein Anfänger sieht eine lange Folge von Zeichen. Jemand mit passendem Vorwissen erkennt darin Wörter, Jahreszahlen oder vertraute Bauteile. Beide schauen auf dieselben Zeichen, organisieren sie aber unterschiedlich. Beim sogenannten Chunking werden mehrere Elemente zu einer bedeutungsvollen Einheit zusammengefasst.",
+        "Die Einheit muss etwas bedeuten. Eine Telefonnummer willkürlich in drei Gruppen aufzuteilen macht sie noch nicht vertraut. Eine bekannte Vorwahl kann dagegen als ein Baustein abrufbar sein. Wenn ein Experte einen Schaltplan schnell versteht, ist das deshalb nicht einfach ein Beweis für grenzenlose Gedächtniskapazität. Er besitzt geordnete Muster. Beim Einstieg lohnt es sich, diese Muster zu erklären, statt nur die Menge der Einzelinformationen zu erhöhen."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/8-4-ways-to-enhance-memory"
+      ],
+      [
+        "Warum hilft die Abkürzung einer unbekannten Fachorganisation einem Anfänger kaum beim Merken ihrer Aufgaben?",
+        [
+          "Sie ist für ihn noch keine bedeutungsvolle Einheit.",
+          "Abkürzungen können grundsätzlich keine Gedächtnishilfe sein.",
+          "Jede kurze Zeichenfolge wird automatisch vollständig verstanden."
+        ],
+        "Zusammenfassen hilft dann, wenn die Gruppe an Bedeutung oder vorhandenes Wissen anschliesst."
+      ],
+      "Gutes Vorwissen verwandelt viele Einzelteile in wenige verständliche Muster."
+    ],
+    [
+      "encoding",
+      "Die Münze, die du nicht zeichnen kannst",
+      [
+        "Täglich gesehen, schlecht erinnert",
+        "Aufmerksamkeit ist keine Kamera"
+      ],
+      [
+        "Du hast eine Münze unzählige Male benutzt. Könntest du aus dem Kopf alle Details ihrer Vorderseite zeichnen? Häufige Begegnung bedeutet nicht, dass jedes Detail gespeichert wurde. Beim Bezahlen zählt vor allem, ob der Wert stimmt; das genaue Motiv muss dabei kaum verarbeitet werden.",
+        "Gedächtnis beginnt bereits beim Enkodieren: Informationen müssen überhaupt in eine erinnerbare Form gelangen. Deshalb kann eine vermeintliche Gedächtnislücke entstehen, bevor es etwas zu vergessen gibt. Probiere bei einem neuen Fachbegriff mehr als blosses Anschauen: Beschreibe, was er erklärt, und finde einen Gegenfall. Damit richtest du die Verarbeitung auf Bedeutung. Das garantiert keinen perfekten Abruf, verändert aber, womit du dich tatsächlich beschäftigst."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/8-3-problems-with-memory"
+      ],
+      [
+        "Jemand sieht ein Warnsymbol oft, hat aber nie auf seine Bedeutung geachtet. Was solltest du vor dem Vorwurf schlechten Gedächtnisses prüfen?",
+        [
+          "Ob die Bedeutung überhaupt bewusst verarbeitet wurde.",
+          "Ob oft Gesehenes zwingend unverändert gespeichert sein muss.",
+          "Ob die Farbe des Symbols langfristige Erinnerung garantiert."
+        ],
+        "Eine fehlende Erinnerung kann aus unzureichender Enkodierung entstehen, nicht erst aus späterem Vergessen."
+      ],
+      "Oft sehen ist nicht dasselbe wie gezielt verarbeiten."
+    ],
+    [
+      "conditioning",
+      "Ein Geräusch bekommt Bedeutung",
+      [
+        "Vorher nur ein Ton",
+        "Gelernte Erwartung"
+      ],
+      [
+        "Ein Ton ist zunächst unwichtig. Wird er wiederholt mit einem bedeutsamen Ereignis verbunden, kann schon der Ton eine gelernte Reaktion auslösen. Pawlows Untersuchungen an Hunden machten diesen Zusammenhang zwischen Reizen berühmt.",
+        "Das ist klassische Konditionierung: Ein zuvor neutraler Reiz gewinnt durch seine Verbindung mit einem anderen Ereignis Bedeutung. Es geht hier nicht darum, bewusst eine Regel auswendig zu lernen. Ebenso wenig erklärt dieser Mechanismus jedes Verhalten allein. Er zeigt aber, weshalb ein alltägliches Signal mehr auslösen kann, als seine physikalische Stärke vermuten lässt. Entscheidend ist die Lerngeschichte, die an ihm hängt."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/6-2-classical-conditioning"
+      ],
+      [
+        "Was verändert sich beim ursprünglich neutralen Ton im beschriebenen Lernvorgang?",
+        [
+          "Er kann eine zuvor nicht durch ihn ausgelöste Reaktion hervorrufen.",
+          "Die Reaktion zeigt, dass der Ton bereits vor jedem Lernen dieselbe Bedeutung hatte.",
+          "Der Ton wirkt nur noch, wenn das angekündigte Ereignis gleichzeitig sichtbar ist."
+        ],
+        "Die gelernte Verbindung verändert die Reaktion auf den Reiz, nicht zwingend seine physikalischen Eigenschaften."
+      ],
+      "Die Wirkung eines Signals hängt auch davon ab, womit es verbunden wurde."
+    ],
+    [
+      "reinforcement",
+      "Eine Belohnung ist erst dann ein Verstärker, wenn sie etwas verändert",
+      [
+        "Gut gemeint reicht nicht",
+        "Die Wirkung definiert den Begriff"
+      ],
+      [
+        "Eine Lehrperson vergibt zusätzliche Punkte für freiwillige Beiträge. Die Absicht ist klar: mehr Beteiligung. Ob die Punkte das Verhalten tatsächlich verstärken, zeigt aber erst die weitere Beteiligung. Ein angekündigter Preis ist nicht allein wegen seiner Bezeichnung wirksam.",
+        "In der operanten Konditionierung wird Verhalten mit seinen Konsequenzen verbunden. Verstärkung bezeichnet eine Zunahme des betreffenden Verhaltens. Auch das Wegfallen von etwas Unangenehmem kann verstärkend wirken; «negativ» bedeutet dabei Entfernung, nicht Bestrafung. Diese Begriffe beschreiben Funktionen. Frage deshalb, welches konkrete Verhalten nach welcher Konsequenz häufiger oder seltener wird, statt nur angenehme und unangenehme Dinge zu sortieren."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/6-3-operant-conditioning"
+      ],
+      [
+        "Ein störender Piepton endet nach dem Anschnallen, und die Person schnallt sich künftig schneller an. Welche Wirkung ist beschrieben?",
+        [
+          "Das Ende des Pieptons verstärkt das Anschnallen.",
+          "Jede Entfernung eines Reizes ist automatisch Bestrafung.",
+          "Verstärkung kann nur durch zusätzliches Geld entstehen."
+        ],
+        "Die Entfernung eines unangenehmen Reizes kann ein Verhalten häufiger machen: negative Verstärkung."
+      ],
+      "Beurteile eine Konsequenz an ihrer Wirkung auf ein genau benanntes Verhalten."
+    ],
+    [
+      "modeling",
+      "Du lernst auch daran, was bei anderen durchgeht",
+      [
+        "Die inoffizielle Schulung",
+        "Beobachten ist mehr als kopieren"
+      ],
+      [
+        "Eine Firma sagt, sorgfältige Arbeit sei wichtig. Im Alltag werden aber diejenigen gefeiert, die Probleme verstecken und schnell fertig melden. Neue Mitarbeitende sehen beides. Das beobachtete Verhalten und seine Folgen vermitteln eine andere Lektion als die Präsentation.",
+        "Beim Beobachtungslernen gewinnen Menschen Informationen an Modellen. Aufmerksamkeit, Erinnerung, Ausführungsmöglichkeiten und Motivation spielen dabei mit. Zuschauen bedeutet deshalb nicht, dass jedes Verhalten sofort identisch übernommen wird. Dennoch kann die Praxis einer Gruppe ihre offiziellen Regeln unterlaufen. Wenn du wissen willst, was eine Umgebung lehrt, schaue auch darauf, welches Verhalten sichtbar belohnt, geduldet oder korrigiert wird."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/6-4-observational-learning-modeling"
+      ],
+      [
+        "Was könnte die offizielle Botschaft «Fehler offen ansprechen» im Alltag untergraben?",
+        [
+          "Wenn Menschen für sichtbares Vertuschen Vorteile erhalten.",
+          "Wenn Fehlerbesprechungen konkrete Verbesserungen ermöglichen.",
+          "Wenn Führungskräfte eigene Fehler nachvollziehbar korrigieren."
+        ],
+        "Beobachtete Konsequenzen können eine andere Verhaltensnorm vermitteln als die verkündete Regel."
+      ],
+      "Eine Umgebung lehrt durch beobachtbare Beispiele und Folgen."
+    ],
+    [
+      "functional",
+      "Die Schachtel ist nicht nur eine Verpackung",
+      [
+        "Das vertraute Etikett",
+        "Eigenschaften neu sehen"
+      ],
+      [
+        "Du brauchst eine kleine Ablage und übersiehst die stabile leere Schachtel neben dir, weil sie in deinem Kopf nur «Verpackung» ist. Eine bekannte Verwendung kann den Blick auf andere brauchbare Eigenschaften begrenzen.",
+        "Funktionale Fixierung bezeichnet diese Bindung an die gewohnte Funktion eines Gegenstands. Ein hilfreicher Perspektivwechsel beschreibt zunächst Form, Material und Möglichkeiten, ohne den üblichen Namen in den Mittelpunkt zu stellen. Das garantiert keine gute Lösung und hebt Sicherheitsanforderungen nicht auf. Es öffnet aber den Suchraum. Statt «Wofür ist das normalerweise?» fragst du zusätzlich: «Welche Eigenschaft könnte mein konkretes Problem lösen?»"
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/7-3-problem-solving"
+      ],
+      [
+        "Welche Beschreibung hilft, die gewohnte Funktion einer Schachtel gedanklich zu verlassen?",
+        [
+          "Ein leichter, stabiler Hohlkörper mit flachen Seiten.",
+          "Ausschliesslich das Wort Verpackung wiederholen.",
+          "Annehmen, dass nur die ursprüngliche Verwendung denkbar ist."
+        ],
+        "Die Beschreibung von Eigenschaften löst den Gegenstand vom vertrauten Funktionsetikett."
+      ],
+      "Ein neuer Lösungsweg kann mit einer anderen Beschreibung desselben Gegenstands beginnen."
+    ],
+    [
+      "latent",
+      "Du kennst den Weg, bevor du ihn zeigen musst",
+      [
+        "Lernen bleibt manchmal unsichtbar",
+        "Leistung braucht eine Gelegenheit"
+      ],
+      [
+        "Du begleitest jemanden mehrmals durch ein Gebäude, ohne je führen zu müssen. Später findest du selbst den Ausgang. Offenbar kann aufgenommene Information vorhanden sein, bevor eine Situation ihre sichtbare Anwendung verlangt.",
+        "Die Unterscheidung zwischen Lernen und gezeigter Leistung ist wichtig: Ein fehlendes beobachtetes Verhalten beweist nicht zwingend fehlendes Wissen. Motivation, Gelegenheit und Aufgabenform beeinflussen, was sichtbar wird. Umgekehrt beweist einmaliges Gelingen noch keine dauerhaft sichere Fähigkeit. Ein sinnvoller Check gibt deshalb eine passende Gelegenheit zur selbständigen Anwendung und prüft bei Bedarf später unter veränderten Bedingungen erneut."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/6-3-operant-conditioning"
+      ],
+      [
+        "Warum beweist das bisherige Schweigen einer Person zu einer Aufgabe nicht allein fehlendes Wissen?",
+        [
+          "Es könnte bislang an einer passenden Gelegenheit oder Motivation zur Anwendung gefehlt haben.",
+          "Schweigen beweist grundsätzlich vollständiges Verständnis.",
+          "Wissen kann niemals anhand von Verhalten untersucht werden."
+        ],
+        "Beobachtete Leistung hängt von mehr als dem vorhandenen Wissen ab; eine passende Prüfung bleibt nötig."
+      ],
+      "Unterscheide vorhandenes Lernen von der Gelegenheit, es sichtbar zu zeigen."
+    ]
+  ],
+  "philosophy": [
+    [
+      "promise",
+      "Das Versprechen, das nur für andere gelten soll",
+      [
+        "Eine praktische Ausnahme",
+        "Kants unbequemes Experiment"
+      ],
+      [
+        "Du brauchst Geld und versprichst Rückzahlung, obwohl du schon weisst, dass du nicht zahlen wirst. Dein Plan funktioniert nur, wenn der andere Versprechen grundsätzlich glaubt. Du nutzt eine Regel, von der du dich selbst ausnehmen möchtest.",
+        "Kants Universalisierungstest fragt, ob deine Handlungsregel als allgemeine Regel bestehen könnte. Wenn falsche Versprechen bei Bedarf üblich wären, würde gerade das Vertrauen verschwinden, das dein Vorgehen braucht. Das ist mehr als die Frage, ob du erwischt wirst. Es geht um die Widersprüchlichkeit deiner Regel. Der Test verlangt eine ehrliche Formulierung: «Versprechen, das ich nicht halten will» statt des schmeichelhaften «Mir aus einer schwierigen Lage helfen»."
+      ],
+      [
+        "OpenStax · Introduction to Philosophy",
+        "https://openstax.org/books/introduction-philosophy/pages/9-3-deontology"
+      ],
+      [
+        "Welche Frage trifft Kants Prüfung am besten?",
+        [
+          "Könnte die Regel meines Handelns allgemein gelten, ohne sich selbst zu untergraben?",
+          "Ist der Vorteil gross genug, um das Entdeckungsrisiko aufzuwiegen?",
+          "Würde mein Freund dieselbe Ausnahme für mich gutheissen?"
+        ],
+        "Der Massstab ist die Verallgemeinerbarkeit der Handlungsregel, nicht ihre persönliche Zweckmässigkeit."
+      ],
+      "Prüfe die Regel hinter einer Entscheidung, besonders wenn du dir eine Ausnahme erlaubst."
+    ],
+    [
+      "consequences",
+      "Ein gutes Ergebnis für wen?",
+      [
+        "Die Summe sieht gut aus",
+        "Folgen ernst nehmen"
+      ],
+      [
+        "Eine Gemeinde kann mit einem Projekt vielen Menschen etwas Zeit sparen. Eine kleine Gruppe verliert dadurch ihren einzigen gut erreichbaren Treffpunkt. «Insgesamt bringt es mehr Nutzen» klingt klar. Aber wie wurden die verschiedenen Folgen überhaupt gewichtet?",
+        "Konsequentialistische Ansätze beurteilen Handlungen anhand ihrer Folgen. Im Utilitarismus zählt dabei das Wohlergehen aller Betroffenen, nicht bloss der eigene Gewinn oder die Zustimmung der Mehrheit. Das macht unsichtbare Belastungen wichtig. Es erzeugt auch schwierige Fragen: Welche Folgen sind realistisch? Wie vergleichen wir geringe Vorteile vieler mit schweren Nachteilen weniger? Eine Nutzenbilanz ist ein Argument, das diese Annahmen offenlegen muss, kein Freipass für das bequemste Ergebnis."
+      ],
+      [
+        "OpenStax · Introduction to Philosophy",
+        "https://openstax.org/books/introduction-philosophy/pages/9-2-consequentialism"
+      ],
+      [
+        "Welche Ergänzung braucht die Aussage «Die Mehrheit profitiert» für eine ernsthafte utilitaristische Prüfung?",
+        [
+          "Auch Ausmass und Verteilung der Nachteile für die übrigen Betroffenen.",
+          "Nur die Zahl der zustimmenden Stimmen.",
+          "Ausschliesslich den Nutzen der Entscheidungsträger."
+        ],
+        "Mehrheitszustimmung misst nicht automatisch das Wohlergehen aller Betroffenen und die Schwere ihrer Folgen."
+      ],
+      "Eine Folgenethik verlangt, auch die Menschen mitzuzählen, die in der Erfolgsgeschichte fehlen."
+    ],
+    [
+      "courage",
+      "Mut ist nicht möglichst wenig Angst",
+      [
+        "Zwei schlechte Extreme",
+        "Die Mitte ist keine Durchschnittszahl"
+      ],
+      [
+        "Jemand läuft ohne Ausrüstung in eine gefährliche Situation. Eine andere Person erkennt die Gefahr und organisiert Hilfe. Wer ist mutiger? Wenn Mut nur Angstfreiheit wäre, würde Unkenntnis plötzlich zur Tugend.",
+        "Aristoteles beschreibt Tugenden als angemessene Haltungen zwischen problematischen Extremen. Mut steht zwischen Feigheit und Tollkühnheit. Gemeint ist kein rechnerischer Mittelwert: Die passende Handlung hängt von Situation, Fähigkeiten und Gründen ab. Ein ausgebildeter Retter kann vernünftig etwas wagen, das für einen Unvorbereiteten leichtsinnig wäre. Das zwingt zur genaueren Frage: Für welchen guten Zweck ist dieses Risiko angemessen? Ein heldenhafter Eindruck allein beantwortet sie nicht."
+      ],
+      [
+        "Aristoteles · Originaltext in historischer englischer Übersetzung",
+        "https://classics.mit.edu/Aristotle/nicomachaen.2.ii.html"
+      ],
+      [
+        "Ein Anfänger im Bergsport kopiert die riskante Route eines erfahrenen Teams. Was fehlt der Behauptung «Das ist mutig»?",
+        [
+          "Die Beurteilung, ob Risiko, Fähigkeiten und Zweck zusammenpassen.",
+          "Der Nachweis, dass er überhaupt keine Angst verspürt.",
+          "Die Regel, immer die mittlere Schwierigkeit zu wählen."
+        ],
+        "Die aristotelische Mitte ist situationsbezogen und verlangt Urteilskraft, nicht bloss mehr Risikobereitschaft."
+      ],
+      "Mut verbindet ein sinnvolles Ziel mit angemessenem Risiko."
+    ],
+    [
+      "habit",
+      "Charakter ist kein guter Vorsatz",
+      [
+        "Ein ehrlicher Moment reicht nicht",
+        "Was Wiederholung verändert"
+      ],
+      [
+        "Eine Person handelt heute fair und nutzt morgen jede unbemerkte Gelegenheit zum Täuschen. Ist sie schon gerecht? Aristoteles unterscheidet eine einzelne passende Handlung von einer gefestigten Haltung. Gute Absichten oder eine gelungene Ausnahme reichen dafür nicht.",
+        "Tugend entsteht in seiner Darstellung durch eingeübtes Handeln. Wer immer wieder gerecht entscheidet, bildet eine entsprechende Haltung aus. Das bedeutet nicht, mechanisch dieselbe Handlung zu kopieren: Die Gründe und die konkrete Situation gehören dazu. Für deinen Alltag ergibt sich ein praktischer Prüfstein: Welche kleine Entscheidung wiederholt sich so häufig, dass sie meine Gewohnheiten prägt? Das sagt oft mehr über Charakterbildung aus als ein gross angekündigter Vorsatz."
+      ],
+      [
+        "OpenStax · Introduction to Philosophy",
+        "https://openstax.org/books/introduction-philosophy/pages/9-4-virtue-ethics"
+      ],
+      [
+        "Welche Beobachtung spricht eher für eine gefestigte faire Haltung?",
+        [
+          "Wiederholt begründete faire Entscheidungen, auch wenn sie unbemerkt bleiben.",
+          "Eine faire Handlung, die ausschliesslich für eine Kamera inszeniert wurde.",
+          "Eine besonders überzeugende Selbstbeschreibung."
+        ],
+        "Tugendethik betrachtet die entwickelte Haltung hinter wiederkehrenden Entscheidungen, nicht nur das öffentliche Bild."
+      ],
+      "Wiederkehrende Entscheidungen formen eine Haltung; ein Vorsatz kündigt sie nur an."
+    ],
+    [
+      "crowd",
+      "Warum Sokrates nicht einfach flieht",
+      [
+        "Ein Freund kommt ins Gefängnis",
+        "Leben und gut leben"
+      ],
+      [
+        "In Platons Dialog Kriton bietet ein Freund dem zum Tod verurteilten Sokrates die Flucht an. Geld und Hilfe wären verfügbar. Kriton fürchtet auch, andere könnten ihn für einen schlechten Freund halten. Sokrates verschiebt die Frage: Nicht die Meinung der Menge soll entscheiden, sondern ob die Flucht gerecht wäre.",
+        "Der Dialog macht eine scharfe Trennung auf: Eine Handlung kann dein Leben retten und trotzdem nach deinen Grundsätzen problematisch sein. Sokrates prüft Verpflichtungen gegenüber den Gesetzen und weigert sich, erlittenes Unrecht mit eigenem Unrecht zu beantworten. Du musst seiner Schlussfolgerung nicht zustimmen. Die interessante Prüfung lautet: Welche bisher verteidigte Regel würdest du unter starkem persönlichem Druck aufgeben – und mit welcher Begründung?"
+      ],
+      [
+        "Platon · Originaltext in historischer englischer Übersetzung",
+        "https://classics.mit.edu/Plato/crito.html"
+      ],
+      [
+        "Was wäre ein Einwand gegen Sokrates, der seinen eigentlichen Gedankengang trifft?",
+        [
+          "Zu prüfen, ob ein ungerechtes Urteil die behauptete Verpflichtung gegenüber den Gesetzen verändert.",
+          "Nur darauf hinzuweisen, dass viele Freunde eine Flucht gut fänden.",
+          "Sein hohes Alter als Beweis gegen jedes seiner Argumente zu benutzen."
+        ],
+        "Der sachliche Streit betrifft Verpflichtung und Gerechtigkeit, nicht bloss Beliebtheit oder Person."
+      ],
+      "Eine philosophische Position lässt sich am stärksten an ihrer tragenden Begründung prüfen."
+    ],
+    [
+      "ignorance",
+      "Der Fachmann, der plötzlich alles weiss",
+      [
+        "Eine überraschende Schwäche",
+        "Wissen hat Grenzen"
+      ],
+      [
+        "In Platons Apologie berichtet Sokrates von Gesprächen mit Menschen, die als weise gelten. Handwerker besitzen tatsächlich Können. Problematisch wird es, wenn daraus die Gewissheit entsteht, auch über die wichtigsten anderen Fragen Bescheid zu wissen.",
+        "Der Gedanke ist heute leicht zu erkennen: Ein hervorragender Entwickler kann über Ernährung oder Politik sprechen, ohne dort dieselbe Kompetenz zu besitzen. Das macht sein technisches Können nicht kleiner. Es begrenzt nur, was daraus folgt. Sokratische Prüfung fragt nach Gründen und lässt erkannte Lücken stehen. «Ich weiss es nicht» ist dabei kein Endpunkt, sondern die Voraussetzung, überhaupt gezielt weiterzufragen. Kompetenz gewinnt an Glaubwürdigkeit, wenn ihre Grenze mitgenannt wird."
+      ],
+      [
+        "Platon · Originaltext in historischer englischer Übersetzung",
+        "https://classics.mit.edu/Plato/apology.html"
+      ],
+      [
+        "Ein berühmter Chirurg gibt eine starke Meinung über Geldpolitik ab. Was folgt aus seinem medizinischen Erfolg?",
+        [
+          "Er belegt nicht automatisch Fachkenntnis über Geldpolitik.",
+          "Seine Aussage zur Geldpolitik ist dadurch automatisch falsch.",
+          "Seine Fachautorität gilt unverändert in jedem Gebiet."
+        ],
+        "Expertise ist bereichsspezifisch. Die andere Aussage braucht eigene Belege; weder Bewunderung noch Ablehnung ersetzt sie."
+      ],
+      "Echte Fachkenntnis überträgt sich nicht automatisch auf jedes Thema."
+    ],
+    [
+      "cave",
+      "Wenn die vertraute Welt nur Schatten zeigt",
+      [
+        "Der schmerzhafte Ausweg",
+        "Ein Bild über Bildung"
+      ],
+      [
+        "Platons Höhlengleichnis beginnt mit Gefangenen, die nur Schatten an einer Wand sehen. Weil sie nichts anderes kennen, halten sie diese für die Wirklichkeit. Ein Befreiter muss sich erst mühsam an das Licht und die Dinge ausserhalb der Höhle gewöhnen.",
+        "Das Gleichnis stellt Bildung als Umwendung dar: Nicht bloss mehr bekannte Schatten benennen, sondern die Voraussetzungen des bisherigen Sehens prüfen. Zurück in der Höhle wirkt der Befreite auf die anderen zunächst unbeholfen. Daraus folgt nicht, dass jede Aussenseitermeinung wahr wäre. Es ist ein Bild für die Schwierigkeit veränderter Einsicht, kein Beweis für die Lieblingsverschwörung. Die sinnvolle Frage bleibt: Welche Annahme bestimmt gerade, was ich überhaupt als Erklärung gelten lasse?"
+      ],
+      [
+        "Platon · Originaltext in historischer englischer Übersetzung",
+        "https://classics.mit.edu/Plato/republic.8.vii.html"
+      ],
+      [
+        "Jemand behauptet: «Alle lachen über meine Theorie, also bin ich wie der Befreite in Platons Höhle.» Was fehlt?",
+        [
+          "Unabhängige Gründe dafür, dass seine Theorie zutrifft.",
+          "Noch mehr Menschen, die über ihn lachen.",
+          "Eine vollständige Ablehnung aller bisherigen Erkenntnisse."
+        ],
+        "Missverständnis kann Erkenntnis begleiten, beweist sie aber nicht. Das Gleichnis ersetzt keine Belege."
+      ],
+      "Ein Perspektivwechsel kann anstrengend sein; Anstrengung oder Ablehnung beweisen jedoch keine Wahrheit."
+    ],
+    [
+      "olympics",
+      "Willst du gewinnen – oder auch trainieren?",
+      [
+        "Epiktets nüchterner Athlet",
+        "Den ganzen Preis sehen"
+      ],
+      [
+        "Epiktet spricht im Enchiridion über jemanden, der bei den Olympischen Spielen gewinnen will. Vor der Begeisterung für den Sieg stehen Regeln, Training, Verzicht und die Möglichkeit einer Niederlage. Der Wunsch nach dem Ergebnis ist noch keine Entscheidung für den Weg.",
+        "Sein Prüfverfahren lautet sinngemäss: Betrachte vorher, was einer Sache vorausgeht und was aus ihr folgt. Bei einem eigenen Projekt bedeutet das, auch die wiederkehrenden unglamourösen Aufgaben mitzuwählen. Das ist keine Aufforderung, jedes Risiko zu vermeiden. Es ist der Unterschied zwischen einer informierten Verpflichtung und dem ständigen Wechsel zur nächsten schönen Vorstellung. Frag nicht nur, ob du das Ergebnis möchtest, sondern ob du diesen konkreten Prozess tragen willst."
+      ],
+      [
+        "Epiktet · Originaltext in historischer englischer Übersetzung",
+        "https://classics.mit.edu/Epictetus/epicench.html"
+      ],
+      [
+        "Was passt zu Epiktets Prüfung vor einer anspruchsvollen Zusage?",
+        [
+          "Auch Routine, Einschränkungen und mögliches Scheitern des Vorhabens betrachten.",
+          "Erst zusagen und notwendige Bedingungen möglichst spät prüfen.",
+          "Nur den idealen Erfolg möglichst genau ausmalen."
+        ],
+        "Die Entscheidung soll den tatsächlichen Weg samt Kosten einschliessen, nicht nur sein attraktivstes Ende."
+      ],
+      "Ein Ziel wählen heisst auch, seine notwendigen Bedingungen zu wählen."
+    ],
+    [
+      "practice",
+      "Die Philosophie auf deinem Teller",
+      [
+        "Nicht die Lehre vorführen",
+        "Verständnis wird sichtbar"
+      ],
+      [
+        "Im Enchiridion warnt Epiktet davor, sich vor allem als Philosoph darzustellen und anderen ständig Grundsätze vorzutragen. Beim Essen soll man beispielsweise angemessen handeln, statt eine Rede über richtiges Essen zu halten. Der Gedanke zielt auf die Lücke zwischen Darstellung und Verhalten.",
+        "Übertragen auf eine Besprechung: Du kannst lange erklären, weshalb Zuhören wichtig ist, und trotzdem jeden unterbrechen. Ein einziges gutes Verhalten beweist noch keinen vollkommenen Charakter. Aber ohne Anwendung bleibt die Lehre ein dekoratives Selbstbild. Prüfe deshalb einen Grundsatz an einer konkreten Gelegenheit: Was würde ich heute anders tun, wenn ich ihn ernst nähme? Die Antwort braucht eine beobachtbare Handlung, nicht bloss einen eindrucksvolleren Satz."
+      ],
+      [
+        "Epiktet · Originaltext in historischer englischer Übersetzung",
+        "https://classics.mit.edu/Epictetus/epicench.html"
+      ],
+      [
+        "Welche Beobachtung prüft am direktesten, ob jemand den Grundsatz fairen Zuhörens anwendet?",
+        [
+          "Er lässt eine Gegenposition ausreden und gibt sie zutreffend wieder.",
+          "Er erwähnt häufiger, wie wichtig ihm Zuhören ist.",
+          "Er sammelt besonders viele Zitate über Kommunikation."
+        ],
+        "Der Grundsatz wird an Verhalten geprüft, nicht an der Häufigkeit seiner Selbstdarstellung."
+      ],
+      "Ein verstandener Grundsatz sollte eine konkrete Handlung verändern können."
+    ]
+  ],
+  "history": [
+    [
+      "telegraph",
+      "Die Nachricht reist nicht mehr mit dem Boten",
+      [
+        "Ein Draht verändert Entfernung",
+        "Schnell ist nicht automatisch wahr"
+      ],
+      [
+        "Am 24. Mai 1844 übermittelte Samuel Morse eine Nachricht auf der experimentellen Leitung zwischen Washington und Baltimore. Die Library of Congress bewahrt den Papierstreifen auf. Die entscheidende Veränderung war nicht der berühmte Satz: Information musste für diese Strecke nicht mehr mit einem Menschen oder einem Brief reisen.",
+        "Elektrische Signale konnten eine vereinbarte Zeichenfolge übertragen; Menschen und Geräte mussten sie senden und wieder deuten. Für Handel und Nachrichten bedeutete das neue Geschwindigkeit. Es brauchte aber Leitungen, Stationen und gemeinsame Regeln. Ein Draht konnte auch eine falsche Meldung schnell übertragen. Kommunikationstechnik löst zunächst ein Transportproblem, nicht automatisch ein Wahrheitsproblem. Diese Trennung ist bis heute erstaunlich brauchbar."
+      ],
+      [
+        "Library of Congress · First telegraph message, 1844",
+        "https://www.loc.gov/item/mcc.019/"
+      ],
+      [
+        "Welche Grenze bleibt auch nach der elektrischen Übertragung einer Nachricht bestehen?",
+        [
+          "Die Empfänger müssen Herkunft und Inhalt weiterhin beurteilen.",
+          "Die Nachricht muss weiterhin von einem Boten die ganze Strecke getragen werden.",
+          "Eine gemeinsame Zeichencodierung wird überflüssig."
+        ],
+        "Schneller Signaltransport garantiert weder zutreffenden Inhalt noch vertrauenswürdige Herkunft."
+      ],
+      "Technik kann die Reisezeit einer Nachricht verkürzen, ohne ihren Wahrheitsgehalt zu erhöhen."
+    ],
+    [
+      "jacquard",
+      "Der Webstuhl mit austauschbaren Anweisungen",
+      [
+        "Das Muster steckt in Karten",
+        "Ein Gedanke vor dem Computer"
+      ],
+      [
+        "Ein aufwendiges Stoffmuster verlangt, dass bestimmte Längsfäden im richtigen Moment angehoben werden. Beim Jacquard-Mechanismus steuert eine Folge gelochter Karten diese Auswahl. Statt jede Bewegung neu von Hand festzulegen, lässt sich eine gespeicherte Abfolge wiederholt ausführen.",
+        "Das Science and Industry Museum zeigt, wie die Karten mechanisch abgetastet werden. Andere Karten ermöglichen andere Muster auf derselben Grundmaschine. Das trennt Anweisung und ausführendes Gerät – eine wichtige Idee für die spätere Geschichte des Rechnens. Der Webstuhl ist deshalb noch kein moderner Universalcomputer. Interessant ist die engere Verbindung: Eine Maschine kann veränderliches Verhalten aus einem austauschbaren Informationsträger erhalten."
+      ],
+      [
+        "Science and Industry Museum · Jacquard loom",
+        "https://www.scienceandindustrymuseum.org.uk/objects-and-stories/jacquard-loom"
+      ],
+      [
+        "Was verändert sich beim Wechsel der Kartenfolge unmittelbar?",
+        [
+          "Die Abfolge der angesteuerten Fäden und damit das Webmuster.",
+          "Die chemische Zusammensetzung der bereits eingesetzten Fasern.",
+          "Die grundsätzliche Notwendigkeit von Längs- und Querfäden."
+        ],
+        "Die Karten speichern Steueranweisungen für die Fadenauswahl; sie ersetzen nicht Material und Webprinzip."
+      ],
+      "Austauschbare Anweisungen machen eine Maschine vielseitiger, ohne sie jedes Mal neu zu bauen."
+    ],
+    [
+      "longitude",
+      "Warum eine Uhr auf See eine Ortsangabe liefern kann",
+      [
+        "Mittag ist nicht überall gleichzeitig",
+        "Die Heimatzeit mitnehmen"
+      ],
+      [
+        "Wenn bei dir die Sonne ihren höchsten Stand erreicht, ist andernorts noch Vormittag oder schon Nachmittag. Die Erde dreht sich, deshalb gehört zur geographischen Länge auch ein Zeitunterschied. Wer die örtliche Sonnenzeit mit einer bekannten Referenzzeit vergleicht, kann daraus seine Ost-West-Position bestimmen.",
+        "John Harrisons Herausforderung war, diese Referenzzeit auf einem bewegten Schiff zuverlässig mitzunehmen. Temperaturänderungen und Bewegung machten gewöhnliche Uhren unbrauchbar für die nötige Genauigkeit. Seine Marinezeitmesser entstanden in mehreren Entwicklungsstufen. Eine tolle Uhr im ruhigen Zimmer war noch kein funktionierendes Navigationsinstrument. Der historische Fall zeigt, wie aus einer bekannten theoretischen Beziehung erst durch robuste Messtechnik eine praktische Lösung wird."
+      ],
+      [
+        "Royal Museums Greenwich · Harrison’s timekeepers",
+        "https://www.rmg.co.uk/stories/time/harrisons-clocks-longitude-problem"
+      ],
+      [
+        "Warum würde es die Längenbestimmung vereiteln, die mitgeführte Referenzuhr täglich auf den örtlichen Sonnenmittag umzustellen?",
+        [
+          "Der gesuchte Zeitunterschied zur Referenz würde verloren gehen.",
+          "Die Uhr würde zwar die örtliche Zeit zeigen, aber weiterhin unabhängig die Heimatzeit enthalten.",
+          "Der Längenunterschied wäre danach ohne weiteren Zeitvergleich unmittelbar ablesbar."
+        ],
+        "Die Methode braucht zwei unterschiedliche Informationen: örtliche Zeit und erhaltene Referenzzeit."
+      ],
+      "Eine Messung wird oft erst durch eine stabile Referenz aussagekräftig."
+    ],
+    [
+      "standardtime",
+      "Der Tag, an dem die Bahnhofsuhren sich einigen mussten",
+      [
+        "Jede Stadt hat ihren Mittag",
+        "Ein gemeinsames Netz braucht gemeinsame Regeln"
+      ],
+      [
+        "Ortszeiten nach dem Sonnenstand sind für eine einzelne Stadt verständlich. Für einen Fahrplan über viele Städte werden sie unhandlich: Dieselbe Uhrzeit bezeichnet entlang der Strecke verschiedene Momente. Schnellere Züge machten dieses alte Nebeneinander zu einem praktischen Koordinationsproblem.",
+        "Nordamerikanische Eisenbahnen wechselten 1883 zu einem System gemeinsamer Zeitzonen für ihren Betrieb. Der Nutzen lag nicht in einer plötzlich genauer rotierenden Erde, sondern in gemeinsam lesbaren Zeiten. Eine Norm kann deshalb etwas bewusst vereinfachen: Die Zonenzeit entspricht nicht überall exakt dem örtlichen Sonnenmittag. Sie ist eine Vereinbarung, die Zusammenarbeit erleichtert. Präzise Einzelmessungen und ein brauchbarer gemeinsamer Standard lösen unterschiedliche Aufgaben."
+      ],
+      [
+        "Library of Congress · Today in History, November 18",
+        "https://www.loc.gov/item/today-in-history/november-18/"
+      ],
+      [
+        "Warum ist eine gemeinsame Bahnhofszeit nützlich, obwohl sie vom örtlichen Sonnenmittag abweichen kann?",
+        [
+          "Sie macht Abfahrten und Anschlüsse über Orte hinweg vergleichbar.",
+          "Sie macht die Zonenzeit an jedem Ort identisch mit dem Sonnenmittag.",
+          "Sie ersetzt die Notwendigkeit, Bahnhofsuhren untereinander abzugleichen."
+        ],
+        "Der Standard schafft ein gemeinsames Bezugssystem; Uhren müssen innerhalb dieses Systems weiterhin zuverlässig laufen."
+      ],
+      "Standards ermöglichen Zusammenarbeit, indem sie gemeinsame Bezugspunkte schaffen."
+    ],
+    [
+      "rosetta",
+      "Ein Verwaltungsbeschluss öffnet eine verlorene Schrift",
+      [
+        "Kein Wörterbuch im Stein",
+        "Der bekannte Text hilft beim unbekannten"
+      ],
+      [
+        "Der Stein von Rosette ist berühmt, obwohl sein Text kein geheimer Wissensschatz ist: Er enthält einen Erlass aus der ptolemäischen Zeit Ägyptens. Der entscheidende Vorteil war seine Wiederholung in drei Schriften – Hieroglyphen, Demotisch und Griechisch.",
+        "Altgriechisch war weiterhin lesbar. Dadurch konnten Forscher vermuten, welche Inhalte in den anderen Fassungen wiederkehren mussten, und Zuordnungen prüfen. Der Stein lieferte also Vergleichsmaterial, keine automatisch passende Übersetzung jedes Zeichens. Die Entzifferung erforderte weitere Arbeit und Quellen. Eine unscheinbare Doppelüberlieferung kann historisch wertvoller sein als ein prachtvolles Einzelstück: Sie verbindet Bekanntes und Unbekanntes auf überprüfbare Weise."
+      ],
+      [
+        "British Museum · Rosetta Stone",
+        "https://www.britishmuseum.org/blog/everything-you-ever-wanted-know-about-rosetta-stone"
+      ],
+      [
+        "Was machte die mehrfach überlieferte Inschrift besonders nützlich?",
+        [
+          "Eine lesbare Fassung lieferte Anhaltspunkte für die unbekannten Schriften.",
+          "Alle Zeichen mussten in jeder Schrift dieselbe Form besitzen.",
+          "Der Stein enthielt für jedes einzelne Zeichen eine moderne Definition."
+        ],
+        "Wiederkehrender Inhalt erlaubt Vergleiche, auch wenn sich Zeichenformen und Schriftsysteme unterscheiden."
+      ],
+      "Eine bekannte Vergleichsquelle kann den Zugang zu einer unbekannten Überlieferung öffnen."
+    ],
+    [
+      "magna",
+      "Eine berühmte Freiheit beginnt als Machtkonflikt",
+      [
+        "1215 ist nicht die Gegenwart",
+        "Die spätere Bedeutung ist eine zweite Geschichte"
+      ],
+      [
+        "Die Magna Carta von 1215 entstand im Konflikt zwischen König Johann und aufständischen Baronen. Wer darin sofort eine moderne Demokratie für alle Menschen sieht, liest spätere Erwartungen in ein mittelalterliches Dokument hinein. Der unmittelbare Kontext waren konkrete Grenzen königlicher Macht und bestimmte Rechte.",
+        "Das britische Parlament beschreibt zugleich ihre spätere Bedeutung für die Vorstellung, dass auch Herrschaft an Recht gebunden ist. Beides lässt sich ernst nehmen: ein begrenzter ursprünglicher Adressatenkreis und eine weitreichende spätere Wirkung. Historische Dokumente haben eine Entstehungsgeschichte und eine Rezeptionsgeschichte. Frage deshalb getrennt, was eine Regel damals tat und wofür Menschen sie später als Vorbild verwendeten."
+      ],
+      [
+        "UK Parliament · Magna Carta",
+        "https://www.parliament.uk/about/living-heritage/evolutionofparliament/originsofparliament/birthofparliament/overview/magnacarta/"
+      ],
+      [
+        "Welche Aussage unterscheidet Entstehung und spätere Wirkung sauber?",
+        [
+          "Ein Dokument kann zunächst begrenzte Rechte sichern und später breitere Rechtsvorstellungen beeinflussen.",
+          "Jede spätere Deutung muss bereits 1215 ausdrücklich beabsichtigt gewesen sein.",
+          "Begrenzte ursprüngliche Rechte schliessen jede spätere Bedeutung aus."
+        ],
+        "Spätere Verwendung und ursprünglicher Kontext sind verbunden, aber nicht identisch."
+      ],
+      "Lies historische Rechte im damaligen Kontext und untersuche ihre spätere Wirkung gesondert."
+    ],
+    [
+      "sentiments",
+      "Die bekannte Erklärung mit einer entscheidenden Erweiterung",
+      [
+        "Ein vertrauter Satz wird unbequem",
+        "Anspruch und Wirklichkeit nebeneinander"
+      ],
+      [
+        "Die Declaration of Sentiments von Seneca Falls, 1848, knüpfte bewusst an die amerikanische Unabhängigkeitserklärung an. Sie erklärte Männer und Frauen für gleich und benannte konkrete Benachteiligungen. Die vertraute Form machte sichtbar, wem die viel beschworenen Grundsätze bisher nicht in gleicher Weise zugutekamen.",
+        "Das ist eine wirkungsvolle politische Argumentation: Eine Gesellschaft wird an ihren eigenen Ansprüchen gemessen. Der Text machte Gleichberechtigung dadurch nicht sofort zur gelebten Realität. Er formulierte Forderungen, darunter politische Mitbestimmung, und wurde Teil eines längeren Konflikts. Beim Lesen lohnt die Trennung zwischen einer bestehenden Rechtslage, einer moralischen Behauptung und einer geforderten Veränderung. Ein Dokument kann gerade deshalb wichtig sein, weil es den Istzustand nicht beschreibt."
+      ],
+      [
+        "National Park Service · Declaration of Sentiments",
+        "https://www.nps.gov/wori/learn/historyculture/declaration-of-sentiments.htm"
+      ],
+      [
+        "Warum darfst du eine Forderung nach gleichem Wahlrecht von 1848 nicht als Beleg für damals bereits gleiches Wahlrecht lesen?",
+        [
+          "Eine politische Forderung beschreibt den angestrebten Zustand, nicht zwingend geltendes Recht.",
+          "Forderungen können grundsätzlich keine historische Quelle sein.",
+          "Jede veröffentlichte Erklärung trat automatisch als Gesetz in Kraft."
+        ],
+        "Der Quellentyp und seine Absicht bestimmen, welche Aussage das Dokument trägt."
+      ],
+      "Unterscheide, ob eine Quelle Zustände beschreibt, rechtlich festlegt oder politisch fordert."
+    ],
+    [
+      "prototype",
+      "Warum ein gelungenes Einzelstück noch keine Versorgung ist",
+      [
+        "Das Instrument funktioniert",
+        "Die nächste Erfindung ist die Herstellung"
+      ],
+      [
+        "Harrisons Marinezeitmesser konnten zur Lösung des Längenproblems beitragen. Trotzdem standen nicht sofort auf jedem Schiff entsprechende Uhren. Royal Museums Greenwich beschreibt die anfangs hohen Kosten und die spätere Arbeit anderer Uhrmacher, welche die Konstruktionen vereinfachten und leichter herstellbar machten.",
+        "Ein einzelnes funktionierendes Gerät beantwortet eine andere Frage als eine verlässliche Versorgung vieler Nutzer. Für Verbreitung zählen Wiederholbarkeit, Preis, Wartung und Bedienbarkeit. Das schmälert die ursprüngliche Erfindung nicht. Es erklärt, weshalb Technikgeschichte mehr Personen umfasst als den berühmten ersten Namen. Zwischen «Es geht» und «Menschen können es überall nutzen» liegt oft eine weitere anspruchsvolle Entwicklungsphase."
+      ],
+      [
+        "Royal Museums Greenwich · Harrison’s timekeepers, What happened next?",
+        "https://www.rmg.co.uk/stories/time/harrisons-clocks-longitude-problem"
+      ],
+      [
+        "Ein Prototyp arbeitet zuverlässig, ist aber nur von seinem Erfinder wartbar. Welche Aufgabe ist noch ungelöst?",
+        [
+          "Die verlässliche Nutzung und Wartung in grösserem Massstab.",
+          "Der Nachweis, dass das Grundprinzip überhaupt funktionieren kann.",
+          "Die Frage, ob ein einzelnes Gerät existiert."
+        ],
+        "Praktische Verbreitung verlangt mehr als den erfolgreichen Vorführbetrieb eines Einzelstücks."
+      ],
+      "Eine Erfindung und ihre breite Nutzbarkeit sind verschiedene technische Leistungen."
+    ]
+  ],
+  "business": [
+    [
+      "opportunity",
+      "Der kostenlose Auftrag kostet deinen Samstag",
+      [
+        "Kein Preis auf der Rechnung",
+        "Die unsichtbare Alternative"
+      ],
+      [
+        "Du könntest am Samstag einem Bekannten kostenlos eine Website bauen. Geld verlässt dein Konto keines. Trotzdem ist der Auftrag nicht kostenlos für dich: Dieselben Stunden kannst du nicht zugleich für einen bezahlten Auftrag, Erholung oder ein eigenes Projekt einsetzen.",
+        "Opportunitätskosten bezeichnen den Wert der besten aufgegebenen Alternative. Du addierst nicht alle denkbaren Möglichkeiten. Entscheidend ist, worauf du tatsächlich als Nächstbestes verzichtest. Ein kostenloses Referenzprojekt kann vernünftig sein, wenn sein erwarteter Nutzen diese Alternative überwiegt. Die ehrliche Entscheidung lautet deshalb nicht «gratis oder teuer», sondern «Welche Nutzung meiner knappen Zeit ist hier vorzuziehen?»"
+      ],
+      [
+        "OpenStax · Principles of Economics 3e",
+        "https://openstax.org/books/principles-economics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint"
+      ],
+      [
+        "Welche Grösse beschreibt die Opportunitätskosten des Samstags am besten?",
+        [
+          "Der Wert der besten realistisch verfügbaren anderen Nutzung.",
+          "Die Summe aller jemals denkbaren Samstagsaktivitäten.",
+          "Nur das Geld, das direkt vom Konto abgebucht wird."
+        ],
+        "Aufgegeben wird eine beste Alternative, nicht jede Möglichkeit gleichzeitig."
+      ],
+      "Auch ohne Rechnung verbraucht eine Entscheidung knappe Möglichkeiten."
+    ],
+    [
+      "marginal",
+      "Der zusätzliche Gast im halb leeren Hotel",
+      [
+        "Eine Nacht, zwei Rechnungen",
+        "Zusätzlich ist nicht durchschnittlich"
+      ],
+      [
+        "Ein Hotelzimmer bleibt heute voraussichtlich leer. Ein Gast bietet einen Preis unter den durchschnittlichen Gesamtkosten pro Nacht. Sofort ablehnen? Für diese einzelne Nacht fallen manche Kosten ohnehin an, andere erst durch den Gast: Reinigung, Wäsche und Verbrauch.",
+        "Für eine kurzfristige Zusatzentscheidung sind zusätzliche Einnahmen und zusätzliche Kosten wichtig. Das heisst nicht, dauerhaft unter Vollkosten verkaufen zu können. Auch Stammkundenpreise, Verdrängung anderer Gäste und spätere Erwartungen können sich verändern. Die gedankliche Trennung verhindert aber, dass bereits anfallende Gebäudekosten jede einzelne Zusatzbuchung falsch erscheinen lassen. Kurzfristige Nutzung freier Kapazität und langfristige Tragfähigkeit brauchen unterschiedliche Rechnungen."
+      ],
+      [
+        "OpenStax · Principles of Economics 3e",
+        "https://openstax.org/books/principles-economics-3e/pages/7-3-costs-in-the-short-run"
+      ],
+      [
+        "Welche Information ist für das spontane Angebot besonders relevant?",
+        [
+          "Welche zusätzlichen Kosten und verdrängten Einnahmen die Buchung auslöst.",
+          "Die gesamten Gebäudekosten gleichmässig auf diese eine Nacht umlegen.",
+          "Den Preis ausschliesslich an früheren Durchschnittswerten festmachen."
+        ],
+        "Die Zusatzentscheidung verändert nicht alle Kosten; mögliche Verdrängung gehört aber ebenfalls dazu."
+      ],
+      "Vergleiche für eine Zusatzentscheidung das, was sich durch sie tatsächlich verändert."
+    ],
+    [
+      "fixed",
+      "Warum der erste Kaffee so teuer ist",
+      [
+        "Die Maschine steht schon da",
+        "Menge verändert den Kostenblick"
+      ],
+      [
+        "Eine kleine Kaffeebar verkauft morgens ihren ersten Kaffee. Miete und Maschine müssen für diesen Tag bereits finanziert werden, unabhängig davon, ob ein oder hundert Gäste kommen. Bohnen und Becher wachsen dagegen mit der Zahl verkaufter Getränke.",
+        "Fixe und variable Kosten verhalten sich innerhalb eines betrachteten Zeitraums unterschiedlich. Bei mehr Verkäufen verteilen sich fixe Kosten auf mehr Einheiten; die variablen verschwinden dadurch nicht. Ausserdem bleibt die Kapazität begrenzt. Brauchst du einen zweiten Standort, ändern sich die Voraussetzungen. «Mehr Menge senkt Stückkosten» ist daher kein grenzenloses Gesetz. Benenne immer Zeitraum, Kapazität und Kostenart, bevor du aus steigenden Verkäufen automatisch einen höheren Gewinn erwartest."
+      ],
+      [
+        "OpenStax · Principles of Economics 3e",
+        "https://openstax.org/books/principles-economics-3e/pages/7-3-costs-in-the-short-run"
+      ],
+      [
+        "Warum kann bei mehr verkauften Kaffees der Fixkostenanteil pro Kaffee sinken?",
+        [
+          "Dieselben Fixkosten werden auf mehr Einheiten verteilt.",
+          "Der gesamte Mietbetrag sinkt automatisch proportional zur verkauften Menge.",
+          "Die variablen Kosten verschwinden, sobald die Miete auf mehr Tassen verteilt wird."
+        ],
+        "Die Verteilung pro Einheit ändert sich, auch wenn der gesamte fixe Betrag gleich bleibt."
+      ],
+      "Stückkosten und Gesamtkosten können sich unterschiedlich entwickeln."
+    ],
+    [
+      "diminishing",
+      "Noch ein Koch macht die Küche nicht doppelt schnell",
+      [
+        "Das Team wächst, der Ofen bleibt",
+        "Der Engpass wandert nicht mit"
+      ],
+      [
+        "In einer winzigen Küche hilft ein zweiter Koch zunächst sehr. Später warten vier Köche vor demselben Ofen und stehen sich im Weg. Zusätzliche Arbeitskraft bringt unter diesen Bedingungen immer weniger zusätzlichen Ausstoss.",
+        "Abnehmende Grenzerträge entstehen, wenn ein Einsatzfaktor wächst, während andere begrenzt bleiben. Das ist keine Aussage über Faulheit. Die Produktionsbedingungen erklären den sinkenden Zusatznutzen. Ein grösserer Ofen könnte die Lage verändern; dann betrachtest du aber eine andere Ausstattung. Bevor ein Betrieb mehr Personal einstellt, sollte er fragen, welche Ressource die fertigen Ergebnisse begrenzt. Beschäftigung an jeder Station ist nicht dasselbe wie mehr auslieferbares Essen."
+      ],
+      [
+        "OpenStax · Principles of Economics 3e",
+        "https://openstax.org/books/principles-economics-3e/pages/7-2-production-in-the-short-run"
+      ],
+      [
+        "Vier Köche warten auf den einzigen Ofen. Welche erste Untersuchung passt?",
+        [
+          "Ob die Ofenkapazität den zusätzlichen Ausstoss begrenzt.",
+          "Ob ein fünfter Koch die Produktion zwingend proportional erhöht.",
+          "Ob jeder Beschäftigte einfach gleich viel schneller arbeiten kann."
+        ],
+        "Mehr vom selben Einsatzfaktor hilft wenig, wenn ein anderer Faktor begrenzt bleibt."
+      ],
+      "Mehr Einsatz bringt nicht automatisch proportional mehr Ergebnis."
+    ],
+    [
+      "scale",
+      "Grösser werden kann auch teurer werden",
+      [
+        "Die attraktive Grossbestellung",
+        "Organisation wächst mit"
+      ],
+      [
+        "Eine Werkstatt kauft bei grösseren Mengen günstiger ein und nutzt ihre Maschinen besser aus. Später wächst sie auf mehrere Standorte. Nun kosten Abstimmung, Fehlkommunikation und zusätzliche Leitung Zeit. Die Vorteile der Grösse verschwinden nicht, aber sie bekommen Gegenspieler.",
+        "Langfristige Grössenvorteile beschreiben sinkende durchschnittliche Kosten bei wachsender Betriebsgrösse; Grössennachteile die umgekehrte Entwicklung. Anders als bei einer kurzfristig festen Küche können hier sämtliche Produktionsfaktoren angepasst werden. «Wir wachsen und werden deshalb günstiger» bleibt eine Hypothese. Ein Betrieb muss prüfen, welche Ersparnisse tatsächlich entstehen und welche Koordinationskosten neu hinzukommen. Umsatz allein misst diese Rechnung nicht."
+      ],
+      [
+        "OpenStax · Principles of Economics 3e",
+        "https://openstax.org/books/principles-economics-3e/pages/7-5-costs-in-the-long-run"
+      ],
+      [
+        "Nach einer Expansion sinken Einkaufspreise, aber die Kosten pro Auftrag steigen. Was ist eine mögliche Erklärung?",
+        [
+          "Neue Koordinationskosten überwiegen die Einkaufsersparnis.",
+          "Grössere Unternehmen können grundsätzlich keine höheren Stückkosten haben.",
+          "Günstigerer Einkauf garantiert automatisch höheren Gewinn."
+        ],
+        "Die Gesamtkosten enthalten mehr als Materialpreise. Skalierung verändert mehrere Kosten zugleich."
+      ],
+      "Wachstum muss seine organisatorischen Kosten mitverdienen."
+    ],
+    [
+      "elasticity",
+      "Der Rabatt, der den Umsatz verkleinert",
+      [
+        "Mehr Gäste, weniger Geld",
+        "Die Reaktion entscheidet"
+      ],
+      [
+        "Ein Café senkt die Preise. Es verkauft danach mehr Getränke und nennt die Aktion erfolgreich. Für den Umsatz fehlt aber eine Information: Reicht die zusätzliche Menge aus, um den niedrigeren Erlös pro Getränk auszugleichen?",
+        "Die Preiselastizität beschreibt, wie empfindlich die nachgefragte Menge auf eine Preisänderung reagiert. Manche Kunden wechseln schnell zu Alternativen, andere ändern ihr Verhalten kaum. Die Reaktion hängt vom Angebot, vom Zeitraum und von Ausweichmöglichkeiten ab. Selbst steigender Umsatz beweist noch keinen steigenden Gewinn, weil zusätzliche Verkäufe Kosten verursachen. Ein Rabatt braucht deshalb eine klare Zielgrösse und einen Vergleich von Menge, Erlös und Kosten."
+      ],
+      [
+        "OpenStax · Principles of Economics 3e",
+        "https://openstax.org/books/principles-economics-3e/pages/5-1-price-elasticity-of-demand-and-price-elasticity-of-supply"
+      ],
+      [
+        "Nach einem Rabatt steigen Verkäufe, der Umsatz sinkt. Was kannst du daraus ableiten?",
+        [
+          "Die zusätzliche Menge hat den niedrigeren Erlös pro Stück nicht ausgeglichen.",
+          "Die Nachfrage hat sich überhaupt nicht verändert.",
+          "Der Gewinn muss gestiegen sein, weil mehr verkauft wurde."
+        ],
+        "Umsatz ergibt sich aus Preis und Menge; eine Mengensteigerung allein entscheidet ihn nicht."
+      ],
+      "Mehr verkaufen und mehr verdienen sind zwei verschiedene Ziele."
+    ],
+    [
+      "lemons",
+      "Warum ein gutes Gebrauchtfahrzeug schwer zu erkennen ist",
+      [
+        "Der Verkäufer weiss mehr",
+        "Vertrauen braucht überprüfbare Spuren"
+      ],
+      [
+        "Zwei äusserlich ähnliche Gebrauchtfahrzeuge stehen zum Verkauf. Eines wurde sorgfältig gewartet, beim anderen sind Probleme bekannt. Der Verkäufer weiss darüber mehr als du. Wenn Käufer beiden misstrauen und nur einen niedrigen Preis bieten, wird es für ehrliche Anbieter guter Fahrzeuge unattraktiv.",
+        "Das ist das Problem asymmetrischer Information: Ungleich verteiltes Wissen kann einen Markt verschlechtern. Eine unabhängige Prüfung, nachvollziehbare Wartungsunterlagen oder belastbare Zusicherungen können Unsicherheit reduzieren. Ein schöner Anzug oder eine selbstbewusste Beschreibung leisten das nicht automatisch. Frage bei einem Vertrauenssignal, ob es überprüfbar ist und für einen unehrlichen Anbieter ebenfalls mühelos zu erzeugen wäre."
+      ],
+      [
+        "OpenStax · Principles of Economics 3e",
+        "https://openstax.org/books/principles-economics-3e/pages/16-1-the-problem-of-imperfect-information-and-asymmetric-information"
+      ],
+      [
+        "Welcher Hinweis verringert die beschriebene Wissenslücke am direktesten?",
+        [
+          "Eine unabhängige technische Prüfung des konkreten Fahrzeugs.",
+          "Eine ausführlichere Zustandsbeschreibung allein durch denselben Verkäufer.",
+          "Der Vergleich der Angebotspreise ohne Prüfung des konkreten Zustands."
+        ],
+        "Eine unabhängige Untersuchung liefert zusätzliche Information über den Zustand, statt nur die Behauptung des Verkäufers zu verstärken."
+      ],
+      "Vertrauen wird stärker, wenn relevante Behauptungen überprüfbar werden."
+    ],
+    [
+      "externality",
+      "Die billige Produktion mit einer fremden Rechnung",
+      [
+        "Kosten ausserhalb des Betriebs",
+        "Was im Preis fehlt"
+      ],
+      [
+        "Ein Betrieb produziert günstig, leitet aber verschmutztes Wasser ab. Menschen flussabwärts tragen Reinigungskosten oder verlieren Nutzungsmöglichkeiten. In der internen Kalkulation des Betriebs erscheinen diese Belastungen möglicherweise nicht.",
+        "Eine negative Externalität liegt vor, wenn eine Aktivität unbeteiligten Dritten Kosten auferlegt, die in der Entscheidung nicht angemessen berücksichtigt werden. Der niedrige Marktpreis kann dann reale gesellschaftliche Kosten verdecken. Das beweist nicht, dass jede denkbare Regulierung gut wäre. Es erklärt zuerst, welches Problem eine Regel lösen soll: Wer verursacht die Belastung, wer trägt sie und wie verändert ein Eingriff das Verhalten? Ohne diese Zuordnung bleibt «billig» unvollständig."
+      ],
+      [
+        "OpenStax · Principles of Economics 3e",
+        "https://openstax.org/books/principles-economics-3e/pages/12-1-the-economics-of-pollution"
+      ],
+      [
+        "Warum beschreibt die interne Produktionsrechnung die gesellschaftlichen Kosten nicht vollständig?",
+        [
+          "Sie kann Belastungen unbeteiligter Dritter auslassen.",
+          "Jeder niedrige Preis beweist automatisch Umweltverschmutzung.",
+          "Gesellschaftliche Kosten bestehen ausschliesslich aus Steuern."
+        ],
+        "Der externe Teil trifft andere und muss nicht in der Rechnung des Verursachers auftauchen."
+      ],
+      "Prüfe bei niedrigen Kosten, ob jemand ausserhalb der Rechnung einen Teil davon trägt."
+    ],
+    [
+      "sunk",
+      "Die Software ist bezahlt. Musst du sie deshalb behalten?",
+      [
+        "Ein teurer Fehlkauf",
+        "Ab heute rechnen"
+      ],
+      [
+        "Ein Team hat viel Geld für eine Software bezahlt, die seine Arbeit verlangsamt. «Jetzt müssen wir sie nutzen, sonst war alles umsonst», sagt jemand. Doch die bereits unwiederbringlich gezahlte Summe wird durch weitere schlechte Monate nicht kleiner.",
+        "Versunkene Kosten lassen sich durch die aktuelle Entscheidung nicht mehr ändern. Für Behalten oder Wechseln zählen deshalb die künftigen Unterschiede: Nutzen, laufende Gebühren, Umstellung, Schulung und Risiken. Das ist kein Aufruf zum ständigen Abbrechen. Ein Wechsel kann ebenfalls teuer sein. Nur die Begründung muss nach vorne schauen. Frage: Welche Option würden wir heute wählen, wenn wir die vergangenen Ausgaben als gegeben akzeptieren?"
+      ],
+      [
+        "OpenStax · Principles of Economics 3e",
+        "https://openstax.org/books/principles-economics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint"
+      ],
+      [
+        "Welche Kosten gehören tatsächlich in die heutige Wechselentscheidung?",
+        [
+          "Die noch anfallenden Umstellungs- und Betriebskosten der Alternativen.",
+          "Ausschliesslich der bereits nicht rückerstattbare Kaufpreis.",
+          "Nur die Summe, die das Projekt bisher öffentlich gekostet hat."
+        ],
+        "Künftige Unterschiede sind beeinflussbar. Unwiderrufliche Vergangenheit wird durch Weitermachen nicht zurückgewonnen."
+      ],
+      "Lass vergangene Ausgaben erklären, wie du hierherkamst, aber nicht allein entscheiden, wie es weitergeht."
+    ]
+  ],
+  "health": [
+    [
+      "sleepstages",
+      "Deine Nacht ist keine gerade Linie",
+      [
+        "Schlafen verändert sich im Schlaf",
+        "Zyklen mit unterschiedlichem Schwerpunkt"
+      ],
+      [
+        "Von aussen sieht eine schlafende Person lange ähnlich aus. Im Inneren wechseln jedoch verschiedene Zustände. Die heutige Einteilung unterscheidet drei NREM-Stadien und REM-Schlaf. Tiefer NREM-Schlaf ist also nicht einfach der Name für die gesamte Nacht.",
+        "Nach Angaben des NHLBI wiederholen sich Schlafzyklen, wobei tiefer Schlaf eher in der ersten Nachthälfte und REM-Schlaf später mehr Raum einnimmt. Die Abläufe sind nicht bei jedem Menschen und in jeder Nacht exakt gleich lang. Deshalb ist die Vorstellung einer Uhr, die nach einer starren Minutenzahl immer denselben Zustand garantiert, zu einfach. Ein Verlauf beschreibt wechselnde Zustände; eine blosse Gesamtstundenzahl zeigt ihre Verteilung nicht."
+      ],
+      [
+        "NIH / NHLBI · Sleep Phases and Stages",
+        "https://www.nhlbi.nih.gov/health/sleep/stages-of-sleep"
+      ],
+      [
+        "Welche Aussage passt zum beschriebenen Verlauf?",
+        [
+          "Gleiche Schlafdauer beschreibt noch nicht vollständig die Verteilung der Schlafstadien.",
+          "Die gesamte Nacht besteht aus demselben gleich tiefen Zustand.",
+          "Jeder Mensch erreicht REM-Schlaf immer nach exakt derselben Minutenzahl."
+        ],
+        "Schlaf besteht aus wechselnden Stadien und variablen Zyklen; die Gesamtdauer allein beschreibt das nicht."
+      ],
+      "Schlaf ist ein zeitlicher Ablauf verschiedener Zustände, kein einheitlicher Aus-Schalter."
+    ],
+    [
+      "homeostasis",
+      "Warum dein Körper gegen eine Veränderung arbeitet",
+      [
+        "Warm werden löst Gegenarbeit aus",
+        "Negativ heisst hier stabilisierend"
+      ],
+      [
+        "Du wirst bei Bewegung warm. Der Körper kann unter anderem die Durchblutung der Haut und die Schweissabgabe erhöhen. Er reagiert auf eine Veränderung mit Vorgängen, die ihr entgegenwirken. Diese Richtung nennt sich negative Rückkopplung.",
+        "Das Wort «negativ» bewertet nichts als schlecht. Es bezeichnet, dass die Rückwirkung die ursprüngliche Abweichung vermindert. Homöostase bedeutet dabei dynamische Regulation innerhalb geeigneter Bereiche, nicht einen Wert, der niemals schwankt. Stell dir einen Thermostat vor, der auf Abweichungen reagiert: Die Temperatur muss nicht völlig bewegungslos sein, damit das System regelt. Im Körper greifen allerdings mehrere Mechanismen ineinander; der Thermostat ist ein begrenzter Vergleich."
+      ],
+      [
+        "OpenStax · Anatomy and Physiology 2e: Homeostasis",
+        "https://openstax.org/books/anatomy-and-physiology-2e/pages/1-5-homeostasis"
+      ],
+      [
+        "Was macht die beschriebene Rückkopplung negativ?",
+        [
+          "Die Reaktion wirkt der ursprünglichen Abweichung entgegen.",
+          "Die Reaktion verändert grundsätzlich alle Körperwerte in dieselbe Richtung.",
+          "Die Reaktion muss jeden Wert jederzeit völlig konstant halten."
+        ],
+        "Das Vorzeichen beschreibt die Richtung der Rückwirkung, nicht ihren moralischen oder gesundheitlichen Wert."
+      ],
+      "Stabilität kann durch laufende Gegensteuerung entstehen."
+    ],
+    [
+      "adaptation",
+      "Warum du das Parfüm nach einer Weile kaum bemerkst",
+      [
+        "Der Duft bleibt, der Eindruck verändert sich",
+        "Ein System für Veränderungen"
+      ],
+      [
+        "Beim Betreten eines Raums riechst du deutlich Parfüm. Eine Weile später fällt es dir kaum noch auf. Eine neu eintretende Person bemerkt es sofort. Dass du weniger wahrnimmst, muss also nicht bedeuten, dass der Duft vollständig verschwunden ist.",
+        "Sensorische Anpassung kann die Empfindlichkeit gegenüber einem anhaltenden Reiz verändern. Wahrnehmung spiegelt damit nicht einfach die Umwelt in unveränderter Stärke. Daneben spielt Aufmerksamkeit eine Rolle: Was gerade wichtig wird, kann wieder auffallen. Aus der Alltagsszene solltest du keine Diagnose ableiten. Sie zeigt einen allgemeineren Punkt: Ein schwächerer Eindruck und ein schwächerer äusserer Reiz sind zwei verschiedene mögliche Erklärungen."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/5-1-sensation-versus-perception"
+      ],
+      [
+        "Du bemerkst einen gleichbleibenden Geruch kaum noch. Welche Schlussfolgerung wäre zu stark?",
+        [
+          "Der Geruch muss aus dem Raum vollständig verschwunden sein.",
+          "Deine Wahrnehmung kann sich an den anhaltenden Reiz angepasst haben.",
+          "Eine neu eintretende Person kann ihn deutlicher bemerken."
+        ],
+        "Gefragt ist die zu starke Schlussfolgerung: Aus weniger Wahrnehmung folgt nicht automatisch weniger Reiz."
+      ],
+      "Die Stärke eines Eindrucks hängt auch vom wahrnehmenden System ab."
+    ],
+    [
+      "blindspot",
+      "Das Loch im Auge, das du gewöhnlich nicht siehst",
+      [
+        "Eine überraschende Lücke",
+        "Sehen ist Verarbeitung"
+      ],
+      [
+        "An der Austrittsstelle des Sehnervs befinden sich keine lichtempfindlichen Rezeptoren. Trotzdem siehst du gewöhnlich kein schwarzes Loch mitten in deiner Umgebung. Informationen beider Augen und die Verarbeitung des visuellen Zusammenhangs tragen zu einem durchgehenden Eindruck bei.",
+        "Die Netzhaut ist also keine gleichmässige Kamerafläche, und Wahrnehmung ist keine unbearbeitete Aufnahme. Dieser Gedanke erklärt, weshalb du die Vollständigkeit eines Erlebnisses nicht mit einer vollständigen Messung verwechseln solltest. Das Gehirn konstruiert einen brauchbaren Eindruck aus verfügbaren Signalen. Das heisst nicht, dass alles beliebig oder erfunden wäre: Die Signale begrenzen die Verarbeitung, und die entstehende Darstellung funktioniert im Alltag meist sehr gut."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/5-3-vision"
+      ],
+      [
+        "Was zeigt der unbemerkte blinde Fleck über gewöhnliches Sehen?",
+        [
+          "Ein durchgehender Eindruck verlangt keine lückenlose Rezeptorfläche.",
+          "Jeder Punkt der Netzhaut muss gleich viele Rezeptoren besitzen.",
+          "Visuelle Eindrücke entstehen unabhängig von Lichtsignalen."
+        ],
+        "Die Wahrnehmung verbindet und verarbeitet Signale; sie ist weder eine rohe Kopie noch völlig signalunabhängig."
+      ],
+      "Ein vollständig wirkender Eindruck kann aus unvollständigen Sinnesdaten entstehen."
+    ],
+    [
+      "hearing",
+      "Vom Luftdruck zum gehörten Ton",
+      [
+        "Etwas schwingt, aber noch niemand hört",
+        "Übersetzen statt durchreichen"
+      ],
+      [
+        "Ein Lautsprecher versetzt Luft in Druckschwankungen. Im Ohr wird diese mechanische Bewegung weitergegeben. In der Hörschnecke reagieren spezialisierte Haarzellen auf Bewegung und ermöglichen die Umwandlung in Signale des Nervensystems.",
+        "Der gehörte Ton ist deshalb nicht als winziger Klanggegenstand durch das Ohr gereist. Zwischen äusserem Reiz und Erlebnis liegt eine Übersetzung, die sensorische Transduktion. Die Eigenschaften der Schwingung, die Mechanik des Ohrs und die neuronale Verarbeitung gehören alle zur Erklärung. Wenn du Lautstärke und Tonhöhe unterscheidest, trennst du zudem verschiedene Merkmale eines Signals. Ein tiefer Ton kann leise sein; tief bedeutet nicht automatisch stark."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/5-4-hearing"
+      ],
+      [
+        "Welche Beschreibung trifft die Aufgabe der Sinneszellen am besten?",
+        [
+          "Mechanische Reize in für das Nervensystem nutzbare Signale umzuwandeln.",
+          "Die Schwingung ohne Umwandlung als fertigen Eindruck direkt durchzureichen.",
+          "Aus der Tonhöhe allein die erlebte Lautstärke festzulegen."
+        ],
+        "Transduktion verbindet eine physikalische Reizform mit neuronaler Signalverarbeitung."
+      ],
+      "Wahrnehmung braucht eine Übersetzung physikalischer Reize in Nervensignale."
+    ],
+    [
+      "flavour",
+      "Warum eine verstopfte Nase das Essen verändert",
+      [
+        "Süss ist nicht dasselbe wie Erdbeere",
+        "Mehrere Sinne am selben Bissen"
+      ],
+      [
+        "Ein Lebensmittel kann bei verstopfter Nase noch süss schmecken, aber weniger deutlich nach seiner typischen Frucht. Was wir im Alltag «Geschmack» nennen, enthält häufig auch Geruchsinformation. Beim Essen gelangen flüchtige Stoffe aus dem Mundraum zum Riechsystem.",
+        "Grundgeschmacksqualitäten und Aromen leisten unterschiedliche Beiträge zum gesamten Eindruck. Deshalb genügt die Zunge allein nicht, um das vollständige Erlebnis eines Gerichts zu erklären. Temperatur und Textur spielen ebenfalls mit. Die interessante Konsequenz ist keine Diagnose bei einer Erkältung, sondern eine bessere Beschreibung: Wenn jemand «Ich schmecke kaum etwas» sagt, kann er mehrere Bestandteile eines gemeinsamen Erlebnisses meinen. Präzise Fragen trennen sie auseinander."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/5-5-the-other-senses"
+      ],
+      [
+        "Warum kann Süsse noch erkennbar sein, während ein Fruchtaroma schwächer wirkt?",
+        [
+          "Grundgeschmack und Geruch tragen unterschiedliche Informationen zum Gesamteindruck bei.",
+          "Süsse und jedes Fruchtaroma werden ausschliesslich von derselben Information getragen.",
+          "Die Zunge erkennt grundsätzlich keine Süsse."
+        ],
+        "Geruch ergänzt die Geschmacksinformationen; beide sind verbunden, aber nicht identisch."
+      ],
+      "Ein scheinbar einzelner Sinneseindruck kann mehrere Informationsquellen verbinden."
+    ],
+    [
+      "balance",
+      "Woher weisst du mit geschlossenen Augen, dass du dich bewegst?",
+      [
+        "Der Blick ist nur ein Hinweis",
+        "Mehrere Signale für dieselbe Lage"
+      ],
+      [
+        "Wenn ein Lift anfährt, kannst du die Bewegung auch ohne Blick auf eine Anzeige bemerken. Dein Körper nutzt unter anderem Signale des Gleichgewichtssystems im Innenohr. Hinzu kommen visuelle Informationen und Rückmeldungen aus Muskeln und Gelenken.",
+        "Diese Systeme beantworten verwandte, aber nicht identische Fragen über Bewegung und Lage. Propriozeption bezeichnet die Wahrnehmung der eigenen Körperstellung; das vestibuläre System liefert wichtige Informationen über Kopfbewegung und Orientierung. Ein stabiler Eindruck entsteht aus ihrem Zusammenspiel. Der Gedanke erklärt, weshalb «Balance ist nur gutes Sehen» zu kurz greift. Die Augen helfen, sind aber nicht der einzige Sensor, auf den der Körper zurückgreift."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/5-5-the-other-senses"
+      ],
+      [
+        "Welche Aussage beschreibt Gleichgewicht angemessen?",
+        [
+          "Visuelle, vestibuläre und körperbezogene Signale wirken zusammen.",
+          "Mit geschlossenen Augen stehen keinerlei Lageinformationen mehr zur Verfügung.",
+          "Nur die Haut der Fusssohlen liefert Informationen über jede Kopfbewegung."
+        ],
+        "Mehrere Sinnesquellen tragen zur Orientierung bei; Sehen ist eine davon."
+      ],
+      "Orientierung entsteht aus dem Zusammenspiel verschiedener Körpersignale."
+    ],
+    [
+      "autonomic",
+      "Das Herz beschleunigt vor deinem ersten Satz",
+      [
+        "Eine Reaktion ohne bewussten Befehl",
+        "Bereitstellen und regulieren"
+      ],
+      [
+        "Du sollst gleich vor einer Gruppe sprechen, und dein Herz schlägt schneller, bevor du etwas gesagt hast. Nicht jede körperliche Reaktion braucht einen bewussten Bewegungsbefehl. Das autonome Nervensystem beeinflusst unter anderem Herz, Verdauung und Drüsen.",
+        "Der sympathische Anteil ist an der Mobilisierung für Anforderungen beteiligt, der parasympathische an verschiedenen Funktionen von Erholung und Versorgung. Die verbreiteten Kurzformeln sind jedoch keine zwei vollständigen Persönlichkeitszustände. Organe werden differenziert reguliert, und eine einzelne Empfindung beweist keine Störung. Für das Verständnis genügt die Trennung: Du kannst dich bewusst auf einen Vortrag vorbereiten, während zugleich automatische Regulation im Körper stattfindet."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/3-3-parts-of-the-nervous-system"
+      ],
+      [
+        "Was zeigt der schnellere Herzschlag vor dem Vortrag zunächst?",
+        [
+          "Körperliche Regulation kann ohne bewussten Einzelbefehl stattfinden.",
+          "Jeder Herzschlag muss willentlich ausgelöst werden.",
+          "Das Nervensystem steuert ausschliesslich sichtbare Muskelbewegungen."
+        ],
+        "Autonome Regulation umfasst auch innere Organe und unwillkürliche Reaktionen."
+      ],
+      "Bewusste Absicht und automatische Körperregulation laufen nebeneinander."
+    ],
+    [
+      "appraisal",
+      "Dieselbe Bühne, zwei verschiedene Erlebnisse",
+      [
+        "Bedrohung oder Herausforderung",
+        "Die Bewertung gehört zum Vorgang"
+      ],
+      [
+        "Zwei Personen sollen denselben Vortrag halten. Eine denkt an die Chance, etwas zu zeigen; die andere erwartet eine öffentliche Blamage. Die äussere Aufgabe ist ähnlich, die erlebte Belastung kann unterschiedlich sein.",
+        "Psychologische Stressmodelle berücksichtigen deshalb die Bewertung einer Situation und der eigenen Bewältigungsmöglichkeiten. Das bedeutet nicht, Belastung sei bloss eingebildet oder durch einen positiven Satz beseitigt. Reale Anforderungen und verfügbare Unterstützung bleiben wichtig. Es macht aber zwei Fragen sichtbar: Was wird konkret verlangt, und welche Mittel sehe ich, damit umzugehen? Eine klarere Aufgabe oder bessere Vorbereitung verändert etwas anderes als das blosse Kommando, sich nicht zu stressen."
+      ],
+      [
+        "OpenStax · Psychology 2e",
+        "https://openstax.org/books/psychology-2e/pages/14-1-what-is-stress"
+      ],
+      [
+        "Welche Reaktion berücksichtigt sowohl Situation als auch Bewältigungsmöglichkeiten?",
+        [
+          "Anforderungen klären und prüfen, welche Vorbereitung oder Unterstützung fehlt.",
+          "Jede Belastung als frei gewählte Einbildung behandeln.",
+          "Alle Menschen allein wegen derselben Aufgabe als gleich belastet einstufen."
+        ],
+        "Bewertung und Ressourcen beeinflussen das Erleben, ohne reale Anforderungen aufzuheben."
+      ],
+      "Belastung hängt auch davon ab, wie Anforderungen und eigene Möglichkeiten zusammenkommen."
+    ]
+  ],
+  "industries": [
+    [
+      "euv",
+      "Das Licht, das keine gewöhnliche Linse verträgt",
+      [
+        "Kürzeres Licht, andere Maschine",
+        "Ein Vorteil mit Bedingungen"
+      ],
+      [
+        "Bei EUV-Lithografie wird extrem kurzwelliges ultraviolettes Licht eingesetzt. Das hilft, sehr feine Muster zu übertragen. Doch gewöhnliche Luft und Glas absorbieren dieses Licht stark. Eine Maschine für andere Wellenlängen lässt sich deshalb nicht einfach durch eine neue Lampe aufrüsten.",
+        "Der Lichtweg benötigt Vakuum und besondere Spiegel statt gewöhnlicher durchlässiger Linsen. Eine einzelne Verbesserung verändert damit das ganze System: Lichtquelle, Optik und Umgebung müssen zusammen funktionieren. Das ist ein typischer technischer Zielkonflikt. Eine nützliche Eigenschaft eines Materials oder Verfahrens ist noch kein fertiges Produkt; sie bringt Bedingungen mit, die andere Komponenten erfüllen müssen."
+      ],
+      [
+        "ASML · Light and lasers",
+        "https://www.asml.com/en/technology/lithography-principles/light-and-lasers"
+      ],
+      [
+        "Warum arbeitet die EUV-Optik mit besonderen Spiegeln im Vakuum?",
+        [
+          "Weil Luft und gewöhnliche Glasoptik das verwendete Licht stark absorbieren.",
+          "Weil Spiegel jede beliebige Wellenlänge vollständig verlustfrei reflektieren.",
+          "Weil Licht grundsätzlich nur im Vakuum existieren kann."
+        ],
+        "Die konkrete Wellenlänge stellt besondere Anforderungen; daraus folgt keine allgemeine Aussage gegen Licht in Luft."
+      ],
+      "Eine neue Technologie funktioniert erst, wenn ihre Umgebung zu ihren Eigenschaften passt."
+    ],
+    [
+      "tin",
+      "Die Lichtquelle beginnt mit einem winzigen Zinntropfen",
+      [
+        "Eine ungewöhnliche Lampe",
+        "Vom Material zum Prozess"
+      ],
+      [
+        "Für EUV-Lithografie reicht keine gewöhnliche Glühlampe. In der von ASML beschriebenen Lichtquelle treffen starke Laserpulse auf winzige Zinntropfen. Dabei entsteht ein Plasma, das unter anderem die benötigte EUV-Strahlung abgibt.",
+        "Die Schwierigkeit liegt nicht nur darin, einmal Licht zu erzeugen. Tropfen, Laserpulse und sammelnde Optik müssen zuverlässig zusammenarbeiten. Die Lichtquelle ist somit ein eigener präziser Produktionsprozess innerhalb der Produktionsmaschine. Wenn ein Bauteil spektakulär klingt, frage nach seinem Takt und seiner Wiederholbarkeit. Ein funktionierender Versuch und eine Anlage, die fortlaufend verwertbare Ergebnisse liefert, sind verschiedene technische Aufgaben."
+      ],
+      [
+        "ASML · Light and lasers",
+        "https://www.asml.com/en/technology/lithography-principles/light-and-lasers"
+      ],
+      [
+        "Was unterscheidet eine brauchbare industrielle Lichtquelle von einem einzelnen gelungenen Versuch?",
+        [
+          "Sie muss die benötigten Lichtpulse wiederholt und kontrolliert erzeugen.",
+          "Ein besonders heller einmaliger Blitz ersetzt jeden weiteren Betrieb.",
+          "Die Zusammensetzung des erzeugten Lichts spielt dann keine Rolle."
+        ],
+        "Die Anlage braucht wiederholbare passende Strahlung, nicht bloss irgendeinen hellen Moment."
+      ],
+      "Industrielle Leistung verlangt kontrollierte Wiederholung, nicht nur einen spektakulären Einzelversuch."
+    ],
+    [
+      "transistor",
+      "Wie ein winziger Schalter zu Rechnen wird",
+      [
+        "Kein einzelnes Bauteil versteht Mathematik",
+        "Die Verschaltung trägt die Logik"
+      ],
+      [
+        "Ein Transistor kann den Stromfluss beeinflussen. In digitalen Schaltungen lassen sich damit unterscheidbare Zustände erzeugen und verarbeiten. Erst die Verbindung vieler Bauteile macht daraus logische Operationen, Speicher und schliesslich einen Prozessor.",
+        "Der Sprung von einem Schalter zu einer App ist deshalb eine Folge von Ebenen: elektrische Zustände, logische Verknüpfungen, Befehle und Programme. Mehr Transistoren allein sagen noch nicht, wie schnell eine konkrete Aufgabe läuft. Auch Aufbau, Datenversorgung und Energiegrenzen zählen. Wenn du einen Chip beurteilst, ist die reine Bauteilzahl ähnlich unvollständig wie die Zahl der Angestellten beim Vergleich zweier Firmen."
+      ],
+      [
+        "ASML · Microchip basics",
+        "https://www.asml.com/en/technology/all-about-microchips/microchip-basics"
+      ],
+      [
+        "Warum reicht die Transistorzahl allein nicht als Leistungsurteil?",
+        [
+          "Die Organisation der Schaltung und die konkrete Aufgabe bestimmen mit, was sie leisten kann.",
+          "Transistoren haben grundsätzlich nichts mit digitalen Schaltungen zu tun.",
+          "Jeder einzelne Transistor führt unabhängig eine komplette App aus."
+        ],
+        "Bauteile ermöglichen Funktionen; ihre Anzahl beschreibt die Organisation und Nutzung nicht vollständig."
+      ],
+      "Die Leistung eines Systems steckt auch in der Verbindung seiner Teile."
+    ],
+    [
+      "wafer",
+      "Warum auf einer Scheibe viele Chips entstehen",
+      [
+        "Die Fabrik arbeitet in Wiederholungen",
+        "Aus Mustern werden Einzelteile"
+      ],
+      [
+        "Ein Wafer ist eine Scheibe, auf der viele Chipflächen nebeneinander bearbeitet werden. Mehrere Prozessschritte erzeugen die Strukturen schichtweise. Am Ende müssen daraus einzelne nutzbare Bauteile werden; die glänzende Scheibe ist noch nicht das fertige elektronische Produkt.",
+        "Diese Herstellung verbindet Wiederholung mit Prüfung. Nicht jede bearbeitete Fläche ist automatisch fehlerfrei. Deshalb zählt neben der Zahl möglicher Chipflächen auch die Ausbeute brauchbarer Einheiten. Ein geometrisch dichterer Plan kann gut aussehen, ohne den wirtschaftlichen Ertrag vollständig zu beschreiben. Herstellung beurteilst du besser vom funktionierenden Ergebnis her als allein von der Zahl eingezeichneter Felder."
+      ],
+      [
+        "ASML · How microchips are made",
+        "https://www.asml.com/en/technology/all-about-microchips/how-microchips-are-made"
+      ],
+      [
+        "Welche Zahl fehlt, wenn jemand nur mögliche Chipflächen pro Wafer nennt?",
+        [
+          "Wie viele der hergestellten Einheiten tatsächlich die Anforderungen erfüllen.",
+          "Wie viele Flächen die Planung theoretisch auf der Scheibe unterbringen kann.",
+          "Wie viele Prozessschritte unabhängig vom Ergebnis durchgeführt wurden."
+        ],
+        "Mögliche Einheiten und brauchbare Ergebnisse sind nicht dieselbe Menge."
+      ],
+      "Produktionskapazität wird erst zusammen mit brauchbarer Ausbeute aussagekräftig."
+    ],
+    [
+      "package",
+      "Die Verpackung ist Teil der Maschine",
+      [
+        "Kein gewöhnlicher Karton",
+        "Verbindungen entscheiden mit"
+      ],
+      [
+        "Bei Chips klingt «Packaging» nach einer Hülle, die man nach dem Kauf wegwirft. Gemeint ist jedoch ein technischer Aufbau: Der gefertigte Chip muss elektrisch mit seiner Umgebung verbunden und in ein nutzbares Bauteil integriert werden.",
+        "Moderne Gehäuse können mehrere Dies eng miteinander verbinden. Die Wege zwischen ihnen beeinflussen Datenübertragung und Energiebedarf. Verpackung ist damit ein Teil der Systemarchitektur, kein dekorativer Abschluss. Der Gedanke hilft auch ausserhalb von Chips: Ein hervorragendes Einzelteil kann im Gesamtsystem schlecht arbeiten, wenn Anschlüsse, Versorgung oder Wärmeabfuhr nicht passen. Schnittstellen sind selbst technische Leistung."
+      ],
+      [
+        "Intel · Advanced packaging",
+        "https://www.intel.com/content/www/us/en/foundry/packaging.html"
+      ],
+      [
+        "Warum kann Packaging die Leistung des Gesamtsystems beeinflussen?",
+        [
+          "Es bestimmt unter anderem, wie die enthaltenen Bauteile miteinander verbunden sind.",
+          "Es schützt nur mechanisch und hat keinen Einfluss auf die Verbindungen.",
+          "Es macht die Anforderungen der enthaltenen Bauteile an Versorgung überflüssig."
+        ],
+        "Die Integration und ihre Verbindungen gehören zum funktionierenden elektronischen System."
+      ],
+      "Gute Einzelteile brauchen ebenso gute technische Verbindungen."
+    ],
+    [
+      "chiplets",
+      "Warum ein Prozessor aus mehreren Chips bestehen kann",
+      [
+        "Aufteilen statt alles auf eine Fläche zwingen",
+        "Die Verbindung hat ihren Preis"
+      ],
+      [
+        "Ein komplexes System muss nicht aus einem einzigen grossen Stück Silizium bestehen. Bei Chiplet-Konzepten übernehmen mehrere kleinere Dies unterschiedliche Aufgaben und werden im Paket verbunden. Funktionen können dadurch mit passenden Fertigungsverfahren kombiniert werden.",
+        "Die Aufteilung ist aber kein kostenloser Vorteil. Daten müssen zwischen den Teilen reisen; Verbindung, Prüfung und Integration verlangen Aufwand. Ein modularer Aufbau tauscht bestimmte Herstellungsprobleme gegen Systemaufgaben. Deshalb ist «mehrteilig» weder automatisch schlechter noch grundsätzlich überlegen. Entscheidend ist, ob die Vorteile der gewählten Aufteilung die zusätzlichen Schnittstellenkosten für den konkreten Einsatz rechtfertigen."
+      ],
+      [
+        "Intel · Advanced packaging",
+        "https://www.intel.com/content/www/us/en/foundry/packaging.html"
+      ],
+      [
+        "Welchen Zielkonflikt bringt die Aufteilung in Chiplets mit?",
+        [
+          "Passende Teilbausteine lassen sich kombinieren, müssen aber leistungsfähig verbunden werden.",
+          "Die Aufteilung spart unabhängig von den Verbindungen stets Energie.",
+          "Die getrennte Herstellung macht eine gemeinsame Systemprüfung überflüssig."
+        ],
+        "Modularität schafft Spielraum und zugleich Integrationsaufwand."
+      ],
+      "Eine gute Aufteilung berücksichtigt ihre Schnittstellen von Anfang an."
+    ],
+    [
+      "thermal",
+      "Warum ein schneller Chip langsamer werden muss",
+      [
+        "Leistung trifft auf Wärme",
+        "Eine Grenze des ganzen Geräts"
+      ],
+      [
+        "Dein Smartphone kann bei hoher Temperatur sein Verhalten verändern. Apple beschreibt unter anderem reduzierte Leistung und angepasste Ladefunktionen, um die Temperatur zu regulieren. Die mögliche Rechenleistung hängt also auch davon ab, wie das Gerät Wärme abgeben kann.",
+        "Das macht einen kurzen Spitzenwert zu etwas anderem als dauerhaft verfügbare Leistung. Ein dünnes Gehäuse, Umgebungstemperatur und laufende Aufgaben wirken zusammen. Mehr Rechenarbeit ist nicht einfach eine kostenlose Softwareentscheidung. Für einen fairen Vergleich brauchst du deshalb auch die Bedingungen und die Dauer der Belastung. Ein Gerät kann eine kurze Aufgabe schnell erledigen und bei langer Belastung anders reagieren."
+      ],
+      [
+        "Apple Support · If your iPhone or iPad gets too hot or too cold",
+        "https://support.apple.com/en-us/118431"
+      ],
+      [
+        "Warum kann ein kurzer Leistungstest die Geschwindigkeit bei langer Belastung unvollständig beschreiben?",
+        [
+          "Bei anhaltender Wärmeentwicklung können Temperaturgrenzen die Leistung verändern.",
+          "Die Rechenaufgabe hat grundsätzlich keinen Einfluss auf den Gerätebetrieb.",
+          "Ein Spitzenwert ist unter allen Umgebungstemperaturen dauerhaft garantiert."
+        ],
+        "Wärmehaushalt und Regelung wirken über die Belastungsdauer auf die verfügbare Leistung."
+      ],
+      "Dauerleistung hängt auch von Wärmeabfuhr und Betriebsbedingungen ab."
+    ]
+  ],
+  "earth": [
+    [
+      "evaporation",
+      "Die Pfütze verschwindet, ohne zu kochen",
+      [
+        "Unsichtbarer Transport",
+        "Wärme steckt im Zustandswechsel"
+      ],
+      [
+        "Nach dem Regen wird eine Pfütze kleiner, obwohl der Boden nicht heiss genug zum Kochen ist. Verdunstung findet an der Oberfläche auch weit unter dem Siedepunkt statt. Wassermoleküle verlassen die Flüssigkeit und werden Teil der Luft als unsichtbarer Wasserdampf.",
+        "Der Übergang benötigt Energie. Wind kann feuchte Luft über der Oberfläche austauschen; Temperatur und Luftfeuchtigkeit beeinflussen den Vorgang ebenfalls. Deshalb ist «Es war nicht hundert Grad warm» kein Einwand gegen Verdunstung. Kochen und Verdunsten sind unterschiedliche Wege desselben Phasenübergangs. Der Gedanke verbindet eine Pfütze mit dem Wasserkreislauf und erklärt, weshalb nasse Oberflächen beim Trocknen Wärme verlieren können."
+      ],
+      [
+        "USGS · Water Science School",
+        "https://www.usgs.gov/water-science-school/science/evaporation-and-water-cycle"
+      ],
+      [
+        "Warum kann Wäsche bei gewöhnlicher Raumtemperatur trocknen?",
+        [
+          "Verdunstung an der Oberfläche benötigt kein Kochen der gesamten Flüssigkeit.",
+          "Das Wasser muss dafür im gesamten Stoff kurz den Siedepunkt erreichen.",
+          "Trocknen beweist, dass das Wasser in einen anderen chemischen Stoff umgewandelt wurde."
+        ],
+        "Einzelne Moleküle können die Oberfläche verlassen, ohne dass die Flüssigkeit siedet."
+      ],
+      "Wasser kann seinen Ort und Zustand verändern, ohne sichtbar zu kochen."
+    ],
+    [
+      "aquifer",
+      "Unter deinen Füssen liegt nicht unbedingt ein unterirdischer See",
+      [
+        "Wasser zwischen festen Teilen",
+        "Poren sind noch keine Strassen"
+      ],
+      [
+        "Wenn ein Brunnen Wasser fördert, stellst du dir vielleicht eine Höhle voller Wasser vor. Oft steckt Grundwasser jedoch in Poren zwischen Körnern und in Gesteinsklüften. Unterhalb des Grundwasserspiegels sind die verfügbaren Hohlräume mit Wasser gefüllt.",
+        "Wichtig ist nicht nur, wie viel Raum vorhanden ist, sondern wie gut diese Räume verbunden sind. Ein Material kann Wasser enthalten und es trotzdem nur schlecht durchlassen. Porosität und Durchlässigkeit sind daher verschiedene Eigenschaften. Für einen nutzbaren Grundwasserleiter braucht es nicht zwingend einen offenen Fluss unter der Erde. Das unspektakuläre Netz kleiner Wege kann entscheidender sein als eine grosse verborgene Kammer."
+      ],
+      [
+        "USGS · Water Science School",
+        "https://www.usgs.gov/water-science-school/science/aquifers-and-groundwater"
+      ],
+      [
+        "Warum genügt ein hoher Porenanteil allein nicht für starke Wasserförderung?",
+        [
+          "Das Wasser muss auch durch ausreichend verbundene Wege nachfliessen können.",
+          "Jede Pore muss zwingend die Grösse einer Höhle haben.",
+          "Gestein kann grundsätzlich kein Wasser enthalten."
+        ],
+        "Speicherraum und Durchfluss sind unterschiedliche Eigenschaften."
+      ],
+      "Wasser speichern und Wasser weiterleiten sind nicht dieselbe Fähigkeit."
+    ],
+    [
+      "infiltration",
+      "Der gleiche Regen, zwei verschiedene Strassen",
+      [
+        "Wohin geht das Wasser?",
+        "Die Oberfläche verändert den Weg"
+      ],
+      [
+        "Auf einer Wiese kann ein Teil des Regens in den Boden eindringen. Auf einer dicht versiegelten Fläche fliesst mehr Wasser oberflächlich ab, sofern keine andere Aufnahme vorhanden ist. Dieselbe Niederschlagsmenge kann deshalb sehr unterschiedliche Abflussverläufe erzeugen.",
+        "Infiltration hängt unter anderem von Bodenbeschaffenheit, vorheriger Feuchtigkeit und Intensität des Regens ab. Auch eine Grünfläche nimmt nicht unbegrenzt und beliebig schnell Wasser auf. Wenn du eine Überschwemmung verstehen willst, reicht der Blick auf die Regenmenge allein nicht. Frage nach den Wegen, Speichern und Engpässen: Wie schnell kommt Wasser an, wohin kann es und was ist bereits gefüllt?"
+      ],
+      [
+        "USGS · Water Science School",
+        "https://www.usgs.gov/water-science-school/science/infiltration-and-water-cycle"
+      ],
+      [
+        "Warum kann auch unversiegelter Boden bei starkem Regen Oberflächenabfluss erzeugen?",
+        [
+          "Die ankommende Wassermenge kann seine momentane Aufnahmefähigkeit übersteigen.",
+          "Unversiegelter Boden nimmt unter keinen Umständen Wasser auf.",
+          "Versickerung ist grundsätzlich unabhängig vom Zustand des Bodens."
+        ],
+        "Aufnahmefähigkeit ist begrenzt und von Bedingungen abhängig."
+      ],
+      "Nicht nur die Wassermenge, auch Aufnahmegeschwindigkeit und vorhandene Speicher bestimmen den Abfluss."
+    ],
+    [
+      "cloud",
+      "Die sichtbare Wolke besteht nicht aus unsichtbarem Dampf",
+      [
+        "Ein vertrautes Wort führt in die Irre",
+        "Vom Gas zu kleinen Teilchen"
+      ],
+      [
+        "Wasserdampf selbst ist unsichtbar. Was du als Wolke siehst, sind winzige Wassertröpfchen oder Eiskristalle. Sichtbar wird Wasser also gerade, weil es nicht mehr ausschliesslich als gasförmiger Dampf vorliegt.",
+        "Kühlt feuchte Luft ausreichend ab, kann Wasserdampf kondensieren. Kleine Teilchen können dabei als Kondensationskeime dienen. Daraus folgt nicht, dass jede Wolke sofort als Regen fällt: Die Teilchen müssen sich entsprechend entwickeln, und Bewegung in der Luft beeinflusst ihren Weg. Das alltägliche Wort «Dampfwolke» verdeckt damit zwei Zustände. Eine saubere Erklärung trennt das unsichtbare Gas von den sichtbaren Tröpfchen."
+      ],
+      [
+        "USGS · Water Science School",
+        "https://www.usgs.gov/water-science-school/science/condensation-and-water-cycle"
+      ],
+      [
+        "Welche Beschreibung trifft eine gewöhnliche sichtbare Wolke besser?",
+        [
+          "Viele kleine Tröpfchen oder Eiskristalle in der Luft.",
+          "Gasförmiger Wasserdampf allein, der durch grössere Menge sichtbar geworden ist.",
+          "Ausschliesslich schon fertige grosse Regentropfen, die unmittelbar fallen müssen."
+        ],
+        "Sichtbare Wolken bestehen aus kondensierten oder gefrorenen Teilchen, nicht nur aus dem unsichtbaren Gas."
+      ],
+      "Ein sichtbarer Eindruck kann auf einen Zustandswechsel hinweisen."
+    ],
+    [
+      "clearwater",
+      "Klares Wasser ist noch kein geprüfter Inhalt",
+      [
+        "Was das Auge nicht findet",
+        "Filtern ist nicht alles entfernen"
+      ],
+      [
+        "Ein Glas Grundwasser wirkt sauber und durchsichtig. Trotzdem können darin gelöste Stoffe vorkommen. Dass der Boden Partikel zurückhält, bedeutet nicht, dass er jede chemische Verunreinigung beseitigt.",
+        "Die USGS unterscheidet verschiedene natürliche und menschliche Einträge in Grundwasser. Aussehen allein zeigt weder ihre Art noch ihre Konzentration zuverlässig. Dieses Kapitel gibt keine Trinkfreigabe für eine konkrete Quelle. Es erklärt, warum «sieht sauber aus» eine andere Aussage ist als «wurde auf relevante Belastungen geprüft». Eine gute Untersuchung beginnt mit der Frage, welche Stoffe unter den örtlichen Bedingungen überhaupt zu erwarten sind und welche Messung sie erfasst."
+      ],
+      [
+        "USGS · Water Science School",
+        "https://www.usgs.gov/water-science-school/science/contamination-groundwater"
+      ],
+      [
+        "Welche Schlussfolgerung trägt die klare Optik eines Wasserglases?",
+        [
+          "Sie schliesst relevante gelöste Stoffe nicht aus.",
+          "Sie belegt, dass alle gelösten Verunreinigungen bereits herausgefiltert wurden.",
+          "Sie erlaubt ohne weitere Informationen eine Aussage über die Trinkbarkeit."
+        ],
+        "Gelöste Stoffe müssen das Wasser nicht sichtbar trüben."
+      ],
+      "Sichtbare Reinheit und gemessene Wasserqualität sind unterschiedliche Aussagen."
+    ],
+    [
+      "storage",
+      "Weniger pumpen heisst noch nicht: Der Speicher wächst",
+      [
+        "Zwei Pfeile, ein Vorrat",
+        "Die Differenz entscheidet"
+      ],
+      [
+        "Ein Grundwasserspeicher wird durch Zufluss ergänzt und durch natürliche Abflüsse sowie Entnahmen vermindert. Eine Gemeinde reduziert das Pumpen. Das ist eine Veränderung der Entnahme, aber noch kein Beweis dafür, dass der vorhandene Wasservorrat bereits zunimmt.",
+        "Solange insgesamt mehr hinausgeht als hineinkommt, sinkt der Bestand weiter – möglicherweise langsamer. Ein Bestand beschreibt die vorhandene Menge, ein Fluss die Veränderung pro Zeit. Beim Grundwasser kommt hinzu, dass Nachfüllung und Abfluss räumlich und zeitlich unterschiedlich verlaufen können. Frage deshalb getrennt nach der gespeicherten Menge und nach den Zu- und Abflüssen. Eine sinkende Belastungsrate ist nicht automatisch eine Erholung des Bestands."
+      ],
+      [
+        "USGS · Water Science School",
+        "https://www.usgs.gov/water-science-school/science/groundwater-what-groundwater"
+      ],
+      [
+        "Die Entnahme sinkt, bleibt aber zusammen mit anderen Abflüssen grösser als der Zufluss. Was folgt?",
+        [
+          "Der Vorrat nimmt weiterhin ab.",
+          "Der Vorrat muss ab diesem Moment wachsen.",
+          "Der Zufluss muss automatisch auf dieselbe Höhe steigen."
+        ],
+        "Die Bestandsänderung ergibt sich aus der Bilanz sämtlicher Zu- und Abflüsse."
+      ],
+      "Eine verbesserte Rate und ein wachsender Bestand sind verschiedene Dinge."
+    ],
+    [
+      "albedo",
+      "Warum verlorener Schnee weiteres Schmelzen begünstigen kann",
+      [
+        "Die Oberfläche wechselt ihre Farbe",
+        "Eine verstärkende Schleife"
+      ],
+      [
+        "Heller Schnee reflektiert viel einfallende Sonnenstrahlung. Verschwindet er und legt dunklere Flächen frei, kann mehr Strahlung aufgenommen werden. Dadurch wird zusätzliche Erwärmung begünstigt, die wiederum weiteren Schnee verschwinden lassen kann.",
+        "Das Reflexionsvermögen einer Oberfläche heisst Albedo. Die beschriebene Schleife ist eine positive Rückkopplung: Eine anfängliche Veränderung wird verstärkt. «Positiv» bedeutet hier nicht erfreulich. Ebenso wenig erklärt diese eine Schleife das gesamte Klima. Wolken, Jahreszeiten und andere Vorgänge wirken mit. Nützlich ist, den Kreis ausdrücklich zu schliessen: Erwärmung verändert die Oberfläche, und die veränderte Oberfläche beeinflusst weitere Erwärmung."
+      ],
+      [
+        "NASA · Ice-albedo feedback",
+        "https://science.nasa.gov/earth/earth-observatory/sea-ice/"
+      ],
+      [
+        "Was macht den beschriebenen Vorgang zu einer Rückkopplung?",
+        [
+          "Die durch Erwärmung veränderte Oberfläche wirkt auf weitere Erwärmung zurück.",
+          "Schnee und Sonne werden lediglich im selben Satz genannt.",
+          "Jeder dunkle Gegenstand verursacht allein das gesamte Klima."
+        ],
+        "Eine Rückkopplung enthält einen geschlossenen Wirkungsweg, nicht bloss zwei gleichzeitig auftretende Dinge."
+      ],
+      "Suche bei einer Rückkopplung den Weg zurück zur ursprünglichen Veränderung."
+    ],
+    [
+      "acidification",
+      "Das Meer kann saurer werden und trotzdem basisch bleiben",
+      [
+        "Eine Richtung, keine Grenzüberschreitung",
+        "CO₂ verändert auch Chemie"
+      ],
+      [
+        "Ozeanversauerung bedeutet einen Rückgang des pH-Werts. Dafür muss Meerwasser nicht erst den neutralen Bereich unterschreiten. Auch innerhalb des basischen Bereichs beschreibt ein sinkender pH-Wert eine Veränderung in Richtung sauer.",
+        "Wenn das Meer CO₂ aufnimmt, verändern chemische Reaktionen die Verteilung gelöster Kohlenstoffverbindungen. Dabei sinkt unter anderem die Verfügbarkeit von Carbonat, das für viele kalkbildende Organismen wichtig ist. Das Problem ist deshalb nicht nur eine andere Temperatur. Derselbe Stoff kann verschiedene Wirkungswege haben. Eine präzise Beschreibung trennt chemische Veränderung, biologische Folgen und Erwärmung, auch wenn sie miteinander zusammenhängen."
+      ],
+      [
+        "NOAA · What is ocean acidification?",
+        "https://oceanservice.noaa.gov/facts/acidification.html"
+      ],
+      [
+        "Warum widerlegt «Meerwasser ist noch basisch» eine Versauerung nicht?",
+        [
+          "Versauerung bezeichnet die Veränderung zu niedrigerem pH, nicht zwingend einen pH unter sieben.",
+          "Der pH-Wert kann sich in basischem Wasser grundsätzlich nicht ändern.",
+          "Basisch und sauer sind bei jeder Konzentration identische Zustände."
+        ],
+        "Eine Änderungsrichtung und die Einordnung des erreichten Zustands sind verschiedene Aussagen."
+      ],
+      "Unterscheide eine Entwicklung von der Grenze, die sie vielleicht noch nicht überschritten hat."
+    ],
+    [
+      "weather",
+      "Ein kalter Tag in einer wärmeren Welt",
+      [
+        "Der einzelne Würfelwurf",
+        "Die Verteilung dahinter"
+      ],
+      [
+        "Ein ungewöhnlich kalter Tag sagt etwas über das Wetter an diesem Ort. Klima beschreibt dagegen typische Bedingungen und ihre Schwankungen über längere Zeiträume. Eine Veränderung dieser Verteilung verbietet nicht jedes einzelne kalte Ereignis.",
+        "Stell dir einen veränderten Würfel vor: Manche Ergebnisse werden wahrscheinlicher, andere bleiben möglich. Der Vergleich ist begrenzt, macht aber den Unterschied zwischen einem Ereignis und seinen längerfristigen Wahrscheinlichkeiten deutlich. Ebenso wenig beweist ein einzelner heisser Nachmittag für sich einen globalen Trend. Für solche Aussagen braucht es passende lange Messreihen und räumliche Einordnung. Die Reichweite der Behauptung bestimmt, welche Daten nötig sind."
+      ],
+      [
+        "NASA · Weather and climate",
+        "https://science.nasa.gov/climate-change/faq/whats-the-difference-between-weather-and-climate/"
+      ],
+      [
+        "Welche Daten passen am besten zur Frage nach einer längerfristigen regionalen Erwärmung?",
+        [
+          "Vergleichbare Temperaturmessungen über viele Jahre in der betrachteten Region.",
+          "Ausschliesslich der kälteste Nachmittag dieser Woche.",
+          "Die Erinnerung an den letzten Ferienort."
+        ],
+        "Eine langfristige regionale Aussage braucht entsprechende Zeitreihen und räumliche Abdeckung."
+      ],
+      "Ein Einzelereignis beschreibt nicht allein die Verteilung, aus der es stammt."
+    ]
+  ],
+  "digital": [
+    [
+      "dns",
+      "Der Name ist nicht das Haus",
+      [
+        "Eine Adresse hinter der Adresse",
+        "Zwei getrennte Fehlerquellen"
+      ],
+      [
+        "Du tippst einen Domainnamen ein. Bevor der Browser den gewünschten Server erreichen kann, benötigt er passende Adressinformationen. DNS ordnet Namen unter anderem IP-Adressen zu. Es liefert damit einen wichtigen Wegweiser, nicht den eigentlichen Inhalt der Website.",
+        "Deshalb kann die Namensauflösung scheitern, obwohl ein Server läuft. Umgekehrt beweist eine erfolgreiche DNS-Antwort nicht, dass die Website gesund ist oder ihr Inhalt vertrauenswürdig wäre. Die Trennung hilft bei Störungen: Wurde der Name aufgelöst? Kam eine Verbindung zustande? Antwortete die Anwendung? Ein sichtbarer Ladefehler kann auf verschiedenen Stufen entstehen."
+      ],
+      [
+        "Cloudflare · Learning Center",
+        "https://www.cloudflare.com/learning/dns/what-is-dns/"
+      ],
+      [
+        "DNS liefert eine passende Adresse, aber der Server antwortet nicht. Was folgt?",
+        [
+          "Erfolgreiche Namensauflösung garantiert keine funktionierende Anwendung.",
+          "Erfolgreiche DNS-Auflösung bestätigt bereits den gesunden Zustand des Webservers.",
+          "Eine passende IP-Adresse bestätigt zugleich die Vertrauenswürdigkeit des Inhalts."
+        ],
+        "Adresse finden und Inhalt liefern sind verschiedene Aufgaben."
+      ],
+      "Trenne Namensauflösung, Verbindung und Anwendung, wenn du einen Ladefehler verstehst."
+    ],
+    [
+      "cache",
+      "Warum du noch das alte Logo siehst",
+      [
+        "Eine schnelle Kopie",
+        "Aktualität ist eine zusätzliche Bedingung"
+      ],
+      [
+        "Die Website wurde geändert, doch dein Browser zeigt das alte Logo. Vielleicht stammt es aus einem Cache: einer gespeicherten Kopie, die einen erneuten Abruf oder eine erneute Berechnung spart. Das beschleunigt häufig wiederkehrende Zugriffe.",
+        "Die Kopie braucht Regeln dafür, wann sie noch verwendet werden darf. Ohne passende Aktualisierung kann die Geschwindigkeit mit veraltetem Inhalt bezahlt werden. Das ist ein allgemeiner Zielkonflikt: nah und schnell verfügbar gegen stets neu überprüft. Aus einem alten Logo folgt deshalb nicht sofort, dass die Änderung nie gespeichert wurde. Zuerst musst du herausfinden, welche Kopie du tatsächlich ansiehst."
+      ],
+      [
+        "Cloudflare · Learning Center",
+        "https://www.cloudflare.com/learning/cdn/what-is-caching/"
+      ],
+      [
+        "Welche Erklärung ist möglich, wenn zwei Geräte unterschiedliche Versionen eines Logos zeigen?",
+        [
+          "Eines verwendet noch eine ältere gespeicherte Kopie.",
+          "Ein Bild kann grundsätzlich nicht zwischengespeichert werden.",
+          "Die Website muss auf beiden Geräten zwingend denselben lokalen Speicher benutzen."
+        ],
+        "Caches können sich zwischen Geräten und Abrufzeitpunkten unterscheiden."
+      ],
+      "Eine angezeigte Kopie muss nicht dem jüngsten Stand der Quelle entsprechen."
+    ],
+    [
+      "factors",
+      "Zwei Passwörter sind noch keine zwei Faktoren",
+      [
+        "Doppelt gefragt",
+        "Die Art des Nachweises zählt"
+      ],
+      [
+        "Ein Login verlangt ein Passwort und eine geheime Antwort, die du auswendig kennst. Es wurden zwei Dinge gefragt, aber beide gehören zur Kategorie Wissen. Zwei-Faktor-Authentifizierung kombiniert unterschiedliche Arten von Nachweisen, etwa Wissen und Besitz.",
+        "Die Trennung soll verhindern, dass ein gestohlenes Geheimnis allein genügt. Welche Methode geeignet ist, hängt auch von ihrer konkreten Umsetzung und dem Wiederherstellungsweg ab. Eine zusätzliche Abfrage macht ein System nicht automatisch gegen jede Täuschung sicher. Frage deshalb nicht nur «Wie viele Schritte?», sondern «Welche unabhängigen Nachweise werden verlangt, und was passiert, wenn einer verloren geht?»"
+      ],
+      [
+        "Cloudflare · Learning Center",
+        "https://www.cloudflare.com/learning/security/what-is-two-factor-authentication/"
+      ],
+      [
+        "Warum sind Passwort und auswendig gelernte Sicherheitsantwort nicht automatisch zwei Faktoren?",
+        [
+          "Beide sind Nachweise aus derselben Kategorie Wissen.",
+          "Eine zweite Wissensfrage ist allein durch die zweite Bildschirmseite ein anderer Faktor.",
+          "Entscheidend ist nur, ob beide Eingaben unterschiedlich lang sind."
+        ],
+        "Mehrere Schritte sind nicht dasselbe wie unterschiedliche Faktorkategorien."
+      ],
+      "Zähle bei Anmeldung nicht nur Schritte, sondern unterscheide die Arten der Nachweise."
+    ],
+    [
+      "authorization",
+      "Eingeloggt heisst nicht: Du darfst alles",
+      [
+        "Der Ausweis an der Tür",
+        "Die Erlaubnis für den Raum"
+      ],
+      [
+        "Ein Mitarbeiter meldet sich korrekt am Firmensystem an. Trotzdem darf er nicht jede Personalakte öffnen. Authentifizierung prüft die behauptete Identität; Autorisierung entscheidet, welche Handlungen dieser Identität erlaubt sind.",
+        "Diese Trennung verhindert einen häufigen Denkfehler: Ein technisch gültiger Login ist keine pauschale Berechtigung. Die Anwendung muss auch beim Abruf einzelner Daten prüfen, ob die konkrete Aktion zulässig ist. Ein ausgeblendeter Knopf allein ersetzt diese Prüfung nicht, denn die Anfrage kann auf anderem Weg entstehen. Ein gutes System verbindet Identitätsprüfung mit passenden, möglichst begrenzten Rechten."
+      ],
+      [
+        "Cloudflare · Learning Center",
+        "https://www.cloudflare.com/learning/access-management/what-is-authentication/"
+      ],
+      [
+        "Was muss nach einem gültigen Login vor dem Öffnen einer fremden Personalakte zusätzlich geprüft werden?",
+        [
+          "Ob dieser Benutzer für genau diesen Zugriff berechtigt ist.",
+          "Nur, ob der Benutzer sich gerade erfolgreich angemeldet hat.",
+          "Nur, ob die Personalakte auf dem gleichen Server liegt."
+        ],
+        "Identität und Erlaubnis sind unterschiedliche Prüfungen."
+      ],
+      "Eine bestätigte Identität braucht weiterhin begrenzte, passende Zugriffsrechte."
+    ],
+    [
+      "e2ee",
+      "Verschlüsselt bis wohin?",
+      [
+        "Der Zwischenstopp zählt",
+        "Die Endpunkte bleiben wichtig"
+      ],
+      [
+        "Eine Nachricht kann auf dem Transportweg verschlüsselt sein und beim Dienst dennoch im Klartext verarbeitet werden. Ende-zu-Ende-Verschlüsselung zielt darauf, dass nur die vorgesehenen Endpunkte den Inhalt entschlüsseln können, nicht die zwischengeschalteten Server.",
+        "Das beantwortet aber nicht jede Datenschutzfrage. Metadaten können weiterhin sichtbar sein; ein Empfänger kann Inhalte weitergeben, und ein entsperrtes Endgerät kann sie anzeigen. Die sinnvolle Frage lautet deshalb: Gegen welchen Zugriff schützt welche Schicht? Eine starke Transport- oder Inhaltsverschlüsselung bleibt wertvoll, auch wenn sie andere Wege zum Inhalt nicht beseitigt."
+      ],
+      [
+        "Cloudflare · Learning Center",
+        "https://www.cloudflare.com/learning/privacy/what-is-end-to-end-encryption/"
+      ],
+      [
+        "Welche Handlung verhindert Ende-zu-Ende-Verschlüsselung allein nicht?",
+        [
+          "Dass der vorgesehene Empfänger den entschlüsselten Inhalt weitergibt.",
+          "Dass Zwischenserver den verschlüsselten Nachrichteninhalt einfach wie Klartext lesen.",
+          "Dass überhaupt verschlüsselte Daten übertragen werden."
+        ],
+        "Die vorgesehenen Endpunkte müssen den Inhalt lesen können; deren spätere Handlungen sind eine andere Schutzfrage."
+      ],
+      "Beurteile Verschlüsselung nach ihren Endpunkten und dem konkret geschützten Weg."
+    ],
+    [
+      "cookies",
+      "Warum dich eine Website wiedererkennt",
+      [
+        "Die Anfrage hat kein Gedächtnis",
+        "Ein kleiner Wert verbindet Besuche"
+      ],
+      [
+        "Du öffnest eine weitere Seite im Shop, und dein Warenkorb bleibt erhalten. HTTP-Anfragen sind für sich nicht automatisch eine fortlaufende persönliche Unterhaltung. Cookies können einen kleinen Wert speichern und bei passenden späteren Anfragen mitsenden.",
+        "Der Wert kann beispielsweise eine Sitzung zuordnen; nicht zwingend muss der gesamte Warenkorb im Cookie stehen. Derselbe Mechanismus kann auch Einstellungen oder Wiedererkennung unterstützen. Darum ist «Cookie» weder gleichbedeutend mit Schadsoftware noch automatisch harmlos. Entscheidend sind Inhalt, Gültigkeit, Zugriff und Zweck. Technischer Mechanismus und konkrete Verwendung sollten getrennt beurteilt werden."
+      ],
+      [
+        "MDN · Using HTTP cookies",
+        "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies"
+      ],
+      [
+        "Was kann ein Sitzungscookie leisten, ohne den ganzen Warenkorb zu enthalten?",
+        [
+          "Eine spätere Anfrage derselben serverseitig gespeicherten Sitzung zuordnen.",
+          "Sämtliche Dateien auf dem Gerät ohne weitere Berechtigung lesen.",
+          "Jede Website weltweit automatisch derselben Sitzung zuordnen."
+        ],
+        "Eine Kennung kann auf serverseitigen Zustand verweisen; sie muss diesen Zustand nicht selbst vollständig speichern."
+      ],
+      "Ein kleiner Identifikator kann mehrere ansonsten getrennte Anfragen verbinden."
+    ],
+    [
+      "backup",
+      "Synchronisiert gelöscht ist immer noch gelöscht",
+      [
+        "Bequem auf allen Geräten",
+        "Ein anderer Zeitpunkt ist der Unterschied"
+      ],
+      [
+        "Du löschst versehentlich eine Datei. Kurz darauf ist sie auch auf dem zweiten Gerät weg. Die Synchronisation hat möglicherweise genau getan, was sie sollte: den aktuellen Zustand aufeinander abgestimmt. Zwei synchronisierte Ansichten sind nicht automatisch zwei unabhängige Sicherungen.",
+        "Ein Backup soll eine Wiederherstellung ermöglichen, etwa auf einen früheren Zustand. Manche Synchronisationsdienste besitzen zusätzlich Versionen oder Papierkörbe, aber deren Umfang und Aufbewahrung musst du kennen. Die nützliche Prüfung ist konkret: Kann ich eine gelöschte Datei tatsächlich wiederherstellen? Die Existenz eines zweiten Geräts oder eines Wolkensymbols beantwortet diese Frage noch nicht."
+      ],
+      [
+        "Apple Support · Backup methods for iPhone or iPad",
+        "https://support.apple.com/en-us/108770"
+      ],
+      [
+        "Welche Eigenschaft brauchst du gegen eine versehentlich synchronisierte Löschung?",
+        [
+          "Eine verfügbare wiederherstellbare frühere Version oder unabhängige Sicherung.",
+          "Nur eine noch schnellere Übertragung derselben Löschung.",
+          "Ein zweites Gerät, das ausschliesslich denselben aktuellen Zustand spiegelt."
+        ],
+        "Wiederherstellung braucht erhaltenen älteren Zustand, nicht bloss weitere aktuelle Kopien."
+      ],
+      "Synchronisation verteilt Änderungen; eine Sicherung muss Wiederherstellung ermöglichen."
+    ],
+    [
+      "packets",
+      "Das Foto reist in vielen kleinen Stücken",
+      [
+        "Keine reservierte Leitung für ein Bild",
+        "Teilen braucht Ordnung"
+      ],
+      [
+        "Ein Foto wird im Netzwerk nicht als physischer Gegenstand transportiert. Seine Daten werden in Pakete aufgeteilt. Neben Nutzdaten enthalten diese Informationen, die bei der Übertragung und Zuordnung helfen. Viele Datenströme können dadurch dieselbe Infrastruktur gemeinsam nutzen.",
+        "Aufteilung erzeugt eigene Aufgaben: Pakete können fehlen oder anders ankommen als erwartet. Je nach Protokoll werden Reihenfolge, erneute Übertragung und Vollständigkeit auf passende Weise behandelt. Nicht jedes einzelne Netzwerkprotokoll garantiert alles davon. Das erklärt, weshalb «Es wurden Daten gesendet» noch nicht dieselbe Aussage ist wie «Die Anwendung hat den vollständigen Inhalt erhalten»."
+      ],
+      [
+        "Cloudflare · Learning Center",
+        "https://www.cloudflare.com/learning/network-layer/what-is-a-packet/"
+      ],
+      [
+        "Welche zusätzliche Aufgabe entsteht durch die Aufteilung eines Inhalts in Pakete?",
+        [
+          "Die Teile passend zuzuordnen und je nach Anwendung mit fehlenden Teilen umzugehen.",
+          "Jedes Paket ohne Adressinformationen an jeden Menschen zu schicken.",
+          "Den Inhalt in jedem Fall als ein einziges unteilbares Signal zu transportieren."
+        ],
+        "Die Aufteilung verlangt Organisation; die konkreten Garantien hängen vom Protokoll ab."
+      ],
+      "Datenversand und vollständige nutzbare Ankunft sind verschiedene Stufen."
+    ],
+    [
+      "latency",
+      "Breiteres Internet macht nicht jeden Klick schneller",
+      [
+        "Viel pro Sekunde",
+        "Warten auf die erste Antwort"
+      ],
+      [
+        "Eine Verbindung kann grosse Dateien schnell übertragen und sich bei vielen kleinen Anfragen trotzdem träge anfühlen. Bandbreite beschreibt eine Übertragungskapazität. Latenz beschreibt die Verzögerung, bis ein Signal beziehungsweise eine Antwort den nötigen Weg zurückgelegt hat.",
+        "Wenn eine Anwendung auf mehrere Antworten nacheinander warten muss, summieren sich Wartezeiten. Mehr Kapazität beseitigt diese Abhängigkeit nicht automatisch. Ein Paketdienst mit grösseren Lastwagen ist deshalb nicht zwingend schneller beim ersten Brief: Das Bild trennt Menge und Reisezeit, auch wenn Netzwerke komplexer sind. Für Leistung zählt, ob deine Aufgabe viel auf einmal überträgt oder viele aufeinander wartende Schritte braucht."
+      ],
+      [
+        "Cloudflare · Learning Center",
+        "https://www.cloudflare.com/learning/performance/glossary/what-is-latency/"
+      ],
+      [
+        "Eine App wartet auf zehn kleine Antworten nacheinander. Welche Eigenschaft kann trotz hoher Bandbreite stark bremsen?",
+        [
+          "Die Verzögerung jeder einzelnen Hin-und-zurück-Kommunikation.",
+          "Nur die maximale gleichzeitig übertragbare Datenmenge.",
+          "Nur die Grösse der gesamten App auf dem Gerät."
+        ],
+        "Abhängige Anfragen können ihre Latenzen addieren, auch bei kleinen Datenmengen."
+      ],
+      "Übertragungskapazität und Reaktionszeit lösen unterschiedliche Leistungsprobleme."
+    ]
+  ],
+  "think": [
+    [
+      "strawman",
+      "Aus «erst prüfen» wird «du willst nichts verändern»",
+      [
+        "Ein Einwand wird ausgetauscht",
+        "Am wirklichen Streitpunkt bleiben"
+      ],
+      [
+        "Eine Kollegin möchte vor dem Start einer neuen Software einen Datenschutzpunkt klären. Jemand antwortet, sie sei eben grundsätzlich gegen Fortschritt. Die zweite Aussage lässt sich leicht angreifen, war aber nicht ihr Argument.",
+        "Ein Strohmann ersetzt die tatsächliche Position durch eine schwächere oder verzerrte Version. In unserem Fall geht es um eine konkrete Bedingung vor dem Start, nicht um ein allgemeines Verbot neuer Technik. Formuliere den stärksten sachlichen Einwand erst so, dass die andere Person ihn wiedererkennt. Dann kannst du ihm begründet widersprechen. Genauigkeit verlangt keine Zustimmung; sie sorgt dafür, dass die Diskussion überhaupt dieselbe Frage behandelt."
+      ],
+      [
+        "OpenStax · Introduction to Philosophy",
+        "https://openstax.org/books/introduction-philosophy/pages/5-5-informal-fallacies"
+      ],
+      [
+        "Welche Antwort trifft den ursprünglichen Einwand?",
+        [
+          "Welche konkrete Prüfung fehlt, und wie können wir sie vor dem Start erledigen?",
+          "Warum hasst du jede neue Technologie?",
+          "Dann dürfen wir offenbar niemals etwas modernisieren."
+        ],
+        "Nur die erste Antwort behandelt die konkret genannte Bedingung statt eine übertriebene Ersatzposition."
+      ],
+      "Widersprich dem tatsächlichen Argument, nicht einer bequemeren Karikatur."
+    ],
+    [
+      "person",
+      "Ein unsympathischer Mensch kann einen richtigen Einwand haben",
+      [
+        "Person und Behauptung",
+        "Welche Kritik ist relevant?"
+      ],
+      [
+        "Ein Kollege weist auf einen Fehler in einer Rechnung hin. Du findest ihn arrogant. Das kann für eure Zusammenarbeit wichtig sein, zeigt aber nicht, ob die Rechnung stimmt. Der Fehler lässt sich am Rechenweg unabhängig prüfen.",
+        "Ein Angriff auf die Person wird zum Fehlschluss, wenn er die sachliche Prüfung unzulässig ersetzt. Das heisst nicht, dass Herkunft und Glaubwürdigkeit niemals zählen: Bei einer nicht unabhängig überprüfbaren Zeugenaussage sind sie relevant. Die präzise Frage lautet, welche Verbindung die persönliche Information zur konkreten Behauptung hat. Sympathie allein korrigiert keine falsche Zahl und widerlegt keine richtige."
+      ],
+      [
+        "OpenStax · Introduction to Philosophy",
+        "https://openstax.org/books/introduction-philosophy/pages/5-5-informal-fallacies"
+      ],
+      [
+        "Welche Reaktion prüft den behaupteten Rechnungsfehler direkt?",
+        [
+          "Die fragliche Annahme und den Rechenweg nachvollziehen.",
+          "Den beruflichen Rang des Kollegen als Ersatz für eine Prüfung verwenden.",
+          "Die Einschätzung der beliebtesten Person im Team übernehmen."
+        ],
+        "Die Richtigkeit der überprüfbaren Rechnung hängt nicht von seiner Beliebtheit ab."
+      ],
+      "Frage, ob eine Kritik die Behauptung betrifft oder nur ihre Überbringerin."
+    ],
+    [
+      "dilemma",
+      "Zwei angebotene Wege sind nicht immer alle Wege",
+      [
+        "Die enge Auswahl",
+        "Eine dritte Option muss konkret sein"
+      ],
+      [
+        "Ein Projektleiter sagt: «Entweder starten wir morgen ungeprüft, oder wir geben das Projekt auf.» Vielleicht gibt es einen kleineren Pilotversuch, einen späteren Start oder einen begrenzten Funktionsumfang. Die angebotene Zweiteilung hat diese Möglichkeiten noch nicht ausgeschlossen.",
+        "Ein falsches Dilemma behandelt wenige Optionen als vollständig, ohne das zu begründen. Der Gegencheck ist keine beliebige Wunschliste. Eine dritte Option muss unter den wirklichen Bedingungen machbar sein. Falls morgen eine unverrückbare Frist endet, könnten manche Alternativen tatsächlich entfallen. Prüfe also sowohl die Vollständigkeit der Auswahl als auch ihre realen Grenzen."
+      ],
+      [
+        "OpenStax · Introduction to Philosophy",
+        "https://openstax.org/books/introduction-philosophy/pages/5-5-informal-fallacies"
+      ],
+      [
+        "Was schwächt die behauptete Wahl zwischen sofortigem Vollstart und vollständiger Aufgabe am stärksten?",
+        [
+          "Ein konkret machbarer Pilotstart, der die notwendigen Bedingungen erfüllt.",
+          "Die blosse Hoffnung, dass es irgendwie weitere Möglichkeiten gibt.",
+          "Eine dritte Option, die die unverrückbare Frist sicher verletzt."
+        ],
+        "Eine umsetzbare Alternative widerlegt die behauptete Vollständigkeit der Zweiteilung."
+      ],
+      "Prüfe, ob angebotene Alternativen wirklich alle machbaren Wege abdecken."
+    ],
+    [
+      "valid",
+      "Eine saubere Logik kann mit falschen Annahmen arbeiten",
+      [
+        "Der Schluss passt",
+        "Die Ausgangspunkte brauchen eigene Prüfung"
+      ],
+      [
+        "Angenommen: Alle Fahrzeuge in dieser Halle sind elektrisch. Das rote Auto steht in dieser Halle. Dann folgt logisch, dass es elektrisch ist. Aber was, wenn die erste Annahme falsch ist?",
+        "Deduktive Gültigkeit beschreibt, ob die Schlussfolgerung bei wahren Prämissen notwendig folgt. Sie garantiert nicht von selbst, dass die Prämissen in der Welt zutreffen. Ein überzeugend aufgebautes Argument braucht deshalb zwei Prüfungen: Stimmt die Verbindung, und stimmen die Ausgangspunkte? In Diskussionen wird oft nur eine davon durchgeführt. Weder elegante Form noch wahre Einzelinformationen reichen jeweils allein für jeden behaupteten Schluss."
+      ],
+      [
+        "OpenStax · Introduction to Philosophy",
+        "https://openstax.org/books/introduction-philosophy/pages/5-3-arguments"
+      ],
+      [
+        "Was musst du zusätzlich zur logischen Gültigkeit prüfen?",
+        [
+          "Ob die verwendeten Ausgangsannahmen tatsächlich zutreffen.",
+          "Ob die Schlussfolgerung zu möglichst vielen bisherigen Überzeugungen passt.",
+          "Ob der Autor bereits bei einer früheren anderen Frage recht hatte."
+        ],
+        "Gültigkeit ist eine Eigenschaft der Schlussbeziehung; wahre Prämissen sind eine zusätzliche Anforderung."
+      ],
+      "Prüfe die Logik eines Arguments und die Wahrheit seiner Prämissen getrennt."
+    ],
+    [
+      "conditional",
+      "Der nasse Boden beweist den Regen nicht",
+      [
+        "Eine Richtung ist sicher",
+        "Der Rückweg braucht mehr"
+      ],
+      [
+        "Wenn es auf einen ungeschützten Hof regnet, wird der Boden nass. Du findest den Hof nass und schliesst: Es hat geregnet. Vielleicht wurde er aber gerade gereinigt. Die ursprüngliche Wenn-dann-Aussage hat diese andere Ursache nicht ausgeschlossen.",
+        "Aus «Wenn A, dann B» folgt nicht automatisch «Wenn B, dann A». Ein Ergebnis kann mehrere Ursachen haben. Das gilt bei Alarmen, technischen Fehlern und Alltagserklärungen. Suche deshalb nach zusätzlichen Hinweisen, die zwischen den möglichen Ursachen unterscheiden. Die passende Frage ist nicht nur, ob deine Erklärung das Ergebnis erzeugen könnte, sondern ob konkurrierende Erklärungen es ebenfalls erwarten lassen."
+      ],
+      [
+        "OpenStax · Types of Inferences",
+        "https://openstax.org/books/introduction-philosophy/pages/5-4-types-of-inferences"
+      ],
+      [
+        "Ein Gerät schaltet bei Überhitzung ab. Es ist aus. Was folgt allein daraus?",
+        [
+          "Überhitzung ist eine Möglichkeit, aber andere Abschaltursachen sind noch offen.",
+          "Überhitzung ist bereits eindeutig bewiesen.",
+          "Überhitzung ist damit sicher ausgeschlossen."
+        ],
+        "Das beobachtete Ergebnis beweist nicht eindeutig die Ursache einer Wenn-dann-Regel."
+      ],
+      "Eine passende Erklärung ist noch nicht die einzig mögliche Erklärung."
+    ],
+    [
+      "induction",
+      "Hundert pünktliche Lieferungen sind keine Garantie",
+      [
+        "Gute Erfahrung zählt",
+        "Aber wie weit trägt sie?"
+      ],
+      [
+        "Ein Lieferant war bisher immer pünktlich. Du erwartest deshalb auch morgen eine pünktliche Lieferung. Das ist ein vernünftiger Rückgriff auf Erfahrung, aber keine logische Garantie. Morgen können andere Bedingungen gelten.",
+        "Induktive Schlüsse verallgemeinern aus Beobachtungen und sind unterschiedlich stark. Die Zahl der Fälle zählt ebenso wie ihre Vielfalt und Vergleichbarkeit. Hundert Lieferungen auf derselben kurzen Strecke sagen weniger über eine neue internationale Route. Du musst deshalb nicht jede Erfahrung verwerfen. Passe nur deine Sicherheit an die Reichweite der Belege an und benenne, welche Veränderung die bisherige Regel unzuverlässiger machen könnte."
+      ],
+      [
+        "OpenStax · Introduction to Philosophy",
+        "https://openstax.org/books/introduction-philosophy/pages/5-4-types-of-inferences"
+      ],
+      [
+        "Welche Veränderung schwächt die Übertragung der bisherigen Erfahrung besonders?",
+        [
+          "Die nächste Lieferung nutzt eine neue Route mit anderen Bedingungen.",
+          "Der Lieferant verwendet dieselbe Verpackungsfarbe.",
+          "Die früheren Lieferungen bleiben weiterhin pünktlich gewesen."
+        ],
+        "Eine neue relevante Bedingung begrenzt die Vergleichbarkeit der bisherigen Beobachtungen."
+      ],
+      "Erfahrung stützt Erwartungen, solange ihre Bedingungen hinreichend vergleichbar bleiben."
+    ],
+    [
+      "bestexplanation",
+      "Die beste Erklärung ist nicht die erste passende",
+      [
+        "Drei mögliche Ursachen",
+        "Ein Hinweis, der sie trennt"
+      ],
+      [
+        "Eine Lampe leuchtet nicht. Leuchtmittel kaputt, kein Strom oder Schalterproblem: Alle drei erklären zunächst dieselbe Beobachtung. Einfach die erste Idee zu wählen ist keine besonders starke Diagnose.",
+        "Ein Schluss auf die beste Erklärung vergleicht mögliche Ursachen anhand der Belege. Ein weiterer funktionierender Verbraucher an derselben Steckdose könnte die Möglichkeiten eingrenzen; welche Prüfung sicher und sinnvoll ist, hängt vom Gerät ab. Hier geht es um das Denkprinzip: Suche Information, die unter den konkurrierenden Erklärungen unterschiedlich zu erwarten wäre. Noch eine Wiederholung derselben Beobachtung liefert oft weniger als ein gezielt unterscheidender Hinweis."
+      ],
+      [
+        "OpenStax · Introduction to Philosophy",
+        "https://openstax.org/books/introduction-philosophy/pages/5-4-types-of-inferences"
+      ],
+      [
+        "Welche zusätzliche Information ist besonders wertvoll?",
+        [
+          "Eine Beobachtung, die eine Erklärung erwartet, eine andere aber nicht.",
+          "Eine vierte Formulierung von «Die Lampe ist aus».",
+          "Die Reihenfolge, in der dir die Erklärungen eingefallen sind."
+        ],
+        "Unterscheidende Belege verändern den Vergleich der Hypothesen; blosse Wiederholung muss das nicht tun."
+      ],
+      "Suche bei mehreren Erklärungen nach einem Hinweis, der sie auseinanderhält."
+    ]
+  ]
+}

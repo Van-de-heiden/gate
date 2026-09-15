@@ -22,7 +22,7 @@ final class LearningChoiceFlowTests: XCTestCase {
         XCTAssertNil(resumed.choice)
         XCTAssertEqual(session.topicID, offer.topicIDs[1])
         XCTAssertEqual(session.grantMinutes, 30)
-        XCTAssertEqual(session.lessonIDs, catalog.chapters(in: offer.topicIDs[1]).map(\.id))
+        XCTAssertEqual(session.lessonIDs, [try XCTUnwrap(offer.chapterIDs?[offer.topicIDs[1]])])
         resumed.suspend()
         let cold = LearningStore(fileURL: file, suppliedCatalog: catalog)
         cold.prepare(request: request, minutes: 5, consumed: 30, failures: 0)

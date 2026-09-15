@@ -109,7 +109,7 @@ final class TopicOfferTests: XCTestCase {
         XCTAssertTrue(progress.hasCompleted(lesson))
     }
 
-    func testEveryChapterNeedsAnAttributedPublishedImage() throws {
+    func testTextOnlyChaptersAreValidInExpandedCatalog() throws {
         let catalog = try LearningCatalog.packageCatalog()
         var data = try JSONSerialization.jsonObject(with: JSONEncoder().encode(catalog)) as! [String: Any]
         var lessons = data["lessons"] as! [[String: Any]]
@@ -117,6 +117,6 @@ final class TopicOfferTests: XCTestCase {
         for index in cards.indices { cards[index].removeValue(forKey: "media") }
         lessons[0]["cards"] = cards; data["lessons"] = lessons
         let missing = try JSONDecoder().decode(LearningCatalog.self, from: JSONSerialization.data(withJSONObject: data))
-        XCTAssertThrowsError(try missing.validate())
+        XCTAssertNoThrow(try missing.validate())
     }
 }

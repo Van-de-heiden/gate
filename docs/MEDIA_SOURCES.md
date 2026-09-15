@@ -1,6 +1,6 @@
-# Medien und Originalquellen · Gate 0.6
+# Medien und Originalquellen · Gate 0.7
 
-Jedes aktive Kapitel enthält eine veröffentlichte Abbildung und eine konkrete Beobachtungsaufgabe. Keine generierten Lernbilder. Recherche: 14. September 2026. Abbildungen bleiben unbeschnitten; deutsche Bildbeschreibungen, Quellen, Urheber und Lizenzen sind in der App erreichbar. HTTPS-Abruf beim ersten Öffnen, danach lokaler Cache. Bei fehlendem Netz steht eine Bildbeschreibung bereit; die Quelle kann später erneut geladen werden.
+Abbildungen werden gezielt eingesetzt; eine Pflichtabbildung pro Kapitel gibt es nicht. Die 15 bisherigen veröffentlichten Abbildungen bleiben erhalten. Keine generierten Lernbilder. Recherche: 15. September 2026. Abbildungen bleiben unbeschnitten; deutsche Bildbeschreibungen, Quellen, Urheber und Lizenzen sind in der App erreichbar. HTTPS-Abruf beim ersten Öffnen, danach lokaler Cache. Bei fehlendem Netz steht eine Bildbeschreibung bereit; die Quelle kann später erneut geladen werden.
 
 | Kapitel | Abbildung / Quelle | Urheber | Nutzung | Fachquelle |
 | --- | --- | --- | --- | --- |

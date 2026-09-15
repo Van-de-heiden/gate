@@ -125,7 +125,7 @@ final class LearningRefreshTests: XCTestCase {
 
     func testNewQuestionsDoNotInheritMasteryOfReplacedQuestionIDs() throws {
         let catalog = try LearningCatalog.packageCatalog()
-        XCTAssertTrue(catalog.questions.allSatisfy { $0.id.contains(".v6.q") })
+        XCTAssertTrue(catalog.questions.allSatisfy { $0.id.contains(".v6.q") || $0.id.contains(".v7.q") })
         XCTAssertFalse(catalog.questions.contains { $0.kind == .numeric })
         XCTAssertTrue(catalog.lessons.flatMap(\.cards).allSatisfy { $0.image == nil })
         let media = catalog.lessons.flatMap(\.cards).compactMap(\.media)

@@ -1,4 +1,11 @@
-# Gate
+# Gate 0.7
+
+100 eigenständige Kapitel in zehn Bereichen. Für eine neue Lernrunde werden zwei konkrete Kapitel aus unterschiedlichen Bereichen angeboten. Pro Runde wird eines gelernt. Bereits abgeschlossene Kapitel werden erst nach Ausschöpfen des Katalogs erneut vorgeschlagen, dann sichtbar als Wiederholung. Falls nur ein Bereich neue Inhalte hat, erscheint ein neuer Vorschlag statt eines bekannten zweiten.
+
+Die 85 ergänzten Kapitel beginnen mit einem konkreten Fall und erklären einen Mechanismus samt Grenzen. Sie ergänzen die 15 bisherigen Kapitel, deren Fragen und Lernfortschritt erhalten bleiben. 117 bewertete Aufgaben insgesamt; keine feste Fragenzahl oder erzwungene Lesedauer. Abbildungen sind optional, die 15 recherchierten Originalabbildungen bleiben erhalten.
+
+[Alle Kapitel und Fachquellen](docs/CURRICULUM_V7.md) · [Mediennachweise](docs/MEDIA_SOURCES.md)
+
 
 **Less distraction. More understanding. Free to use, modify and share.**
 

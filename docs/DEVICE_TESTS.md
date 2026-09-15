@@ -1,3 +1,12 @@
+## Gate 0.7 — zusätzlich auf dem Gerät prüfen
+
+- Zwei konkrete Kapitel auswählen, abbrechen, App neu öffnen: dieselben Vorschläge und derselbe Lesestand.
+- Ein Kapitel bestehen und die nächste Freischaltung anfordern: ein neues Kapitel, keine gesamte Zehn-Kapitel-Reihe.
+- Falsch beantworten und erneut versuchen: die ursprüngliche Lernrunde bleibt gebunden.
+- Textkapitel ohne Bild und bisheriges Bildkapitel jeweils bis zur Freigabe durchlaufen.
+- Nach vollständig abgeschlossenem Katalog steht vor der Auswahl ausdrücklich „Wiederholung“.
+- Upgrade mit begonnener 0.6-Runde: Antworten, Leseposition und Notizen bleiben bei unveränderten Fragen erhalten.
+
 # Acceptance additions for learning refresh v5
 
 - Try one foundation and one complete case: scene → explanation/media → graded decision → remaining questions → result. Confirm there is no timer gate, repeated inline question or grant-duration question quota.

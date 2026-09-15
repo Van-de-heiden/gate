@@ -1,3 +1,5 @@
+> Stand 0.7: [100 Kapitel und Quellen](CURRICULUM_V7.md). Eine neue Runde umfasst ein Kapitel; Abbildungen sind optional. Die nachfolgende Dokumentation der Ausgabe 0.6 bleibt als Historie erhalten.
+
 # Redaktionelle Auswahl · Ausgabe 6
 
 15 von 144 bisherigen Kapitel-IDs werden für vollständig neu geschriebene Kapitel weiterverwendet. 129 sind nicht mehr aktiv. Die folgende Übersicht unterscheidet Zusammenfassungen von bewusst zurückgestellten Themen. Zurückgestellt bedeutet keine Behauptung, dass das ganze Wissensgebiet unwichtig oder falsch wäre. Der aktive Katalog konzentriert sich auf konkrete Entdeckungen mit passender veröffentlichter Abbildung.
