@@ -28,6 +28,15 @@ jobs:
         run: swift test
       - name: Build app and all extensions without signing
         run: xcodebuild -project Gate.xcodeproj -scheme Gate -configuration Debug -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+  home-preview:
+    runs-on: macos-15
+    timeout-minutes: 10
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Render native home previews
         run: python3 scripts/preview_home.py
       - name: Keep home previews for visual review

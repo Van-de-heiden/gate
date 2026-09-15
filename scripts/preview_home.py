@@ -4,7 +4,6 @@ No Screen Time permission, app-group access, installed Gate state or production
 launch arguments are used. Screenshots check layout, not blocking behaviour.
 """
 import json
-import os
 from pathlib import Path
 import platform
 import plistlib
@@ -46,8 +45,6 @@ with tempfile.TemporaryDirectory(prefix="gate-home-preview-") as temporary:
         WindowGroup {
             GateHomeScenePreview(phase: phase, remaining: args.contains("--empty") ? 0 : 21)
                 .dynamicTypeSize(args.contains("--large") ? .accessibility3 : .large)
-                .environment(\\.accessibilityReduceMotion, true)
-                .environment(\\.accessibilityReduceTransparency, args.contains("--contrast"))
         }
     }
 }
@@ -62,6 +59,7 @@ with tempfile.TemporaryDirectory(prefix="gate-home-preview-") as temporary:
                       "CFBundleName": "Gate Preview", "CFBundlePackageType": "APPL",
                       "CFBundleVersion": "1", "CFBundleShortVersionString": "1.0",
                       "MinimumOSVersion": "17.4", "UILaunchScreen": {},
+                      "UIApplicationSceneManifest": {"UIApplicationSupportsMultipleScenes": False},
                       "UIDeviceFamily": [1],
                       "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"]}, stream)
     subprocess.run(["codesign", "--force", "--sign", "-", str(app)], check=True)
@@ -78,7 +76,7 @@ with tempfile.TemporaryDirectory(prefix="gate-home-preview-") as temporary:
         for phase, flags, name in [
             ("morning", [], "morning"), ("day", [], "day"),
             ("evening", [], "evening"), ("night", ["--empty"], "night-empty"),
-            ("day", ["--large", "--contrast"], "day-large-type")
+            ("day", ["--large"], "day-large-type")
         ]:
             run("xcrun", "simctl", "ui", device, "appearance", "dark" if phase in ["evening", "night"] else "light")
             run("xcrun", "simctl", "launch", "--terminate-running-process", device, identifier,
