@@ -22,6 +22,6 @@ Kurze Leseseiten wechseln mit Originalabbildungen und bewerteten Aufgaben. Abbil
 
 ## Visuelle Sprache
 
-Die native Startseitenlandschaft variiert mit der lokalen Tageszeit: Morgenlicht, blauer Tageshimmel, Abendfarben und Midnight Blue mit Sternen. Wiese, Baum und ruhige Wolkenbewegung ergänzen die Oberfläche. Abgerundete Systemschrift, kontinuierlich gerundete Karten und grüne/blaue Akzente bleiben konsistent. Die Lernabbildungen sind recherchierte Medien; die dekorative Landschaft erklärt keinen Fachinhalt.
+Die native Startseitenlandschaft variiert mit der lokalen Tageszeit: Morgenlicht, blauer Tageshimmel, Abendfarben und Midnight Blue mit Sternen. Wiese, Baum und Wolken bilden den gesamten Hintergrund. Tankanzeige, Lernaktion und App-Textliste stehen ohne separate Karten darin. Abgerundete Systemschrift und grüne/blaue Akzente bleiben konsistent. Die Lernabbildungen sind recherchierte Medien; die dekorative Landschaft erklärt keinen Fachinhalt.
 
-Bewegung pausiert bei Reduce Motion, Low Power Mode, inaktivem Zustand, anderen Tabs und allen überdeckenden Lernansichten einschliesslich Themenwahl. VoiceOver, Dynamic Type, Bildzoom, echte Netzfehler und die Übergänge zwischen Themenwahl, Leser, Ergebnis und Pause gehören zum Gerätetest.
+Die Landschaft läuft ohne Animationsschleife; nur der Wechsel der Tagesphase blendet sanft über. Reduce Motion deaktiviert diese Überblendung. VoiceOver, Dynamic Type, Bildzoom, echte Netzfehler und die Übergänge zwischen Themenwahl, Leser, Ergebnis und Pause gehören zum Gerätetest. Aufbau und Vorschauen der Startseite sind in [HOME_LANDSCAPE.md](HOME_LANDSCAPE.md) dokumentiert.

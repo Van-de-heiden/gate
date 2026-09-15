@@ -131,7 +131,7 @@ struct ContentView: View {
                     RequestCard(controller: controller, request: request)
                 }
                 if controller.state.requests.count > 1 {
-                    GateSection(title: "Weitere Anfragen") {
+                    GateHomeSection(title: "Weitere Anfragen") {
                         ForEach(controller.state.requests.filter { $0.id != controller.selectedRequest?.id }) { request in
                             Button { controller.selectRequest(request) } label: {
                                 HStack { GateTargetLabel(target: request.target); Spacer(); Text("Lektion").foregroundStyle(.secondary) }
@@ -141,7 +141,7 @@ struct ContentView: View {
                     }
                 }
                 if !controller.activeGrants.isEmpty {
-                    GateSection(title: "Deine Freigaben") {
+                    GateHomeSection(title: "Deine Freigaben") {
                         ForEach(controller.activeGrants) { grant in
                             VStack(alignment: .leading, spacing: 10) {
                                 HStack {
@@ -169,7 +169,7 @@ struct ContentView: View {
                         }.buttonStyle(.plain).accessibilityLabel("Hinweis schliessen")
                     }
                 }
-                GateSection(title: "Das Wesentliche") {
+                GateHomeSection(title: "Das Wesentliche") {
                     VStack(spacing: 0) {
                         ForEach(controller.state.launcher.filter(\.enabled)) { item in
                             Button { open(item) } label: {
@@ -252,7 +252,7 @@ struct ProtectedTargetsView: View {
         }
     }
     var body: some View {
-        GateSection(title: "Apps einzeln freigeben") {
+        GateHomeSection(title: "Apps einzeln freigeben") {
             ForEach(targets.filter { !GateShieldPolicy.isProtected($0, in: controller.state) }) { target in
                 Button { controller.requestLesson(for: target) } label: {
                     HStack {

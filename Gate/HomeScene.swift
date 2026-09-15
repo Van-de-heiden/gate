@@ -68,6 +68,25 @@ struct GateHomeBudget: View {
     }
 }
 
+/// Primary text stays legible where a section scrolls across the tree or hills.
+struct GateHomeSection<Content: View>: View {
+    let title: String
+    let content: Content
+
+    init(title: String, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title).font(.subheadline.weight(.semibold))
+                .foregroundStyle(.primary).accessibilityAddTraits(.isHeader)
+            content
+        }.frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
 // The previews share the shipping landscape, safe-area layout, header and dial.
 // No preview changes Screen Time authorization or writes to the app group.
 #if DEBUG
@@ -83,15 +102,16 @@ struct GateHomeScenePreview: View {
                     Button("Etwas lernen", action: {})
                         .buttonStyle(GateButtonStyle()).frame(maxWidth: 280)
                         .frame(maxWidth: .infinity)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Das Wesentliche").font(.subheadline.weight(.semibold))
-                        ForEach(["WhatsApp", "Lesen", "Kalender", "Karten"], id: \.self) { title in
-                            HStack {
-                                Text(title).font(.title3.weight(.medium))
-                                Spacer()
-                                Image(systemName: "arrow.up.right").foregroundStyle(.secondary)
-                            }.frame(minHeight: 55)
-                            Divider()
+                    GateHomeSection(title: "Das Wesentliche") {
+                        VStack(spacing: 0) {
+                            ForEach(["WhatsApp", "Lesen", "Kalender", "Karten"], id: \.self) { title in
+                                HStack {
+                                    Text(title).font(.title3.weight(.medium))
+                                    Spacer()
+                                    Image(systemName: "arrow.up.right").foregroundStyle(.secondary)
+                                }.frame(minHeight: 55)
+                                Divider()
+                            }
                         }
                     }
                 }.toolbar(.hidden, for: .navigationBar)
