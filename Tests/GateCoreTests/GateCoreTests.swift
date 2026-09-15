@@ -450,11 +450,15 @@ final class GateCoreTests: XCTestCase {
         }
     }
 
-    func testDueQuestionHasPriority() throws {
-        let question = try catalog().questions[0]
+    func testDueQuestionHasPriorityInExplicitReviewMode() throws {
+        let catalog = try catalog()
+        let question = catalog.questions[0]
         var progress = LearningProgress()
         progress.memories[question.id] = QuestionMemory(due: now.addingTimeInterval(-60))
-        XCTAssertTrue(try session(progress: progress).questions.contains { $0.id == question.id && $0.isReview })
+        var random = SeededRandom(state: 1)
+        let review = LearningScheduler.makeSession(catalog: catalog, progress: progress, request: nil,
+            minutes: 5, consumed: 0, failures: 0, reviewOnly: true, now: now, random: &random)
+        XCTAssertTrue(review.questions.contains { $0.id == question.id && $0.isReview })
     }
 
     func testCannotGradeUnreadOrIncompleteSession() throws {
