@@ -7,9 +7,9 @@ struct ContentView: View {
     @ObservedObject var learning: LearningStore
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
-    @Environment(\.gateDayPhase) private var dayPhase
     @State private var tab = 0
     @State private var onboarding = false
+    @State private var allowanceDetails = false
 
     init(controller: ScreenTimeController) {
         self.controller = controller
@@ -22,7 +22,6 @@ struct ContentView: View {
         TabView(selection: $tab) {
             NavigationStack {
                 home
-                    .gateBackground()
                     .toolbar(.hidden, for: .navigationBar)
             }
             .tabItem { Label("Heute", systemImage: "house") }.tag(0)
@@ -53,6 +52,25 @@ struct ContentView: View {
         .sheet(isPresented: $onboarding) { GateOnboardingView(controller: controller) }
         .sheet(isPresented: $controller.showPause, onDismiss: { controller.closePause() }) {
             IntentionalPauseView(controller: controller)
+        }
+        .sheet(isPresented: $allowanceDetails) {
+            NavigationStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        Text("\(controller.state.confirmedMinutes) von \(controller.state.freeMinutes) Minuten bestätigt")
+                            .font(.title3.weight(.semibold))
+                        Text("Die Anzeige zeigt höchstens die verbleibende freie Zeit. iOS kann neue Nutzungsminuten verzögert melden.")
+                            .font(.body).foregroundStyle(.secondary)
+                        MonitoringStatusView(controller: controller, detailed: true)
+                    }.padding(24)
+                }
+                .navigationTitle("Dein Tagesbudget").navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Fertig") { allowanceDetails = false }
+                    }
+                }
+            }.presentationDetents([.medium, .large])
         }
         .sheet(isPresented: Binding(get: { learning.isPresented }, set: { if !$0 { learning.suspend() } }), onDismiss: { controller.lessonDidClose() }) {
             if learning.session != nil {
@@ -92,36 +110,21 @@ struct ContentView: View {
     }
 
     private var home: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 26) {
-                HStack {
-                    Text("gate").font(.system(.title2, design: .rounded)).tracking(-1)
-                    Spacer()
-                    Button { controller.requestPause() } label: {
-                        Label("Pause", systemImage: "pause.circle")
-                            .font(.subheadline.weight(.medium)).padding(.vertical, 12)
-                    }.buttonStyle(.plain).accessibilityLabel("Gate-Pause öffnen")
-                }
-                VStack(alignment: .leading, spacing: 16) {
-                    GateLandscape(active: tab == 0 && !onboarding && !learning.isPresented && !controller.showPause)
-                    Eyebrow(text: dayPhase.greeting)
-                    Text(controller.state.limitReached ? "Erst verstehen.\nDann weiter." : "Platz für das,\nwas zählt.")
-                        .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
-                    Text(controller.state.monitoringEnabled
-                         ? "Deine Aufmerksamkeit gehört dir."
-                         : "Wähle deine Ablenkungen. Den Rest lässt Gate in Ruhe.")
-                        .font(.subheadline).foregroundStyle(.secondary)
-                }
+        GateHomeSurface {
+                GateHomeHeader { controller.requestPause() }
+                allowance
                 if controller.state.isTestMode {
                     VStack(alignment: .leading, spacing: 12) {
                         Label("Zwei-Minuten-Test aktiv", systemImage: "wrench.and.screwdriver").font(.headline)
-                        Text("Aktuell gelten 2 statt \(GateState.everydayFreeMinutes) freie Minuten. Du kannst direkt zum Alltag zurückkehren.")
-                            .font(.subheadline).foregroundStyle(.secondary)
                         Button("Auf Alltag wechseln") { controller.useEverydayMode() }
-                            .buttonStyle(GateButtonStyle()).disabled(!controller.isAuthorized)
-                    }.gateCard()
+                            .buttonStyle(.bordered).disabled(!controller.isAuthorized)
+                    }
                 }
-                allowance
+                if controller.selectedRequest == nil && controller.state.monitoringEnabled && controller.monitorReady {
+                    Button("Etwas lernen") { controller.beginPractice() }
+                        .buttonStyle(GateButtonStyle()).frame(maxWidth: 280)
+                        .frame(maxWidth: .infinity)
+                }
 
                 // Requests and grants are siblings, NEVER if-grant / else-if-request.
                 if let request = controller.selectedRequest {
@@ -138,7 +141,7 @@ struct ContentView: View {
                     }
                 }
                 if !controller.activeGrants.isEmpty {
-                    GateSection(title: "Deine Freigaben · unabhängig") {
+                    GateSection(title: "Deine Freigaben") {
                         ForEach(controller.activeGrants) { grant in
                             VStack(alignment: .leading, spacing: 10) {
                                 HStack {
@@ -152,13 +155,19 @@ struct ContentView: View {
                                     Spacer()
                                     Button("Beenden") { controller.endGrant(grant) }.underline()
                                 }.font(.caption).foregroundStyle(.secondary)
-                            }.padding(18).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 12))
+                            }.padding(.vertical, 12)
+                            Divider()
                         }
                     }
                 }
                 if let message = controller.message {
-                    Text(message).font(.footnote).padding(16).frame(maxWidth: .infinity, alignment: .leading)
-                        .background(GateDesign.surface).onTapGesture { controller.message = nil }
+                    HStack(alignment: .top) {
+                        Text(message).font(.subheadline)
+                        Spacer(minLength: 8)
+                        Button { controller.message = nil } label: {
+                            Image(systemName: "xmark").frame(width: 44, height: 44)
+                        }.buttonStyle(.plain).accessibilityLabel("Hinweis schliessen")
+                    }
                 }
                 GateSection(title: "Das Wesentliche") {
                     VStack(spacing: 0) {
@@ -177,35 +186,26 @@ struct ContentView: View {
                 if controller.state.limitReached && controller.state.monitoringEnabled {
                     ProtectedTargetsView(controller: controller)
                 }
-                Button { controller.beginPractice() } label: {
-                    HStack { Text("Einfach etwas lernen"); Spacer(); Text("\(learning.dueCount) fällig").foregroundStyle(.secondary) }
-                }.buttonStyle(GateButtonStyle(prominent: false))
-                Button("Einen Impuls unterbrechen") { controller.requestPause() }
-                    .font(.footnote).underline().frame(maxWidth: .infinity)
-            }.padding(24).padding(.bottom, 24)
         }
     }
 
     private var allowance: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .firstTextBaseline) {
-                Eyebrow(text: controller.state.limitReached ? (controller.state.isTestMode ? "Testbudget aufgebraucht" : "Freies Budget aufgebraucht") : "Dein Tagesbudget")
-                Spacer()
-                Text(controller.state.monitoringEnabled && controller.monitorReady ? (controller.state.isTestMode ? "TEST" : "ALLTAG") : controller.state.monitoringEnabled ? "PRÜFEN" : "INAKTIV")
-                    .font(.caption2.weight(.semibold)).padding(.horizontal, 10).padding(.vertical, 6)
-                    .gateBackground().clipShape(Capsule())
-            }
-            AllowanceGauge(remainingMinutes: controller.state.remainingFreeMinutes,
-                           totalMinutes: controller.state.freeMinutes)
-            Text("\(controller.state.confirmedMinutes) min bestätigt · Restzeit höchstens wie angezeigt")
-                .font(.subheadline).foregroundStyle(.secondary)
-            if controller.state.monitoringEnabled {
-                DisclosureGroup("Messstatus") { MonitoringStatusView(controller: controller) }
-            }
+        VStack(spacing: 18) {
+            GateHomeBudget(remainingMinutes: controller.state.remainingFreeMinutes,
+                           totalMinutes: controller.state.freeMinutes,
+                           status: allowanceStatus) { allowanceDetails = true }
             if !controller.state.monitoringEnabled || !controller.monitorReady {
                 Button("Gate einrichten") { tab = 3 }.buttonStyle(GateButtonStyle())
             }
-        }.gateCard()
+        }
+    }
+
+    private var allowanceStatus: String? {
+        if !controller.isAuthorized { return "Bildschirmzeit-Berechtigung fehlt" }
+        if !controller.state.monitoringEnabled { return "Gate noch nicht aktiviert" }
+        if !controller.monitorReady { return "Messung prüfen" }
+        if controller.state.limitReached { return "Weitere Zeit durch Lernen" }
+        return nil
     }
 
     private func open(_ item: LauncherItem) {
@@ -237,7 +237,7 @@ private struct RequestCard: View {
             } else {
                 Button("Thema wählen") { controller.beginLesson(minutes: minutes) }.buttonStyle(GateButtonStyle())
             }
-        }.padding(20).background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 14))
+        }.padding(.vertical, 12)
     }
 }
 

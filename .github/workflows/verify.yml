@@ -28,3 +28,11 @@ jobs:
         run: swift test
       - name: Build app and all extensions without signing
         run: xcodebuild -project Gate.xcodeproj -scheme Gate -configuration Debug -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+      - name: Render native home previews
+        run: python3 scripts/preview_home.py
+      - name: Keep home previews for visual review
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-home-previews
+          path: home-previews/*.png
+          if-no-files-found: error

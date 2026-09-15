@@ -5,17 +5,17 @@ struct AllowanceGauge: View {
     let remainingMinutes: Int
     let totalMinutes: Int
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @ScaledMetric(relativeTo: .largeTitle) private var numberSize: CGFloat = 48
+    @ScaledMetric(relativeTo: .largeTitle) private var numberSize: CGFloat = 56
 
     private var capacity: Int { max(0, totalMinutes) }
     private var remaining: Int { min(capacity, max(0, remainingMinutes)) }
     private var fraction: Double { Double(remaining) / Double(max(1, capacity)) }
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 10) {
             dial
                 .aspectRatio(1.85, contentMode: .fit)
-                .frame(maxWidth: 320)
+                .frame(maxWidth: 280)
                 .accessibilityHidden(true)
 
             HStack(alignment: .firstTextBaseline, spacing: 8) {
@@ -25,8 +25,6 @@ struct AllowanceGauge: View {
                     .contentTransition(.numericText())
                 Text("min frei").font(.subheadline).foregroundStyle(.secondary)
             }
-            Text(remaining == 0 ? "Für weitere Zeit beginnt eine Lektion." : "Von \(capacity) freien Minuten heute")
-                .font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
@@ -43,31 +41,28 @@ struct AllowanceGauge: View {
             let geometry = FuelDialGeometry(size: proxy.size)
             ZStack {
                 FuelDialArc(fraction: 1)
-                    .stroke(GateDesign.line, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                    .stroke(GateDesign.accent.opacity(0.16), style: StrokeStyle(lineWidth: 3, lineCap: .round))
                 FuelDialArc(fraction: fraction)
-                    .stroke(GateDesign.accent.opacity(0.8), style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                    .stroke(GateDesign.accent, style: StrokeStyle(lineWidth: 3, lineCap: .round))
                     .opacity(remaining == 0 ? 0 : 1)
                 FuelDialTicks()
-                    .stroke(Color.secondary, style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
+                    .stroke(GateDesign.accent.opacity(0.65), style: StrokeStyle(lineWidth: 1, lineCap: .round))
 
-                Text("½").font(.caption2.weight(.medium)).foregroundStyle(.secondary)
-                    .position(x: geometry.center.x, y: geometry.center.y - geometry.radius - 12)
-                Text("LEER").font(.system(size: 10, weight: .semibold)).tracking(1)
+                Text("0").font(.caption2.weight(.medium))
                     .foregroundStyle(.secondary)
                     .position(x: geometry.center.x - geometry.radius + 14, y: geometry.center.y + 16)
-                Text("VOLL").font(.system(size: 10, weight: .semibold)).tracking(1)
+                Text("\(capacity)").font(.caption2.weight(.medium))
                     .foregroundStyle(.secondary)
                     .position(x: geometry.center.x + geometry.radius - 14, y: geometry.center.y + 16)
 
                 FuelDialNeedle()
                     .fill(GateDesign.accent)
-                    .frame(width: 7, height: geometry.needleLength)
+                    .frame(width: 5, height: geometry.needleLength)
                     .offset(y: -geometry.needleLength / 2)
                     .rotationEffect(.degrees(fraction * 180 - 90))
                     .position(geometry.center)
-                Circle().fill(GateDesign.surface)
-                    .frame(width: 18, height: 18)
-                    .overlay(Circle().stroke(GateDesign.accent, lineWidth: 4))
+                Circle().fill(GateDesign.accent)
+                    .frame(width: 10, height: 10)
                     .position(geometry.center)
             }
         }
@@ -113,10 +108,10 @@ private struct FuelDialTicks: Shape {
     func path(in rect: CGRect) -> Path {
         let geometry = FuelDialGeometry(size: rect.size)
         var path = Path()
-        for tick in 0...20 {
-            let fraction = Double(tick) / 20
+        for tick in 0...10 {
+            let fraction = Double(tick) / 10
             path.move(to: geometry.point(at: fraction, inset: 13))
-            path.addLine(to: geometry.point(at: fraction, inset: tick.isMultiple(of: 5) ? 28 : 20))
+            path.addLine(to: geometry.point(at: fraction, inset: tick.isMultiple(of: 5) ? 25 : 19))
         }
         return path
     }
