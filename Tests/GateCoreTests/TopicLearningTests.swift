@@ -38,7 +38,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testEveryCaseHasOrderedChaptersWithAuthoredQuestions() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         for topic in catalog.topics! {
             let chapters = catalog.chapters(in: topic.id)
             XCTAssertEqual(chapters.compactMap(\.topicOrder), Array(1...chapters.count))
@@ -49,7 +49,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testEveryGrantSizeAndFailureLevelStaysInOneConcreteTopic() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         for minutes in LessonLoad.allowedMinutes {
             for failures in [0, 1, 4] {
                 for seed in UInt64(1)...UInt64(12) {
@@ -63,7 +63,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testExplicitTopicDoesNotAbsorbOverdueQuestionsFromOtherTopics() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         for lesson in catalog.chapters(in: "case.images") {
             for question in lesson.questions { progress.memories[question.id] = QuestionMemory(due: now.addingTimeInterval(-100)) }
@@ -76,7 +76,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testDueQuestionsDoNotForcePreviouslyAttemptedContentBeforeNewTopics() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         for topic in ["case.cash", "case.press", "case.stoic"] {
             for chapter in catalog.chapters(in: topic) {
@@ -92,7 +92,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testVoluntaryReviewUsesOnlyDueQuestionsWithinOneTopic() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         let first = catalog.chapters(in: "case.stoic")[0].questions[0]
         let other = catalog.chapters(in: "case.images")[0].questions[0]
@@ -107,7 +107,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testRetriesKeepTheOriginalCaseAndPrioritiseActualErrors() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let first = round(catalog, minutes: 15, topic: "case.press")
         let failed = Array(first.questions.prefix(3).map(\.id))
         var progress = LearningProgress()
@@ -123,7 +123,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testRetryCannotSmuggleAnUnrelatedGapIntoTheCase() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let unrelated = catalog.chapters(in: "case.images")[0].questions[0].id
         let session = round(catalog, minutes: 20, topic: "case.stoic", failures: 2,
                             remediation: ["case.stoic.1"], gaps: [unrelated])
@@ -132,7 +132,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testEveryGrantDurationTeachesOneIndependentChapter() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         for minutes in LessonLoad.allowedMinutes {
             let session = round(catalog, minutes: minutes, topic: "case.cash")
             XCTAssertEqual(session.lessonIDs, ["case.cash.1"])
@@ -142,7 +142,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testLegacyCompletionDoesNotSkipNewContent() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         progress.completedLessonIDs = ["case.cash.1", "case.cash.2"]
         let session = round(catalog, topic: "case.cash", progress: progress)
@@ -151,7 +151,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testLongRoundRetainsContextWhenOnlyLastChapterIsUnfinished() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         progress.completedLessonIDs = ["case.chip.1", "case.chip.2"]
         let session = round(catalog, minutes: 30, topic: "case.chip", progress: progress)
@@ -160,7 +160,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testSingleChapterTopicIsNotPaddedWithOtherTopics() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let session = round(catalog, minutes: 30, topic: "case.recall")
         XCTAssertEqual(session.lessonIDs, ["case.recall.1"])
         XCTAssertEqual(session.questions.count, catalog.chapters(in: "case.recall")[0].questions.count)
@@ -168,7 +168,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testEveryInlineProbeIsPartOfItsChaptersGradedBank() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let probes = catalog.lessons.flatMap(\.cards).compactMap(\.probe)
         XCTAssertEqual(probes.count, catalog.lessons.count)
         XCTAssertEqual(Set(probes.map(\.id)).count, probes.count)
@@ -181,7 +181,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testLegacyUngradedProbeStorageCannotSilentlyAwardCredit() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var session = round(catalog, topic: "case.cash")
         let probe = catalog.chapters(in: "case.cash")[0].cards.compactMap(\.probe)[0]
         session.probeResponses = [probe.id: correctResponse(probe)]
@@ -195,7 +195,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testBookmarksRevealsAndNotesSurviveAColdDecode() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var session = round(catalog, minutes: 30, topic: "case.cash")
         let probe = catalog.chapters(in: "case.cash")[0].cards.compactMap(\.probe)[0]
         session.readerIndex = 8
@@ -218,7 +218,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testLegacyMixedRoundAndProgressArePreservedWithoutPretendingTheyAreNew() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let ids = ["case.recall.1", "case.cash.1"]
         let deck = ids.map { id -> SessionQuestion in
             let q = catalog.lessons.first { $0.id == id }!.questions[0]
@@ -246,7 +246,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testSuccessfulGradeRecordsTopicHistoryWithoutResettingOldCompletion() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var session = round(catalog, topic: "case.cash")
         session.readLessonIDs = Set(session.lessonIDs)
         session.typedResponses = Dictionary(uniqueKeysWithValues: session.questions.map { ($0.id, correctResponse($0.question)) })
@@ -260,7 +260,7 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testReadingEstimateAccountsForActualWordsAndInlinePractice() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let short = round(catalog, topic: "case.cash")
         let long = round(catalog, minutes: 30, topic: "case.cash")
         let chapters = catalog.lessons.filter { long.lessonIDs.contains($0.id) }
@@ -271,10 +271,10 @@ final class TopicLearningTests: XCTestCase {
     }
 
     func testInvalidTopicMetadataIsRejected() throws {
-        var catalog = try LearningCatalog.packageCatalog()
+        var catalog = try LearningCatalog.legacyCatalog()
         catalog.topics?.append(LearningTopic(id: "case.empty", pathID: "history", title: "Empty", hook: "No chapters"))
         XCTAssertThrowsError(try catalog.validate())
-        catalog = try LearningCatalog.packageCatalog()
+        catalog = try LearningCatalog.legacyCatalog()
         catalog.topics?[0] = LearningTopic(id: "case.press", pathID: "money", title: "Wrong path", hook: "Mismatch")
         XCTAssertThrowsError(try catalog.validate())
     }

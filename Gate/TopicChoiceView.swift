@@ -9,7 +9,7 @@ struct TopicChoiceView: View {
                 VStack(alignment: .leading, spacing: 22) {
                     Eyebrow(text: "Deine nächste Entdeckung")
                     Text("Was willst du\nverstehen?").font(.largeTitle.bold())
-                    Text("Zwei Vorschläge. Eine neue Entdeckung pro Runde. Du wählst, was dich interessiert. Die Aufgaben zählen mit.")
+                    Text("Ein Thema am Stück. Mehr Freigabezeit vertieft denselben Gedanken.")
                         .font(.body).foregroundStyle(.secondary)
                     if let offer = learning.choice?.offer, let catalog = learning.catalog {
                         if offer.isReview == true {
@@ -18,21 +18,29 @@ struct TopicChoiceView: View {
                         }
                         ForEach(offer.topicIDs, id: \.self) { id in
                             if let topic = catalog.topic(id) {
-                                let chapters = catalog.chapters(in: id).filter { $0.id == offer.chapterIDs?[id] }
-                                let minutes = max(2, (chapters.reduce(0) { $0 + $1.readingSeconds + $1.questions.count * 20 } + 59) / 60)
+                                let chapters = learning.offeredChapters(for: id)
+                                let questionCount = chapters.reduce(0) { $0 + $1.assessmentCount }
+                                let minutes = max(2, (chapters.reduce(0) { $0 + $1.readingSeconds + $1.assessmentCount * 20 } + 59) / 60)
                                 VStack(alignment: .leading, spacing: 16) {
                                     HStack {
                                         Image(systemName: symbol(topic.pathID)).font(.title2)
                                             .foregroundStyle(GateDesign.accent)
                                         Spacer()
-                                        Text(topic.title).font(.caption.weight(.semibold))
+                                        Text("\(chapters.count) Kapitel").font(.caption.weight(.semibold))
                                     }
-                                    Text(chapters.first?.title ?? topic.title).font(.title2.bold())
-                                    Text(chapters.first?.objective ?? topic.hook).font(.body).foregroundStyle(.secondary)
-                                    Text("\(chapters.count) Kapitel · etwa \(minutes) min · \(chapters.flatMap(\.questions).count) Aufgaben")
+                                    Text(topic.title).font(.title2.bold())
+                                    Text(topic.hook).font(.body).foregroundStyle(.secondary)
+                                    Text(chapters.map(\.title).joined(separator: "\n"))
+                                        .font(.subheadline).foregroundStyle(.secondary)
+                                    Text("\(chapters.count) Kapitel · etwa \(minutes) min · \(questionCount) Prüfungsaufgaben")
                                         .font(.caption).foregroundStyle(.secondary)
+                                    let reviews = chapters.filter { learning.progress.hasFinished($0) }.count
+                                    if reviews > 0 {
+                                        Text("Davon \(reviews) Kapitel zum Auffrischen.")
+                                            .font(.caption).foregroundStyle(.secondary)
+                                    }
                                     Button { learning.choose(id) } label: {
-                                        HStack { Text(offer.isReview == true ? "Kapitel wiederholen" : "Kapitel entdecken"); Spacer(); Image(systemName: "arrow.right") }
+                                        HStack { Text(offer.isReview == true ? "Wissen auffrischen" : "Diese Vertiefung beginnen"); Spacer(); Image(systemName: "arrow.right") }
                                     }.buttonStyle(GateButtonStyle())
                                         .accessibilityLabel("\(topic.title) lernen")
                                 }.gateCard()

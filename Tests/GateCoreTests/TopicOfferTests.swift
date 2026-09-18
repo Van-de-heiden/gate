@@ -5,7 +5,7 @@ final class TopicOfferTests: XCTestCase {
     let now = Date(timeIntervalSince1970: 1_800_000_000)
 
     func testPairIsDistinctUsesDifferentPathsAndSurvivesRestart() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         var random = SeededRandom(state: 7)
         let offer = try XCTUnwrap(progress.topicOffer(catalog: catalog, key: "request.A", now: now, random: &random))
@@ -18,7 +18,7 @@ final class TopicOfferTests: XCTestCase {
     }
 
     func testNewRoundsExploreTheCatalogAndAvoidRecentTopics() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var seen = Set<String>()
         var progress = LearningProgress()
         progress.recentTopicIDs = Array(catalog.allTopics.prefix(3).map(\.id))
@@ -33,7 +33,7 @@ final class TopicOfferTests: XCTestCase {
     }
 
     func testSelectionRequiresAnOfferedTopicAndCannotBeChanged() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         var random = SeededRandom(state: 11)
         let pair = try XCTUnwrap(progress.topicOffer(catalog: catalog, key: "A", now: now, random: &random))
@@ -56,7 +56,7 @@ final class TopicOfferTests: XCTestCase {
     }
 
     func testSmallCatalogsDoNotDuplicateAnOptionOrCrash() throws {
-        let full = try LearningCatalog.packageCatalog()
+        let full = try LearningCatalog.legacyCatalog()
         let topic = full.allTopics[0]
         var catalog = LearningCatalog(version: full.version, paths: full.paths,
             lessons: full.chapters(in: topic.id), topics: [topic])
@@ -68,7 +68,7 @@ final class TopicOfferTests: XCTestCase {
     }
 
     func testMissingRetiredTopicInvalidatesThePair() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         progress.topicOffers = ["A": LearningTopicOffer(id: "A", catalogVersion: catalog.version,
             topicIDs: ["retired", catalog.allTopics[0].id], createdAt: now, selectedTopicID: "retired")]
@@ -80,7 +80,7 @@ final class TopicOfferTests: XCTestCase {
     }
 
     func testCatalogUpdateRetiresOffersAndFailedDeckButKeepsHistoryAndNotes() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var random = SeededRandom(state: 2)
         var failed = LearningScheduler.makeSession(catalog: catalog, progress: .init(), request: nil,
             minutes: 5, consumed: 0, failures: 0, preferredTopic: "case.cash", now: now, random: &random)
@@ -100,7 +100,7 @@ final class TopicOfferTests: XCTestCase {
     }
 
     func testOldCompletionDoesNotLabelRewrittenChapterAsMastered() throws {
-        let lesson = try LearningCatalog.packageCatalog().lessons[0]
+        let lesson = try LearningCatalog.legacyCatalog().lessons[0]
         var progress = LearningProgress()
         progress.completedLessonIDs.insert(lesson.id)
         progress.memories[lesson.id + ".v5.q1"] = QuestionMemory(correctAttempts: 2)
@@ -110,7 +110,7 @@ final class TopicOfferTests: XCTestCase {
     }
 
     func testTextOnlyChaptersAreValidInExpandedCatalog() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var data = try JSONSerialization.jsonObject(with: JSONEncoder().encode(catalog)) as! [String: Any]
         var lessons = data["lessons"] as! [[String: Any]]
         var cards = lessons[0]["cards"] as! [[String: Any]]

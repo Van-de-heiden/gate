@@ -35,9 +35,28 @@ struct LessonArtwork: View {
 struct LessonReadingStep: Identifiable {
     let lesson: LearningLesson
     let index: Int
-    var id: String { lesson.id + ".step.\(index)" }
-    var card: LessonCard { lesson.cards[index] }
-    var isLast: Bool { index == lesson.cards.count - 1 }
+    var repair: LearningQuestion? = nil
+    var id: String { repair.map { "repair." + $0.id } ?? lesson.id + ".step.\(index)" }
+    var card: LessonCard {
+        if let repair {
+            return LessonCard(title: "Die Lücke schliessen", text: repair.prompt + "\n\n" + repair.correctAnswer + "\n\n" + repair.explanation)
+        }
+        return lesson.cards[index]
+    }
+    var isLast: Bool { repair == nil && index == lesson.cards.count - 1 }
+}
+
+extension LearningSession {
+    func readingSteps(in catalog: LearningCatalog?) -> [LessonReadingStep] {
+        guard let catalog else { return [] }
+        let repairs = (repairQuestions ?? []).compactMap { question -> LessonReadingStep? in
+            guard let lesson = catalog.lesson(forQuestion: question.id) else { return nil }
+            return LessonReadingStep(lesson: lesson, index: 0, repair: question)
+        }
+        return repairs + lessonIDs.compactMap { id in catalog.lessons.first { $0.id == id } }.flatMap { lesson in
+            lesson.cards.indices.map { LessonReadingStep(lesson: lesson, index: $0) }
+        }
+    }
 }
 
 struct LessonStoryCard: View {
@@ -58,6 +77,29 @@ struct LessonStoryCard: View {
                 Text(card.text).font(.body).lineSpacing(6).fixedSize(horizontal: false, vertical: true)
             }
             if let media = card.media { LessonMediaView(media: media) }
+            if let visual = card.visual {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(visual.title).font(.headline)
+                    ForEach(Array(visual.labels.enumerated()), id: \.offset) { index, label in
+                        HStack(alignment: .top, spacing: 12) {
+                            Text("\(index + 1)").font(.subheadline.monospacedDigit()).foregroundStyle(GateDesign.accent)
+                            Text(label).font(.body)
+                        }.padding(12).frame(maxWidth: .infinity, alignment: .leading)
+                            .background(GateDesign.accent.opacity(0.07)).clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                    Text(visual.caption).font(.caption).foregroundStyle(.secondary)
+                }.accessibilityElement(children: .combine)
+            }
+            if let explanation = card.reveal, card.probe == nil {
+                if learning.session?.revealedCardIDs?.contains(cardID) == true {
+                    Text("Lösungsweg").font(.headline)
+                    Text(explanation).font(.body).lineSpacing(6)
+                } else {
+                    Button("Mit dem Lösungsweg vergleichen") {
+                        GateKeyboard.dismiss(); learning.reveal(cardID)
+                    }.buttonStyle(GateButtonStyle(prominent: false))
+                }
+            }
             if let item {
                 Eyebrow(text: "Deine Entscheidung · zählt zum Ergebnis")
                 QuestionView(item: item, response: learning.session?.response(for: item)) {

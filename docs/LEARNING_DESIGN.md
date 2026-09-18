@@ -1,4 +1,4 @@
-> Stand 0.7: [100 Kapitel und Quellen](CURRICULUM_V7.md). Eine neue Runde umfasst ein Kapitel; Abbildungen sind optional. Die nachfolgende Dokumentation der Ausgabe 0.6 bleibt als Historie erhalten.
+> Aktuell: [Lernedition 8](LEARNING_V8.md) mit [50 vertieften Kapiteln](CURRICULUM_V8.md), zeitabhängigem Umfang und getrennter Übung/Prüfung. Die 100 bisherigen Texte bleiben in der Nachschlagebibliothek. Die folgende Dokumentation beschreibt die historische Ausgabe 0.6.
 
 # Lern- und Oberflächendesign · Version 6
 

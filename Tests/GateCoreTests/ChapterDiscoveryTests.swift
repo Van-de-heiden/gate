@@ -12,7 +12,7 @@ final class ChapterDiscoveryTests: XCTestCase {
     }
 
     func testAllHundredChaptersAreOfferedOnceBeforeAnyReviewAcrossRestarts() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         var seen = Set<String>()
         var random = SeededRandom(state: 13)
@@ -40,7 +40,7 @@ final class ChapterDiscoveryTests: XCTestCase {
     }
 
     func testLastUnseenTopicIsOfferedAloneInsteadOfMixingInRepeats() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let last = catalog.lessons.last!
         var progress = LearningProgress()
         for lesson in catalog.lessons where lesson.id != last.id {
@@ -55,7 +55,7 @@ final class ChapterDiscoveryTests: XCTestCase {
     }
 
     func testStaleUnchosenOfferIsReplacedAfterItsChapterWasCompletedElsewhere() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         var random = SeededRandom(state: 2)
         let first = try XCTUnwrap(progress.topicOffer(catalog: catalog, key: "A", now: now, random: &random))
@@ -68,7 +68,7 @@ final class ChapterDiscoveryTests: XCTestCase {
     }
 
     func testAdditiveCatalogKeepsCompatibleSessionPositionAndAnswers() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var random = SeededRandom(state: 1)
         var session = LearningScheduler.makeSession(catalog: catalog, progress: .init(), request: nil,
             minutes: 5, consumed: 0, failures: 0, preferredLesson: "case.press.1", now: now, random: &random)
@@ -86,7 +86,7 @@ final class ChapterDiscoveryTests: XCTestCase {
     }
 
     func testFinishedChaptersStayFinishedAfterResultHistoryIsPruned() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var random = SeededRandom(state: 1)
         var progress = LearningProgress()
         var session = LearningScheduler.makeSession(catalog: catalog, progress: progress, request: nil,

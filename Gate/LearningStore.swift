@@ -4,6 +4,7 @@ import Foundation
 @MainActor
 final class LearningStore: ObservableObject {
     @Published private(set) var catalog: LearningCatalog?
+    @Published private(set) var referenceCatalog: LearningCatalog?
     @Published private(set) var progress = LearningProgress()
     @Published var session: LearningSession?
     @Published private(set) var choice: TopicChoice?
@@ -34,6 +35,9 @@ final class LearningStore: ObservableObject {
             }
             try catalog.validate()
             self.catalog = catalog
+            if let reference = Bundle.main.url(forResource: "reference-curriculum", withExtension: "json") {
+                referenceCatalog = try? JSONDecoder().decode(LearningCatalog.self, from: Data(contentsOf: reference))
+            }
             if FileManager.default.fileExists(atPath: file.path) {
                 progress = try JSONDecoder().decode(LearningProgress.self, from: Data(contentsOf: file))
                 // Keep completed history and earned results; replace unfinished obsolete question decks.
@@ -46,7 +50,22 @@ final class LearningStore: ObservableObject {
     }
 
     var dueCount: Int {
-        catalog?.questions.filter { (progress.memories[$0.id]?.due ?? .distantFuture) <= Date() }.count ?? 0
+        guard let catalog else { return 0 }
+        if catalog.version >= 8 {
+            return Set(catalog.questions.map { $0.skillID ?? $0.id }).filter {
+                (progress.skillMemories?[$0]?.due ?? .distantFuture) <= Date()
+            }.count
+        }
+        return catalog.questions.filter { (progress.memories[$0.id]?.due ?? .distantFuture) <= Date() }.count
+    }
+
+    func offeredChapters(for topicID: String) -> [LearningLesson] {
+        guard let choice, let catalog else { return [] }
+        if catalog.version >= 8 {
+            return FocusedLearning.plan(catalog: catalog, progress: progress, topicID: topicID,
+                minutes: choice.minutes, offeredChapterID: choice.offer.chapterIDs?[topicID])
+        }
+        return catalog.chapters(in: topicID).filter { $0.id == choice.offer.chapterIDs?[topicID] }
     }
 
     func prepare(request: GateRequest?, minutes: Int, consumed: Int, failures: Int) {
@@ -88,7 +107,9 @@ final class LearningStore: ObservableObject {
         guard let catalog, error == nil else { return }
         let key = LearningScheduler.storageKey(request: request, path: path, lesson: lesson,
                                                topic: topic, reviewOnly: reviewOnly)
-        if let saved = progress.sessions[key], saved.result == nil || saved.result?.passed == true {
+        let saved = progress.sessions[key]
+        if let saved, saved.result?.passed == true ||
+            (saved.result == nil && (catalog.version < 8 || saved.grantMinutes == minutes)) {
             session = saved
             choice = nil
             return
@@ -98,18 +119,47 @@ final class LearningStore: ObservableObject {
         let previous = progress.sessions[key]
         let gaps = previous?.result?.passed == false
             ? previous?.questions.filter { previous?.isCorrect($0) == false }.map(\.id) ?? [] : []
+        // A failed deck keeps its original grant as well as its original scope.
+        // Changing the picker must never turn a short retry into a longer reward.
+        let plannedMinutes = saved?.result?.passed == false ? saved!.grantMinutes : minutes
         session = LearningScheduler.makeSession(catalog: catalog, progress: progress, request: request,
-            minutes: minutes, consumed: consumed, failures: failures, preferredPath: path,
+            minutes: plannedMinutes, consumed: consumed, failures: failures, preferredPath: path,
             preferredLesson: lesson, preferredTopic: topic, reviewOnly: reviewOnly,
             remediation: remediation, remediationQuestionIDs: gaps, now: Date(), random: &random)
+        if catalog.version >= 8, let saved, saved.result == nil, var current = session,
+           saved.topicID == current.topicID {
+            // A changed minute selection gets a newly sized plan, never a larger
+            // grant attached to the old short deck. Retain compatible reading work.
+            current.readCardIDs = (saved.readCardIDs ?? []).intersection(Set(current.requiredCardIDs ?? []))
+            current.revealedCardIDs = saved.revealedCardIDs
+            current.readLessonIDs = saved.readLessonIDs.intersection(Set(current.lessonIDs))
+            current.reflectionNotes.merge(saved.reflectionNotes) { _, old in old }
+            current.activeSeconds = saved.activeSeconds
+            session = current
+        }
         choice = nil
         checkpoint()
     }
 
-    func markRead(_ id: String) { edit { $0.readLessonIDs.insert(id) } }
+    func markRead(_ id: String) {
+        edit { session in
+            guard session.lessonIDs.contains(id) else { return }
+            if let required = session.requiredCardIDs {
+                let cards = required.filter { $0.hasPrefix(id + ".step.") }
+                guard Set(cards).isSubset(of: session.readCardIDs ?? []) else { return }
+            }
+            session.readLessonIDs.insert(id)
+        }
+    }
+    func markCardRead(_ id: String) { edit { _ = $0.completeReadingCard(id) } }
     func answer(_ index: Int, for id: String) { answer(QuestionResponse(indices: [index]), for: id) }
     func answer(_ response: QuestionResponse, for id: String) { edit { $0.setAnswer(response, for: id) } }
-    func setPhase(_ phase: String) { edit { $0.phase = phase } }
+    func setPhase(_ phase: String) {
+        edit { session in
+            guard phase == "learn" || (phase == "quiz" && session.readyForQuiz) else { return }
+            session.phase = phase
+        }
+    }
     func setPosition(_ position: Int) {
         edit { if $0.phase == "learn" { $0.readerIndex = position } else if $0.phase == "quiz" { $0.quizIndex = position } }
     }

@@ -1,11 +1,8 @@
-# Gate 0.7
+# Gate 0.8
 
-100 eigenständige Kapitel in zehn Bereichen. Für eine neue Lernrunde werden zwei konkrete Kapitel aus unterschiedlichen Bereichen angeboten. Pro Runde wird eines gelernt. Bereits abgeschlossene Kapitel werden erst nach Ausschöpfen des Katalogs erneut vorgeschlagen, dann sichtbar als Wiederholung. Falls nur ein Bereich neue Inhalte hat, erscheint ein neuer Vorschlag statt eines bekannten zweiten.
+50 vertiefte Kapitel in zehn eng gefassten Kursen. Eine Runde bleibt bei einem konkreten Thema. Mehr Freigabezeit verlangt mehr zusammenhängende Kapitel und mehr Anwendung. 300 Prüfungsvarianten in fünf Formaten; Übungsbeispiele und bewertete Prüfung sind getrennt. Die bisherigen 100 Lesestücke bleiben als Nachschlagebibliothek erhalten.
 
-Die 85 ergänzten Kapitel beginnen mit einem konkreten Fall und erklären einen Mechanismus samt Grenzen. Sie ergänzen die 15 bisherigen Kapitel, deren Fragen und Lernfortschritt erhalten bleiben. 117 bewertete Aufgaben insgesamt; keine feste Fragenzahl oder erzwungene Lesedauer. Abbildungen sind optional, die 15 recherchierten Originalabbildungen bleiben erhalten.
-
-[Alle Kapitel und Fachquellen](docs/CURRICULUM_V7.md) · [Mediennachweise](docs/MEDIA_SOURCES.md)
-
+[Kapitel und Quellen](docs/CURRICULUM_V8.md) · [Lernaufbau, Recherche und Grenzen](docs/LEARNING_V8.md) · [Mediennachweise](docs/MEDIA_SOURCES.md)
 
 **Less distraction. More understanding. Free to use, modify and share.**
 
@@ -13,41 +10,25 @@ Gate is an open-source iPhone app that adds a learning step before additional co
 Code and original lesson content are available under the [MIT licence](LICENSE).
 Third-party reference photos are not relicensed under MIT.
 
-## Status: 0.6 curated learning
+## Status: 0.8 focused learning
 
-Gate now offers **10 topics with 15 newly authored German chapters**, reduced from 144.
-Every chapter has its own published photograph, historical object or diagram, a specific
-observation task, and explained questions. There are 32 questions in total; all 15 inline
-questions count once toward the result. Topics contain one to three chapters according to
-the subject. There is no minimum reading time or fixed question quota.
+Choose one of two saved topic proposals. Each course contains five connected chapters;
+5 / 10 / 15 / 20 / 30 requested minutes require 1 / 2 / 3 / 4 / 5 chapters respectively.
+Each chapter teaches through a concrete case, explains the mechanism and provides an
+ungraded worked example. Three assessment objectives each have two authored variants.
+Tests combine choice, numerical entry, matching, ordering and short terminology recall.
 
-Before a new Screen Time learning round, choose **one of two random topics**. The pair is
-saved for that request and survives dismissal, a cold restart and a change of requested
-minutes. A chosen topic stays chosen, including on a retry. Other apps have independent
-requests. Voluntary library topics and due reviews remain directly accessible.
+The time-of-day landscape, native tabs, 30-minute allowance, independent app grants and
+blocking rules remain. The Xcode project file does not change in this edition.
 
-The time-of-day sky and meadow, rounded typography and coloured cards remain. Motion also
-pauses while the topic chooser covers the home screen. Reading, picture zoom, grading and
-the final grant share one learning presentation.
-
-See [content and migration](docs/CONTENT.md), [the editorial audit](docs/CURRICULUM_REVIEW.md),
-[media and original sources](docs/MEDIA_SOURCES.md) and [learning design](docs/LEARNING_DESIGN.md).
-Existing draft PR #1 remains the development delivery path.
-
-## This edition's topics
-
-Printing and handwritten decoration · Photolithography, overlay and cleanrooms · Sleep
-pressure and the body clock · What a forgetting curve measures · Interpreting positive
-test results · Working capital · Epictetus' bathhouse example · Visual source criticism,
-area scaling and missing cases · Greenhouse radiation · Phishing and independent verification.
-
-This is a deliberately small introductory edition. It is AI-assisted and source-checked,
-but has not received independent subject-matter or learner usability review. The chapter
-sources and image sources are visible in the app; they do not imply endorsement.
+The new courses cover working capital, print production, greenhouse energy balance,
+sleep pressure and body clock, Stoic agency, semiconductor production, base rates,
+visual source criticism, retrieval learning and phishing verification. They are
+introductory, source-checked material, not externally validated professional courses.
 
 ### Learning history and upgrades
 
-Retired material remains in the repository's authoring archive, outside the active catalog.
+The previous 100 chapters remain available in the app as ungraded reference reading.
 Rewritten questions receive versioned IDs. Old results, personal notes and earned grants
 remain; unfinished and failed obsolete decks are retired. New chapter completion requires
 answers to its current questions, so an old completion cannot label rewritten material mastered.
@@ -57,8 +38,10 @@ Current rounds preserve their topic, reading position, shuffled options and lock
 
 The first 30 minutes form one shared pool for the selected apps and websites.
 After that, grants and failures are independent. Choose 5, 10, 15, 20 or 30 active minutes.
-The authored topic determines the question count and lesson scope. There is no minimum reading
-time or penalty question quota. Passing requires at least 80% across inline and final questions.
+Requested duration determines the number of connected chapters. There is no minimum reading
+timer. Passing requires at least 80% overall and two-thirds correct in each chapter.
+Retries preserve the original scope and grant, add explanations for actual errors and change
+question variants. Previously completed chapters included for context are labelled as review.
 Every third failed attempt creates a 15-minute cooldown for that target.
 
 Existing saved 60-minute everyday budgets migrate to 30 on the next app or monitor update.

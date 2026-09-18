@@ -15,8 +15,8 @@ let package = Package(
                 "Gate/GateSettingsView.swift", "Gate/GateStatisticsView.swift", "Gate/LearningLibraryView.swift", "Gate/MonitoringStatusView.swift",
                 "Gate/TopicChoiceView.swift", "Gate/LessonView.swift", "Gate/ScreenTimeController.swift", "Gate/DailyMonitorService.swift",
                 "Gate/GateAtmosphere.swift", "Gate/HomeScene.swift", "Gate/LessonMediaView.swift", "Gate/QuestionView.swift", "Gate/KeyboardSupport.swift", "Gate/LessonArtwork.swift", "Gate/IntentionalPauseView.swift", "Gate/SystemUsageView.swift"],
-            sources: ["Gate/LearningStore.swift", "Shared/GateModels.swift", "LearningCore/LearningModels.swift", "ReportCore/GateReportModels.swift"],
-            resources: [.copy("Gate/curriculum.json")]),
+            sources: ["Gate/LearningStore.swift", "Shared/GateModels.swift", "LearningCore/LearningModels.swift", "LearningCore/FocusedLearning.swift", "ReportCore/GateReportModels.swift"],
+            resources: [.copy("Gate/curriculum.json"), .copy("Gate/reference-curriculum.json")]),
         .testTarget(name: "GateCoreTests", dependencies: ["GateCore"], path: "Tests/GateCoreTests")
     ]
 )

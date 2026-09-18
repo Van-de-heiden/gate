@@ -16,7 +16,7 @@ final class LearningExpansionTests: XCTestCase {
     let now = Date(timeIntervalSince1970: 1_700_000_000)
 
     func testAllPublishedQuestionsHaveGradableAnswersAndRejectMissingAnswers() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         XCTAssertEqual(Set(catalog.questions.map(\.kind)), Set([QuestionFormat.singleChoice, .multipleChoice, .ordering]))
         for question in catalog.questions {
             XCTAssertTrue(question.isValid, question.id)
@@ -27,7 +27,7 @@ final class LearningExpansionTests: XCTestCase {
     }
 
     func testWrongAnswersDoNotReceiveCreditInAnyFormat() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         for question in catalog.questions {
             var answer = correctResponse(question)
             switch question.kind {
@@ -68,7 +68,7 @@ final class LearningExpansionTests: XCTestCase {
     }
 
     func testExplicitChapterPracticeContainsTheWholeChosenChapter() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let lesson = catalog.lessons.first { $0.id == "case.chip.2" }!
         var random = SeededRandom(state: 44)
         let session = LearningScheduler.makeSession(catalog: catalog, progress: .init(), request: nil,
@@ -79,7 +79,7 @@ final class LearningExpansionTests: XCTestCase {
     }
 
     func testAReviewOfOneQuestionCannotCompleteAnUncoveredChapter() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let lesson = catalog.lessons.first { $0.id == "case.cash.1" }!
         var random = SeededRandom(state: 7)
         var progress = LearningProgress()
@@ -97,7 +97,7 @@ final class LearningExpansionTests: XCTestCase {
     }
 
     func testFullCoverageCompletesChapterAndRepetitionDoesNotDuplicateResult() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var random = SeededRandom(state: 1)
         var session = LearningScheduler.makeSession(catalog: catalog, progress: .init(), request: nil,
             minutes: 5, consumed: 0, failures: 0, preferredLesson: "case.cash.1", now: now, random: &random)
@@ -112,7 +112,7 @@ final class LearningExpansionTests: XCTestCase {
     }
 
     func testReviewOnlyDoesNotAddUnrelatedNewMaterialWhenDueItemsExist() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         var progress = LearningProgress()
         let dueID = catalog.questions[0].id
         progress.memories[dueID] = QuestionMemory(due: now.addingTimeInterval(-1))
@@ -124,7 +124,7 @@ final class LearningExpansionTests: XCTestCase {
     }
 
     func testVersionTwoSessionAndProgressStillDecode() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let lesson = catalog.lessons.first { $0.id == "case.recall.1" }!
         let question = lesson.questions.first { $0.format == nil }!
         let legacy = LearningSession(id: UUID(), storageKey: "practice", target: nil, requestID: nil,

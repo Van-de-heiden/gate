@@ -6,6 +6,10 @@ extension LearningCatalog {
         let url = Bundle.module.url(forResource: "curriculum", withExtension: "json")!
         return try JSONDecoder().decode(LearningCatalog.self, from: Data(contentsOf: url))
     }
+    static func legacyCatalog() throws -> LearningCatalog {
+        let url = Bundle.module.url(forResource: "reference-curriculum", withExtension: "json")!
+        return try JSONDecoder().decode(LearningCatalog.self, from: Data(contentsOf: url))
+    }
 }
 #endif
 
@@ -79,6 +83,8 @@ struct LearningQuestion: Codable, Identifiable, Equatable {
     var tolerance: Double?
     var unit: String?
     var hint: String?
+    // Variants assess the same objective without requiring both in one sitting.
+    var skillID: String?
 
     var kind: QuestionFormat { format ?? .singleChoice }
     var correctAnswer: String {
@@ -194,6 +200,7 @@ struct LearningLesson: Codable, Identifiable {
     var topicID: String?
     var topicOrder: Int?
     var topicKey: String { topicID ?? id }
+    var assessmentCount: Int { Set(questions.map { $0.skillID ?? $0.id }).count }
     var readingSeconds: Int {
         max(35, cards.map { ($0.text + " " + ($0.reveal ?? "")).split(separator: " ").count }.reduce(0, +) * 60 / 190)
     }
@@ -252,6 +259,17 @@ struct LearningCatalog: Codable {
                   }
               })
         else { throw CatalogError.invalid }
+        if version >= 8 {
+            guard allTopics.allSatisfy({ chapters(in: $0.id).count == 5 }),
+                  lessons.allSatisfy({ lesson in
+                      let skills = Dictionary(grouping: lesson.questions, by: { $0.skillID ?? "" })
+                      return skills.count == 3 && skills[""] == nil
+                          && skills.values.allSatisfy { $0.count == 2 }
+                          && skills.values.contains { $0.allSatisfy { $0.kind != .singleChoice } }
+                          && lesson.cards.allSatisfy { $0.probe == nil }
+                          && lesson.cards.contains { $0.reveal?.isEmpty == false }
+                  }) else { throw CatalogError.invalid }
+        }
     }
     enum CatalogError: Error { case invalid }
 }
@@ -295,6 +313,7 @@ struct LearningResult: Codable, Identifiable {
 struct LearningProgress: Codable {
     var version = 1
     var memories: [String: QuestionMemory] = [:]
+    var skillMemories: [String: QuestionMemory]?
     var completedLessonIDs: Set<String> = []
     var recentPathIDs: [String] = []
     var recentTopicIDs: [String]?
@@ -342,15 +361,19 @@ struct LearningTopicOffer: Codable, Identifiable, Equatable {
 
 extension LearningProgress {
     func hasCompleted(_ lesson: LearningLesson) -> Bool {
-        completedLessonIDs.contains(lesson.id) && !lesson.questions.isEmpty
-            && lesson.questions.allSatisfy { (memories[$0.id]?.correctAttempts ?? 0) > 0 }
+        let skills = Dictionary(grouping: lesson.questions, by: { $0.skillID ?? $0.id })
+        return completedLessonIDs.contains(lesson.id) && !skills.isEmpty
+            && skills.values.allSatisfy { variants in
+                variants.contains { (memories[$0.id]?.correctAttempts ?? 0) > 0 }
+            }
     }
 
     func hasFinished(_ lesson: LearningLesson) -> Bool {
         let recorded = finishedChapterIDs?.contains(lesson.id) == true
             || results.contains { $0.passed && $0.lessonIDs.contains(lesson.id) }
-        return hasCompleted(lesson) || (recorded && lesson.questions.allSatisfy {
-            (memories[$0.id]?.attempts ?? 0) > 0
+        let skills = Dictionary(grouping: lesson.questions, by: { $0.skillID ?? $0.id })
+        return hasCompleted(lesson) || (recorded && skills.values.allSatisfy { variants in
+            variants.contains { (memories[$0.id]?.attempts ?? 0) > 0 }
         })
     }
 
@@ -458,10 +481,17 @@ struct LearningSession: Codable, Identifiable {
     var catalogVersion: Int?
     var inlineQuestionIDs: Set<String>?
     var lockedQuestionIDs: Set<String>?
+    var requiredCardIDs: [String]?
+    var readCardIDs: Set<String>?
+    var requiredRevealCardIDs: Set<String>?
+    var repairQuestions: [LearningQuestion]?
+    var reviewLessonIDs: Set<String>?
     var estimatedSeconds: Int { max(60, questions.count * 20 + (readingEstimateSeconds ?? lessonIDs.count * 55)) }
     var readyForQuiz: Bool {
         Set(lessonIDs).isSubset(of: readLessonIDs)
             && (inlineQuestionIDs ?? []).isSubset(of: lockedQuestionIDs ?? [])
+            && Set(requiredCardIDs ?? []).isSubset(of: readCardIDs ?? [])
+            && (requiredRevealCardIDs ?? []).isSubset(of: revealedCardIDs ?? [])
     }
     var finalQuestions: [SessionQuestion] {
         questions.filter { !(lockedQuestionIDs ?? []).contains($0.id) }
@@ -477,6 +507,18 @@ struct LearningSession: Codable, Identifiable {
     var answeredCount: Int { questions.filter { $0.question.isComplete(response(for: $0)) }.count }
     var allAnswered: Bool { answeredCount == questions.count }
     func isCorrect(_ item: SessionQuestion) -> Bool { item.question.isCorrect(response(for: item)) }
+
+    @discardableResult
+    mutating func completeReadingCard(_ id: String) -> Bool {
+        guard result == nil, phase == "learn", let requiredCardIDs,
+              let index = requiredCardIDs.firstIndex(of: id),
+              Set(requiredCardIDs.prefix(index)).isSubset(of: readCardIDs ?? []),
+              !(requiredRevealCardIDs ?? []).contains(id) || (revealedCardIDs ?? []).contains(id)
+        else { return false }
+        if readCardIDs == nil { readCardIDs = [] }
+        readCardIDs?.insert(id)
+        return true
+    }
 
     mutating func setAnswer(_ response: QuestionResponse, for id: String) {
         guard result == nil, questions.contains(where: { $0.id == id }),
@@ -521,6 +563,13 @@ enum LearningScheduler {
         preferredLesson: String? = nil, preferredTopic: String? = nil, reviewOnly: Bool = false,
         remediation: [String] = [], remediationQuestionIDs: [String] = [], now: Date, random: inout R
     ) -> LearningSession {
+        if catalog.version >= 8 {
+            return FocusedLearning.makeSession(catalog: catalog, progress: progress, request: request,
+                minutes: minutes, failures: failures, preferredPath: preferredPath,
+                preferredLesson: preferredLesson, preferredTopic: preferredTopic, reviewOnly: reviewOnly,
+                remediation: remediation, remediationQuestionIDs: remediationQuestionIDs,
+                now: now, random: &random)
+        }
         let focusedLesson = preferredLesson.flatMap { id in catalog.lessons.first { $0.id == id } }
         let due = catalog.questions.filter { (progress.memories[$0.id]?.due ?? .distantFuture) <= now }
             .sorted { (progress.memories[$0.id]?.due ?? now) < (progress.memories[$1.id]?.due ?? now) }
@@ -592,7 +641,11 @@ enum LearningScheduler {
         guard session.result == nil, session.readyForQuiz,
               session.allAnswered else { return session.result }
         let correct = session.questions.filter { session.isCorrect($0) }.count
-        let passed = LessonLoad.passes(correct: correct, total: session.questions.count)
+        let chapterFloor = (session.catalogVersion ?? 0) < 8 || session.lessonIDs.allSatisfy { id in
+            let items = session.questions.filter { $0.lessonID == id }
+            return !items.isEmpty && items.filter { session.isCorrect($0) }.count * 3 >= items.count * 2
+        }
+        let passed = LessonLoad.passes(correct: correct, total: session.questions.count) && chapterFloor
         if passed {
             if progress.finishedChapterIDs == nil { progress.finishedChapterIDs = [] }
             progress.finishedChapterIDs?.formUnion(session.lessonIDs)
@@ -601,6 +654,12 @@ enum LearningScheduler {
             var memory = progress.memories[item.id] ?? QuestionMemory()
             memory.record(correct: session.isCorrect(item), now: now)
             progress.memories[item.id] = memory
+            if let skill = item.question.skillID {
+                var skillMemory = progress.skillMemories?[skill] ?? QuestionMemory()
+                skillMemory.record(correct: session.isCorrect(item), now: now)
+                if progress.skillMemories == nil { progress.skillMemories = [:] }
+                progress.skillMemories?[skill] = skillMemory
+            }
         }
         if passed {
             for id in session.lessonIDs {

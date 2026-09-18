@@ -63,6 +63,32 @@ struct LearningLibraryView: View {
                 }
                 Text("Recherchierte Abbildungen mit Quellen · Wiederholung nach deinem Lernstand")
                     .font(.caption).foregroundStyle(.secondary)
+                if let reference = learning.referenceCatalog {
+                    DisclosureGroup("Frühere Lesestücke · \(reference.lessons.count)") {
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("Zum Nachschlagen erhalten. Diese Kurztexte geben keine App-Zeit frei.")
+                                .font(.subheadline).foregroundStyle(.secondary)
+                            ForEach(reference.lessons.filter { query.isEmpty || $0.title.localizedStandardContains(query) }) { lesson in
+                                NavigationLink {
+                                    ScrollView {
+                                        VStack(alignment: .leading, spacing: 24) {
+                                            Text(lesson.title).font(.largeTitle.bold())
+                                            ForEach(Array(lesson.cards.filter { $0.probe == nil }.enumerated()), id: \.offset) { _, card in
+                                                Text(card.title).font(.title2.bold())
+                                                Text(card.text).font(.body).lineSpacing(6)
+                                                if let media = card.media { LessonMediaView(media: media) }
+                                            }
+                                            Text(lesson.takeaway).font(.headline)
+                                            if let url = URL(string: lesson.source.url) {
+                                                Link(lesson.source.title, destination: url)
+                                            }
+                                        }.padding(24)
+                                    }.gateBackground().navigationBarTitleDisplayMode(.inline)
+                                } label: { Text(lesson.title).font(.body).frame(minHeight: 44) }
+                            }
+                        }.padding(.top, 14)
+                    }.font(.headline)
+                }
             }.padding(24)
         }.gateBackground().gateKeyboardDismissal()
     }
@@ -83,7 +109,7 @@ struct LearningLibraryView: View {
                     }
                     Text("\(learning.catalog?.chapters(in: topic.id).count ?? 0) Kapitel · ein Thema")
                         .font(.subheadline)
-                    Button(learning.progress.nextChapter(in: topic.id, catalog: learning.catalog!) == nil ? "Kapitel wiederholen" : "Nächstes Kapitel") { controller.beginPractice(path: topic.pathID, topic: topic.id) }.buttonStyle(GateButtonStyle())
+                    Button("Vier Kapitel am Stück") { controller.beginPractice(path: topic.pathID, topic: topic.id) }.buttonStyle(GateButtonStyle())
                     ForEach(learning.catalog?.chapters(in: topic.id) ?? []) { chapterButton($0) }
                 }.padding(24)
             }.gateBackground().navigationBarTitleDisplayMode(.inline)
@@ -110,7 +136,7 @@ struct LearningLibraryView: View {
                 }
                 Text(lesson.title).font(.title3.weight(.semibold))
                 Text(lesson.objective).font(.subheadline).foregroundStyle(.secondary)
-                Text("Ca. \(max(2, (lesson.readingSeconds + lesson.questions.count * 20 + 59) / 60)) min · \(lesson.questions.count) Aufgaben")
+                Text("Ca. \(max(2, (lesson.readingSeconds + lesson.assessmentCount * 20 + 59) / 60)) min · \(lesson.assessmentCount) Prüfungsaufgaben")
                     .font(.caption2).foregroundStyle(.secondary)
             }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
                 .background(GateDesign.surface).clipShape(RoundedRectangle(cornerRadius: 24))

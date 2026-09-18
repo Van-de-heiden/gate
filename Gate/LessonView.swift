@@ -52,7 +52,7 @@ struct LessonView: View {
             let saved = session.quizIndex ?? session.finalQuestions.firstIndex { !$0.question.isComplete(session.response(for: $0)) } ?? 0
             page = min(max(0, saved), max(0, session.finalQuestions.count - 1))
         } else {
-            let steps = session.lessonIDs.flatMap { id in learning.catalog?.lessons.first { $0.id == id }?.cards ?? [] }
+            let steps = session.readingSteps(in: learning.catalog)
             page = min(max(0, session.readerIndex ?? 0), max(0, steps.count - 1))
         }
     }
@@ -66,17 +66,19 @@ struct LessonView: View {
             let title = session.topicID.flatMap { learning.catalog?.topic($0)?.title }
                 ?? learning.catalog?.paths.first { $0.id == session.pathID }?.title ?? "Wissen"
             Text(title).font(.title2.weight(.semibold))
-            let stepCount = session.lessonIDs.reduce(0) { count, id in
-                count + (learning.catalog?.lessons.first { $0.id == id }?.cards.count ?? 0)
-            }
+            let stepCount = session.readingSteps(in: learning.catalog).count
             let progress = session.phase == "result" ? 1.0 : session.phase == "quiz"
                 ? 0.5 + 0.5 * Double(session.answeredCount) / Double(max(1, session.questions.count))
                 : 0.5 * Double(session.readerIndex ?? 0) / Double(max(1, stepCount))
             GateProgressLine(value: progress)
             Text(session.phase == "learn"
-                 ? "\(session.questions.count) Fragen insgesamt · davon \(session.inlineQuestionIDs?.count ?? 0) unterwegs · ca. \(max(1, (session.estimatedSeconds + 59) / 60)) min"
-                 : session.phase == "quiz" ? "Zum Bestehen: \(Int(ceil(Double(session.questions.count) * 0.8))) von \(session.questions.count) richtig. Die Zwischenfragen zählen mit." : "Dein Ergebnis")
+                 ? "\(session.lessonIDs.count) Kapitel · \(session.questions.count) Prüfungsaufgaben · etwa \(max(1, (session.estimatedSeconds + 59) / 60)) min"
+                 : session.phase == "quiz" ? "80 % insgesamt; mindestens zwei Drittel je Kapitel." : "Dein Ergebnis")
                 .font(.caption).foregroundStyle(.secondary)
+            if session.phase == "learn", let reviews = session.reviewLessonIDs, !reviews.isEmpty {
+                Text("\(reviews.count) Kapitel davon festigen bereits Gelerntes.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
             if session.topicID == nil {
                 Text("Gespeicherte Runde aus der vorherigen Version. Dein Stand bleibt erhalten; neue Runden bleiben bei einem einzigen Thema.")
                     .font(.caption).foregroundStyle(.secondary)
@@ -86,15 +88,15 @@ struct LessonView: View {
 
     @ViewBuilder
     private func reading(_ session: LearningSession) -> some View {
-        let lessons = session.lessonIDs.compactMap { id in learning.catalog?.lessons.first { $0.id == id } }
-        let steps = lessons.flatMap { lesson in lesson.cards.indices.map { LessonReadingStep(lesson: lesson, index: $0) } }
+        let steps = session.readingSteps(in: learning.catalog)
         let safePage = min(max(0, page), max(0, steps.count - 1))
         if let step = steps[safe: safePage] {
             let lesson = step.lesson
             let revealed = session.revealedCardIDs?.contains(step.id) == true
-            let requiresReveal = step.card.probe.map { session.inlineQuestionIDs?.contains($0.id) == true } ?? false
+            let requiresReveal = (step.card.probe.map { session.inlineQuestionIDs?.contains($0.id) == true } ?? false)
+                || session.requiredRevealCardIDs?.contains(step.id) == true
             VStack(alignment: .leading, spacing: 22) {
-                Eyebrow(text: "\(lesson.title) · \(step.index + 1)/\(lesson.cards.count)")
+                Eyebrow(text: step.repair == nil ? "\(lesson.title) · \(step.index + 1)/\(lesson.cards.count)" : "Gezielte Wiederholung")
                 if step.card.probe != nil, let media = lesson.cards.compactMap(\.media).first {
                     DisclosureGroup("Abbildung nochmals ansehen") { LessonMediaView(media: media) }
                         .font(.subheadline.weight(.semibold)).gateCard()
@@ -128,6 +130,7 @@ struct LessonView: View {
                     }
                     Button(safePage + 1 < steps.count ? "Weiter" : "Zum Abschluss") {
                         GateKeyboard.dismiss()
+                        learning.markCardRead(step.id)
                         if step.isLast { learning.markRead(lesson.id) }
                         if safePage + 1 < steps.count { page = safePage + 1 }
                         else { learning.setPhase("quiz") }
@@ -183,6 +186,11 @@ struct LessonView: View {
                      ? "Richtige Antworten kommen später wieder – mit wachsendem Abstand. Falsche Antworten werden früher wiederholt."
                      : "Noch keine Freigabe. Der nächste Versuch bleibt bei diesem Thema und übt die Lücken weiter.")
                     .font(.subheadline).foregroundStyle(.secondary)
+                if !result.passed, (session.catalogVersion ?? 0) >= 8,
+                   LessonLoad.passes(correct: result.correct, total: result.total) {
+                    Text("Die Gesamtquote reicht, aber in mindestens einem Kapitel fehlen noch zwei Drittel richtige Antworten.")
+                        .font(.subheadline)
+                }
                 ForEach(session.questions) { item in
                     let correct = session.isCorrect(item)
                     VStack(alignment: .leading, spacing: 8) {

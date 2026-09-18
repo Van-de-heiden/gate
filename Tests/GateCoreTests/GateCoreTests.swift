@@ -15,7 +15,7 @@ final class GateCoreTests: XCTestCase {
         GateGrant(target: target(name), minutes: 5, grantedAt: now,
             expiresAt: now.addingTimeInterval(expires), armed: true)
     }
-    func catalog() throws -> LearningCatalog { try LearningCatalog.packageCatalog() }
+    func catalog() throws -> LearningCatalog { try LearningCatalog.legacyCatalog() }
     func session(minutes: Int = 5, failures: Int = 0, progress: LearningProgress = .init(), seed: UInt64 = 1) throws -> LearningSession {
         var random = SeededRandom(state: seed)
         return LearningScheduler.makeSession(catalog: try catalog(), progress: progress,

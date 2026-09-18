@@ -5,7 +5,7 @@ final class LearningRefreshTests: XCTestCase {
     private let now = Date(timeIntervalSince1970: 1_700_000_000)
     private func session(topic: String = "case.cash", progress: LearningProgress = .init(), review: Bool = false) throws -> LearningSession {
         var random = SeededRandom(state: 17)
-        return LearningScheduler.makeSession(catalog: try .packageCatalog(), progress: progress, request: nil,
+        return LearningScheduler.makeSession(catalog: try .legacyCatalog(), progress: progress, request: nil,
             minutes: 30, consumed: 999, failures: 99, preferredTopic: topic, reviewOnly: review, now: now, random: &random)
     }
 
@@ -72,7 +72,7 @@ final class LearningRefreshTests: XCTestCase {
     }
 
     func testDueReviewCanFinishEntirelyWithItsOneInlineQuestion() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let probe = catalog.chapters(in: "case.cash")[0].cards.compactMap(\.probe)[0]
         var progress = LearningProgress()
         progress.memories[probe.id] = QuestionMemory(due: now.addingTimeInterval(-1))
@@ -88,7 +88,7 @@ final class LearningRefreshTests: XCTestCase {
     }
 
     func testDueReviewWithOnlyFinalQuestionDoesNotRequireAnAbsentInlineProbe() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let question = catalog.chapters(in: "case.cash")[0].questions[1]
         var progress = LearningProgress()
         progress.memories[question.id] = QuestionMemory(due: now.addingTimeInterval(-1))
@@ -124,7 +124,7 @@ final class LearningRefreshTests: XCTestCase {
     }
 
     func testNewQuestionsDoNotInheritMasteryOfReplacedQuestionIDs() throws {
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         XCTAssertTrue(catalog.questions.allSatisfy { $0.id.contains(".v6.q") || $0.id.contains(".v7.q") })
         XCTAssertFalse(catalog.questions.contains { $0.kind == .numeric })
         XCTAssertTrue(catalog.lessons.flatMap(\.cards).allSatisfy { $0.image == nil })

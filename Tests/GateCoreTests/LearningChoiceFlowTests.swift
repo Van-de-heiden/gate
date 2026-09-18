@@ -7,7 +7,7 @@ final class LearningChoiceFlowTests: XCTestCase {
         let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: folder) }
         let file = folder.appendingPathComponent("progress.json")
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let request = GateRequest(target: GateTarget(kind: .application, tokenData: Data("A".utf8)))
         let store = LearningStore(fileURL: file, suppliedCatalog: catalog)
         store.prepare(request: request, minutes: 5, consumed: 30, failures: 0)
@@ -36,7 +36,7 @@ final class LearningChoiceFlowTests: XCTestCase {
     func testFailedRoundRetriesSameTopicWithoutAnotherPair() async throws {
         let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: folder) }
-        let catalog = try LearningCatalog.packageCatalog()
+        let catalog = try LearningCatalog.legacyCatalog()
         let request = GateRequest(target: GateTarget(kind: .application, tokenData: Data("A".utf8)))
         let store = LearningStore(fileURL: folder.appendingPathComponent("progress.json"), suppliedCatalog: catalog)
         store.prepare(request: request, minutes: 5, consumed: 30, failures: 0)
@@ -67,7 +67,7 @@ final class LearningChoiceFlowTests: XCTestCase {
     func testFinishingRemovesRequestOfferWithoutTouchingOtherApp() async throws {
         let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: folder) }
-        let store = LearningStore(fileURL: folder.appendingPathComponent("progress.json"), suppliedCatalog: try .packageCatalog())
+        let store = LearningStore(fileURL: folder.appendingPathComponent("progress.json"), suppliedCatalog: try .legacyCatalog())
         let a = GateRequest(target: GateTarget(kind: .application, tokenData: Data("A".utf8)))
         let b = GateRequest(target: GateTarget(kind: .application, tokenData: Data("B".utf8)))
         store.prepare(request: b, minutes: 5, consumed: 30, failures: 0)

@@ -55,10 +55,10 @@ struct GateStatisticsView: View {
                 GateSection(title: "Was hängen bleibt") {
                     HStack(alignment: .top, spacing: 24) {
                         metric("\(learning.catalog?.lessons.filter { learning.progress.hasCompleted($0) }.count ?? 0)", "Kapitel erarbeitet")
-                        metric("\(learning.progress.memories.values.filter { $0.streak >= 3 }.count)", "Fragen wiederholt gefestigt")
+                        metric("\((learning.progress.skillMemories ?? learning.progress.memories).values.filter { $0.streak >= 3 }.count)", "Lernziele wiederholt gefestigt")
                     }
                     DisclosureGroup("Was zählt?") {
-                        Text("Erarbeitet: gelesen und alle Fragen richtig gelöst. Gefestigt: mindestens drei zeitversetzte richtige Antworten.")
+                        Text("Erarbeitet: alle Lernziele eines Kapitels richtig angewendet. Gefestigt: mindestens drei zeitversetzte richtige Antworten zum selben Lernziel.")
                             .font(.subheadline).foregroundStyle(.secondary)
                     }
                 }
