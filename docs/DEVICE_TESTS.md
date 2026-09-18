@@ -1,3 +1,20 @@
+# Gate 0.8 — Lernen auf dem iPhone prüfen
+
+Die älteren Lernprüfungen weiter unten dokumentieren frühere Ausgaben. Für den aktiven Lernteil gelten jetzt diese Fälle:
+
+- 5, 10, 15, 20 und 30 Minuten anfragen: Vorschau und tatsächliche Runde enthalten 1, 2, 3, 4 beziehungsweise 5 Kapitel desselben konkreten Themas und 3 Aufgaben je Kapitel.
+- Vor dem Abschluss muss jede Erklärseite bearbeitet und jeder Übungs-Lösungsweg geöffnet sein. Lösungen der Übungsbeispiele zählen nicht als Prüfungsantworten.
+- Eine Fünf-Minuten-Runde unterbrechen und auf dreissig Minuten ändern: gleicher Themenfokus, mehr Lesestoff und Aufgaben; passende Leseseiten und eigene Notizen bleiben gespeichert.
+- Eine begonnene Runde vollständig schliessen und neu öffnen: identische Aufgabenvarianten, Antwortanordnung, Eingaben und Leseposition.
+- Zahlen, Zuordnungen, Reihenfolgen und kurze Begriffe testen. Tastatur über „Fertig“, die Werkzeugleiste oder Scrollen schliessen. Lange Antworttexte mit grosser Systemschrift und VoiceOver prüfen.
+- Einen Fehler machen: Erklärung ansehen, erneut lernen, denselben Umfang mit gezielter Fehlerklärung und anderen Varianten erhalten. Eine Fünf-Minuten-Wiederholung darf nicht als Dreissig-Minuten-Freigabe enden.
+- Bei fünf Kapiteln zwölf von fünfzehn richtig beantworten, aber ein Kapitel ganz falsch: keine Freigabe. Bei zwölf richtigen mit höchstens einem Fehler je Kapitel: bestanden.
+- „Wissen auffrischen“ verwendet fällige Lernziele; eine beantwortete andere Variante darf keine doppelte fällige Wissenslücke hinterlassen.
+- In der Bibliothek „Frühere Lesestücke“ öffnen: alle 100 bisherigen Texte nachlesbar, mit Originalabbildungen, ohne Freigabefunktion.
+- Upgrade: alte Ergebnisse und Notizen bleiben gespeichert; bestandene ausstehende Freigaben bleiben einlösbar. Ein unfertiges altes Prüfungsdeck wird durch neue Inhalte ersetzt.
+
+Bildschirmzeit, unabhängige Freigaben, Sperren und die 30 freien Tagesminuten bleiben nach den etablierten Gerätetests zu prüfen. Die untenstehenden älteren Aussagen zum Lernumfang gelten nur für ihre jeweilige historische Version.
+
 ## Gate 0.7 — zusätzlich auf dem Gerät prüfen
 
 - Zwei konkrete Kapitel auswählen, abbrechen, App neu öffnen: dieselben Vorschläge und derselbe Lesestand.

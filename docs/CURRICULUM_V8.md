@@ -50,7 +50,7 @@ Warum fühlt sich Lesen oft erfolgreicher an, als es ist? Du lernst, dein Verst�
 
 Ein Alarm meldet einen Fehler. Wie wahrscheinlich ist der Fehler tatsächlich? Du lernst es an gezählten Fällen statt an Formelnebel.
 
-- **Zuerst die Menschen hinter der Prozentzahl** — Den Nenner einer Quote benennen. (232 Lesewörter; 3 Prüfungsaufgaben aus 6 Varianten.) [Fachquelle](https://link.springer.com/article/10.1007/s10459-020-10025-8)
+- **Die Gruppe hinter der Prozentzahl** — Den Nenner einer Quote benennen. (232 Lesewörter; 3 Prüfungsaufgaben aus 6 Varianten.) [Fachquelle](https://link.springer.com/article/10.1007/s10459-020-10025-8)
 - **Wenn seltene Fehler viele Fehlalarme bekommen** — Richtige und falsche Treffer zusammenzählen. (220 Lesewörter; 3 Prüfungsaufgaben aus 6 Varianten.) [Fachquelle](https://link.springer.com/article/10.1007/s10459-020-10025-8)
 - **Der gleiche Alarm in einer anderen Gruppe** — Erkennen, warum sich der Aussagewert bei anderer Grundrate ändert. (228 Lesewörter; 3 Prüfungsaufgaben aus 6 Varianten.) [Fachquelle](https://link.springer.com/article/10.1007/s10459-020-10025-8)
 - **Ein Alarm ist noch keine Handlung** — Wahrscheinlichkeit und Folgen einer Entscheidung trennen. (234 Lesewörter; 3 Prüfungsaufgaben aus 6 Varianten.) [Fachquelle](https://link.springer.com/article/10.1007/s10459-020-10025-8)

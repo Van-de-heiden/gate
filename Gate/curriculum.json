@@ -3054,7 +3054,7 @@
       "order": 1,
       "topicID": "deep.rates",
       "topicOrder": 1,
-      "title": "Zuerst die Menschen hinter der Prozentzahl",
+      "title": "Die Gruppe hinter der Prozentzahl",
       "objective": "Den Nenner einer Quote benennen.",
       "cards": [
         {
@@ -6147,7 +6147,7 @@
       ],
       "questions": [
         {
-          "prompt": "Aufnahme 200, bisherige Abgabe 200. Nach einer Änderung beträgt die Abgabe zunächst 196. Wie gross ist der anfängliche Überschuss pro Sekunde?",
+          "prompt": "Aufnahme und bisherige Abgabe: je 200 Einheiten/s. Nach einer Änderung beträgt die Abgabe zunächst 196 Einheiten/s. Wie gross ist der anfängliche Überschuss pro Sekunde?",
           "options": [],
           "correctIndex": 0,
           "format": "numeric",
@@ -6159,7 +6159,7 @@
           "skillID": "deep.heat.3.skill1"
         },
         {
-          "prompt": "Aufnahme 150, neue Abgabe bei gleicher Temperatur 147. Wie gross ist der anfängliche Überschuss pro Sekunde?",
+          "prompt": "Aufnahme 150 Einheiten/s, neue Abgabe bei gleicher Temperatur 147 Einheiten/s. Wie gross ist der anfängliche Überschuss pro Sekunde?",
           "options": [],
           "correctIndex": 0,
           "format": "numeric",

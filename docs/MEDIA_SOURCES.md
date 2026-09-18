@@ -1,3 +1,5 @@
+> Ausgabe 8 verwendet zwölf dieser Originalabbildungen in den Vertiefungskursen. Alle fünfzehn bleiben in der Nachschlagebibliothek erhalten. Kapitelbezeichnungen in dieser Tabelle beziehen sich auf die bisherige Ausgabe.
+
 # Medien und Originalquellen · Gate 0.7
 
 Abbildungen werden gezielt eingesetzt; eine Pflichtabbildung pro Kapitel gibt es nicht. Die 15 bisherigen veröffentlichten Abbildungen bleiben erhalten. Keine generierten Lernbilder. Recherche: 15. September 2026. Abbildungen bleiben unbeschnitten; deutsche Bildbeschreibungen, Quellen, Urheber und Lizenzen sind in der App erreichbar. HTTPS-Abruf beim ersten Öffnen, danach lokaler Cache. Bei fehlendem Netz steht eine Bildbeschreibung bereit; die Quelle kann später erneut geladen werden.
