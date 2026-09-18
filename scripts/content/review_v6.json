@@ -1,0 +1,184 @@
+[
+  {
+    "lessonID": "case.press.1",
+    "discovery": "Erkenne, weshalb ein wiederverwendbarer Satz etwas anderes leistet als schnelleres Abschreiben.",
+    "visualTask": "Im Holzschnitt von Jost Amman steht links vorne ein Arbeiter an der Presse. Rechts wird die Druckform eingefärbt; hinten setzen weitere Arbeiter den Text. Folge dem Weg von den einzelnen Buchstaben bis zum bedruckten Blatt.\n\nDas Bild stammt von 1568, also aus einer späteren Druckwerkstatt. Es zeigt, weshalb «die Presse druckt Bücher» eine Abkürzung ist: Vor jedem Druck muss eine brauchbare Form entstehen.",
+    "mediaKey": "press",
+    "sourceKey": "press",
+    "misconception": "Wiederholbare Abdrücke teilen eine Vorlage. Ein systematisch wiederkehrender Buchstabenfehler spricht zuerst für den Satz, nicht für einen zufälligen Fehler auf jedem Blatt.",
+    "questionPurposes": [
+      "Die ersten Abzüge haben alle denselben falschen Buchstaben. Wo suchst du zuerst?",
+      "Was ermöglicht beweglicher Satz zusätzlich zu einer geschnitzten ganzen Seite?"
+    ]
+  },
+  {
+    "lessonID": "case.press.2",
+    "discovery": "Unterscheide am Original gedruckte Wiederholung und individuelle Ausstattung.",
+    "visualTask": "Vergrössern lohnt sich hier. Vergleiche die schwarzen Textspalten mit der farbigen Ausstattung am Rand. Das Harry Ransom Center beschreibt sein Exemplar ausdrücklich als gedruckt und von Hand ergänzt. Die abgebildete Seite ist Hieronymus’ Vorrede, nicht der Beginn der Schöpfungsgeschichte.\n\nDie Maschine lieferte also keinen vollständig ausgestatteten Einheitsgegenstand. Ein gedruckter Text konnte danach noch individuell gestaltet werden.",
+    "mediaKey": "bible",
+    "sourceKey": "bible",
+    "misconception": "Gedruckter Text und spätere Handarbeit können im selben Buch vorkommen. Unterschiedliche Ausstattung widerlegt den gemeinsamen Druck nicht.",
+    "questionPurposes": [
+      "Zwei Gutenberg-Bibeln zeigen denselben gedruckten Text, aber unterschiedlichen Farbschmuck. Welche Erklärung passt zum gezeigten Exemplar?",
+      "Was kannst du aus der gezeigten Seite und ihrer Museumsbeschreibung begründet ableiten?"
+    ]
+  },
+  {
+    "lessonID": "case.chip.1",
+    "discovery": "Verstehe den Weg vom Lichtmuster zur bearbeiteten Materialschicht.",
+    "visualTask": "Die veröffentlichte Zeichnung zeigt einen vereinfachten Ablauf. Ein Wafer trägt eine Materialschicht und darüber Fotolack. Belichtung und Entwicklung machen daraus eine gemusterte Schutzschicht. Durch ihre Öffnungen kann die darunterliegende Schicht gezielt geätzt werden. Am Ende wird der restliche Lack entfernt.\n\nAchte darauf, welche Schicht jeweils verschwindet. Entwickeln und Ätzen sind verschiedene Schritte: erst die Maske formen, dann das darunterliegende Material bearbeiten.",
+    "mediaKey": "lithography",
+    "sourceKey": "lithography",
+    "misconception": "Die Lackmaske bestimmt, wo geätzt werden kann. Das Herstellen der Maske und die Bearbeitung des Materials sind zwei verschiedene Vorgänge.",
+    "questionPurposes": [
+      "Nach der Entwicklung ist der Lack gemustert. Die darunterliegende Schicht ist noch unverändert. Ist das ein Widerspruch?",
+      "Ordne die Schritte dieses vereinfachten Verfahrens."
+    ]
+  },
+  {
+    "lessonID": "case.chip.2",
+    "discovery": "Unterscheide die Schärfe einer Struktur von ihrer Lage zur nächsten Schicht.",
+    "visualTask": "Im Diagramm werden verschiedene Überlagerungsfehler verglichen. Suche zuerst ein Musterpaar, dessen Teile gegeneinander versetzt sind, und danach eines mit einer Drehung. Die Einzellinien können in beiden Fällen klar erkennbar bleiben.\n\nDieses Zusammenpassen nennt man Overlay. Es beschreibt die Lage von Schichten zueinander. Eine Aufnahme nur einer Schicht kann daher hervorragend aussehen und den entscheidenden Fehler verbergen.",
+    "mediaKey": "overlay",
+    "sourceKey": "overlay",
+    "misconception": "Der beschriebene Fehler liegt in der Lagebeziehung. Eine weitere Schärfemessung allein prüft nicht, ob Kontakte übereinanderliegen.",
+    "questionPurposes": [
+      "Jede Schicht sieht einzeln scharf aus, aber Verbindungen treffen ihre Kontakte nicht. Welche Prüfung ist am hilfreichsten?",
+      "Welche Beobachtung unterscheidet einen Drehfehler von einer reinen Verschiebung?"
+    ]
+  },
+  {
+    "lessonID": "case.chip.3",
+    "discovery": "Erkläre zwei verschiedene Schutzmassnahmen im echten Lithografielabor.",
+    "visualTask": "Schau getrennt auf Beleuchtung und Kleidung. Das orange Licht reduziert ungeeignete Lichtanteile, die den empfindlichen Lack unbeabsichtigt beeinflussen könnten. Die Reinraumkleidung hilft dagegen, Partikel aus der Umgebung der Herstellung fernzuhalten.\n\nBei winzigen Strukturen kann ein Staubteilchen einen relevanten Bereich stören. Die Herstellung schützt daher sowohl vor unbeabsichtigter Belichtung als auch vor Verunreinigung. Dass beide Massnahmen im selben Raum sichtbar sind, macht sie noch nicht austauschbar.",
+    "mediaKey": "cleanroom",
+    "sourceKey": "cleanroom",
+    "misconception": "Lichtschutz und Partikelschutz richten sich gegen verschiedene Fehlerquellen. Kleidung ersetzt keine Ausrichtungsprüfung; farbiges Licht reinigt keinen Wafer.",
+    "questionPurposes": [
+      "Welche Zuordnungen passen zu den beiden sichtbaren Massnahmen?",
+      "Ein Labor ersetzt seine gefilterte Beleuchtung durch helle normale Lampen. Die Luft bleibt sauber. Welches Problem ist dadurch nicht automatisch gelöst?"
+    ]
+  },
+  {
+    "lessonID": "case.sleep.1",
+    "discovery": "Erkläre, weshalb lange Wachzeit und passende Schlafzeit nicht dasselbe sind.",
+    "visualTask": "Folge im NIH-Schema dem Weg des Lichts vom Auge ins Gehirn. Dieses Signal hilft der inneren Uhr, sich am Tag-Nacht-Wechsel auszurichten. Es misst nicht einfach, wie viele Stunden Schlaf dir fehlen.\n\nDaneben steigt während langer Wachzeit der Schlafdruck. Adenosin ist an diesem System beteiligt. Koffein kann Adenosinwirkungen blockieren; dadurch kann sich Wachheit verändern, ohne dass die vorherige Wachzeit rückgängig gemacht wird.",
+    "mediaKey": "clock",
+    "sourceKey": "sleep",
+    "misconception": "Koffein kann ein Müdigkeitssignal beeinflussen. Ein verändertes Signal ist kein Beleg dafür, dass Schlaf stattgefunden hat.",
+    "questionPurposes": [
+      "Nach Kaffee fühlst du dich wacher. Was folgt daraus für den vorher aufgebauten Schlafbedarf?",
+      "Was zeigt der Lichtweg in der Abbildung vor allem?"
+    ]
+  },
+  {
+    "lessonID": "case.recall.1",
+    "discovery": "Lies die Vergessenskurve als Messung der Wiederlern-Ersparnis statt als persönlichen Countdown.",
+    "visualTask": "Die veröffentlichte Ebbinghaus-Kurve zeigt Ersparnis beim Wiederlernen über die Zeit. Das Prinzip: Vergleiche den Aufwand für das erste Lernen mit dem Aufwand, denselben Stoff später erneut bis zum Lernkriterium zu beherrschen.\n\nEin gedachtes Beispiel ohne Prozentrechnung: Anfangs brauchst du zehn Durchgänge, später sechs. Du konntest die Liste zwischendurch nicht aufsagen, lernst sie aber mit weniger Aufwand wieder. Die Ersparnis ist ein Hinweis auf eine verbliebene Wirkung des früheren Lernens.",
+    "mediaKey": "forgetting",
+    "sourceKey": "memory",
+    "misconception": "Freier Abruf und Wiederlernaufwand sind verschiedene Beobachtungen. Schnellere Wiederaneignung belegt weder völliges Vergessen noch perfekte dauerhafte Verfügbarkeit.",
+    "questionPurposes": [
+      "Du kannst eine Liste nicht frei aufsagen, lernst sie aber deutlich schneller neu. Welche Deutung passt zur Messidee?",
+      "Eine Lern-App behauptet: «Diese Kurve sagt genau voraus, was du morgen vergessen hast.» Was fehlt für diese Schlussfolgerung?"
+    ]
+  },
+  {
+    "lessonID": "case.rates.1",
+    "discovery": "Unterscheide echte Treffer unter allen Erkrankten von Erkrankten unter allen positiven Ergebnissen.",
+    "visualTask": "Unten im Baum gibt es 80 echte Treffer und 950 Fehlalarme. Beide Gruppen haben ein positives Ergebnis. Für die Frage «Was bedeutet positiv?» gehören deshalb beide zusammen in die Vergleichsgruppe.\n\nWer nur den Ast der bereits Erkrankten betrachtet, beantwortet die andere Frage: Wie oft findet der Test die Erkrankung, wenn sie tatsächlich vorliegt? Das kann eine nützliche Eigenschaft des Tests sein, ist aber nicht dieselbe Aussage.",
+    "mediaKey": "frequencies",
+    "sourceKey": "rates",
+    "misconception": "Gesucht ist eine Aussage innerhalb der positiven Ergebnisse. Wer auf bereits Erkrankte einschränkt, vertauscht die Richtung der Bedingung.",
+    "questionPurposes": [
+      "Du willst im Modell wissen, was ein positives Ergebnis bedeutet. Welche Gruppe musst du betrachten?",
+      "Warum können im gezeigten Modell mehr Fehlalarme als echte Treffer entstehen?",
+      "Zwei gleich arbeitende Spamfilter werden auf sehr unterschiedliche Postfächer angewendet. Wo kann derselbe Alarm leichter eine echte Spamnachricht treffen?"
+    ]
+  },
+  {
+    "lessonID": "case.cash.1",
+    "discovery": "Erkenne die Finanzierungslücke zwischen einer gewinnbringenden Lieferung und ihrer Bezahlung.",
+    "visualTask": "Im Schema wird aus Geld zunächst Material beziehungsweise Vorrat. Nach dem Verkauf kann daraus eine Forderung werden: Der Kunde schuldet Geld, hat es aber noch nicht überwiesen. Erst der tatsächliche Zahlungseingang schliesst den Weg zurück zum verfügbaren Geld.\n\nUnsere Werkstatt steckt vor diesem letzten Schritt. Die offene Rechnung ist ein Anspruch, aber mit diesem Anspruch allein ist die morgen fällige Zahlung noch nicht geleistet.",
+    "mediaKey": "cash",
+    "sourceKey": "cash",
+    "misconception": "Ertrag und verfügbarer Geldbestand fallen zeitlich auseinander. Für die nächste Zahlung zählt, wann Geld tatsächlich verfügbar ist.",
+    "questionPurposes": [
+      "Welche Information erklärt das unmittelbare Problem der Werkstatt am besten?",
+      "Ordne den im Beispiel beschriebenen Weg bis zum Zahlungseingang.",
+      "Ein zweiter Kunde bestellt unter denselben Bedingungen. Warum ist «mehr Umsatz löst das sofort» keine sichere Antwort?"
+    ]
+  },
+  {
+    "lessonID": "case.stoic.1",
+    "discovery": "Prüfe Epiktets Unterscheidung zwischen eigener Handlung und fremdem Verhalten an seinem Badehaus-Beispiel.",
+    "visualTask": "Die spätere Darstellung von Epiktet gibt der historischen Person ein Gesicht; sie ist kein zeitgenössisches Porträt. Seine Idee prüfen wir deshalb am Text und am Fall, nicht daran, wie gelassen er gezeichnet ist.\n\nAbschnitt 1 unterscheidet eigenes Urteilen und Handeln von äusseren Dingen, die nicht einfach dem eigenen Willen gehorchen. Im Bad kannst du nicht beschliessen, dass sämtliche anderen Gäste höflich sein werden. Du kannst aber überlegen, wie du auf Gedränge reagierst.",
+    "mediaKey": "epictetus",
+    "sourceKey": "stoic",
+    "misconception": "Eigene Handlung und fremdes Ergebnis sind zu trennen. Einfluss ist möglich; ein garantiertes Verhalten anderer lässt sich daraus nicht machen.",
+    "questionPurposes": [
+      "Ein Badegast rempelt dich an. Welche Absicht passt zu der hier erklärten Unterscheidung?",
+      "Du sprichst eine Grenze aus, der andere bleibt unhöflich. Widerlegt das bereits deine gewählte Vorgehensweise?"
+    ]
+  },
+  {
+    "lessonID": "history.photos",
+    "discovery": "Entdecke, weshalb ein historisches Gemälde zugleich aufschlussreich und kein Augenzeugenbeleg sein kann.",
+    "visualTask": "Vergrössern: Sokrates hebt einen Finger und greift zugleich zum Becher. Andere Figuren zeigen Trauer oder wenden sich ab. Die Anordnung lässt ihn als entschlossenen Lehrer erscheinen.\n\nDavid malte das Werk 1787, lange nach dem Ereignis. Dass Kleidung und Möbel sorgfältig gestaltet sind, verwandelt die Szene nicht in eine unmittelbare Aufzeichnung. Historische Detailarbeit und eine erfundene Anwesenheit können im selben Gemälde vorkommen.",
+    "mediaKey": "socrates",
+    "sourceKey": "socrates",
+    "misconception": "Das Gemälde belegt zuerst seine eigene Gestaltung. Laut Museumsbeschreibung verweist Platon hier auf den überliefernden Autor, nicht auf einen anwesenden Augenzeugen.",
+    "questionPurposes": [
+      "Was belegt Platons sichtbare Anwesenheit in diesem Gemälde am unmittelbarsten?",
+      "Für welche Frage ist die Bildgestaltung eine besonders passende Quelle?"
+    ]
+  },
+  {
+    "lessonID": "data.charts",
+    "discovery": "Erkenne, wie die gleichzeitige Vergrösserung von Höhe und Breite einen Vergleich verzerrt.",
+    "visualTask": "Die veröffentlichte Gegenüberstellung zeigt angemessene und unangemessene Skalierung von Bildsymbolen. Achte darauf, ob nur eine Ausdehnung oder das ganze Symbol wächst.\n\nEin einfacher Kontrollgedanke: Ein Rechteck, das doppelt so hoch und doppelt so breit wird, besteht aus vier ursprünglichen Rechtecken. Seine Fläche ist also vierfach. Wenn diese Veränderung nur eine Verdopplung der Menge illustrieren soll, erzählt die sichtbare Fläche eine andere Geschichte als die Zahl.",
+    "mediaKey": "charts",
+    "sourceKey": "charts",
+    "misconception": "Zwei veränderte Dimensionen multiplizieren sich in der Fläche. Für eine Verdopplung der Menge wirkt das ganze Symbol dadurch übergross.",
+    "questionPurposes": [
+      "Ein Symbol soll doppelt so viel zeigen und wird zugleich doppelt so hoch und breit. Was ist das Problem?",
+      "Welche Darstellung zeigt eine Verdopplung mit gleich grossen Bildsymbolen nachvollziehbar?"
+    ]
+  },
+  {
+    "lessonID": "think.survivors",
+    "discovery": "Entdecke eine fehlende Gruppe, bevor du aus sichtbaren Schäden eine Empfehlung ableitest.",
+    "visualTask": "Die Abbildung ist ein modernes hypothetisches Schema, keine originale Trefferstatistik. Sie macht eine Auswahl sichtbar. Flugzeuge, die nicht zurückgekehrt sind, können in der Menge der untersuchten Rückkehrer nicht auftauchen.\n\nViele sichtbare Treffer können deshalb auch Stellen markieren, an denen ein Flugzeug einen Treffer überleben konnte. Wenige sichtbare Treffer beweisen umgekehrt nicht automatisch, dass dieser Bereich ungefährdet war.",
+    "mediaKey": "survivors",
+    "sourceKey": "survivors",
+    "misconception": "Ein leerer Bereich kann Sicherheit oder fehlende Überlebende widerspiegeln. Ohne die ausgeschlossenen Fälle ist die harmlose Wirkung nicht belegt.",
+    "questionPurposes": [
+      "Ein Bereich hat auf den Rückkehrern kaum Treffer. Was ist daraus allein NICHT gesichert?",
+      "Ein Erfolgsratgeber befragt nur erfolgreiche Firmen. Welche Ergänzung hilft gegen denselben Auswahlfehler?"
+    ]
+  },
+  {
+    "lessonID": "earth.greenhouse",
+    "discovery": "Verfolge unterschiedliche Strahlungswege und erkläre die Rolle der Atmosphäre.",
+    "visualTask": "Das veröffentlichte Schema von 2009 zeigt Sonnenstrahlung, reflektierte Strahlung und Wärmestrahlung. Seine Zahlen sind keine aktuellen Messwerte für dieses Jahr; hier interessieren uns die Wege.\n\nEin Teil der Wärmestrahlung wird von Treibhausgasen aufgenommen und Energie wird wieder als Strahlung abgegeben – in verschiedene Richtungen, auch zurück zur Oberfläche. «Alles geht ungehindert hinaus» passt deshalb ebenso wenig wie «Nichts kann die Erde verlassen».",
+    "mediaKey": "greenhouse",
+    "sourceKey": "heat",
+    "misconception": "Einfallende Sonnenstrahlung und ausgehende Wärmestrahlung unterscheiden sich. Ein Teil der Energie gelangt weiterhin ins All; die Atmosphäre verändert den Weg dorthin.",
+    "questionPurposes": [
+      "Welche Beschreibung passt zu den unterschiedlichen Strahlungswegen?",
+      "Bei zunächst gleicher Temperatur kommt mehr Energie an, als die Erde ins All abgibt. Was bedeutet das für die Bilanz?"
+    ]
+  },
+  {
+    "lessonID": "digital.phishing",
+    "discovery": "Trenne überzeugende Aufmachung von unabhängig überprüfbarer Herkunft.",
+    "visualTask": "Schau auf Aufforderung und Link. Das Beispiel ist eine fiktive Nachbildung, keine Nachricht deiner Bank. Das Layout kann kopiert werden. Auch eine bekannte Marke im Text macht eine verlinkte Seite nicht zur echten Bank.\n\nEin unabhängiger Weg ist stärker: die bekannte App selbst öffnen oder eine bereits verifizierte Adresse benutzen. Dabei kommt das Ziel nicht aus derselben Nachricht, die gerade überprüft werden soll.",
+    "mediaKey": "phishing",
+    "sourceKey": "phishing",
+    "misconception": "Eine unabhängige Prüfung nutzt ein bereits bekanntes Ziel. Ein Absender, der sich selbst bestätigt, liefert keinen unabhängigen Herkunftsnachweis.",
+    "questionPurposes": [
+      "Eine plausible Bankmail fordert eine sofortige Anmeldung. Was überprüft ihr Anliegen unabhängig vom Link in der Mail?",
+      "Ein verdächtiger Link führt zu einer verschlüsselten Website. Was bestätigt das Schlosssymbol allein?"
+    ]
+  }
+]

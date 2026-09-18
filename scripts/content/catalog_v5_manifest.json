@@ -1,0 +1,722 @@
+[
+  {
+    "id": "learn.recall",
+    "title": "Das Buch zu. Und jetzt?",
+    "topic": "learn.recall"
+  },
+  {
+    "id": "learn.spacing",
+    "title": "Warum morgen noch einmal?",
+    "topic": "learn.spacing"
+  },
+  {
+    "id": "learn.calibration",
+    "title": "«Ich kann das» ist eine Prognose",
+    "topic": "learn.calibration"
+  },
+  {
+    "id": "think.implication",
+    "title": "Der nasse Boden beweist keinen Regen",
+    "topic": "think.implication"
+  },
+  {
+    "id": "think.causality",
+    "title": "Macht Eis Sonnenbrand?",
+    "topic": "think.causality"
+  },
+  {
+    "id": "think.experiments",
+    "title": "Der neue Button hat gewonnen. Wirklich?",
+    "topic": "think.experiments"
+  },
+  {
+    "id": "data.average",
+    "title": "Ein Millionär betritt die Runde",
+    "topic": "data.average"
+  },
+  {
+    "id": "data.percent",
+    "title": "Zehn Prozent sind nicht zehn Punkte",
+    "topic": "data.percent"
+  },
+  {
+    "id": "data.base-rate",
+    "title": "Ein guter Test, ein unsicherer Alarm",
+    "topic": "data.base-rate"
+  },
+  {
+    "id": "digital.phishing",
+    "title": "Die Nachricht setzt dich unter Zeitdruck",
+    "topic": "digital.phishing"
+  },
+  {
+    "id": "digital.accounts",
+    "title": "Ein Passwort fällt. Fallen alle Konten?",
+    "topic": "digital.accounts"
+  },
+  {
+    "id": "digital.backup",
+    "title": "Auch die Kopie ist verschwunden",
+    "topic": "digital.backup"
+  },
+  {
+    "id": "economy.opportunity",
+    "title": "Was kostet dich ein freier Abend?",
+    "topic": "economy.opportunity"
+  },
+  {
+    "id": "economy.sunk",
+    "title": "Das schlechte Konzert wird nicht besser",
+    "topic": "economy.sunk"
+  },
+  {
+    "id": "economy.margin",
+    "title": "Noch ein Auftrag?",
+    "topic": "economy.margin"
+  },
+  {
+    "id": "science.energy",
+    "title": "Wohin verschwindet die Bewegung?",
+    "topic": "science.energy"
+  },
+  {
+    "id": "science.power",
+    "title": "Der Wasserkocher hat es eilig",
+    "topic": "science.power"
+  },
+  {
+    "id": "science.scale",
+    "title": "Das Ergebnis riecht nach tausendfach zu viel",
+    "topic": "science.scale"
+  },
+  {
+    "id": "earth.weather",
+    "title": "Ein kalter Tag auf einem wärmeren Planeten",
+    "topic": "earth.weather"
+  },
+  {
+    "id": "earth.greenhouse",
+    "title": "Die Erde muss Wärme wieder loswerden",
+    "topic": "earth.greenhouse"
+  },
+  {
+    "id": "earth.water",
+    "title": "Der Regen war vorher woanders",
+    "topic": "earth.water"
+  },
+  {
+    "id": "history.sources",
+    "title": "Der Sieger hat ein Tagebuch geschrieben",
+    "topic": "history.sources"
+  },
+  {
+    "id": "history.timeline",
+    "title": "Danach – aber deswegen?",
+    "topic": "history.timeline"
+  },
+  {
+    "id": "history.photos",
+    "title": "Das Bild ist echt. Die Geschichte vielleicht nicht.",
+    "topic": "history.photos"
+  },
+  {
+    "id": "learn.interleave",
+    "title": "Du kennst den Rechenweg. Nur welchen?",
+    "topic": "learn.interleave"
+  },
+  {
+    "id": "learn.explain",
+    "title": "Das Fachwort rettet dich nicht",
+    "topic": "learn.explain"
+  },
+  {
+    "id": "learn.retrieval",
+    "title": "Die Lösung kommt eine Minute zu früh",
+    "topic": "learn.retrieval"
+  },
+  {
+    "id": "think.survivors",
+    "title": "Wo sind die Gescheiterten?",
+    "topic": "think.survivors"
+  },
+  {
+    "id": "think.update",
+    "title": "Vier Nachrichten, eine einzige Quelle",
+    "topic": "think.update"
+  },
+  {
+    "id": "think.steelman",
+    "title": "Du willst also nie etwas wagen?",
+    "topic": "think.steelman"
+  },
+  {
+    "id": "data.sample",
+    "title": "Alle Befragten lieben dein Produkt",
+    "topic": "data.sample"
+  },
+  {
+    "id": "data.expected",
+    "title": "Im Durchschnitt gewonnen, heute verloren",
+    "topic": "data.expected"
+  },
+  {
+    "id": "data.charts",
+    "title": "Die Balken führen Regie",
+    "topic": "data.charts"
+  },
+  {
+    "id": "digital.permissions",
+    "title": "Warum braucht die Taschenlampe Kontakte?",
+    "topic": "digital.permissions"
+  },
+  {
+    "id": "digital.updates",
+    "title": "Der Fehler ist inzwischen öffentlich",
+    "topic": "digital.updates"
+  },
+  {
+    "id": "digital.ai",
+    "title": "Die Quelle klingt beeindruckend. Existiert sie?",
+    "topic": "digital.ai"
+  },
+  {
+    "id": "economy.incentives",
+    "title": "Mehr Anrufe, weniger gute Gespräche",
+    "topic": "economy.incentives"
+  },
+  {
+    "id": "economy.elasticity",
+    "title": "Teurer verkauft, weniger eingenommen",
+    "topic": "economy.elasticity"
+  },
+  {
+    "id": "economy.externalities",
+    "title": "Die Rechnung geht an den Nachbarn",
+    "topic": "economy.externalities"
+  },
+  {
+    "id": "science.inertia",
+    "title": "Der Bus bremst. Du noch nicht.",
+    "topic": "science.inertia"
+  },
+  {
+    "id": "science.pressure",
+    "title": "Schneeschuh statt Absatz",
+    "topic": "science.pressure"
+  },
+  {
+    "id": "science.circuits",
+    "title": "Der offene Schalter",
+    "topic": "science.circuits"
+  },
+  {
+    "id": "earth.stocks",
+    "title": "Der Wasserhahn tropft langsamer",
+    "topic": "earth.stocks"
+  },
+  {
+    "id": "earth.ecosystem",
+    "title": "Eine Art fehlt. Vieles ändert sich.",
+    "topic": "earth.ecosystem"
+  },
+  {
+    "id": "earth.lifecycle",
+    "title": "Der saubere Gebrauch hat eine Vorgeschichte",
+    "topic": "earth.lifecycle"
+  },
+  {
+    "id": "history.print",
+    "title": "Eine Seite wird zur Vorlage für viele",
+    "topic": "history.print"
+  },
+  {
+    "id": "history.industry",
+    "title": "Die Maschine verändert den Tagesablauf",
+    "topic": "history.industry"
+  },
+  {
+    "id": "history.un",
+    "title": "Ein gemeinsamer Tisch nach dem Krieg",
+    "topic": "history.un"
+  },
+  {
+    "id": "philosophy.questions",
+    "title": "Was meinst du mit erfolgreich?",
+    "topic": "philosophy.questions"
+  },
+  {
+    "id": "philosophy.control",
+    "title": "Die Absage gehört nicht ganz dir",
+    "topic": "philosophy.control"
+  },
+  {
+    "id": "philosophy.consequences",
+    "title": "Die gute Absicht reicht nicht",
+    "topic": "philosophy.consequences"
+  },
+  {
+    "id": "philosophy.duties",
+    "title": "Der Abschluss mit der verschwiegenen Klausel",
+    "topic": "philosophy.duties"
+  },
+  {
+    "id": "philosophy.virtue",
+    "title": "Mut ist nicht einfach mehr Risiko",
+    "topic": "philosophy.virtue"
+  },
+  {
+    "id": "philosophy.goodlife",
+    "title": "Ein Leben, das von aussen glänzt",
+    "topic": "philosophy.goodlife"
+  },
+  {
+    "id": "business.problem",
+    "title": "Alle finden die Idee nett",
+    "topic": "business.problem"
+  },
+  {
+    "id": "business.position",
+    "title": "«Wir machen alles» hilft beim Wählen kaum",
+    "topic": "business.position"
+  },
+  {
+    "id": "business.unit",
+    "title": "Jeder Verkauf macht den Verlust grösser",
+    "topic": "business.unit"
+  },
+  {
+    "id": "business.cash",
+    "title": "Gewinn auf Papier, leeres Konto",
+    "topic": "business.cash"
+  },
+  {
+    "id": "business.sales",
+    "title": "Die beste Empfehlung kann ein Nein sein",
+    "topic": "business.sales"
+  },
+  {
+    "id": "business.process",
+    "title": "Jetzt passiert der Fehler automatisch",
+    "topic": "business.process"
+  },
+  {
+    "id": "money.budget",
+    "title": "Die Jahresrechnung überrascht jedes Jahr",
+    "topic": "money.budget"
+  },
+  {
+    "id": "money.compound",
+    "title": "Der Ertrag arbeitet mit",
+    "topic": "money.compound"
+  },
+  {
+    "id": "money.purchasing",
+    "title": "Mehr Geld, derselbe Einkauf",
+    "topic": "money.purchasing"
+  },
+  {
+    "id": "money.diversify",
+    "title": "Zwanzig Titel, dieselbe Wette",
+    "topic": "money.diversify"
+  },
+  {
+    "id": "money.leverage",
+    "title": "Die Position ist grösser als dein Einsatz",
+    "topic": "money.leverage"
+  },
+  {
+    "id": "money.costs",
+    "title": "Die kleine Gebühr läuft mit",
+    "topic": "money.costs"
+  },
+  {
+    "id": "industries.retail",
+    "title": "Volle Regale, gebundenes Geld",
+    "topic": "industries.retail"
+  },
+  {
+    "id": "industries.software",
+    "title": "Neue Kunden füllen ein undichtes Abo",
+    "topic": "industries.software"
+  },
+  {
+    "id": "industries.logistics",
+    "title": "Das Paket fährt schnell und wartet lange",
+    "topic": "industries.logistics"
+  },
+  {
+    "id": "industries.craft",
+    "title": "Die unbezahlte zweite Anfahrt",
+    "topic": "industries.craft"
+  },
+  {
+    "id": "industries.banks",
+    "title": "Kurz verfügbar, langfristig verliehen",
+    "topic": "industries.banks"
+  },
+  {
+    "id": "industries.electricity",
+    "title": "Das Kraftwerksschild verspricht noch keine Lieferung",
+    "topic": "industries.electricity"
+  },
+  {
+    "id": "health.sleep",
+    "title": "Der Abend borgt beim Morgen",
+    "topic": "health.sleep"
+  },
+  {
+    "id": "health.food",
+    "title": "Das Superfood rettet keinen ganzen Speiseplan",
+    "topic": "health.food"
+  },
+  {
+    "id": "health.movement",
+    "title": "Das Training ist vorbei. Der Tag nicht.",
+    "topic": "health.movement"
+  },
+  {
+    "id": "health.training",
+    "title": "Mehr Reiz ist nicht immer mehr Fortschritt",
+    "topic": "health.training"
+  },
+  {
+    "id": "health.stress",
+    "title": "Die Belastung hat sich leise gestapelt",
+    "topic": "health.stress"
+  },
+  {
+    "id": "health.evidence",
+    "title": "Bei mir hat es funktioniert",
+    "topic": "health.evidence"
+  },
+  {
+    "id": "development.habits",
+    "title": "Der Vorsatz hat keinen Termin",
+    "topic": "development.habits"
+  },
+  {
+    "id": "development.environment",
+    "title": "Das Handy gewinnt ohne Diskussion",
+    "topic": "development.environment"
+  },
+  {
+    "id": "development.focus",
+    "title": "«Am Projekt arbeiten» ist zu ungenau",
+    "topic": "development.focus"
+  },
+  {
+    "id": "development.goals",
+    "title": "Das Ziel steht. Der Kalender weiss nichts davon.",
+    "topic": "development.goals"
+  },
+  {
+    "id": "development.review",
+    "title": "Die Woche war nicht einfach nur schlecht",
+    "topic": "development.review"
+  },
+  {
+    "id": "development.impulse",
+    "title": "Der Griff passiert schon",
+    "topic": "development.impulse"
+  },
+  {
+    "id": "communication.listen",
+    "title": "Du antwortest auf den falschen Satz",
+    "topic": "communication.listen"
+  },
+  {
+    "id": "communication.feedback",
+    "title": "«Du bist unzuverlässig» erklärt wenig",
+    "topic": "communication.feedback"
+  },
+  {
+    "id": "communication.conflict",
+    "title": "Beide wollen das Projekt schützen",
+    "topic": "communication.conflict"
+  },
+  {
+    "id": "communication.negotiate",
+    "title": "Dein Nein braucht einen Boden",
+    "topic": "communication.negotiate"
+  },
+  {
+    "id": "communication.boundaries",
+    "title": "Das freundliche Ja, das du nicht halten kannst",
+    "topic": "communication.boundaries"
+  },
+  {
+    "id": "communication.write",
+    "title": "Was soll ich mit dieser Nachricht tun?",
+    "topic": "communication.write"
+  },
+  {
+    "id": "civics.federalism",
+    "title": "Warum entscheidet das nicht einfach Bern?",
+    "topic": "civics.federalism"
+  },
+  {
+    "id": "civics.powers",
+    "title": "Niemand soll allein alles entscheiden",
+    "topic": "civics.powers"
+  },
+  {
+    "id": "civics.participation",
+    "title": "Etwas ändern oder einen Beschluss prüfen?",
+    "topic": "civics.participation"
+  },
+  {
+    "id": "civics.publicgoods",
+    "title": "Alle profitieren. Wer bezahlt?",
+    "topic": "civics.publicgoods"
+  },
+  {
+    "id": "civics.ruleoflaw",
+    "title": "Die Behörde muss ihren Entscheid begründen",
+    "topic": "civics.ruleoflaw"
+  },
+  {
+    "id": "civics.news",
+    "title": "Beobachtung, Deutung, Forderung",
+    "topic": "civics.news"
+  },
+  {
+    "id": "case.press.1",
+    "title": "Eine Werkstatt verändert das Kopieren",
+    "topic": "case.press"
+  },
+  {
+    "id": "case.press.2",
+    "title": "Die hundertste Seite kostet anders",
+    "topic": "case.press"
+  },
+  {
+    "id": "case.press.3",
+    "title": "Ein Fehler bekommt Reichweite",
+    "topic": "case.press"
+  },
+  {
+    "id": "case.press.4",
+    "title": "Was zeigt die alte Werkstattszene?",
+    "topic": "case.press"
+  },
+  {
+    "id": "case.stoic.1",
+    "title": "Die Absage liegt auf dem Tisch",
+    "topic": "case.stoic"
+  },
+  {
+    "id": "case.stoic.2",
+    "title": "Du steuerst das Schiff, nicht das Wetter",
+    "topic": "case.stoic"
+  },
+  {
+    "id": "case.stoic.3",
+    "title": "Gelassenheit darf widersprechen",
+    "topic": "case.stoic"
+  },
+  {
+    "id": "case.stoic.4",
+    "title": "Die zweite Antwort ist die bessere",
+    "topic": "case.stoic"
+  },
+  {
+    "id": "case.socrates.1",
+    "title": "Ist der Reiche automatisch erfolgreich?",
+    "topic": "case.socrates"
+  },
+  {
+    "id": "case.socrates.2",
+    "title": "Die Uhr ohne Publikum",
+    "topic": "case.socrates"
+  },
+  {
+    "id": "case.socrates.3",
+    "title": "Nötig ist nicht dasselbe wie genug",
+    "topic": "case.socrates"
+  },
+  {
+    "id": "case.socrates.4",
+    "title": "Eine bessere Definition darf vorläufig bleiben",
+    "topic": "case.socrates"
+  },
+  {
+    "id": "case.cash.1",
+    "title": "Der schönste Auftrag kann dich unter Druck setzen",
+    "topic": "case.cash"
+  },
+  {
+    "id": "case.cash.2",
+    "title": "Der gute Monatsabschluss kommt zu spät",
+    "topic": "case.cash"
+  },
+  {
+    "id": "case.cash.3",
+    "title": "Die Anzahlung verändert den Ablauf",
+    "topic": "case.cash"
+  },
+  {
+    "id": "case.cash.4",
+    "title": "Erfolg kann die Lücke vergrössern",
+    "topic": "case.cash"
+  },
+  {
+    "id": "case.compound.1",
+    "title": "Im zweiten Jahr arbeitet das erste mit",
+    "topic": "case.compound"
+  },
+  {
+    "id": "case.compound.2",
+    "title": "Ein kleiner Abzug bleibt nicht allein",
+    "topic": "case.compound"
+  },
+  {
+    "id": "case.compound.3",
+    "title": "Gleich hoch hinauf und hinunter?",
+    "topic": "case.compound"
+  },
+  {
+    "id": "case.compound.4",
+    "title": "Die Kurve steigt. Reicht sie für mehr?",
+    "topic": "case.compound"
+  },
+  {
+    "id": "case.chip.1",
+    "title": "Licht zeichnet kein fertiges Smartphone",
+    "topic": "case.chip"
+  },
+  {
+    "id": "case.chip.2",
+    "title": "Winzige Schichten müssen sich treffen",
+    "topic": "case.chip"
+  },
+  {
+    "id": "case.chip.3",
+    "title": "Hergestellt ist noch nicht brauchbar",
+    "topic": "case.chip"
+  },
+  {
+    "id": "case.chip.4",
+    "title": "Die teuerste Maschine wartet",
+    "topic": "case.chip"
+  },
+  {
+    "id": "case.sleep.1",
+    "title": "Die letzte Folge kostet morgen etwas",
+    "topic": "case.sleep"
+  },
+  {
+    "id": "case.sleep.2",
+    "title": "Warum du nicht zu jeder Zeit gleich müde bist",
+    "topic": "case.sleep"
+  },
+  {
+    "id": "case.sleep.3",
+    "title": "Wach fühlen und aufmerksam sein",
+    "topic": "case.sleep"
+  },
+  {
+    "id": "case.sleep.4",
+    "title": "Ein Abend, eine konkrete Veränderung",
+    "topic": "case.sleep"
+  },
+  {
+    "id": "case.habit.1",
+    "title": "Der Spaziergang braucht einen Startpunkt",
+    "topic": "case.habit"
+  },
+  {
+    "id": "case.habit.2",
+    "title": "Die Schuhe stehen schon da",
+    "topic": "case.habit"
+  },
+  {
+    "id": "case.habit.3",
+    "title": "Es regnet. Der Plan braucht eine zweite Spur.",
+    "topic": "case.habit"
+  },
+  {
+    "id": "case.habit.4",
+    "title": "Der Rückblick sucht den Stolperstein",
+    "topic": "case.habit"
+  },
+  {
+    "id": "case.deal.1",
+    "title": "Was heisst «zu teuer»?",
+    "topic": "case.deal"
+  },
+  {
+    "id": "case.deal.2",
+    "title": "Zwei Pakete machen den Tausch sichtbar",
+    "topic": "case.deal"
+  },
+  {
+    "id": "case.deal.3",
+    "title": "Die Alternative muss wirklich existieren",
+    "topic": "case.deal"
+  },
+  {
+    "id": "case.deal.4",
+    "title": "Einverstanden – mit welchem Ergebnis?",
+    "topic": "case.deal"
+  },
+  {
+    "id": "case.sunk.1",
+    "title": "Die dreihundert Franken sitzen mit am Tisch",
+    "topic": "case.sunk"
+  },
+  {
+    "id": "case.sunk.2",
+    "title": "Beim Weitermachen gibst du auch etwas auf",
+    "topic": "case.sunk"
+  },
+  {
+    "id": "case.sunk.3",
+    "title": "Die Reparatur ist keine sichere Zukunft",
+    "topic": "case.sunk"
+  },
+  {
+    "id": "case.sunk.4",
+    "title": "Die Grenze steht vor dem nächsten Kauf",
+    "topic": "case.sunk"
+  },
+  {
+    "id": "case.rates.1",
+    "title": "Der Scanner findet neun von zehn Schäden",
+    "topic": "case.rates"
+  },
+  {
+    "id": "case.rates.2",
+    "title": "Der Alarmstapel ist überwiegend harmlos",
+    "topic": "case.rates"
+  },
+  {
+    "id": "case.rates.3",
+    "title": "Dasselbe Gerät, eine andere Lieferung",
+    "topic": "case.rates"
+  },
+  {
+    "id": "case.rates.4",
+    "title": "Zweimal derselbe Alarm ist nicht zweimal unabhängig",
+    "topic": "case.rates"
+  },
+  {
+    "id": "case.recall.1",
+    "title": "Die Seite ist geschlossen",
+    "topic": "case.recall"
+  },
+  {
+    "id": "case.recall.2",
+    "title": "Die falsche Antwort braucht einen Grund",
+    "topic": "case.recall"
+  },
+  {
+    "id": "case.recall.3",
+    "title": "Morgen fehlt die frische Spur",
+    "topic": "case.recall"
+  },
+  {
+    "id": "case.recall.4",
+    "title": "Ein neuer Fall zeigt, ob der Gedanke trägt",
+    "topic": "case.recall"
+  }
+]

@@ -1,0 +1,22 @@
+// swift-tools-version: 5.9
+import PackageDescription
+
+let package = Package(
+    name: "GateCore",
+    platforms: [.macOS(.v13)],
+    products: [.library(name: "GateCore", targets: ["GateCore"])],
+    targets: [
+        .target(name: "GateCore", path: ".",
+            exclude: ["Gate.xcodeproj", "GateWidgetExtension", "GateReportExtension", "DeviceActivityMonitorExtension",
+                "ShieldActionExtension", "ShieldConfigurationExtension", "ScreenTimeShared",
+                "Tests", "scripts", "docs", "README.md", "LICENSE", "Shared/GateSharedStore.swift",
+                "Gate/Assets.xcassets", "Gate/ContentView.swift", "Gate/DesignSystem.swift", "Gate/AllowanceGauge.swift",
+                "Gate/Gate.entitlements", "Gate/GateApp.swift", "Gate/Info.plist",
+                "Gate/GateSettingsView.swift", "Gate/GateStatisticsView.swift", "Gate/LearningLibraryView.swift", "Gate/MonitoringStatusView.swift",
+                "Gate/TopicChoiceView.swift", "Gate/LessonView.swift", "Gate/ScreenTimeController.swift", "Gate/DailyMonitorService.swift",
+                "Gate/GateAtmosphere.swift", "Gate/HomeScene.swift", "Gate/LessonMediaView.swift", "Gate/QuestionView.swift", "Gate/KeyboardSupport.swift", "Gate/LessonArtwork.swift", "Gate/IntentionalPauseView.swift", "Gate/SystemUsageView.swift"],
+            sources: ["Gate/LearningStore.swift", "Shared/GateModels.swift", "LearningCore/LearningModels.swift", "LearningCore/FocusedLearning.swift", "ReportCore/GateReportModels.swift"],
+            resources: [.copy("Gate/curriculum.json"), .copy("Gate/reference-curriculum.json")]),
+        .testTarget(name: "GateCoreTests", dependencies: ["GateCore"], path: "Tests/GateCoreTests")
+    ]
+)
